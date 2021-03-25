@@ -65,9 +65,6 @@ export default class EggHuntMinigame {
             // Prevent collection of dropped egg effects (cyclical).
             const wasDropped = ItemsHelper.isDroppedItemMsg(reaction.message);
 
-            console.log('isEggCollectible', 'isBasketEmoji', '!wasDropped');
-            console.log(isEggCollectible, isBasketEmoji, !wasDropped);
-
             // Disallow egghunt effects on dropped eggs.
             const egghuntDroppedEgg = isEggCollectible && isBasketEmoji && !wasDropped;
             if (egghuntDroppedEgg) {
