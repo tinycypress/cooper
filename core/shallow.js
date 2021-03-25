@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import fetch from 'node-fetch';
+import UsersHelper from './entities/users/usersHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -35,14 +36,8 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-		// const appID = "EL6YXA-LGWAWXQPHE";
-		// const inputQueryStr = encodeURIComponent('5 + 5');
-		// const apiEndpoint = `https://api.wolframalpha.com/v1/simple?appid=${appID}&i=${inputQueryStr}`;
-
-		// const result = await fetch(apiEndpoint);
-
-		// console.log(await result.text());
-
+        // Check for returning members or unpopulated/unrecognised/unregistered members...
+        
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

@@ -6,6 +6,8 @@ import ServerHelper from "../server/serverHelper";
 
 import ROLES from '../../config/roles.json';
 
+import _ from 'lodash';
+
 export default class UsersHelper {
     static avatar(user) {
         const avatarURL = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
@@ -157,6 +159,10 @@ export default class UsersHelper {
         return DatabaseHelper.single(result);
     }
 
+    static async isRegistered(discordID) {
+        return !!(await this.loadSingle(discordID));
+    }
+
     static async random() {
         const membersManager = ServerHelper._coop().members;
         const randomUser = await this._random();
@@ -237,7 +243,13 @@ export default class UsersHelper {
             return includedIDs.indexOf(member.discord_id) === -1;
         });
 
-        missingItems.forEach(item => this.addToDatabase(item.discord_id, item.join_date))
+        console.log(includedIDs);
+        console.log(missingItems);
+
+        missingItems.forEach(async (item) => {
+            const dbRes = await this.addToDatabase(item.discord_id, item.join_date);
+            console.log(dbRes);
+        });
     }
 
 
