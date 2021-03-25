@@ -61,6 +61,7 @@ export default class SacrificeHelper {
         }
     }
 
+
     static async processVote(reaction, user) {
         const guild = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
 
@@ -124,6 +125,7 @@ export default class SacrificeHelper {
         }
     }
 
+
     static async processBackDagger(reaction, user) {
         const guild = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
 
@@ -149,6 +151,7 @@ export default class SacrificeHelper {
             // TODO: Also reward points for approving/rejecting an incoming member (reward more for rejection)
             // TODO: limit number of sacrifices to a maximum of five by checking the number of messages in the sacrifice channel
 
+
             await this.offer(targetMember.user);
 
             setTimeout(async () => {
@@ -168,10 +171,12 @@ export default class SacrificeHelper {
         }
     }
 
+
     static async getLastSacrificeSecs(userID) {
         const lastSacSecs = await UsersHelper.getField(userID, 'last_sacrificed_secs');
         return lastSacSecs;
     }
+
 
     static async offer(user) {
         // Check last sacrifice time
@@ -181,12 +186,12 @@ export default class SacrificeHelper {
         const lastWeek = TimeHelper._secs() - ((60 * 60) * 24) * 7;
         // Ignore null lastSacSecs, these players have never been sacrificed before... no reason not to choose them. :D
         if (lastSacSecs !== null && lastSacSecs >= lastWeek) {
-            const sparedText = `${user.username} was considered for sacrifice but spared.`
+            const sparedText = `${user.username} was considered for sacrifice but spared.`;
             return ChannelsHelper._postToFeed(sparedText);
         }
 
         // Show some basic user statistics on the sacrifice message.
-        const lastMessageFmt = 'unknown'
+        let lastMessageFmt = 'unknown';
 
         // Try to access and format last_msg_secs data.v
         const lastMsgSecs = await UsersHelper.getField(user.id, 'last_msg_secs');

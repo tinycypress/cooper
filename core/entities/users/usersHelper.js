@@ -110,7 +110,6 @@ export default class UsersHelper {
     }
 
     static async load() {
-        let users = [];
         const query = {
             name: "get-users",
             text: "SELECT * FROM users"
@@ -137,7 +136,7 @@ export default class UsersHelper {
             // Try to safely access the proposed field.
             let value = null;
             const result = DatabaseHelper.single(await Database.query(query));
-            if (typeof result[field] !== 'undefined') value = result[field];
+            if (result && typeof result[field] !== 'undefined') value = result[field];
     
             return value;
 

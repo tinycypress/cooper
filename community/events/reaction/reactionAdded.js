@@ -6,7 +6,7 @@ import MiningMinigame from "../../features/minigame/small/mining";
 import WoodcuttingMinigame from '../../features/minigame/small/woodcutting';
 
 
-import RedemptionHelper from "../../redemption/redemptionHelper";
+import RedemptionHelper from "../../features/redemption/redemptionHelper";
 import SacrificeHelper from "../../features/events/sacrificeHelper";
 import ItemsHelper from "../../features/items/itemsHelper";
 import UsersHelper from "../../../core/entities/users/usersHelper";
@@ -15,6 +15,7 @@ import ElectionHelper from '../../features/hierarchy/election/electionHelper';
 import AboutHelper from '../../features/server/aboutHelper';
 import LinkPreviewFilter from '../../features/messages/linkPreviewFilter';
 import InstantFurnaceMinigame from '../../features/minigame/small/instantfurnace';
+
 
 export default async function reactAddedHandler(reaction, user) {
     const isUser = !UsersHelper.isCooper(user.id);
