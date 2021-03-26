@@ -275,7 +275,7 @@ export default class SacrificeHelper {
             const sacrificeOffers = await sacrificeChannel.messages.fetch({ limit: 3 });
 
             // If space for another offer, offer one.
-            if (member && sacrificeOffers.size < 3) this.offer(member.user);
+            if (member && sacrificeOffers.size <= 3) this.offer(member.user);
 
         } catch(e) {
             console.log('Error sacrificing random member!');

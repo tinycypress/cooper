@@ -23,29 +23,44 @@ export default class AverageEggHandler {
                     MessagesHelper.selfDestruct(reaction.message, failureText);
 
                 } else {
-                    const backFired = STATE.CHANCE.bool({ likelihood: 25 });
+                    const backFired = STATE.CHANCE.bool({ likelihood: 33 });
                     const author = reaction.message.author;
+                    const isSelf = user.id === author.id;
                     const targetID = backFired ? user.id : author.id;
 
                     // Toxic bomb damage definition.
                     const damage = EGG_DATA['AVERAGE_EGG'].points;
 
-                    // Apply the damage to the target's points.
-                    const updatedPoints = await PointsHelper.addPointsByID(targetID, damage);
+                    // Initialise dynamic damage info text.
+                    let damageInfoText = '';
 
-                    // Remove the egg based on popularity.
-                    const popularity = ReactionHelper.countType(reaction.message, '💚');
-                    if (popularity < 3 && !UsersHelper.isCooper(user.id)) 
-                        MessagesHelper.delayReactionRemove(reaction, 333);
+                    // Only apply damage when egg hasn't broken on self.
+                    if ((!backFired && !isSelf) || (isSelf && !backFired)) {
+                        // Apply the damage to the target's points.
+                        const updatedPoints = await PointsHelper.addPointsByID(targetID, damage);
 
-                    // Add Cooper's popularity suggestion.
-                    MessagesHelper.delayReact(reaction.message, '💚', 666);
+                        // Update feedback string, did cause damage.
+                        damageInfoText = `: ${damage} points (${updatedPoints})`;
 
-                    const damageInfoText = ` ${damage} points (${updatedPoints})`;
-                    let actionInfoText = `${user.username} used an average egg on ${author.username}`;
-                    if (backFired) actionInfoText = `${user.username} tried to use an average egg on ${author.username}, but it backfired`;
+                        // Remove the egg based on popularity.
+                        const popularity = ReactionHelper.countType(reaction.message, '💚');
+                        if (popularity < 3 && !UsersHelper.isCooper(user.id)) 
+                            MessagesHelper.delayReactionRemove(reaction, 333);
+    
+                        // Add Cooper's popularity suggestion.
+                        MessagesHelper.delayReact(reaction.message, '💚', 666);
+                    }
 
-                    const feedbackMsgText = `${actionInfoText}: ${damageInfoText}.`;
+                    // Detect self and format text accordingly.
+                    let target = author.username;
+                    if (isSelf) target = 'their self';
+
+                    // Create the action/feedback text.
+                    let actionInfoText = `${user.username} used an average egg on ${target}.`;
+                    if (backFired) actionInfoText = `${user.username} tried to use an average egg on ${target}, but it broke`;
+
+                    // Post it.
+                    const feedbackMsgText = `${actionInfoText}${damageInfoText}.`;
                     ChannelsHelper.codeShoutReact(reaction.message, feedbackMsgText, 'ACTIONS', '💚');
                 }
             } catch(e) {

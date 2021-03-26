@@ -9,6 +9,7 @@ import UsersHelper from './entities/users/usersHelper';
 import ServerHelper from './entities/server/serverHelper';
 import CratedropMinigame from '../community/features/minigame/small/cratedrop';
 import ElectionHelper from '../community/features/hierarchy/election/electionHelper';
+import SacrificeHelper from '../community/features/events/sacrificeHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -38,8 +39,6 @@ const shallowBot = async () => {
     STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-        ElectionHelper.checkProgress();
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
