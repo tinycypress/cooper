@@ -15,24 +15,24 @@ export default class ConfessionHandler {
         const annotatedMsgText = `DM message from ${msg.author.username}: ${msg.content}`;
         ChannelsHelper._postToChannelCode('LEADERS', annotatedMsgText);
 
-        setTimeout(async () => {
-            const replyableMsg = await ChannelsHelper._postToChannelCode('COOPERTESTS', annotatedMsgText);
-            replyableMsg.channel.awaitMessages(
-                (msg) => {
-                    // Filter out Cooper messages.
-                    const notManualResponse = msg.content.indexOf('!direct') === -1;
-                    const notCooper = !UsersHelper.isCooperMsg(msg);
-                    return notManualResponse && notCooper;
-                },
-                { max: 1, time: 30000, errors: ['time'] }
-            )
-            .then(responses => {
-                responses.map(resp => {
-                    UsersHelper._dm(msg.author.id, resp.content);
-                });
-            })
-            .catch(console.error);
-        }, 1333);
+        // setTimeout(async () => {
+        //     const replyableMsg = await ChannelsHelper._postToChannelCode('COOPERTESTS', annotatedMsgText);
+        //     replyableMsg.channel.awaitMessages(
+        //         (msg) => {
+        //             // Filter out Cooper messages.
+        //             const notManualResponse = msg.content.indexOf('!direct') === -1;
+        //             const notCooper = !UsersHelper.isCooperMsg(msg);
+        //             return notManualResponse && notCooper;
+        //         },
+        //         { max: 1, time: 30000, errors: ['time'] }
+        //     )
+        //     .then(responses => {
+        //         responses.map(resp => {
+        //             UsersHelper._dm(msg.author.id, resp.content);
+        //         });
+        //     })
+        //     .catch(console.error);
+        // }, 1333);
     }
 
 }
