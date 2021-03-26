@@ -209,8 +209,11 @@ export default class EggHuntMinigame {
 
     static async collect(reaction, user) {
         try {
-            if (reaction.count > 2) 
-                return MessagesHelper.selfDestruct(reaction.message, 'That egg was just taken before you...');
+            // Cleanup failed deletions.
+            if (reaction.count > 2) {
+                MessagesHelper.delayDelete(reaction.message, 333);
+                return MessagesHelper.selfDestruct(reaction.message, 'That egg was just taken before you...', 666);
+            }
 
             if (!UsersHelper.isCooper(user.id)) {
                 const rarity = this.calculateRarityFromMessage(reaction.message);
@@ -234,6 +237,7 @@ export default class EggHuntMinigame {
                     // Store points and egg collection data in database.
                     const updated = await PointsHelper.addPointsByID(user.id, reward);
                     acknowledgementMsgText += ` (${updated})`;
+                    
                     // Add/update egg item to user
                     await ItemsHelper.add(user.id, rarity, 1);
 
@@ -272,15 +276,28 @@ export default class EggHuntMinigame {
                     const emojiText = MessagesHelper.emojiText(EGG_DATA[rarity].emoji);
                     const eggMsg = await dropChannel.send(emojiText);
 
-                    ServerHelper.addTempMessage(eggMsg, 60 * 60);
+                    // Define a base egg lifespan before cleanup occurs.
+                    let eggLifespan = 60 * 10;
 
                     // Add collection action emoji.
                     MessagesHelper.delayReact(eggMsg, '🧺', 666);
 
                     // Remove toxic egg after few minutes so people aren't forced to take it.
-                    if (rarity === 'TOXIC_EGG') MessagesHelper.delayDelete(eggMsg, 200000);
+                    if (rarity === 'TOXIC_EGG') eggLifespan = 60 * 2;
+                    if (rarity === 'RARE_EGG') eggLifespan = 60 * 7;
+                    if (rarity === 'LEGENDARY_EGG') eggLifespan = 60 * 7;
 
-                    if (dropText) ChannelsHelper._postToChannelCode('ACTIONS', dropText);
+                    // TODO: If Cooper is evil, chance of destroying it immediately after.
+
+
+                    // Schedule the deletion/cleanup of the dropped egg.
+                    ServerHelper.addTempMessage(eggMsg, eggLifespan, 'EGG_HUNT', { rarity });
+                    MessagesHelper.delayDelete(eggMsg, eggLifespan * 1000);
+
+                    // If an annotation for the egg drop was provided, use it.
+                    if (dropText) 
+                        ChannelsHelper._postToChannelCode('ACTIONS', dropText);
+
                 } catch(e) {
                     console.error(e);
                 }

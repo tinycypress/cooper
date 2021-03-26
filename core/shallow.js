@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 // v DEV IMPORT AREA v
 import fetch from 'node-fetch';
 import UsersHelper from './entities/users/usersHelper';
+import ServerHelper from './entities/server/serverHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
