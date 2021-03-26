@@ -222,18 +222,26 @@ export default class CratedropMinigame {
 
     static async drop() {
         try {
+            // Calculate crate rarity based on chance.
             const rarity = this.selectRandomRarity();
-            const rarityWord = MessagesHelper.titleCase(rarity.split('_')[0]);
-            const feedMsg = await ChannelsHelper._postToChannelCode('ACTIONS', `${rarityWord} crate drop in progress.`);
-
+            
             // Drop the crate!
-            const crateMsg = await ChannelsHelper
-                ._randomText()
-                .send(MessagesHelper.emojifyID(EMOJIS[rarity]));
+            const random = await ChannelsHelper._randomText();
+            if (random) {
+                // Drop the crate via emoji.
+                const crateMsg = await random.send(MessagesHelper.emojifyID(EMOJIS[rarity]));
 
-            MessagesHelper.delayReact(crateMsg, '🪓', 333);
-            MessagesHelper.delayReact(feedMsg, '🪓', 666);
+                // Format rarity text and provide a record.
+                const rarityWord = MessagesHelper.titleCase(rarity.split('_')[0]);
+                const feedMsg = await ChannelsHelper._postToChannelCode('ACTIONS', `${rarityWord} crate drop in progress.`);
+
+                // Add user reaction feedback/aesthetic only.
+                MessagesHelper.delayReact(crateMsg, '🪓', 333);
+                MessagesHelper.delayReact(feedMsg, '🪓', 666);
+            }
+
         } catch(e) {
+            console.log('Error dropping crate');
             console.error(e);
         }
     }

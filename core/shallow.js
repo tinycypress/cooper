@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import UsersHelper from './entities/users/usersHelper';
 import ServerHelper from './entities/server/serverHelper';
+import CratedropMinigame from '../community/features/minigame/small/cratedrop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
