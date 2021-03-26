@@ -7,6 +7,8 @@ import ServerHelper from "../server/serverHelper";
 import ROLES from '../../config/roles.json';
 
 import _ from 'lodash';
+import ChannelsHelper from "../channels/channelsHelper";
+import MessagesHelper from "../messages/messagesHelper";
 
 export default class UsersHelper {
     static avatar(user) {
@@ -229,26 +231,36 @@ export default class UsersHelper {
     }
 
     static async populateUsers() {
+        // Constant/aesthetic only reference.
+        const coopEmoji = MessagesHelper._displayEmojiCode('COOP');
+
+        // Load all recognised users.
         const dbUsers = await this.load();
+
+        // Pluck the list of their IDs for comparison with latest data.
         const includedIDs = _.map(dbUsers, "discord_id");
         
-        const membersData = this._cache().map(member => {
-            return {
-                discord_id: member.user.id,
-                join_date: member.joinedTimestamp
-            };
-        });
+        // Find the missing/unrecognised users.
+        const missingItems = this._cache().filter(member => includedIDs.indexOf(member.user.id) === -1);
 
-        const missingItems = membersData.filter(member => {
-            return includedIDs.indexOf(member.discord_id) === -1;
-        });
+        // Attempt to recognise each unrecognised user.
+        missingItems.forEach(async (member, index) => {
+            try {
+                // Insert and respond to successful/failed insertion.
+                const dbRes = await this.addToDatabase(member.user.id, member.joinedTimestamp);
+                if (dbRes.rowCount === 1)
+                    setTimeout(() => ChannelsHelper._postToFeed(
+                        `<@${member.user.id}> is officially recognised by The Coop ${coopEmoji}!`
+                    ), 1000 * index);
+                else
+                    setTimeout(() => ChannelsHelper._postToFeed(
+                        `<@${member.user.id}> failed to be recognised by The Coop ${coopEmoji}...?`
+                    ), 1000 * index);
 
-        console.log(includedIDs);
-        console.log(missingItems);
-
-        missingItems.forEach(async (item) => {
-            const dbRes = await this.addToDatabase(item.discord_id, item.join_date);
-            console.log(dbRes);
+            } catch(e) {
+                console.log('Error adding unrecognised user to database.');
+                console.error(e);
+            }
         });
     }
 

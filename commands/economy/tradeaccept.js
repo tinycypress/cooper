@@ -29,6 +29,9 @@ export default class TradeAcceptCommand extends CoopCommand {
 	async run(msg, { tradeID }) {
 		super.run(msg);
 
+		// Sanitise + validate input a little before processing.
+		tradeID = parseInt(tradeID.trim().replace('#', ''));
+
 		try {
 			const tradeeID = msg.author.id;
 			const tradeeName = msg.author.username;

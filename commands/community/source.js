@@ -40,16 +40,20 @@ export default class SourceCommand extends CoopCommand {
 		// Figure out project root.
 		try {
 			// Prevent access to secure data.
-			if (path === '.env' || path === './.env')
-				throw new Error('Tried to access .env file.');
+			if (path === '.env' || path === './.env') return null;
 
 			// Load the file content.
 			const file = await fs.readFile(path, "utf8");
 			return file;
 
 		} catch(e) {
-			console.log(`'Error getting file: ${path}`);
-			console.error(e);
+			// Debugging only.
+			// console.log(`'Error getting file: ${path}`);
+			// console.log(e.message);
+			// console.log(e.name);
+
+			// console.error(e);
+
 			return null;
 		}
 	}

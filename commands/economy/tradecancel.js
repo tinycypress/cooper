@@ -29,6 +29,9 @@ export default class TradeCancelCommand extends CoopCommand {
 	async run(msg, { tradeID }) {
 		super.run(msg);
 
+		// Sanitise + validate input a little before processing.
+		tradeID = parseInt(tradeID.trim().replace('#', ''));
+		
 		try {
 			// More readable access to useful properties.
 			const tradeeID = msg.author.id;
