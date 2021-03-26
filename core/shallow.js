@@ -37,8 +37,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Check for returning members or unpopulated/unrecognised/unregistered members...
-        
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
