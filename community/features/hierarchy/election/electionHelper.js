@@ -173,8 +173,26 @@ export default class ElectionHelper {
     static async commentateElectionProgress() {
         // Check time since last election commentation message (prevent spam).
         const lastElecMsgSecs = parseInt(await Chicken.getConfigVal('last_elecupdatemsg_secs'));
+        const nowSecs = TimeHelper._secs();
+        const diff = nowSecs - lastElecMsgSecs;
+
         const hour = 3600;
-        const fresh = TimeHelper._secs() < lastElecMsgSecs + (hour * 3);
+
+        // Defaul to a 3 hour gap between election messages.
+        let bufferSecs = (hour * 6);
+
+        // TODO: If very little remaining/very close shrink interval:
+        if (diff < hour * 10)
+        // (within 10 hours should count every 2 hours)
+            bufferSecs = hour * 2;
+        else if (diff < hour * 8)
+            // (within 8 hours should count every 1 hours)
+            bufferSecs = hour * 1;
+        else if (diff < hour * 4)
+            // (within 4 hours should count every 0.5 hours)
+            bufferSecs = hour * 0.5;
+        
+        const fresh = nowSecs < lastElecMsgSecs + bufferSecs;
         if (fresh) return false;
 
         // Note: Votes aren't saved in the database... we rely solely on Discord counts.
