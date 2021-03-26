@@ -32,6 +32,10 @@ export default class VotingTimeCommand extends CoopCommand {
 			const readableRemaining = TimeHelper.humaniseSecs(votingSecs);
 			MessagesHelper.selfDestruct(msg, `${chanTag} voting time remaining: ${readableRemaining}.`);
 
+			// TODO: Improve to a more readable/useful output.
+			// const msgText = `Next Election: ${dateFmt}, (${humanRemaining}).`;
+
+			MessagesHelper.selfDestruct(msg, msgText);
 		} else {
 			MessagesHelper.selfDestruct(msg, `${chanTag} is not running.`);
 		}

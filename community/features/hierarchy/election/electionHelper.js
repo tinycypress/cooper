@@ -175,22 +175,21 @@ export default class ElectionHelper {
         const lastElecMsgSecs = parseInt(await Chicken.getConfigVal('last_elecupdatemsg_secs'));
         const nowSecs = TimeHelper._secs();
         const diff = nowSecs - lastElecMsgSecs;
+        const hourSecs = 3600;
 
-        const hour = 3600;
+        // Defaul to a 3 hourSecs gap between election messages.
+        let bufferSecs = (hourSecs * 6);
 
-        // Defaul to a 3 hour gap between election messages.
-        let bufferSecs = (hour * 6);
-
-        // TODO: If very little remaining/very close shrink interval:
-        if (diff < hour * 10)
-        // (within 10 hours should count every 2 hours)
-            bufferSecs = hour * 2;
-        else if (diff < hour * 8)
-            // (within 8 hours should count every 1 hours)
-            bufferSecs = hour * 1;
-        else if (diff < hour * 4)
-            // (within 4 hours should count every 0.5 hours)
-            bufferSecs = hour * 0.5;
+        // If election end approaching use quicker interval:
+        if (diff < hourSecs * 10)
+        // (within 10 hourSecss should count every 2 hourSecss)
+            bufferSecs = hourSecs * 2;
+        else if (diff < hourSecs * 8)
+            // (within 8 hourSecss should count every 1 hourSecss)
+            bufferSecs = hourSecs * 1;
+        else if (diff < hourSecs * 4)
+            // (within 4 hourSecss should count every 0.5 hourSecss)
+            bufferSecs = hourSecs * 0.5;
         
         const fresh = nowSecs < lastElecMsgSecs + bufferSecs;
         if (fresh) return false;
