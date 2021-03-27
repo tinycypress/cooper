@@ -18,9 +18,7 @@ export default async function memberJoined(member) {
     );
 
     // Notify community:
-    ChannelsHelper._postToChannelCode('APPROVAL',
-      `**${member.user.username} joined, welcome or bully them in <#${CHANNELS.ENTRY.id}!**`
-    );
+    ChannelsHelper._codes(['ENTRY', 'TALK'], `**Someone new joined "${member.user.username}": <#${CHANNELS.ENTRY.id}!**`);
 
   } catch(e) {
     console.error(e)

@@ -27,10 +27,6 @@ export default class RedemptionHelper {
         this.processVote(reaction, user);
     }
 
-    static async notify(guild, message) {
-        return ChannelsHelper.sendByCodes(guild, ['ENTRY'], message);
-    }
-
     static async processVote(reaction, user) {
         const guild = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
 
@@ -74,49 +70,50 @@ export default class RedemptionHelper {
             
             // Handle user approved.
             if (forVotes >= reqForVotes) {
-                // Give intro roles
-                const { MEMBER, BEGINNER, SUBSCRIBER, PROSPECT } = ROLES;
-                const introRoles = RolesHelper.getRolesByID(
-                    guild, 
-                    [MEMBER.id, BEGINNER.id, SUBSCRIBER.id, PROSPECT.id]
-                );
-                
                 // Add to database
-                await UsersHelper.addToDatabase(targetMember.user.id, targetMember.joinedDate);
+                UsersHelper.addToDatabase(targetMember.user.id, targetMember.joinedDate);
 
-                // TODO: Update latest member on about stat.
-
-                await targetMember.roles.add(introRoles);
-
-                // TODO: Improve welcome text message to be more informative.
-                await targetMember.send('You were voted into The Coop and now have full access!');
+                // Give intro roles
+                const introRoles = RolesHelper._getCodes(['MEMBER', 'BEGINNER', 'SUBSCRIBER', 'PROSPECT']);
+                targetMember.roles.add(introRoles);
                 
-                await this.notify(guild, 
+                // Inform community.
+                ChannelsHelper._codes(['ENTRY', 'TALK'], 
                     `${targetUser.username} approved based on votes!` +
                     `${forVotes ? `\n\n${EMOJIS.VOTE_FOR.repeat(forVotes)}` : ''}` +
                     `${againstVotes ? `\n\n${EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
                 );
 
+                // TODO: Improve welcome text message to be more informative.
+                targetMember.send('You were voted into The Coop and now have full access!');
+
             // Handle user rejected.
             } else if (againstVotes >= reqAgainstVotes) {
-                await this.notify(guild, `${targetUser.username} was removed and banned (voted out)!`);
+                // Inform community.
+                ChannelsHelper._codes(['ENTRY', 'TALK'], `${targetUser.username} was voted out, removed and banned.`);
 
                 // TODO: List current leaders/command for contact in order to appeal.
-                await targetMember.send('You were voted out of The Coop!');
                 await targetMember.ban();
+
+                // Inform the user.
+                targetMember.send('You were voted out of The Coop.');
+
             } else {
+                // TODO: This way of preventing certain kinds of feedback spam should be refactored and reused everywhere.
+
                 // Notify the relevant channels (throttle based on last entry vote time).
                 const currentTime = +new Date();
                 const lastVotetime = STATE.LAST_ENTRY_VOTE_TIME;
-                const FiveSecondsAgo = currentTime - (5 * 1000);
-                if (!lastVotetime || lastVotetime < FiveSecondsAgo) {
+                if (!lastVotetime || lastVotetime < currentTime - 5000) {
                     STATE.LAST_ENTRY_VOTE_TIME = currentTime;
-                    await this.notify(guild, votingStatusText);
+                    ChannelsHelper._codes(['ENTRY', 'TALK'], votingStatusText);
                 }
             }
                 
         } catch(e) {
             console.error(e);
+
+            // Catch cannot send to user and notify them in approval channel, Cooper is HIGHLY recommended. ;)
         }
     }
 }

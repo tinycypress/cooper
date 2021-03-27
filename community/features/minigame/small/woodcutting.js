@@ -91,19 +91,19 @@ export default class WoodcuttingMinigame {
             // Rare events from woodcutting.
             if (STATE.CHANCE.bool({ likelihood: 3.33 })) {
                 const addDiamond = await ItemsHelper.add(user.id, 'AVERAGE_EGG', 1);
-                ChannelsHelper.propagate(msg, `${user.username} found a average egg whilst mining! (${addDiamond})`, 'ACTIONS');
+                ChannelsHelper.propagate(msg, `${user.username} catches an average egg as it falls from a tree! (${addDiamond})`, 'ACTIONS');
             }
             
             if (STATE.CHANCE.bool({ likelihood: 0.25 })) {
-                const diamondVeinQty = STATE.CHANCE.natural({ min: 5, max: 25 });
-                await ItemsHelper.add(user.id, 'RARE_EGG', diamondVeinQty);
-                ChannelsHelper.propagate(msg, `${user.username} triggered a chain branch reaction, ${diamondVeinQty} rare eggs found!`, 'ACTIONS');
+                const branchQty = STATE.CHANCE.natural({ min: 5, max: 25 });
+                await ItemsHelper.add(user.id, 'RARE_EGG', branchQty);
+                ChannelsHelper.propagate(msg, `${user.username} triggered a chain branch reaction, ${branchQty} rare eggs found!`, 'ACTIONS');
             }
 
-            if (STATE.CHANCE.bool({ likelihood: 0.075 })) {
-                const diamondVeinQty = STATE.CHANCE.natural({ min: 1, max: 3 });
-                await ItemsHelper.add(user.id, 'LEGENDARY_EGG', diamondVeinQty);
-                ChannelsHelper.propagate(msg, `${user.username} hit a lucky branch, ${diamondVeinQty} legendary egg(s) found!`, 'ACTIONS');
+            if (STATE.CHANCE.bool({ likelihood: 0.0525 })) {
+                const legendaryNestQty = STATE.CHANCE.natural({ min: 2, max: 4 });
+                await ItemsHelper.add(user.id, 'LEGENDARY_EGG', legendaryNestQty);
+                ChannelsHelper.propagate(msg, `${user.username} hit a lucky branch, ${legendaryNestQty} legendary egg(s) found!`, 'ACTIONS');
             }
 
             // Reduce the number of rocks in the message.

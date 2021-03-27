@@ -40,6 +40,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // const memb = UsersHelper._get('789972974781333516');
+        // UsersHelper.removeFromDatabase(memb);
+
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

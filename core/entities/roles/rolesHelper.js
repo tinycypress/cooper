@@ -21,6 +21,11 @@ export default class RolesHelper {
         return this.getRoleByID(ServerHelper._coop(), ROLES[roleCode].id);
     }
 
+    static _getCodes(roleCodes = []) {
+        const guild = ServerHelper._coop();
+        return roleCodes.map(code => this.getRoleByID(guild, ROLES[code].id));
+    }
+
     static _add(userID, roleCode) {
         try {
             const guild = ServerHelper._coop();

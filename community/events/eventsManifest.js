@@ -44,7 +44,8 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => UsersHelper.cleanupUsers(), baseTickDur * 6);
 
   // Ensure all users registered in memory for functionality.
-  EventsHelper.runInterval(() => UsersHelper.populateUsers(), baseTickDur * 4);
+  // I turned this off because it seems like it is never necessary, we do not allow guests games.
+  // EventsHelper.runInterval(() => UsersHelper.populateUsers(), baseTickDur * 4);
 
   // Clean up temporary messages around every... quick lol.
   EventsHelper.runInterval(() => ServerHelper.processTempMessages(), baseTickDur / 10);
