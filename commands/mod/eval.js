@@ -1,10 +1,8 @@
+import nodeEval from 'node-eval';
+
 import CoopCommand from '../../core/entities/coopCommand';
 
-
 import STATE from '../../core/state';
-
-
-
 
 
 export default class EvalCommand extends CoopCommand {
@@ -26,7 +24,7 @@ export default class EvalCommand extends CoopCommand {
 
 		if (msg.author.id === '786671654721683517') {
 			const evalStr = msg.content.replace('!eval ', '');
-			eval(evalStr);
+			nodeEval(evalStr, { msg });
 		}
     }
     
