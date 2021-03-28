@@ -35,7 +35,7 @@ export default class AverageEggHandler {
                     let damageInfoText = '';
 
                     // Only apply damage when egg hasn't broken on self.
-                    if ((!backFired && !isSelf) || (isSelf && !backFired)) {
+                    if (!(backFired && isSelf)) {
                         // Apply the damage to the target's points.
                         const updatedPoints = await PointsHelper.addPointsByID(targetID, damage);
 
@@ -57,7 +57,8 @@ export default class AverageEggHandler {
 
                     // Create the action/feedback text.
                     let actionInfoText = `${user.username} used an average egg on ${target}`;
-                    if (backFired) actionInfoText = `${user.username} tried to use an average egg on ${target}, but it broke.`;
+                    if (backFired) actionInfoText = `${user.username} tried to use an average egg on ${target}, but it backfired`;
+                    if (backFired && isSelf) actionInfoText = `${user.username} tried to use an average egg on ${target}, but it broke.`;
 
                     // Post it.
                     const feedbackMsgText = `${actionInfoText}${damageInfoText}.`;
