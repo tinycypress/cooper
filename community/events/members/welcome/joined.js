@@ -18,7 +18,7 @@ export default async function memberJoined(member) {
     );
 
     // Notify community:
-    ChannelsHelper._codes(['ENTRY', 'TALK'], `**Someone new joined "${member.user.username}": <#${CHANNELS.ENTRY.id}!**`);
+    ChannelsHelper._codes(['ENTRY', 'TALK'], `**Someone new joined "${member.user.username}": <#${CHANNELS.ENTRY.id}>!**`);
 
   } catch(e) {
     console.error(e)
