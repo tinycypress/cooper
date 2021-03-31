@@ -72,7 +72,13 @@ export default class SacrificeHelper {
             const targetMember = await UsersHelper.fetchMemberByID(guild, sacrificeeID);
 
             // If target member is self, remove vote.
-            if (user.id === targetMember.user.id) return await reaction.remove();
+            if (user.id === targetMember.user.id) {
+                // Remove vote.
+                reaction.users.remove(user.id);
+
+                // Warn.
+                return MessagesHelper.selfDestruct(reaction.message, `${user.username} you can't vote for/against yourself. :dagger:`);
+            }
 
             // If member left, don't do anything.
             if (!targetMember) return false;

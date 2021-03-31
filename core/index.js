@@ -40,5 +40,5 @@ export default async function bootstrap() {
     await CDNManager.start();
 
     // Set activity.
-    botClient.user.setActivity('SACRIFICE REFORM 2021', { type: 'WATCHING' });
+    botClient.user.setActivity('🍖🍖 SPAM REFORM 2025 🍖🍖', { type: 'WATCHING' });
 }

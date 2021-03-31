@@ -7,15 +7,6 @@ export default async () => {
     try {
         console.log(`Logged in as ${STATE.CLIENT.user.username}`); 
         
-        // Set activity.
-        STATE.CLIENT.user.setPresence({
-            status: "dnd",
-            activity: {
-                name: "🗡 SACRIFICE REFORM 2021",
-                type: "LISTENING"
-            }
-        });
-
         // Prepare cache (avoid partials)!
         const guild = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
         let reqNum = 0;
@@ -26,8 +17,11 @@ export default async () => {
             }
         });
 
-        // Cache candidate messages.
-        await ElectionHelper.onLoad();
+        // TODO: Check if election is on before preloading.
+
+            // Cache candidate messages (ONLY IF ITS ON, CHECK PLEASE)
+            // Maybe rename to preloadIfNecessary()
+            await ElectionHelper.onLoad();
 
         // Preload all about/options preferences options.
         await AboutHelper.preloadMesssages();
