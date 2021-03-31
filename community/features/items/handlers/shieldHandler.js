@@ -46,7 +46,7 @@ export default class ShieldHandler {
 
             } else {
                 // Protect them by saving the buff data in state for this msg.author.
-                await BuffsHelper.add('INVINCIBLITY', msg.author.id);
+                await BuffsHelper.add('INVINCIBILITY', msg.author.id);
             }
 
             // Provide feedback which also stacks based on existing protection "credit".
