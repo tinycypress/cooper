@@ -11,6 +11,7 @@ import CratedropMinigame from '../community/features/minigame/small/cratedrop';
 import ElectionHelper from '../community/features/hierarchy/election/electionHelper';
 import SacrificeHelper from '../community/features/events/sacrificeHelper';
 import RolesHelper from './entities/roles/rolesHelper';
+import BuffsHelper, { BUFF_TYPES } from '../community/features/conquest/buffsHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -41,6 +42,13 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        BuffsHelper.add('INVINCIBILITY', '786671654721683517');
+
+        const lmfInvincible = BuffsHelper.has('INVINCIBILITY', '786671654721683517');
+        console.log('lmfInvincible', lmfInvincible);
+
+
+        BuffsHelper.cleanupExpired();
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

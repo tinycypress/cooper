@@ -22,6 +22,7 @@ import EmojiHelper from "./emojiHelper";
 import RolesHelper from "../../../core/entities/roles/rolesHelper";
 import PointsHelper from "../points/pointsHelper";
 import STATE from "../../../core/state";
+import ShieldHandler from "./handlers/shieldHandler";
 
 
 export default class ItemsHelper {
@@ -31,9 +32,10 @@ export default class ItemsHelper {
         // Prevent Cooper from interacting with items.
         if (!UsersHelper.isCooper(user.id)) {
             
+            // Player usable items reaction detectors/handlers.
             BombHandler.onReaction(reaction, user);
             DiamondHandler.onReaction(reaction, user);
-    
+            ShieldHandler.onReaction(reaction, user);
             				
             // Check if message is dropped item message being picked up.
             if (this.isPickupable(reaction, user)) {
@@ -42,7 +44,7 @@ export default class ItemsHelper {
         }
 
         // Allow Cooper to add average/rare eggs when prompted.
-        // TODO: Should fail silently.
+        // SPAMREFORM: Should fail silently.
         ToxicEggHandler.onReaction(reaction, user);
         LegendaryEggHandler.onReaction(reaction, user);
         AverageEggHandler.onReaction(reaction, user);

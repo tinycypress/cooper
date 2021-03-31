@@ -3,6 +3,7 @@ import LaxativeHandler from '../../community/features/items/handlers/laxativeHan
 import ItemsHelper from '../../community/features/items/itemsHelper';
 import GiftboxHandler from '../../community/features/items/handlers/giftboxHandler';
 import CoopCommand from '../../core/entities/coopCommand';
+import ShieldHandler from '../../community/features/items/handlers/shieldHandler';
 
 
 export default class UseCommand extends CoopCommand {
@@ -39,6 +40,7 @@ export default class UseCommand extends CoopCommand {
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);
 		if (itemCode === 'FLARE') FlareHandler.use(msg, msg.author);
 		if (itemCode === 'EMPTY_GIFTBOX') GiftboxHandler.use(msg);
+		if (itemCode === 'SHIELD') ShieldHandler.use(msg);
     }
     
 };

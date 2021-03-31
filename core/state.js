@@ -16,6 +16,9 @@ const STATE = {
         LAST_ENTRY_VOTE_TIME: null,
         LAST_ACHIEVEMENT_NOTIFICATION: null,
 
+        // Server economy/game buffs:
+        BUFFS: {},
+
     // Chance/random instance
     CHANCE: new Chance,
 

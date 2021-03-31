@@ -25,6 +25,7 @@ import ServerHelper from "../../core/entities/server/serverHelper";
 import InstantFurnaceMinigame from "../features/minigame/small/instantfurnace";
 import ItemsHelper from "../features/items/itemsHelper";
 import ChestPopMinigame from "../features/minigame/small/chestpop";
+import BuffsHelper from "../features/conquest/buffsHelper";
 
 
 export const baseTickDur = 60 * 25 * 1000;
@@ -83,12 +84,17 @@ export default function eventsManifest() {
   // Update person in the community economy with MOST_ITEMS and give role/reward.
   EventsHelper.runInterval(() => ItemsHelper.updateMostItems(), baseTickDur * 3);
 
+
+
   EventsHelper.chanceRunInterval(() => WoodcuttingMinigame.run(), 55, baseTickDur * 5);
   EventsHelper.chanceRunInterval(() => MiningMinigame.run(), 45, baseTickDur * 6);
   EventsHelper.runInterval(() => CratedropMinigame.run(), baseTickDur * 5);
   EventsHelper.chanceRunInterval(() => EggHuntMinigame.run(), 2.5, baseTickDur / 10);
 
   EventsHelper.chanceRunInterval(() => InstantFurnaceMinigame.run(), 45, baseTickDur * 7.5);
+
+  // Clean up CONQUEST buffs/item effects.
+  EventsHelper.runInterval(() => BuffsHelper.cleanupExpired(), baseTickDur / 3);
 
   // TODO: Update and create most items role
  
