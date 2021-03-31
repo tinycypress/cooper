@@ -37,7 +37,7 @@ export default class ShieldHandler {
             // Apply the shield buff to the target.
             const protectionExpiry = this.runEffect(target.id);
 
-            const successText = `${user.username} used a SHIELD on ${targetName}, extending their protection to ${protectionExpiry}`;
+            const successText = `${user.username} used a SHIELD on ${targetName}, extending their protection to ${protectionExpiry} 30 mins.`;
             MessagesHelper.selfDestruct(reaction.message, successText);
         }
         
@@ -57,7 +57,7 @@ export default class ShieldHandler {
             const protectionExpiry = this.runEffect(msg.author.id);
 
             // Provide feedback.
-            const successText = `${msg.author.username} used a SHIELD, extending their protection to ${protectionExpiry}`;
+            const successText = `${msg.author.username} used a SHIELD, extending their protection to ${protectionExpiry} mins.`;
             return MessagesHelper.selfDestruct(msg, successText, 5000);
         }
         

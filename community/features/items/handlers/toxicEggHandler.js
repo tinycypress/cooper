@@ -36,7 +36,7 @@ export default class ToxicEggHandler {
 
                         // TODO: Count invincibility blocks into stats.
                         const shieldEmoji = MessagesHelper._displayEmojiCode('SHIELD');
-                        return MessagesHelper.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${auth.username} was protected from ${user.username}'s toxic egg by invincibility buff! `)
+                        return MessagesHelper.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${author.username} was protected from ${user.username}'s toxic egg by invincibility buff! `)
                     }
 
                     
