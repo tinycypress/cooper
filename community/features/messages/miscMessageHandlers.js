@@ -153,8 +153,8 @@ export default class MiscMessageHandlers {
             if (STATE.CHANCE.bool({ likelihood: 2.5 }) && msg.channel.id === CHANNELS.DIFFRACTION.id)
                 MessagesHelper.delayReact(msg, '🛩️', 333);
 
-            if (STATE.CHANCE.bool({ likelihood: 2.5 }) && msg.channel.id === CHANNELS.SOLATWAR.id)
-                MessagesHelper.delayReact(msg, '🪐', 333);
+            // if (STATE.CHANCE.bool({ likelihood: 2.5 }) && msg.channel.id === CHANNELS.SOLATWAR.id)
+                // MessagesHelper.delayReact(msg, '🪐', 333);
         }
 
         // Luni, based.

@@ -57,7 +57,7 @@ export default class ShieldHandler {
             const protectionExpiry = this.runEffect(msg.author.id);
 
             // Provide feedback.
-            const successText = `${user.username} used a SHIELD, extending their protection to ${protectionExpiry}`;
+            const successText = `${msg.author.username} used a SHIELD, extending their protection to ${protectionExpiry}`;
             return MessagesHelper.selfDestruct(msg, successText, 5000);
         }
         
