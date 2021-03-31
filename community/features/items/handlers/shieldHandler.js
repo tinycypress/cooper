@@ -1,14 +1,14 @@
 import EMOJIS from '../../../../core/config/emojis.json';
 import ChannelsHelper from '../../../../core/entities/channels/channelsHelper';
 import MessagesHelper from '../../../../core/entities/messages/messagesHelper';
-import BuffsHelper from '../../conquest/buffsHelper';
+import UsersHelper from '../../../../core/entities/users/usersHelper';
+import BuffsHelper, { BUFF_TYPES } from '../../conquest/buffsHelper';
 import TimeHelper from '../../server/timeHelper';
 import ItemsHelper from '../itemsHelper';
 
 // Give shield user protected state for a set amount of time.
 
 // Purpose of the file and class?
-const protectDurationSecs = 1800;
 
 
 // Give shield a total value and damage it over time like health?
@@ -22,10 +22,30 @@ export default class ShieldHandler {
         // Confirm reaction is shield before processing.  
         if (EMOJIS.SHIELD !== reaction.emoji.name) return false;
 
-        MessagesHelper.selfDestruct(reaction.message, 'You wanna use a shield, ey?');
+        // Prevent Cooper from having an effect.
+        if (UsersHelper.isCooper(user.id)) return false;
 
-        // TODO: Support using a shield on yourself/someone else.
+        // Reference the shielding target.
+        const target = reaction.message.author;
+        const targetName = target.id === user.id ? 'their self' : target.username;
+
+        // Attempt to use the shield item
+        const didUseShield = await ItemsHelper.use(user.id, 'SHIELD', 1);
+
+        // Respond to usage result.
+        if (didUseShield) {
+            // Apply the shield buff to the target.
+            const protectionExpiry = this.runEffect(target.id);
+
+            const successText = `${user.username} used a SHIELD on ${targetName}, extending their protection to ${protectionExpiry}`;
+            MessagesHelper.selfDestruct(reaction.message, successText);
+        }
+        
+        // Inform user of shield usage failure.
+        else
+            return this.insufficientError(reaction.message, 'SHIELD', user.username, RAW_EMOJIS.SHIELD);
     }
+
 
     // Allow people to use the items without having to react to a message.
     static async use(msg) {
@@ -34,31 +54,46 @@ export default class ShieldHandler {
 
         // Respond to usage result.
         if (didUseShield) {
-            let currentProtectionMins = protectDurationSecs / 60;
+            const protectionExpiry = this.runEffect(msg.author.id);
 
-            if (BuffsHelper.has('INVINCIBILITY', msg.author.id)) {
-                // If they already have invincibility, top it up?
-                const updatedExpiry = BuffsHelper.topup('INVINCIBILITY', msg.author.id, protectDurationSecs);
-                const updatedProtectionSecs = updatedExpiry - TimeHelper._secs();
-
-                // Update the feedback displayy value.
-                currentProtectionMins = updatedProtectionSecs;
-
-            } else {
-                // Protect them by saving the buff data in state for this msg.author.
-                await BuffsHelper.add('INVINCIBILITY', msg.author.id);
-            }
-
-            // Provide feedback which also stacks based on existing protection "credit".
-            const fmtProtSecs = TimeHelper.secsLongFmt(currentProtectionMins);
-            const feedbackText = `${msg.author.username} used shield and protected themself for ${fmtProtSecs} minutes!`;
-            ChannelsHelper.propagate(msg, feedbackText, 'ACTIONS');
-            
-        } else {
-            const unableMsg = await MessagesHelper.selfDestruct(msg, 'Unable to use SHIELD, you own none. :/', 5000);
-
-            MessagesHelper.delayReact(unableMsg, RAW_EMOJIS.SHIELD, 1333);
+            // Provide feedback.
+            const successText = `${user.username} used a SHIELD, extending their protection to ${protectionExpiry}`;
+            return MessagesHelper.selfDestruct(msg, successText, 5000);
         }
+        
+        else
+            // Inform user of shield usage failure.
+            return this.insufficientError(msg, 'SHIELD', msg.author.username, RAW_EMOJIS.SHIELD);
+    }
+
+
+    static runEffect(targetID) {
+        let currentProtectionMins = BUFF_TYPES.INVINCIBILITY.duration / 60;
+
+        // Check if topping up or adding initial protection.
+        if (BuffsHelper.has('INVINCIBILITY', targetID)) {
+            // If they already have invincibility, top it up?
+            const updatedExpiry = BuffsHelper.topup('INVINCIBILITY', targetID, BUFF_TYPES.INVINCIBILITY.duration);
+            const updatedProtectionSecs = updatedExpiry - TimeHelper._secs();
+
+            // Update the feedback displayy value.
+            currentProtectionMins = updatedProtectionSecs;
+
+        } else {
+            // Protect them by saving the buff data in state for this msg.author.
+            BuffsHelper.add('INVINCIBILITY', targetID, currentProtectionMins);
+        }
+
+        // Return updated/calculated protection time.
+        return currentProtectionMins;
+    }
+
+    // TODO: Refactor this into general item code.
+    static async insufficientError(msgRef, itemCode, username, reactEmoji = null) {
+        const errorMsg = await MessagesHelper.selfDestruct(msgRef, `${username} you're unable to use ${itemCode}, you own none. :/`, 3000);
+
+        if (reactEmoji)
+            MessagesHelper.delayReact(errorMsg, reactEmoji, 1333);
     }
    
 }

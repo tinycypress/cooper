@@ -8,7 +8,7 @@ import TimeHelper from "../server/timeHelper";
 
 export const BUFF_TYPES = {
     INVINCIBILITY: {
-        duration: 3600
+        duration: 1800
     }
 };
 

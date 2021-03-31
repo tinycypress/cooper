@@ -39,8 +39,6 @@ export default class ToxicEggHandler {
                         return MessagesHelper.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${auth.username} was protected from ${user.username}'s toxic egg by invincibility buff! `)
                     }
 
-
-
                     
                     // Toxic bomb damage definition.
                     const damage = -3
