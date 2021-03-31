@@ -32,7 +32,6 @@ export default class BombHandler {
                         // Let bombs stack and amplify the damage.
                         const damage = -4 * reaction.count;
     
-                        
                         // Apply the damage to the target's points.
                         const updatedPoints = await PointsHelper.addPointsByID(target.id, damage);
     

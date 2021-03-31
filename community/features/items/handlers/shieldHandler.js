@@ -20,7 +20,7 @@ export default class ShieldHandler {
     // Intercept item usages via emoji reactions.
     static async onReaction(reaction, user) {     
         // Confirm reaction is shield before processing.  
-        if (!EMOJIS.SHIELD === reaction.emoji.name) return false;
+        if (EMOJIS.SHIELD !== reaction.emoji.name) return false;
 
         MessagesHelper.selfDestruct(reaction.message, 'You wanna use a shield, ey?');
 
@@ -35,9 +35,6 @@ export default class ShieldHandler {
         // Respond to usage result.
         if (didUseShield) {
             let currentProtectionMins = protectDurationSecs / 60;
-
-            // TODO: Check in toxic eggs/bombs for invicibility.
-            // BuffsHelper.has('INVINCIBLITY', user.id);
 
             if (BuffsHelper.has('INVINCIBILITY', msg.author.id)) {
                 // If they already have invincibility, top it up?
