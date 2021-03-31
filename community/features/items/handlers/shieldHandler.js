@@ -30,7 +30,7 @@ export default class ShieldHandler {
     // Allow people to use the items without having to react to a message.
     static async use(msg) {
         // Attempt to use the shield item
-        const didUseShield = await ItemsHelper.use(user.id, 'SHIELD', 1);
+        const didUseShield = await ItemsHelper.use(msg.author.id, 'SHIELD', 1);
 
         // Respond to usage result.
         if (didUseShield) {

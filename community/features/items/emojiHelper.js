@@ -12,4 +12,6 @@ export default class EmojiHelper {
         return itemCode;
     }
 
+
+
 }

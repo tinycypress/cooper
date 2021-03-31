@@ -4,6 +4,7 @@ import ItemsHelper from '../../community/features/items/itemsHelper';
 import GiftboxHandler from '../../community/features/items/handlers/giftboxHandler';
 import CoopCommand from '../../core/entities/coopCommand';
 import ShieldHandler from '../../community/features/items/handlers/shieldHandler';
+import MessagesHelper from '../../core/entities/messages/messagesHelper';
 
 
 export default class UseCommand extends CoopCommand {
@@ -30,11 +31,19 @@ export default class UseCommand extends CoopCommand {
 	async run(msg, { itemCode }) {
 		super.run(msg);
 
+		// Interpret item code from text/string/emoji/item_code.
 		itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
+		// Check the user is providing a valid item code after interpretation.
 		const usableItems = ItemsHelper.getUsableItems();
 		const noMatchErrText = 'Please provide a valid item name or check with !itemlist';
-		if (!usableItems.includes(itemCode)) return msg.reply(noMatchErrText);
+		if (!usableItems.includes(itemCode)) 
+			return MessagesHelper.selfDestruct(msg, noMatchErrText, 5000);
+
+		// TODO: Would probably be smart to just add the insufficient qty here...
+			// Save checking it over and over.
+			// if (useFailed)
+				// return MessagesHelper.selfDestruct(msg, 'You don't own that item to use it (code)', 5000);
 
 		// Item is usable, therefore use it.
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);

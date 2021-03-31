@@ -42,13 +42,7 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        BuffsHelper.add('INVINCIBILITY', '786671654721683517');
-
-        const lmfInvincible = BuffsHelper.has('INVINCIBILITY', '786671654721683517');
-        console.log('lmfInvincible', lmfInvincible);
-
-
-        BuffsHelper.cleanupExpired();
+        // Toxic eggs and bombs... check if user has invincibility
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
