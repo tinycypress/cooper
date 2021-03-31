@@ -1,9 +1,13 @@
+import EMOJIS from "../../../../core/config/emojis.json";
+
 import ChannelsHelper from "../../../../core/entities/channels/channelsHelper";
 import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
-import STATE from "../../../../core/state";
 import PointsHelper from "../../points/pointsHelper";
 import ItemsHelper from "../itemsHelper";
+
+import STATE from "../../../../core/state";
+
 
 export default class ToxicEggHandler {
 

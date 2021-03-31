@@ -10,6 +10,7 @@ import ServerHelper from './entities/server/serverHelper';
 import CratedropMinigame from '../community/features/minigame/small/cratedrop';
 import ElectionHelper from '../community/features/hierarchy/election/electionHelper';
 import SacrificeHelper from '../community/features/events/sacrificeHelper';
+import RolesHelper from './entities/roles/rolesHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -40,8 +41,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // const memb = UsersHelper._get('789972974781333516');
-        // UsersHelper.removeFromDatabase(memb);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
