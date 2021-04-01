@@ -9,13 +9,14 @@ import PointsHelper from "../../points/pointsHelper";
 import EconomyNotifications from "../economyNotifications";
 import ServerHelper from "../../../../core/entities/server/serverHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
+import SkillsHelper from "../../skills/skillsHelper";
 
 
 export default class WoodcuttingMinigame {
     
     // Reaction interceptor to check if user is attempting to interact.
     static async onReaction(reaction, user) {
-        // High chance of preventing any mining at all to deal with rate limiting.
+        // High chance of preventing any Woodcutting at all to deal with rate limiting.
         if (STATE.CHANCE.bool({ likelihood: 44 })) return false;
 
         const isOnlyEmojis = MessagesHelper.isOnlyEmojisOrIDs(reaction.message.content);
@@ -23,7 +24,7 @@ export default class WoodcuttingMinigame {
         const isCooperMsg = UsersHelper.isCooperMsg(reaction.message);
         const isUserReact = !UsersHelper.isCooper(user.id);
         
-        // Mining minigame guards.
+        // Woodcutting minigame guards.
         if (!isUserReact) return false;
         if (!isCooperMsg) return false;
         if (!isAxeReact) return false;
@@ -71,16 +72,18 @@ export default class WoodcuttingMinigame {
                 const pointsDamageResult = await PointsHelper.addPointsByID(user.id, brokenDamage);
                 
                 // Update economy statistics.
-                EconomyNotifications.add('MINING', {
+                EconomyNotifications.add('WOODCUTTING', {
                     playerID: user.id,
                     username: user.username,
                     brokenAxes: 1,
                     pointGain: brokenDamage
                 });
 
+                // Add the experience.
+                SkillsHelper.addXP(user.id, 'woodcutting', 2);
                 
                 const actionText = `${user.username} broke an axe trying to cut wood, ${userAxesNum - 1} remaining!`;
-                const damageText = `${brokenDamage} points (${pointsDamageResult}).`;
+                const damageText = `${brokenDamage} points (${pointsDamageResult}) but gained 2xp in woodcutting for trying.`;
                 ChannelsHelper.propagate(msg, `${actionText} ${damageText}`, 'ACTIONS');
             }
         } else {
@@ -112,7 +115,7 @@ export default class WoodcuttingMinigame {
             
             // Provide feedback.
             const actionText = `${user.username} successfully chopped wood.`;
-            const rewardText = `+1 point (${addPoints}), +${extractedWoodNum} wood (${addedWood})!`;
+            const rewardText = `+1xp, +1 point (${addPoints}), +${extractedWoodNum} wood (${addedWood})!`;
             ChannelsHelper.propagate(msg, `${actionText} ${rewardText}`, 'ACTIONS');
 
             EconomyNotifications.add('WOODCUTTING', {
@@ -121,6 +124,9 @@ export default class WoodcuttingMinigame {
                 playerID: user.id,
                 username: user.username
             });
+
+            // Add the experience.
+            SkillsHelper.addXP(user.id, 'woodcutting', 1);
         }
     }
 

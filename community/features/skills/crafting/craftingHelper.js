@@ -1,34 +1,35 @@
 import ItemsHelper from "../../items/itemsHelper";
+import SkillsHelper from "../skillsHelper";
 
 export default class CraftingHelper {
 
     static CRAFTABLES = {
         // BOW: {
         //     levelReq: 0,
-        //     expReward: 5,
+        //     xpReward: 5,
         //     ingredients: {
         //         WOOD: 5
         //     }
         // },
         PICK_AXE: {
-            levelReq: 0,
-            expReward: 5,
+            levelReq: 1,
+            xpReward: 1,
             ingredients: {
                 WOOD: 5,
                 IRON_BAR: 2
             }
         },
         FRYING_PAN: {
-            levelReq: 0,
-            expReward: 10,
+            levelReq: 5,
+            xpReward: 2,
             ingredients: {
                 STEEL_BAR: 2,
                 IRON_BAR: 1
             }
         },
         AXE: {
-            levelReq: 0,
-            expReward: 5,
+            levelReq: 1,
+            xpReward: 1,
             ingredients: {
                 WOOD: 10,
                 IRON_BAR: 1
@@ -36,7 +37,7 @@ export default class CraftingHelper {
         },
         SHIELD: {
             levelReq: 20,
-            expReward: 5,
+            xpReward: 3,
             ingredients: {
                 GOLD_BAR: 2,
                 STEEL_BAR: 3,
@@ -60,18 +61,26 @@ export default class CraftingHelper {
         ));
 
         // Check ingredients are sufficient.
-        let isSufficient = true;
-        ownedIngredients.map(ingred => {
+        const sufficiencyChecks = ownedIngredients.map(ingred => {
             // Check sufficiency
             const req = ingredients[ingred.item_code] * qty;
             const owned = ingred.quantity;
 
             // Declare insufficient.
-            if (owned < req) isSufficient = false;
+            if (owned < req) return false;
+            else return true;
         });
-        if (isSufficient) craftable = true;
+
+        // Check all ingredients sufficient.
+        if (sufficiencyChecks.every(sufficient => sufficient)) 
+            craftable = true;
+
+        // TODO: Improve.
+        // Otherwise pull out the ones that aren't, into an error message:
 
         // Return a more helpful result.
+        // const manifest = { sufficient: false, checks: sufficiencyChecks };
+        // return manifest;
 
         return craftable;
     }
@@ -80,6 +89,7 @@ export default class CraftingHelper {
     static async craft(memberID, itemCode, qty) {
         try {
             // Access the required ingredients for crafting operation.
+            const product = this.CRAFTABLES[itemCode];
             const ingredients = this.CRAFTABLES[itemCode].ingredients;
             const ingredList = Object.keys(this.CRAFTABLES[itemCode].ingredients);
 
@@ -91,6 +101,9 @@ export default class CraftingHelper {
 
             // Add the resultant item.
             await ItemsHelper.add(memberID, itemCode, qty);
+
+            // Calculate experience
+            SkillsHelper.addXP(memberID, 'crafting', product.xpReward * qty);
 
             // Indicate succesful craft.
             return true;

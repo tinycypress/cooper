@@ -9,6 +9,7 @@ import PointsHelper from "../../points/pointsHelper";
 import EconomyNotifications from "../economyNotifications";
 import ServerHelper from "../../../../core/entities/server/serverHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
+import SkillsHelper from "../../skills/skillsHelper";
 
 
 export default class MiningMinigame {
@@ -77,8 +78,11 @@ export default class MiningMinigame {
                     pointGain: brokenPickDamage
                 });    
 
+                // Add the experience.
+                SkillsHelper.addXP(user.id, 'mining', 2);
+
                 const actionText = `${user.username} broke a pickaxe trying to mine, ${userPickaxesNum - 1} remaining!`;
-                const damageText = `${brokenPickDamage} points (${pointsDamageResult}).`;
+                const damageText = `${brokenPickDamage} points (${pointsDamageResult}) but gained mining 2xp for trying!.`;
                 ChannelsHelper.propagate(msg, `${actionText} ${damageText}`, 'ACTIONS');
             }
         } else {
@@ -98,6 +102,9 @@ export default class MiningMinigame {
                 await ItemsHelper.add(user.id, 'DIAMOND', diamondsFound);
                 ChannelsHelper.propagate(msg, `${user.username} hit a major diamond vein, ${diamondsFound} found!`, 'ACTIONS');
             }
+
+            // Add the experience.
+            SkillsHelper.addXP(user.id, 'mining', 1);
 
             EconomyNotifications.add('MINING', {
                 pointGain: 1,

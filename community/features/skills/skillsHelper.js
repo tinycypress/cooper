@@ -30,6 +30,12 @@ export default class SkillsHelper {
         return xp;
     }
 
+    // Calculate the xp from the level.
+    static calcXP(level) {
+        const conversion = level * level * level + 3 * level * level + 3 * level + 1;
+        return Math.round(conversion);
+    }
+
     // x^3 + 3 x^2 + 3 x + 1 
     // for x= 99
     // THANK YOU ISO!!

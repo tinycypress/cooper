@@ -154,19 +154,19 @@ export default class MessagesHelper {
         }, delay);
     }
 
-    static selfDestruct(msgRef, content, delay = 666, fuse = 30000) {
+    static selfDestruct(msgRef, content, delayMs = 666, fuseMs = 30000) {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 try {
                     const createdMsg = await msgRef.say(content);
-                    this.delayDelete(createdMsg, fuse);
+                    this.delayDelete(createdMsg, fuseMs);
                     resolve(createdMsg);
                 } catch(e) {
                     console.log('Error self-destructing message.');
                     console.error(e);
                     reject('self_destruct_message_error');
                 }
-            }, delay);
+            }, delayMs);
         });
     }
 

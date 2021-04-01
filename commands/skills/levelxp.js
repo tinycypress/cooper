@@ -1,0 +1,37 @@
+import SkillsHelper, { SKILLS } from '../../community/features/skills/skillsHelper';
+import CoopCommand from '../../core/entities/coopCommand';
+import MessagesHelper from '../../core/entities/messages/messagesHelper';
+
+
+export default class LevelXPCommand extends CoopCommand {
+
+	constructor(client) {
+		super(client, {
+			name: 'levelxp',
+			group: 'skills',
+			memberName: 'levelxp',
+			aliases: ['lvlxp'],
+			description: 'Converts a level into its required XP.',
+			details: `Details of the levelxp command`,
+			examples: ['!xp laxative'],
+			args: [
+				{
+					key: 'level',
+					prompt: 'Which level number to check XP for?',
+					type: 'integer',
+					default: 1
+				},
+			],
+		});
+	}
+
+	async run(msg, { level }) {
+		super.run(msg);
+
+		const xpRequired = SkillsHelper.calcXP(level);
+
+		const levelText = `${xpRequired}XP required for level ${level}!`;
+		return MessagesHelper.selfDestruct(msg, levelText);
+    }
+    
+};

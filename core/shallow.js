@@ -44,13 +44,13 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // RPG
+        
         // Leaderboards for skill xp ALL and SPECIFIC
-        // Give crafting, woodcutting, mining EXP.
-
         // EXP TO NEXT LEVEL COMMAND
         // EXP TO LEVEL CONVERT COMMAND
         // LEVEL TO EXP CONVERT COMMAND
-
+        // Give crafting, woodcutting, mining EXP.
+        
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

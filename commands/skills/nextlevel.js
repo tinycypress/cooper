@@ -3,21 +3,21 @@ import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
 
 
-export default class LevelsCommand extends CoopCommand {
+export default class NextLevelCommand extends CoopCommand {
 
 	constructor(client) {
 		super(client, {
-			name: 'levels',
+			name: 'nextlevel',
 			group: 'skills',
-			memberName: 'levels',
-			aliases: ['lvls', 'lvl'],
-			description: 'This command lets you check your skill level(s)',
-			details: `Details of the levels command`,
-			examples: ['!lvl', '!lvl crafting'],
+			memberName: 'nextlevel',
+			aliases: ['nextlvl'],
+			description: 'This command lets you check xp distance to your next skill level.',
+			details: `Details of the nextlevel command`,
+			examples: ['nextlevel', '!nextlevel crafting'],
 			args: [
 				{
 					key: 'skillCode',
-					prompt: 'Which skill to level check?',
+					prompt: 'Which skill would you like to check next level xp for?',
 					type: 'string',
 					default: ''
 				},
@@ -32,19 +32,19 @@ export default class LevelsCommand extends CoopCommand {
 		const username = msg.author.username;
 
 		try {
-			// Check if emoji and handle emoji inputs.
-			// skillCode = ItemsHelper.interpretskillCodeArg(skillCode);
 			skillCode = skillCode.toLowerCase();
-			
-			if (skillCode === '') {
-				// Provide all skills
 
+			if (skillCode === '') {
+				
+				// Provide all skills
 				const userSkills = await SkillsHelper.getSkills(msg.author.id);
 
-				const allSkillsText = `**${username}'s skill levels:**\n\n` +
+				// TODO: Calculate next level differences for all.
+
+				const allSkillsText = `**${username}'s next level skill XPs :**\n\n` +
 					Object.keys(userSkills).map(skillKey => 
-							`${skillKey}: Level ${userSkills[skillKey].level}, ` +
-							`(${userSkills[skillKey].xp} XP)`
+							`${skillKey}: ${userSkills[skillKey].xp} XP, ` +
+							`level ${userSkills[skillKey].level}`
 						).join('\n');
 
 				return MessagesHelper.selfDestruct(msg, allSkillsText);
@@ -62,16 +62,23 @@ export default class LevelsCommand extends CoopCommand {
 			const level = await SkillsHelper.getLevel(skillCode, msg.author.id);
 			const xp = await SkillsHelper.getXP(skillCode, msg.author.id);
 
-			const levelText = `${username} has level ${level} ${skillCode} (${xp}XP)!`
+			// TODO: Calculate next level diff
+			const diff = 1337;
+
+			const levelText = `${username}'s next ${skillCode} level (${level + 1}) is ${diff} xp away!`;
 			return MessagesHelper.selfDestruct(msg, levelText);
 
 
 
-
 		} catch(e) {
-			console.log('Error getting skill xp.');
+			console.log('Error getting next level diff xp.');
 			console.error(e);
 		}
     }
     
 };
+
+
+
+
+
