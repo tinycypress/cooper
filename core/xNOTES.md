@@ -107,6 +107,10 @@ CREATE TABLE chicken(
 );
 
 
+<!-- Had to do this for skills/xp/levelling system on each skill column -->
+ALTER TABLE skills
+    ADD COLUMN email VARCHAR;
+
 <!-- Useful forced actions -->
 ALTER TABLE users
     ADD COLUMN email VARCHAR;

@@ -34,6 +34,15 @@ export default class CraftingHelper {
                 IRON_BAR: 1
             }
         },
+        SHIELD: {
+            levelReq: 20,
+            expReward: 5,
+            ingredients: {
+                GOLD_BAR: 2,
+                STEEL_BAR: 3,
+                IRON_BAR: 5
+            }
+        },
     }
 
     static isItemCraftable(code) {
@@ -41,7 +50,7 @@ export default class CraftingHelper {
     }
 
     // Check whether it is possible for someone to craft an item x qty.
-    static async canCraft(memberID, itemCode, qty) {
+    static async canFulfilIngredients(memberID, itemCode, qty) {
         let craftable = false;
 
         const ingredients = this.CRAFTABLES[itemCode].ingredients;
@@ -61,6 +70,8 @@ export default class CraftingHelper {
             if (owned < req) isSufficient = false;
         });
         if (isSufficient) craftable = true;
+
+        // Return a more helpful result.
 
         return craftable;
     }
