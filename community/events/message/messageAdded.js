@@ -7,6 +7,7 @@ import STATE from "../../../core/state";
 
 import achievementPostedHandler from "../../features/encouragement/achievementPosted";
 import workPostHandler from "../../features/encouragement/workPosted";
+import MessageSpamHelper from "../../features/messages/messageSpamHelper";
 import ConfessionHandler from "../../features/messages/confessionHandler";
 import LinkPreviewFilter from "../../features/messages/linkPreviewFilter";
 import MiscMessageHandlers from "../../features/messages/miscMessageHandlers";
@@ -45,4 +46,8 @@ export default async function messageAddedHandler(msg) {
 
     // Suppress previews from links but add toggle react.
     LinkPreviewFilter.onMessage(msg);
+
+
+    // SPAMREFORM: KILL COMMANDOJS MESSAGES:
+    MessageSpamHelper.onMessage(msg);
 }
