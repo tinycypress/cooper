@@ -1,4 +1,4 @@
-import SkillsHelper from '../../community/features/skills/skillsHelper';
+import SkillsHelper, { SKILLS } from '../../community/features/skills/skillsHelper';
 import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
 
@@ -42,7 +42,7 @@ export default class LevelsCommand extends CoopCommand {
 				return MessagesHelper.selfDestruct(msg, 'ALL SKILLS XP 4 u!' + JSON.stringify(userSkills));
 			}
 
-			const skillCodeList = Object.keys(SkillsHelper.SKILLS);
+			const skillCodeList = Object.keys(SKILLS);
 			const isValid = skillCodeList.includes(skillCode.toUpperCase());
 
 			// Check if input is a valid item code.
