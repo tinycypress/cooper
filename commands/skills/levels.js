@@ -18,7 +18,8 @@ export default class LevelsCommand extends CoopCommand {
 				{
 					key: 'skillCode',
 					prompt: 'Which skill to level check?',
-					type: 'string'
+					type: 'string',
+					default: ''
 				},
 			],
 		});
@@ -40,7 +41,13 @@ export default class LevelsCommand extends CoopCommand {
 
 				const userSkills = await SkillsHelper.getSkills(msg.author.id);
 
-				return MessagesHelper.selfDestruct(msg, 'ALL SKILLS XP 4 u!' + JSON.stringify(userSkills));
+				const allSkillsText = `**${username}'s skill levels:**\n\n` +
+					Object.keys(userSkills).map(skillKey => 
+							`${skillKey}: Level ${userSkills[skillKey].level}, ` +
+							`(${userSkills[skillKey].xp} XP)`
+						).join('\n');
+
+				return MessagesHelper.selfDestruct(msg, allSkillsText);
 			}
 
 			const skillCodeList = Object.keys(SKILLS);

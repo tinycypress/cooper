@@ -18,7 +18,8 @@ export default class XpCommand extends CoopCommand {
 				{
 					key: 'skillCode',
 					prompt: 'Which skill to XP check?',
-					type: 'string'
+					type: 'string',
+					default: ''
 				},
 			],
 		});
@@ -36,11 +37,17 @@ export default class XpCommand extends CoopCommand {
 			skillCode = skillCode.toLowerCase();
 
 			if (skillCode === '') {
+				
 				// Provide all skills
-
 				const userSkills = await SkillsHelper.getSkills(msg.author.id);
 
-				return MessagesHelper.selfDestruct(msg, 'ALL SKILLS XP 4 u!' + JSON.stringify(userSkills));
+				const allSkillsText = `**${username}'s skill XPs :**\n\n` +
+					Object.keys(userSkills).map(skillKey => 
+							`${skillKey}: ${userSkills[skillKey].xp} XP, ` +
+							`level ${userSkills[skillKey].level}`
+						).join('\n');
+
+				return MessagesHelper.selfDestruct(msg, allSkillsText);
 			}
 
 			const skillCodeList = Object.keys(SKILLS);

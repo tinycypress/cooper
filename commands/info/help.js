@@ -79,7 +79,7 @@ export default class HelpCommand extends CoopCommand {
 		if (categoryMatches) categoryOpt = categoryMatches[0];
 
 		// TODO: Critical support needed for command/command group DETAIL.
-		console.log('categoryMatches', categoryMatches);
+		// console.log('categoryMatches', categoryMatches);
 
 		// Check the message for matching command.
 		let commandOpt = null
@@ -87,7 +87,7 @@ export default class HelpCommand extends CoopCommand {
 		const commandMatches = commandNamesRegex.exec(msg.content);
 		if (commandMatches) commandOpt = commandMatches[0];
 
-		console.log('commandMatches', commandMatches);
+		// console.log('commandMatches', commandMatches);
 
         try {
 			// TODO: Implement properly.
@@ -114,15 +114,15 @@ export default class HelpCommand extends CoopCommand {
 				});
 	
 				textSplitter(helpString, 1500).map((helpSection, index) => {
-					setTimeout(() => msg.reply(helpSection), 1666 * index);
+					setTimeout(() => msg.direct(helpSection), 1666 * index);
 				});
 			}
 
 			if (commandOpt) {
-				msg.reply('I should help you with the command... ' + commandOpt)
+				msg.direct('I should help you with the command... ' + commandOpt)
 				
 			} else if (categoryOpt) {
-				msg.reply('I should help you with the category of commands you specified... ' + categoryOpt)
+				msg.direct('I should help you with the category of commands you specified... ' + categoryOpt)
 			}
 
         } catch(e) {

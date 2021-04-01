@@ -56,8 +56,33 @@ export default class SkillsHelper {
         return level;
     }
 
-    static async getSkills(memberID) {
+    static async getAllSkills(playerID) {
+        const query = {
+            name: `get-user-skills`,
+            text: `SELECT * FROM "skills" WHERE player_id = $1`,
+            values: [playerID]
+        };
+
+        const result = DatabaseHelper.single(await Database.query(query));
+        return result;
+    }
+
+    static async getSkills(playerID) {
         const result = {};
+
+        const skillData = await this.getAllSkills(playerID);
+
+        Object.keys(SKILLS)
+            .map(skill => skill.toLowerCase())
+            .map(skill => {
+                result[skill] = { level: 1, xp: 0 };
+
+                // If xp data, calculate level and set xp for result.
+                if (skillData[skill]) {
+                    result[skill].xp = skillData[skill];
+                    result[skill].level = this.calcLvl(result[skill].xp);
+                }
+        });
 
         return result;
     }
