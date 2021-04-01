@@ -47,6 +47,9 @@ const shallowBot = async () => {
         // Leaderboards for skill xp ALL and SPECIFIC
         // Give crafting, woodcutting, mining EXP.
 
+        // EXP TO NEXT LEVEL COMMAND
+        // EXP TO LEVEL CONVERT COMMAND
+        // LEVEL TO EXP CONVERT COMMAND
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

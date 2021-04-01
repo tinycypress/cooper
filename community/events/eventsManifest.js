@@ -4,7 +4,7 @@ import SacrificeHelper from "../features/events/sacrificeHelper";
 import PointsHelper from "../features/points/pointsHelper";
 import SuggestionsHelper from "../features/suggestions/suggestionsHelper";
 import EventsHelper from "../features/events/eventsHelper";
-import StatisticsHelper from "../features/server/statisticsHelper";
+
 
 import MessageNotifications from "./message/messageNotifications";
 import EconomyNotifications from "../features/minigame/economyNotifications";
@@ -26,6 +26,7 @@ import InstantFurnaceMinigame from "../features/minigame/small/instantfurnace";
 import ItemsHelper from "../features/items/itemsHelper";
 import ChestPopMinigame from "../features/minigame/small/chestpop";
 import BuffsHelper from "../features/conquest/buffsHelper";
+import AboutHelper from "../features/server/aboutHelper";
 
 
 export const baseTickDur = 60 * 25 * 1000;
@@ -39,7 +40,7 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => PointsHelper.updateMOTW(), baseTickDur * 5);
 
   // Server related house keeping items.
-  EventsHelper.runInterval(() => StatisticsHelper.update(), baseTickDur * 3.5);
+  EventsHelper.runInterval(() => AboutHelper.addAboutStats(), baseTickDur * 3.5);
 
   // Clean up user data, may have missed detection on a leave/kick/ban.
   EventsHelper.runInterval(() => UsersHelper.cleanupUsers(), baseTickDur * 6);
@@ -59,7 +60,7 @@ export default function eventsManifest() {
   
   // Above is unfinished
   EventsHelper.runInterval(() => SuggestionsHelper.check(), baseTickDur * 4);
-  EventsHelper.runInterval(() => MessageNotifications.post(), baseTickDur * 2);
+  EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 2);
   EventsHelper.runInterval(() => EconomyNotifications.post(), baseTickDur * 1.75);
   EventsHelper.runInterval(() => SacrificeHelper.random(), baseTickDur * 12);
 

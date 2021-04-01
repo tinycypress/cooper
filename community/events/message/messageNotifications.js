@@ -6,6 +6,7 @@ import KEY_MESSAGES from '../../../core/config/keymessages.json';
 import MessagesHelper from "../../../core/entities/messages/messagesHelper";
 import Chicken from "../../chicken";
 import TimeHelper from "../../features/server/timeHelper";
+import Statistics from "../../statistics";
 
 export default class MessageNotifications {
 
@@ -44,6 +45,14 @@ export default class MessageNotifications {
     }
 
     // TODO: These messages should be added to a global statistics store... quite significant stats.
+    static process() {
+        // Offload message data to processing/long-term statistics before deletion.
+        Statistics.offloadMessageStats(STATE.MESSAGE_HISTORY);
+
+        // Post to community.
+        this.post();
+    }
+
     static post() {
         const notificationChannelIDs = Object.keys(STATE.MESSAGE_HISTORY);
         if (notificationChannelIDs.length > 0) {
@@ -95,6 +104,7 @@ export default class MessageNotifications {
             ChannelsHelper._postToFeed(notificationString, 4444);
         }
     }
+    
 
     static clear(channelID) {
         delete STATE.MESSAGE_HISTORY[channelID];

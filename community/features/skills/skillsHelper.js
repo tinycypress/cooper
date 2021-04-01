@@ -87,7 +87,13 @@ export default class SkillsHelper {
         return result;
     }
 
+    // TODO: Useful for skills leaderboard.
     static async getHighestSkill(skill) {
+
+    }
+
+    // TODO: Useful for skills leaderboard.
+    static async getHighestAllSkills() {
 
     }
 
