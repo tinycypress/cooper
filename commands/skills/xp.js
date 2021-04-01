@@ -51,10 +51,11 @@ export default class XpCommand extends CoopCommand {
 
 
 			// Calculate
-			const skillXP = await SkillsHelper.getXP(skillCode, msg.author.id);
+			const level = await SkillsHelper.getLevel(skillCode, msg.author.id);
+			const xp = await SkillsHelper.getXP(skillCode, msg.author.id);
 
-			return MessagesHelper.selfDestruct(msg, skillCode + ' XP 4 u: ' + skillXP);
-
+			const levelText = `${username} has ${xp} ${skillCode} XP (level ${level})!`;
+			return MessagesHelper.selfDestruct(msg, levelText);
 
 
 

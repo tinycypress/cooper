@@ -3,13 +3,13 @@ import ItemsHelper from "../../items/itemsHelper";
 export default class CraftingHelper {
 
     static CRAFTABLES = {
-        BOW: {
-            levelReq: 0,
-            expReward: 5,
-            ingredients: {
-                WOOD: 5
-            }
-        },
+        // BOW: {
+        //     levelReq: 0,
+        //     expReward: 5,
+        //     ingredients: {
+        //         WOOD: 5
+        //     }
+        // },
         PICK_AXE: {
             levelReq: 0,
             expReward: 5,
