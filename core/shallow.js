@@ -49,19 +49,9 @@ const shallowBot = async () => {
         // RPG
 
 
-
-
-
-
-
-
-        const exp = await SkillsHelper.getXP("crafting", "245315920233234432");
-        console.log(exp);
-
-        const lvl = await SkillsHelper.getLevel("crafting", "245315920233234432");
-        console.log(lvl);
-
-
+        // STATE.CLIENT.on('messageReactionAdd', (reaction, user) => {
+        //     console.log(reaction.emoji);
+        // });
 
 
 

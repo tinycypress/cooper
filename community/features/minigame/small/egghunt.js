@@ -57,7 +57,10 @@ export default class EggHuntMinigame {
             
             const isBombEmoji = reaction.emoji.name === RAW_EMOJIS.BOMB;
             const isBasketEmoji = reaction.emoji.name === RAW_EMOJIS.BASKET;
-            const isPanEmoji = reaction.emoji.name === EMOJIS.FRYING_PAN;
+
+            // TODO: This isn't secure enough, need to check it's a coop emoji
+            // SOLUTION: reaction.emoji.guild.id === COOP.id
+            const isPanEmoji = reaction.emoji.name === 'frying_pan';
 
             if (isEggCollectible && isPanEmoji) this.fry(reaction, user);
             if (isEggCollectible && isBombEmoji) this.explode(reaction, user);

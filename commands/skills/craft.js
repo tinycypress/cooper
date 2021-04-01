@@ -55,7 +55,7 @@ export default class CraftCommand extends CoopCommand {
 			const craftingItem = CraftingHelper.CRAFTABLES[itemCode];
 
 			// Check the user has a high enough crafting level.
-			const crafterLevel = await SkillsHelper.getLevel('crafting', user.id);
+			const crafterLevel = await SkillsHelper.getLevel('crafting', msg.author.id);
 			const reqLevel = craftingItem.levelReq;
 
 			// Check user has sufficient level/exp.
