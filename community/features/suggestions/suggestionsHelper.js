@@ -25,7 +25,7 @@ export default class SuggestionsHelper {
 
     static async check() {
         // Get last 25 suggestions to check through.
-        const candidates = await ChannelsHelper._getCode('SUGGESTIONS').messages.fetch({ limit: 50 });
+        const candidates = Array.from(await ChannelsHelper._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
         let processedOne = false;
         candidates.map((suggestion, index) => {
             if (!processedOne) {
@@ -121,13 +121,13 @@ export default class SuggestionsHelper {
                 // Reward the person who posted the suggestion for contributing to the community
                 // TODO: ^
                 // PointsHelper.addPointsByID
-                console.log(suggestion.mentions);
+                // console.log(suggestion.mentions);
 
                 const rejectedText = `Suggestion passed, proposal: ${suggestion.content}\n` +
                     `${EMOJIS.POLL_FOR.repeat(votes.for)}${EMOJIS.POLL_AGAINST.repeat(votes.against)}`;
                 
                 // Inform the server of rejected suggestion.
-                ['TALK', 'FEED'].forEach((channelKey, channelIndex) => {
+                ['TALK', 'FEED'].map((channelKey, channelIndex) => {
                     setTimeout(
                         () => ChannelsHelper._postToChannelCode(channelKey, rejectedText), 
                         channelIndex * 666
