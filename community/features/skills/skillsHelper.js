@@ -19,7 +19,7 @@ export default class SkillsHelper {
         let xp = 0;
 
         const query = {
-            name: "get-user-skill-xp",
+            name: `get-user-${skill}-xp`,
             text: `SELECT ${skill.toLowerCase()} FROM "skills" WHERE player_id = $1`,
             values: [playerID]
         };

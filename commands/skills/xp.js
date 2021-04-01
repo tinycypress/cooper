@@ -33,6 +33,7 @@ export default class XpCommand extends CoopCommand {
 		try {
 			// Check if emoji and handle emoji inputs.
 			// skillCode = interpretskillCodeArg(skillCode);
+			skillCode = skillCode.toLowerCase();
 
 			if (skillCode === '') {
 				// Provide all skills
