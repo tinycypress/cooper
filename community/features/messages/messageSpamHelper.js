@@ -10,6 +10,7 @@ export default class MessageSpamHelper {
 
         // Kill Commandojs annoying messages.
         if (msg.content.includes(', Cancelled command.'))
+            // If this was run, try to look for the one above it... too -.-
             return MessagesHelper.delayDelete(msg, 5000);
 
         if (msg.content.includes('Respond with cancel to cancel the command.'))
@@ -19,7 +20,7 @@ export default class MessageSpamHelper {
             return MessagesHelper.delayDelete(msg, 5000);
 
         if (msg.content.includes('The command will automatically be cancelled in 30 seconds.'))
-            return MessagesHelper.delayDelete(msg, 5000);
+            return MessagesHelper.delayDelete(msg, 30000);
 
 
             
