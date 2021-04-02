@@ -9,7 +9,7 @@ import ItemsHelper from '../../community/features/items/itemsHelper';
 import EggHuntMinigame from '../../community/features/minigame/small/egghunt';
 
 import STATE from '../../core/state';
-import { didUseGuard, usableItemCodeGuard, itemCodeArgInt } from '../../core/entities/commands/guards/itemCmdGuards';
+import { didUseGuard, usableItemCodeGuard, itemCodeArg } from '../../core/entities/commands/guards/itemCmdGuards';
 
 export default class DropCommand extends CoopCommand {
 
