@@ -22,33 +22,6 @@ dotenv.config();
 
 // NOTES AND LONGER TERM CHALLENGES/ISSUES:
 
-    // Done
-        // Add health 
-        // Enable decimal item quantity columns
-        // Enable floats in some item commands/trade etc.
-        // When someone posts a spam egg... trick them.
-
-
-    // General/Straightforward
-        // Coin flip
-
-        // Add RPG effect.
-        
-        // Add easter eggs
-        // Add bigboi role
-        // Add check health command
-        // Add way of gaining health
-
-        // Gold coin purchase logic, balance, deficit.
-
-
-
-    // Hard, Quick:
-
-    // Harder:
-        // MOTW automation.
-        // Detect server message/activity velocity increases (as % preferably).
-        // Community set and managed variable/value.
 
 const shallowBot = async () => {
     // Instantiate a CommandoJS "client".
@@ -63,6 +36,7 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // Add bag emoji/bag word shows items via direct message.
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

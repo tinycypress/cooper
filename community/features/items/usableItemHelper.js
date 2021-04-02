@@ -32,6 +32,8 @@ export default class UsableItemHelper {
             DiamondHandler.onReaction(reaction, user);
             ShieldHandler.onReaction(reaction, user);
             RPGHandler.onReaction(reaction, user);
+
+            // TODO: CHECK THAT NOBODY ELSE REACTED.
             				
             // Check if message is dropped item message being picked up.
             if (this.isPickupable(reaction, user)) {
@@ -130,12 +132,12 @@ export default class UsableItemHelper {
                 // Clear after a while of showing the edited state.
                 MessagesHelper.delayDelete(reaction.message, 10000);
                 return MessagesHelper.delayEdit(reaction.message,
-                    `${user.username} broke ${reaction.message.content}...`
+                    `${user.username} broke ${reaction.message.content}...`, 0
                 );
             }
             
             // Clear the message to prevent abuse.
-            MessagesHelper.delayDelete(reaction.message, 333);
+            MessagesHelper.delayDelete(reaction.message, 0);
 
             // Add recalculated item ownership to user.
             const addEvent = await ItemsHelper.add(user.id, itemCode, 1);
