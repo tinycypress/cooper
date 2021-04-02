@@ -140,8 +140,12 @@ export async function didUseGuard(user, itemCode, msgRef, reactEmoji = null) {
         if (didUseItem) return true;
         else {
             // Send the error.
-            ownNoneErrorFeedback(msgRef, itemCode, user.username, reactEmoji);
-        
+            const insufficientText = `${user.username} you're unable to use ${itemCode}, you own none.`;
+            const errorMsg = await MessagesHelper.selfDestruct(msgRef, insufficientText, 0, 3000);
+
+            if (reactEmoji)
+                MessagesHelper.delayReact(errorMsg, reactEmoji, 1333);
+
             // Indicate to executor that this does not pass.
             return false;
         }
@@ -153,20 +157,19 @@ export async function didUseGuard(user, itemCode, msgRef, reactEmoji = null) {
     }
 }
 
-export async function ownNoneErrorFeedback(msgRef, itemCode, username, reactEmoji = null) {
-    const insufficientText = `${username} you're unable to use ${itemCode}, you own none.`;
-    const errorMsg = await MessagesHelper.selfDestruct(msgRef, insufficientText, 0, 3000);
-
-    if (reactEmoji)
-        MessagesHelper.delayReact(errorMsg, reactEmoji, 1333);
-}
 
 export function usableItemCodeGuard(msgRef, itemCode, username) {
     // Check if this item code can be given.
     if (!UsableItemHelper.isUsable(itemCode) || itemCode === null) {
         const errorText = `${username}, ${itemCode} is not a usable/matching item code.`;
-        return MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
+        MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
+
+        // Indicate that the code guard failed.
+        return false;
     }
+
+    // Indicate that the code guard passed.
+    return true;
 }
 
 export function validUserArgGuard(msgRef, target, username) {
