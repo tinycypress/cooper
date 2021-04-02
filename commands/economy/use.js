@@ -4,7 +4,8 @@ import ItemsHelper from '../../community/features/items/itemsHelper';
 import GiftboxHandler from '../../community/features/items/handlers/giftboxHandler';
 import CoopCommand from '../../core/entities/coopCommand';
 import ShieldHandler from '../../community/features/items/handlers/shieldHandler';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import RPGHandler from '../../community/features/items/handlers/rpgHandler';
+import { itemCodeArg, itemQtyArg, ownEnoughGuard, usableItemCodeGuard } from '../../core/entities/commands/guards/itemCmdGuards';
 
 
 export default class UseCommand extends CoopCommand {
@@ -18,38 +19,35 @@ export default class UseCommand extends CoopCommand {
 			description: 'This command lets you use the items you own',
 			details: `Details of the use command`,
 			examples: ['use', '!use laxative'],
-			args: [
-				{
-					key: 'itemCode',
-					prompt: 'What is the code of the item you wish to use? !itemlist if not sure',
-					type: 'string'
-				},
-			],
+			args: [itemCodeArg, itemQtyArg],
 		});
 	}
 
-	async run(msg, { itemCode }) {
+	async run(msg, { itemCode, qty }) {
 		super.run(msg);
+
+		// Fix to 1 for now until further tested.
+		qty = 1;
 
 		// Interpret item code from text/string/emoji/item_code.
 		itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
-		// Check the user is providing a valid item code after interpretation.
-		const usableItems = ItemsHelper.getUsableItems();
-		const noMatchErrText = 'Please provide a valid item name or check with !itemlist';
-		if (!usableItems.includes(itemCode)) 
-			return MessagesHelper.selfDestruct(msg, noMatchErrText, 0, 5000);
+		// Rely on is usable item guard and its feedback/error message.
+		const isUsable = usableItemCodeGuard(msg, itemCode, msg.author.username);
+		if (!isUsable) return false;
 
-		// TODO: Would probably be smart to just add the insufficient qty here...
-			// Save checking it over and over.
-			// if (useFailed)
-				// return MessagesHelper.selfDestruct(msg, 'You don't own that item to use it (code)', 5000);
+		// Rely on own enough item qty guard and its feedback/error message.
+		const ownEnough = await ownEnoughGuard(msg.author, msg, itemCode, qty);
+		if (!ownEnough) return false;
 
+		// TODO: ADD QTY TO THESE HANDLERS?
+		
 		// Item is usable, therefore use it.
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);
 		if (itemCode === 'FLARE') FlareHandler.use(msg, msg.author);
 		if (itemCode === 'EMPTY_GIFTBOX') GiftboxHandler.use(msg);
 		if (itemCode === 'SHIELD') ShieldHandler.use(msg);
+		if (itemCode === 'RPG') RPGHandler.use(msg); // TODO: WIP
     }
     
 };

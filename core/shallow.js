@@ -17,9 +17,20 @@ dotenv.config();
 
 
     // General/Straightforward
-        // Sacrifice message at the top of channel HALF_DONE
         // RPG
+            // Add RPG to .use() 
+            // Add RPG emoji for reactions
 
+            // Check RPG triggers reaction.
+
+        // Add health + bigboi role
+
+        // Sacrifice message at the top of channel HALF_DONE
+        // When someone posts a spam egg... trick them.
+        // Gold coin purchase logic, balance, deficit.
+        // Check toxic egg works with frying pan
+        // Enable decimal item quantity columns
+        // Enable floats in some item commands/trade etc.
         
 
 
@@ -44,6 +55,7 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
+        // 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

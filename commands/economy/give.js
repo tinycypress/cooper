@@ -1,14 +1,12 @@
 import CoopCommand from '../../core/entities/coopCommand';
 
 import ChannelsHelper from '../../core/entities/channels/channelsHelper';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import ServerHelper from '../../core/entities/server/serverHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
 
 import ItemsHelper from '../../community/features/items/itemsHelper';
 import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
 
-import STATE from '../../core/state';
+import { usableItemCodeGuard, useManyGuard, validUserArgGuard } from '../../core/entities/commands/guards/itemCmdGuards';
+
 
 export default class GiveCommand extends CoopCommand {
 
@@ -48,39 +46,43 @@ export default class GiveCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
+			// Interpret, parse, and format item code.
 			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
-			// Check if this item code can be given.
-			if (!ItemsHelper.isUsable(itemCode) || itemCode === null) 
-				return MessagesHelper.selfDestruct(msg, 'Please provide a valid item name  (!give item target [qty]).', 0, 10000);
-	
+			// Configure item manifest for this item command.
+			const itemManifest = {
+				EMPTY_GIFTBOX: 1,
+				[itemCode]: qty
+			};
+
+			// Check if this item code can be given.		
+			const isUsableCode = usableItemCodeGuard(msg, itemCode, msg.author.username);
+			if (!isUsableCode) return false;
+
 			// Attempt to load target just to check it can be given.
-			const guild = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
-			const targetMember = UsersHelper.getMemberByID(guild, target.id);
-			if (!target || !targetMember)
-				return MessagesHelper.selfDestruct(msg, `Gift target is invalid (!give item target [qty]).`, 0, 10000);
-	
-			// Check if this user owns that item.
-			const itemQty = await ItemsHelper.getUserItemQty(msg.author.id, itemCode);
-			if (itemQty < 0 || itemQty - qty < 0) 
-				return MessagesHelper.selfDestruct(msg, `You do not own enough ${itemCode}. ${itemQty}/${qty}`, 0, 10000);
+			const isValidUser = validUserArgGuard(msg, target, msg.author.username);
+			if (!isValidUser) return false;
 
-			// Add giftbox requirement for gifts.
-			const usedGiftbasket = await ItemsHelper.use(msg.author.id, 'EMPTY_GIFTBOX', 1);
-			if (!usedGiftbasket)
-				return MessagesHelper.selfDestruct(msg, `${msg.author.username}, you do not have an EMPTY_GIFTBOX for this gift.`, 0, 5000);
-
+			// Check the user has required gift items and giftbox.
 			// Attempt to use item and only grant once returned successful, avoid double gift glitching.
-			if (await ItemsHelper.use(msg.author.id, itemCode, qty)) {
-				await ItemsHelper.add(target.id, itemCode, qty);
-				
-				// Intercept the giving of election items.
-				if (itemCode === 'LEADERS_SWORD' || itemCode === 'ELECTION_CROWN')
-					ElectionHelper.ensureItemSeriousness();
+			const itemsWereUsed = await useManyGuard(msg.author, msg, itemManifest);
+			if (itemsWereUsed) return false;
 
-				const addText = `${msg.author.username} gave ${target.username} ${itemCode}x${qty}.`;
-				ChannelsHelper.propagate(msg, addText, 'FEED');
-			}
+
+			// REVIEWS: Maybe a guard/check with an error is needed for item add too? :D
+
+			// Add the item to the gift recepient.
+			await ItemsHelper.add(target.id, itemCode, qty);
+			
+			// Intercept the giving of election items.
+			if (itemCode === 'LEADERS_SWORD' || itemCode === 'ELECTION_CROWN')
+				ElectionHelper.ensureItemSeriousness();
+
+			// Send feedback message.
+			// TODO: State how many both have now after gift.
+			const addText = `${msg.author.username} gave ${target.username} ${itemCode}x${qty}.`;
+			ChannelsHelper.propagate(msg, addText, 'FEED');
+
 		} catch(e) {
 			console.log('Failed to give item.');
 			console.error(e);

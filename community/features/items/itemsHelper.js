@@ -296,11 +296,11 @@ export default class ItemsHelper {
     }
 
     // Try to parse item codes.
-    static interpretItemCodeArg(text) {
+    static interpretItemCodeArg(text = '') {
 		let itemCode = null;
         
         // Interpret item code from the assumed item name not emoji.
-        itemCode = this.parseFromStr(text);
+        itemCode = this.parseFromStr(text.trim());
 
         // Prioritse emoji overwriting/preference over text (if supplied).
         const emojiID = MessagesHelper.strToEmojiID(text);
