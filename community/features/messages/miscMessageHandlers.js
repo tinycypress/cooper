@@ -5,10 +5,17 @@ import PointsHelper from "../points/pointsHelper";
 
 import CHANNELS from "../../../core/config/channels.json";
 import STATE from "../../../core/state";
+import EggHuntMinigame from "../minigame/small/egghunt";
 
 export default class MiscMessageHandlers {
 
     static async onMessage(msg) {
+
+        // Check if someone is trying to troll with the egg.
+        EggHuntMinigame.antiTroll(msg);
+
+
+
         // If message added by Ktrn that is only emojis, react to it.
         // TODO: Does not respond to messages contain EXTERNAL server emojis due to isOnlyEmojisOrIDs shortcoming.
         if (msg.author.id === '652820176726917130' && MessagesHelper.isOnlyEmojisOrIDs(msg.content)) {

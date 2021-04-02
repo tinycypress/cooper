@@ -6,9 +6,12 @@ import SkillsHelper from '../community/features/skills/skillsHelper';
 import RPGHandler from '../community/features/items/handlers/rpgHandler';
 import SacrificeHelper from '../community/features/events/sacrificeHelper';
 import ItemsHelper from '../community/features/items/itemsHelper';
+import EggHuntMinigame from '../community/features/minigame/small/egghunt';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
+const listenMessages = (fn) => STATE.CLIENT.on('message', fn);
+
 
 // v DEV IMPORT AREA v
 
@@ -21,22 +24,23 @@ dotenv.config();
 
     // Done
         // Add health 
+        // Enable decimal item quantity columns
+        // Enable floats in some item commands/trade etc.
+        // When someone posts a spam egg... trick them.
 
 
     // General/Straightforward
+        // Coin flip
+
         // Add RPG effect.
         
+        // Add easter eggs
         // Add bigboi role
         // Add check health command
         // Add way of gaining health
 
-        // Coin flip
-
-        // When someone posts a spam egg... trick them.
         // Gold coin purchase logic, balance, deficit.
 
-        // Enable decimal item quantity columns
-        // Enable floats in some item commands/trade etc.
 
 
     // Hard, Quick:
@@ -59,9 +63,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
-        // ItemsHelper.add()
- 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

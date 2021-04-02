@@ -288,7 +288,7 @@ export default class EggHuntMinigame {
                     let eggLifespan = 60 * 10;
 
                     // Add collection action emoji.
-                    MessagesHelper.delayReact(eggMsg, '🧺', 666);
+                    MessagesHelper.delayReact(eggMsg, RAW_EMOJIS.BASKET, 666);
 
                     // Remove toxic egg after few minutes so people aren't forced to take it.
                     if (rarity === 'TOXIC_EGG') eggLifespan = 60 * 2;
@@ -322,7 +322,7 @@ export default class EggHuntMinigame {
     
                 // Send via DM.
                 const eggMsg = await randomMember.send(emojiText);
-                MessagesHelper.delayReact(eggMsg, '🧺', 333);
+                MessagesHelper.delayReact(eggMsg, RAW_EMOJIS.BASKET, 333);
     
                 // Remove toxic egg after 5 minutes so people aren't forced to take it.
                 if (rarity === 'TOXIC_EGG') MessagesHelper.delayDelete(eggMsg, 300000);
@@ -385,5 +385,39 @@ export default class EggHuntMinigame {
             const toxicEggsMixupNum = STATE.CHANCE.natural({ min: 1, max: Math.floor(bonusEggsNum / 2.5) });
             for (let i = 0; i < toxicEggsMixupNum; i++) this.drop('TOXIC_EGG', null);
         }
+    }
+
+
+
+    static async antiTroll(msg) {
+        // Check if message is egg hunt drop but not Cooper.
+        const isUserMessage = !UsersHelper.isCooperMsg(msg);
+        const isEgghuntDrop = this.isEgghuntDrop(msg.content);
+        const eggRarity = this.calculateRarityFromMessage(msg);
+        const isTrollEgg = isUserMessage && isEgghuntDrop && eggRarity;
+
+        const roll = STATE.CHANCE.bool({ likelihood: 15 });
+        if (isTrollEgg && roll) {
+            // Check if the user has an egg.
+            const hasQty = await ItemsHelper.hasQty(msg.author.id, eggRarity, 1);
+            if (!hasQty) return false;
+
+            // Try to take the egg from the user.
+            const didUse = await UsableItemHelper.use(msg.author.id, eggRarity, 1);
+            if (!didUse) return false;
+
+            await ItemsHelper.add(STATE.CLIENT.user.id, eggRarity, 1);
+
+            
+            MessagesHelper.selfDestruct(msg, 'Thanks for the egg! ;)', 0, 666);
+            
+            ChannelsHelper.propagate(msg, 'Cooper collected (stole) an egg.', 'ACTIONS', true);
+
+            MessagesHelper.delayReact(msg, RAW_EMOJIS.BASKET, 666);
+
+            MessagesHelper.delayDelete(msg, 2000);
+        }
+
+        
     }
 }
