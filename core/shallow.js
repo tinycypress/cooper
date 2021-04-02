@@ -12,9 +12,14 @@ dotenv.config();
 
 // NOTES AND LONGER TERM CHALLENGES/ISSUES:
 
+    // Done
+        // Crafting recipies command
+
+
     // General/Straightforward
         // Sacrifice message at the top of channel HALF_DONE
         // RPG
+
         
 
 
