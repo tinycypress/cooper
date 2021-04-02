@@ -115,7 +115,7 @@ export default class UsableItemHelper {
         try {
             // Find item code via emoji/emoji ID (trimmed) string in comparison to emojis.json.
             const emojiID = MessagesHelper.getEmojiIdentifier(reaction.message);
-            const itemCode = this.emojiToItemCode(emojiID);
+            const itemCode = ItemsHelper.emojiToItemCode(emojiID);
                 
             // If invalid item code or not usable, don't allow pick up event.
             if (!itemCode || !this.isUsable(itemCode))
