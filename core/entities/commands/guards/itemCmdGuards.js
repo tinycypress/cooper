@@ -180,14 +180,21 @@ export function validUserArgGuard(msgRef, target, username) {
 
 export const itemQtyArg = {
     key: 'qty',
-    prompt: 'How many (qty) do you want to use?',
-    type: 'number',
+    prompt: 'Please enter item quantity.',
+    type: 'float',
+    default: 1
+}
+
+export const itemQtyArgInt = {
+    key: 'qty',
+    prompt: 'Please enter item quantity.',
+    type: 'integer',
     default: 1
 }
 
 export const itemCodeArg = {
     key: 'itemCode',
-    prompt: 'What is the code of the item you wish to use? !itemlist if not sure',
+    prompt: 'Please enter item code, item name, or item emoji.',
     type: 'string',
     default: ''
 };
