@@ -22,10 +22,8 @@ export default class SuggestCommand extends CoopCommand {
 		// Run as a coop command (clean up the original calling message)
 		super.run(msg);
 
-		if (msg.content.includes('@everyone') || msg.content.includes('@here')) {
-			MessagesHelper.selfDestruct(msg, 'Pinging via Cooper disallowed.')
-			return false;
-		}
+		if (msg.content.includes('@everyone') || msg.content.includes('@here'))
+			return MessagesHelper.selfDestruct(msg, 'Pinging via Cooper disallowed.');
 
         try {
 			// Post in suggestions.

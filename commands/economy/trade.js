@@ -30,12 +30,14 @@ export default class TradeCommand extends CoopCommand {
 				{
 					key: 'offerItemCode',
 					prompt: 'Which ITEM_CODE are you offering?',
-					type: 'string'
+					type: 'string',
+					default: ''
 				},
 				{
 					key: 'receiveItemCode',
 					prompt: 'Which ITEM_CODE do you expect in return?',
-					type: 'string'
+					type: 'string',
+					default: ''
 				},
 				{
 					key: 'offerQty',
@@ -66,11 +68,12 @@ export default class TradeCommand extends CoopCommand {
 
 			// Check if valid item codes given.
 			if (!offerItemCode || !receiveItemCode) return MessagesHelper.selfDestruct(msg, 
-				`Invalid item codes for trade, ${offerItemCode} ${receiveItemCode}`);
+				`Invalid item codes for trade, ${offerItemCode} ${receiveItemCode}`, 0, 7500);
 			
 			// Check if user can fulfil the trade.
 			const canUserFulfil = await ItemsHelper.hasQty(tradeeID, offerItemCode, offerQty);
-			if (!canUserFulfil) return MessagesHelper.selfDestruct(msg, `Insufficient item quantity for trade.`);
+			// TODO: Provide a more useful error message here with qty details.
+			if (!canUserFulfil) return MessagesHelper.selfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
 
 			// Generate strings with emojis based on item codes.
 			const tradeAwayStr = `${MessagesHelper._displayEmojiCode(offerItemCode)}x${offerQty}`;
@@ -91,7 +94,7 @@ export default class TradeCommand extends CoopCommand {
 			// TODO: Support moving all personal confirmations to DM.
 
 			// Post the confirmation message and add reactions to assist interaction.
-			const confirmMsg = await MessagesHelper.selfDestruct(msg, confirmStr, 333, 45000);
+			const confirmMsg = await MessagesHelper.selfDestruct(msg, confirmStr, 0, 30000);
 			MessagesHelper.delayReact(confirmMsg, '❎', 666);
 			MessagesHelper.delayReact(confirmMsg, '✅', 999);
 
@@ -132,10 +135,10 @@ export default class TradeCommand extends CoopCommand {
 							const actionsLinkStr = `\n\n_View in <#${CHANNELS.TRADE.id}>_`;
 		
 							// Post accepted trade to channel and record channel.
-							MessagesHelper.delayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 666);
+							MessagesHelper.delayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 333);
 					} else {
 						// Edit failure onto message.
-						MessagesHelper.selfDestruct(confirmMsg, 'Failure confirming instant trade.', 666);
+						MessagesHelper.selfDestruct(confirmMsg, 'Failure confirming instant trade.', 666, 5000);
 					}
 
 
@@ -164,7 +167,7 @@ export default class TradeCommand extends CoopCommand {
 
 						// TODO: Add to trade stats
 					} else {
-						MessagesHelper.selfDestruct(confirmMsg, 'Error creating trade.', 666);
+						MessagesHelper.selfDestruct(confirmMsg, 'Error creating trade.', 666, 5000);
 					}
 				}
 

@@ -38,11 +38,11 @@ export default class InstantFurnaceMinigame {
 
             // Check the quantity for the user.
             const hasQty = await ItemsHelper.hasQty(user.id, 'METAL_ORE', oreLimitMin);
-            if (!hasQty) return MessagesHelper.selfDestruct(reaction.message, `${user.username} lacks ${oreLimitMin}xMETAL_ORE.`);
+            if (!hasQty) return MessagesHelper.selfDestruct(reaction.message, `${user.username} lacks ${oreLimitMin}xMETAL_ORE.`, 0, 5000);
 
             // Guard the action from those not sincerely using the item.
             const didUse = await ItemsHelper.use(user.id, 'METAL_ORE', oreLimitMin);
-            if (!didUse) return MessagesHelper.selfDestruct(reaction.message, `${user.username}, something went wrong smelting your ore. ;(`);
+            if (!didUse) return MessagesHelper.selfDestruct(reaction.message, `${user.username}, something went wrong smelting your ore. ;(`, 5000);
 
             // Add smelting multiplier effect.
             const multiplier = reaction.count - 1;

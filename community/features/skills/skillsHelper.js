@@ -15,6 +15,8 @@ export const DEFAULT_LEVEL = 1;
 
 export default class SkillsHelper {
 
+    static dbSkills = Object.keys(SKILLS).map(skill => skill.toLowerCase());
+
     static async getXP(skill, playerID) {
         let xp = 0;
 
@@ -36,9 +38,6 @@ export default class SkillsHelper {
         return Math.round(conversion);
     }
 
-    // x^3 + 3 x^2 + 3 x + 1 
-    // for x= 99
-    // THANK YOU ISO!!
     static calcLvl(num) {
         const xpLvlConversion = Math.pow(num, 1 / 3) - 1;
         return Math.round(this.clampLvl(xpLvlConversion, 1, 99));
@@ -104,16 +103,44 @@ export default class SkillsHelper {
     }
 
     static async addXP(userID, skill, xpNum) {
-
-        const query = {
+        return await Database.query({
             name: `add-player-${skill}-xp`,
             text: `INSERT INTO skills(player_id, ${skill})
                 VALUES($1, $2)
-                ON CONFLICT (id) DO UPDATE SET ${skill} = skills.${skill} + EXCLUDED.${skill}`,
+                ON CONFLICT (player_id) DO UPDATE SET ${skill} = skills.${skill} + EXCLUDED.${skill}`,
             values: [userID, xpNum]
-        };
-        
-        return await Database.query(query);
+        });
+    }
+
+
+    static async getTotalXPLeaderboard(pos = 0) {
+        const summingQueryFmt = this.dbSkills.map(skill => `COALESCE(${skill}, 0)`);
+
+        return await DatabaseHelper.manyQuery({
+            name: `get-total-xp-leaderboard`,
+            text: `
+                SELECT player_id, (${summingQueryFmt.join(' + ')}) AS total_xp
+                FROM skills 
+                ORDER BY total_xp DESC
+                OFFSET $1
+                LIMIT 15
+            `.trim(),
+            values: [pos]
+        });
+    }
+
+    static async getSkillXPLeaderboard(skill, pos = 0) {
+        return await DatabaseHelper.manyQuery({
+            name: `get-${skill}-xp-leaderboard`,
+            text: `
+                SELECT player_id, ${skill}
+                FROM skills 
+                ORDER BY ${skill} DESC
+                OFFSET $1
+                LIMIT 15
+            `.trim(),
+            values: [pos]
+        });
     }
 
 }

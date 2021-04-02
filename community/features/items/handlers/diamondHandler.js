@@ -12,7 +12,7 @@ export default class DiamondHandler {
                 const didUse = await ItemsHelper.use(user.id, 'DIAMOND', 1);
                 if (!didUse) {
                     // Warn that the user is missing the item
-                    MessagesHelper.selfDestruct(reaction.message, `${user.username} lacks 1xDIAMOND...`);
+                    MessagesHelper.selfDestruct(reaction.message, `${user.username} lacks 1xDIAMOND...`, 0, 5000);
                     return await reaction.users.remove(user.id);
                 } else {
                     const messageAuthor = reaction.message.author;

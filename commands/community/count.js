@@ -25,7 +25,7 @@ export default class CountCommand extends CoopCommand {
             const emojiText = MessagesHelper.emojiText(EMOJIS.COOP);
             const userCount = ServerHelper._coop().memberCount || 0;
             const countText = `${userCount} #beaks presently in The Coop ${emojiText}!`;
-			MessagesHelper.selfDestruct(msg, countText, 666, 45000);
+			MessagesHelper.selfDestruct(msg, countText, 0, 20000);
 
 		} catch(e) {
 			console.error(e);

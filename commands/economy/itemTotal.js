@@ -41,10 +41,16 @@ export default class ItemTotalCommand extends CoopCommand {
 	async run(msg, { itemCode }) {
 		super.run(msg);
 
+
+		// TODO: Also incorporate this into the guard... either a truthy item code interpreted or false, fail.
 		const parsedItemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
-		if (!ItemsHelper.isUsable(parsedItemCode))
-			return msg.reply(`${itemCode} does not exist, please provide a valid item code.`);
+		// TODO: Convert into invalid item code guard and REUSE FFS!!
+		if (!ItemsHelper.isUsable(parsedItemCode)) {
+			const invalidText = `${itemCode} does not exist, please provide a valid item code.`;
+			return MessagesHelper.selfDestruct(msg, invalidText, 0, 5000);
+		}
+
 
 		const statText = await ItemTotalCommand.getStat(parsedItemCode);
 		MessagesHelper.selfDestruct(msg, statText, 333)

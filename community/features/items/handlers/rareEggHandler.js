@@ -17,7 +17,7 @@ export default class RareEggHandler {
                 const didUse = await ItemsHelper.use(user.id, 'RARE_EGG', 1);
                 if (!didUse) {
                     const failureText = `${user.username} tried to use a rare egg, but has none...`;
-                    MessagesHelper.selfDestruct(reaction.message, failureText)
+                    MessagesHelper.selfDestruct(reaction.message, failureText, 0, 5000);
                     MessagesHelper.delayReactionRemoveUser(reaction, user.id, 333);
                 } else {
                     const backFired = STATE.CHANCE.bool({ likelihood: 25 });

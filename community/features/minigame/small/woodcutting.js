@@ -54,7 +54,7 @@ export default class WoodcuttingMinigame {
         const noText = `${user.username} tried to cut wood, but doesn't have an axe.`;
         // Remove reaction and warn.
         // if (userAxesNum <= 0) DELETE REACTION
-        if (userAxesNum <= 0) return MessagesHelper.selfDestruct(msg, noText, 10000);
+        if (userAxesNum <= 0) return MessagesHelper.selfDestruct(msg, noText, 0, 3333);
 
         // Handle chance of axe breaking
         const pickaxeBreakPerc = Math.min(25, rewardRemaining);

@@ -98,7 +98,7 @@ export default class SourceCommand extends CoopCommand {
 
 				// Guard invalid path.
 				if (!rawFolderContent) 
-					return MessagesHelper.selfDestruct(msg, `Could not load the folder (${path}).`, 666, 15000);
+					return MessagesHelper.selfDestruct(msg, `Could not load the folder (${path}).`, 0, 5000);
 	
 				// Decide if it will fit in an embed or not.
 				if (rawFolderContent.length > 0) {
@@ -121,10 +121,10 @@ export default class SourceCommand extends CoopCommand {
 						}).join('\n')}`;
 
 					// Output the display text lines of the folders.
-					MessagesHelper.selfDestruct(msg, folderContent, 666, 15000);
+					MessagesHelper.selfDestruct(msg, folderContent, 0, 10000);
 
 				} else 
-					MessagesHelper.selfDestruct(msg, `${path} is empty/invalid folder.`, 666, 15000);
+					MessagesHelper.selfDestruct(msg, `${path} is empty/invalid folder.`, 0, 10000);
 				
 			// File loading intended instead.
 			} else {
@@ -136,16 +136,16 @@ export default class SourceCommand extends CoopCommand {
 	
 				// Guard invalid path.
 				if (!rawFileContent) 
-					return MessagesHelper.selfDestruct(msg, `Could not load the file for ${path}.`, 666, 15000);
+					return MessagesHelper.selfDestruct(msg, `Could not load the file for ${path}.`, 0, 10000);
 	
 				// TODO: Try to support returning documentation and syntax of a js class function.
 
 				// Decide if it will fit in an embed or not.
 				if (rawFileContent.length > 1000 - 20)
 					MessagesHelper.selfDestruct(msg, fileContent.replace(gitBaseUrl + path, `<${gitBaseUrl + path}>`)
-						+ `Source code too verbose (${rawFileContent.length}/980 chars), please view on Github.`, 666, 15000);
+						+ `Source code too verbose (${rawFileContent.length}/980 chars), please view on Github.`, 0, 10000);
 				else 
-					MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 666, 15000);
+					MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 0, 10000);
 			}
 
 

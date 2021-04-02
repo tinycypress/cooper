@@ -39,19 +39,19 @@ export default class TradeCancelCommand extends CoopCommand {
 
 			// Check if valid trade ID given.
 			const trade = await TradeHelper.get(tradeID);
-			if (!trade) return MessagesHelper.selfDestruct(msg, `Invalid trade ID - already sold?`);
+			if (!trade) return MessagesHelper.selfDestruct(msg, `Invalid # trade ID - already cancelled?`, 0, 5000);
 			
 			// Check if user can fulfil the trade.
 			const isYours = trade.trader_id === tradeeID;
-			if (!isYours) return MessagesHelper.selfDestruct(msg, `Trade #${trade.id} is not yours to cancel.`);
+			if (!isYours) return MessagesHelper.selfDestruct(msg, `Trade #${trade.id} is not yours to cancel.`, 0, 5000);
 
 			// Let helper handle accepting logic as it's used in multiple places so far.
 			const tradeCancelled = await TradeHelper.cancel(tradeID, tradeeID, tradeeName);
 			if (tradeCancelled) {
 				// Log cancelled trades
-				MessagesHelper.selfDestruct(msg, `Trade #${trade.id} cancelled.`);
+				MessagesHelper.selfDestruct(msg, `Trade #${trade.id} cancelled.`, 0, 7500);
 			} else {
-				MessagesHelper.selfDestruct(msg, `Trade #${trade.id} could not be cancelled.`);
+				MessagesHelper.selfDestruct(msg, `Trade #${trade.id} could not be cancelled.`, 0, 10000);
 				console.log('Trade cancel failed');
 			}
 			

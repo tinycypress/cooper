@@ -40,7 +40,7 @@ export default class DropCommand extends CoopCommand {
 			const usableItems = ItemsHelper.getUsableItems();
 			const noMatchErrText = `${itemCode} is an invalid item name..`;
 			if (!usableItems.includes(itemCode)) 
-				return MessagesHelper.selfDestruct(msg, noMatchErrText);
+				return MessagesHelper.selfDestruct(msg, noMatchErrText, 0, 5000);
 	
 			const didUse = await ItemsHelper.use(msg.author.id, itemCode, 1);
 			if (didUse) {
@@ -71,7 +71,7 @@ export default class DropCommand extends CoopCommand {
 				// Add success feedback message. (Could edit instead)
 				const emoji = MessagesHelper.emojiText(EMOJIS[itemCode]);
 				const userDroppedText = `${msg.author.username} dropped ${itemCode} ${emoji}.`;
-				MessagesHelper.selfDestruct(dropMsg, userDroppedText);
+				MessagesHelper.selfDestruct(dropMsg, userDroppedText, 0, 10000);
 			}
 	
 		} catch(e) {

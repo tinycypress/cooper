@@ -35,7 +35,7 @@ export default class ConsiderCommand extends CoopCommand {
 		if (!isElec) {
 			const nextElecFmt = await ElectionHelper.nextElecFmt();
 			const noElecText = `There is no election currently ongoing. !nextelec: ${nextElecFmt}`;
-			return MessagesHelper.selfDestruct(msg, noElecText);
+			return MessagesHelper.selfDestruct(msg, noElecText, 0, 5000);
 		}
 
 		// Otherwise show the list in a self-destruct msg.

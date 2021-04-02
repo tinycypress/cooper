@@ -19,4 +19,9 @@ export default class DatabaseHelper {
 		return DatabaseHelper.single(queryResult);
 	}
 
+	static async manyQuery(query) {
+		const queryResult = await Database.query(query);
+		return DatabaseHelper.many(queryResult);
+	}
+
 };

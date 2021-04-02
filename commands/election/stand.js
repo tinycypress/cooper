@@ -38,26 +38,35 @@ export default class StandCommand extends CoopCommand {
 
 		// Prevent @everyone from idiots using it.
 		if (campaignText.includes('@everyone')) {
-			return MessagesHelper.selfDestruct(msg, 'Warning: @ everyone not allowed.');
+			return MessagesHelper.selfDestruct(msg, 'Warning: @ everyone not allowed.', 0, 5000);
 		}
 		else if (campaignText.includes('@')) {
-			return MessagesHelper.selfDestruct(msg, "Warning: @ is not allowed. Stand on your own or don't stand at all");
+			return MessagesHelper.selfDestruct(msg, "Warning: @ is not allowed. Stand on your own or don't stand at all", 0, 5000);
 		}
 
 		try {
 			// Prevent bad campaign texts.
 			if (campaignText.length < 30) {
+				// Send them a copy before deleting.
+				msg.direct(`${msg.author.username} rewrite campaign message, not long enough.\n\n` + msg.content);
 				return MessagesHelper.selfDestruct(
 					msg, 
-					`${msg.author.username} rewrite campaign message, insufficient.`
+					`${msg.author.username} rewrite campaign message, insufficient.`,
+					0,
+					7500
 				);
 			}
 
 
-			if (campaignText.length > 300) {
+			if (campaignText.length > 400) {
+				// Send them a copy before deleting.
+				msg.direct(`${msg.author.username} rewrite campaign message, too long.\n\n` + msg.content);
+
 				return MessagesHelper.selfDestruct(
 					msg, 
-					`${msg.author.username} rewrite campaign message, too long.`
+					`${msg.author.username} rewrite campaign message, too long.`,
+					0,
+					7500
 				);
 			}
 
@@ -67,7 +76,7 @@ export default class StandCommand extends CoopCommand {
 			if (!isElec) {
 				const nextElecFmt = await ElectionHelper.nextElecFmt();
 				const noElecText = `There is no election currently ongoing. Next is ${nextElecFmt}!`;
-				return MessagesHelper.selfDestruct(msg, noElecText);
+				return MessagesHelper.selfDestruct(msg, noElecText, 0, 7500);
 			}
 	
 			

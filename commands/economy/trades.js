@@ -44,11 +44,11 @@ export default class TradesCommand extends CoopCommand {
 	
 			// Check if offer item code is default (all) or valid.
 			if (offerItemCodeStr !== '' && !offerItemCode)
-				return MessagesHelper.selfDestruct(msg, `Invalid item code (${offerItemCodeStr}).`);
+				return MessagesHelper.selfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 7500);
 	
 			// Check if receive item code is default (all) or valid.
 			if (receiveItemCodeStr !== '' && !receiveItemCode)
-				return MessagesHelper.selfDestruct(msg, `Invalid item code (${receiveItemCodeStr}).`);
+				return MessagesHelper.selfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 7500);
 
 			// Calculate used/total trade slots.
 			// TODO: Implement trade slots as a separate command.

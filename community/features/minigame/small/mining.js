@@ -53,7 +53,7 @@ export default class MiningMinigame {
         const noPickText = `${user.username} tried to mine the rocks, but doesn't have a pickaxe.`;
         // Remove reaction and warn.
         // if (userPickaxesNum <= 0) DELETE REACTION
-        if (userPickaxesNum <= 0) return MessagesHelper.selfDestruct(msg, noPickText, 10000);
+        if (userPickaxesNum <= 0) return MessagesHelper.selfDestruct(msg, noPickText, 0, 3000);
 
         // Handle chance of pickaxe breaking
         const pickaxeBreakPerc = Math.min(25, rewardRemaining);

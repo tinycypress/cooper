@@ -15,7 +15,7 @@ export default class LegendaryEggHandler {
                 const didUse = await ItemsHelper.use(user.id, 'LEGENDARY_EGG', 1);
                 if (!didUse) {
                     const failureText = `${user.username} tried to use a legendary egg, but has none l-`;
-                    MessagesHelper.selfDestruct(reaction.message, failureText)
+                    MessagesHelper.selfDestruct(reaction.message, failureText, 0, 5000);
                     MessagesHelper.delayReactionRemoveUser(reaction, user.id, 333);
 
                 } else {

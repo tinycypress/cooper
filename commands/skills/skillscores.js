@@ -1,6 +1,7 @@
-import PointsHelper from '../../community/features/points/pointsHelper';
+import SkillsHelper from '../../community/features/skills/skillsHelper';
 import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import UsersHelper from '../../core/entities/users/usersHelper';
 
 
 export default class SkillScoresCommand extends CoopCommand {
@@ -35,45 +36,35 @@ export default class SkillScoresCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
-			let leaderboardText = 'Leaderboard text';
-
 			// TODO: Check most xp and give skill-score role
+		
+			// const leaderboardMsgText = await PointsHelper.renderLeaderboard(leaderboardRows, position);
 
 			// If ALL skills, return total/top breakdown based on total.
 			if (skill === 'ALL') {
-				leaderboardText = 'I should return you TOTAL XP leaderboard';
+				const totalLeaderboard = await SkillsHelper.getTotalXPLeaderboard();
+
+				const totalLeaderboardText = `**Top ${15 + position} __total__ XP skillers**\n\n` + 
+				totalLeaderboard.map((skillRow, index) => {
+					const user = UsersHelper._get(skillRow.player_id);
+					return `#${(index + 1) + position}: ${user.username} ${skillRow.total_xp}XP\n`;
+				});
+
+				return MessagesHelper.selfDestruct(msg, totalLeaderboardText);
 
 			// Return a specific skill leaderboard if valid.
 			} else {
-				leaderboardText = `I should return you ${skill} XP leaderboard`;
+				const skillLeaderboard = await SkillsHelper.getSkillXPLeaderboard(skill);
+
+				const skillLeaderboardText = `**Top ${15 + position} ${skill} XP skillers**\n\n` + 
+					skillLeaderboard.map((skillRow, index) => {
+						const user = UsersHelper._get(skillRow.player_id);
+						return `#${(index + 1) + position}: ${user.username} ${skillRow[skill]}XP\n`;
+					});
+
+				return MessagesHelper.selfDestruct(msg, skillLeaderboardText);
 			}
 
-			// Give a placeholder whilst they're waiting.
-			const placeholderMsg = await MessagesHelper.selfDestruct(msg, leaderboardText, 60000);
-
-			// Generate the leaderboard text and update the message.
-			MessagesHelper.delayEdit(placeholderMsg, 'But... I can\'t.', 5000);
-
-
-
-
-
-
-
-
-			// Skillscores position can either be:
-			// None: show top 15
-			// User: show user position and 5 either side
-			// // Number: show rank number and 5 either side
-			// const leaderboardRows = await PointsHelper.getLeaderboard(position);
-
-			
-			// // Give a placeholder whilst they're waiting.
-			// const placeholderMsg = await MessagesHelper.selfDestruct(msg, `Calculating skill scores for ${skill}, please wait.`, 60000);
-
-			// // Generate the leaderboard text and update the message.
-			// const leaderboardMsgText = await PointsHelper.renderLeaderboard(leaderboardRows, position);
-			// placeholderMsg.edit(leaderboardMsgText);
 
 		} catch(e) {
 			console.error(e);

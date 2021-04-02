@@ -38,7 +38,7 @@ export default class UseCommand extends CoopCommand {
 		const usableItems = ItemsHelper.getUsableItems();
 		const noMatchErrText = 'Please provide a valid item name or check with !itemlist';
 		if (!usableItems.includes(itemCode)) 
-			return MessagesHelper.selfDestruct(msg, noMatchErrText, 5000);
+			return MessagesHelper.selfDestruct(msg, noMatchErrText, 0, 5000);
 
 		// TODO: Would probably be smart to just add the insufficient qty here...
 			// Save checking it over and over.

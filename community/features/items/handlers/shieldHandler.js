@@ -38,7 +38,7 @@ export default class ShieldHandler {
             const protectionExpiry = this.runEffect(target.id);
 
             const successText = `${user.username} used a SHIELD on ${targetName}, extending their protection to ${protectionExpiry} 30 mins.`;
-            MessagesHelper.selfDestruct(reaction.message, successText);
+            MessagesHelper.selfDestruct(reaction.message, successText, 0, 15000);
         }
         
         // Inform user of shield usage failure.

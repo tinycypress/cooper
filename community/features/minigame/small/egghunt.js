@@ -215,7 +215,7 @@ export default class EggHuntMinigame {
             // Cleanup failed deletions.
             if (reaction.count > 2) {
                 MessagesHelper.delayDelete(reaction.message, 333);
-                return MessagesHelper.selfDestruct(reaction.message, 'That egg was just taken before you...', 666);
+                return MessagesHelper.selfDestruct(reaction.message, 'That egg was just taken before you...', 0, 5000);
             }
 
             if (!UsersHelper.isCooper(user.id)) {

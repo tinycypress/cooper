@@ -45,11 +45,11 @@ export default class CraftCommand extends CoopCommand {
 
 			// Check if input is a valid item code.
 			if (!itemCode)
-				return MessagesHelper.selfDestruct(msg, `Cannot craft invalid item code (${itemCode}).`);
+				return MessagesHelper.selfDestruct(msg, `Cannot craft invalid item code (${itemCode}).`, 0, 5000);
 
 			// Check if item is craftable
 			if (!CraftingHelper.isItemCraftable(itemCode))
-				return MessagesHelper.selfDestruct(msg, `${itemCode} is a valid item/code but uncraftable.`);
+				return MessagesHelper.selfDestruct(msg, `${itemCode} is a valid item/code but uncraftable.`, 0, 7500);
 
 			// Access required crafting level for item.
 			const craftingItem = CraftingHelper.CRAFTABLES[itemCode];
@@ -69,7 +69,7 @@ export default class CraftCommand extends CoopCommand {
 			const canCraft = await CraftingHelper.canFulfilIngredients(msg.author.id, itemCode, qty);
 			
 			// TODO: Improve this error.
-			if (!canCraft) return MessagesHelper.selfDestruct(msg, `Insufficient crafting supplies.`);
+			if (!canCraft) return MessagesHelper.selfDestruct(msg, `Insufficient crafting supplies.`, 0, 7500);
 
 			// Attempt to craft the object.
 			const craftResult = await CraftingHelper.craft(msg.author.id, itemCode, qty);
@@ -77,7 +77,7 @@ export default class CraftCommand extends CoopCommand {
 				const addText = `${username} crafted ${itemCode}x${qty}.`;
 				ChannelsHelper.propagate(msg, addText, 'ACTIONS');
 			} else {
-				MessagesHelper.selfDestruct(msg, `${username} failed to craft ${qty}x${itemCode}...`);
+				MessagesHelper.selfDestruct(msg, `${username} failed to craft ${qty}x${itemCode}...`, 0, 15000);
 			}
 
 		} catch(e) {

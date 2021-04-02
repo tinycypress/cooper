@@ -39,11 +39,11 @@ export default class TradeFindCommand extends CoopCommand {
 
 		// Check if offer item code is default (all) or valid.
 		if (!offerItemCode)
-			return MessagesHelper.selfDestruct(msg, `Invalid item code (${offerItemCode}).`);
+			return MessagesHelper.selfDestruct(msg, `Invalid item code (${offerItemCode}).`, 0, 5000);
 
 		// Check if receive item code is default (all) or valid.
 		if (!receiveItemCode)
-			return MessagesHelper.selfDestruct(msg, `Invalid item code (${receiveItemCode}).`);
+			return MessagesHelper.selfDestruct(msg, `Invalid item code (${receiveItemCode}).`, 0, 5000);
 
 		// If receive item code has been given, make sure only those matching returned.
 		const matches = await TradeHelper.findOfferReceiveMatches(offerItemCode, receiveItemCode);
@@ -51,10 +51,10 @@ export default class TradeFindCommand extends CoopCommand {
 		// Return no matching trades warning.
 		if (matches.length === 0) {
 			const noMatchesStr = `No conversion data/existing trades including ${offerItemCode} for ${receiveItemCode}.`;
-			return MessagesHelper.selfDestruct(msg, noMatchesStr);
+			return MessagesHelper.selfDestruct(msg, noMatchesStr, 0, 5000);
 		}
 		const conversionRate = await TradeHelper.conversionRate(offerItemCode, receiveItemCode);
-		return MessagesHelper.selfDestruct(msg, `1 ${offerItemCode} = ${conversionRate}* _(* Based on open trades)_.`);
+		return MessagesHelper.selfDestruct(msg, `1 ${offerItemCode} = ${conversionRate}* _(* Based on open trades)_.`, 0, 20000);
 
     }
     

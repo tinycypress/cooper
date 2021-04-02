@@ -20,7 +20,7 @@ export default class ToxicEggHandler {
                 const didUse = await ItemsHelper.use(user.id, 'TOXIC_EGG', 1);
                 if (!didUse) {
                     const unableText = `${user.username} tried to use a toxic egg, but has none.`;
-                    MessagesHelper.selfDestruct(msg, unableText, 5000);
+                    MessagesHelper.selfDestruct(msg, unableText, 0, 5000);
                     return await reaction.users.remove(user.id);
                 } else {
                     const backFired = STATE.CHANCE.bool({ likelihood: 25 });
@@ -36,7 +36,7 @@ export default class ToxicEggHandler {
 
                         // TODO: Count invincibility blocks into stats.
                         const shieldEmoji = MessagesHelper._displayEmojiCode('SHIELD');
-                        return MessagesHelper.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${author.username} was protected from ${user.username}'s toxic egg by invincibility buff! `)
+                        return MessagesHelper.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${author.username} was protected from ${user.username}'s toxic egg by invincibility buff!`)
                     }
 
                     
