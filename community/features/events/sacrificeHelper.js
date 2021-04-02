@@ -1,3 +1,4 @@
+import KEY_MESSAGES from '../../../core/config/keymessages.json';
 import EMOJIS from '../../../core/config/emojis.json';
 import CHANNELS from '../../../core/config/channels.json';
 
@@ -287,5 +288,21 @@ export default class SacrificeHelper {
             console.log('Error sacrificing random member!');
             console.error(e);
         }
+    }
+
+
+
+
+    // Update the sacrifice header message, last sacrifice time, last updated, how it works, current dagger/shield count.
+    static updateSacrificeHeaderMessage() {
+        // Access the header message link.
+        const sacrificeLink = KEY_MESSAGES.sacrifice_info_msg;
+
+        // Generate a sacrifice message.
+        const sacrificeHeaderText = `**${EMOJIS.DAGGER}${EMOJIS.DAGGER} The Coop Sacrifice Ritual:**\n\n`
+            + `How it works, current dagger/shield requirement count, last sacrifice, etc.`; 
+
+        // Update the message.
+        MessagesHelper.editByLink(sacrificeLink, sacrificeHeaderText);
     }
 }

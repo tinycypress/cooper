@@ -4,6 +4,8 @@ import STATE from './state';
 import dotenv from 'dotenv';
 import SkillsHelper from '../community/features/skills/skillsHelper';
 import RPGHandler from '../community/features/items/handlers/rpgHandler';
+import SacrificeHelper from '../community/features/events/sacrificeHelper';
+import ItemsHelper from '../community/features/items/itemsHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -18,27 +20,23 @@ dotenv.config();
 // NOTES AND LONGER TERM CHALLENGES/ISSUES:
 
     // Done
-        // Crafting recipies command
-        // Make sure that fry gives cooking xp. :D
-        // Add RPG to .use() 
-        // Add RPG emoji for reactions
+        // Add health 
+
 
     // General/Straightforward
-        // RPG
-            // Check RPG triggers reaction.
+        // Add RPG effect.
+        
+        // Add bigboi role
+        // Add check health command
+        // Add way of gaining health
 
-        // Clean up crate drop message
+        // Coin flip
 
-        // Add health + bigboi role
-
-        // Sacrifice message at the top of channel HALF_DONE
         // When someone posts a spam egg... trick them.
         // Gold coin purchase logic, balance, deficit.
-        // Check toxic egg works with frying pan
 
         // Enable decimal item quantity columns
         // Enable floats in some item commands/trade etc.
-        
 
 
     // Hard, Quick:
@@ -61,11 +59,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        listenReactions(RPGHandler.onReaction);
 
-        listenReactions((reaction, user) => {
-            // console.log(reaction, reaction.emoji);
-        });
+        // ItemsHelper.add()
+ 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

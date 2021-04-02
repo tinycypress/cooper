@@ -125,16 +125,17 @@ export default class CratedropMinigame {
     }
 
     static async open(reaction, user) {
-        // Added fetch to message to ensure proper counting.
+        // Added fetch to message to ensure proper reaction counting.
         const msg = await reaction.message.fetch();
-        const axeEmojiReaction = await msg.reactions.resolve('🪓');
 
-		// return Boolean(await msg.channel.messages.fetch(val).catch(() => null));
+        // Resolve the fresh axe reactions.
+        const axeEmojiReaction = await msg.reactions.resolve('🪓');
 
         const rarity = this.calculateRarityFromMessage(msg);
 
         // Edit the crate to visually show it opening.
-        await msg.edit(MessagesHelper.emojifyID(EMOJIS[rarity + '_OPEN']));
+        const openRarityEmoji = MessagesHelper.emojifyID(EMOJIS[rarity + '_OPEN']);
+        await msg.edit(openRarityEmoji);
 
         // A short time after, to avoid rate-limits... award items.
         setTimeout(async () => {
@@ -142,6 +143,7 @@ export default class CratedropMinigame {
             const hitters = axeEmojiReaction.users.cache
                 .map(user => user)
                 .filter(user => !UsersHelper.isCooper(user.id));
+
             const hitterNames = hitters.map(user => user.username);
             
             // Add points to all hitters.
@@ -157,7 +159,8 @@ export default class CratedropMinigame {
             // Raise reward rate.
             if (STATE.CHANCE.bool({ likelihood: 40 })) rewardedUsersNum = hitters.length
 
-            // TODO: Refactor all of this to one message.
+            // Generate the message text from drop array data.
+            let listLootString = '';
             if (rewardedUsersNum > 0) {
                 // Pick the amount of rewarded users.   
                 STATE.CHANCE.pickset(hitters, rewardedUsersNum).forEach((user, rewardeeIndex) => {
@@ -165,22 +168,25 @@ export default class CratedropMinigame {
                     const rewardItemsNum = STATE.CHANCE.natural({ min: 0, max: crate.maxReward });
                     const rewardsKeys = STATE.CHANCE.pickset(crate.rewards, rewardItemsNum);
 
+                    listLootString += `${user.username}'s loot: `;
+
                     if (rewardItemsNum > 0) {
                         // Grant rewards to users with a random quantity.
-                        rewardsKeys.forEach(async (reward, rewardIndex) => {
-                            const rewardItemQuantity = STATE.CHANCE.natural({ min: 1, max: crate.maxReward });
-                            const rateLimitBypassDelay = (rewardeeIndex * 666) + (333 * rewardIndex);
+                        listLootString += (rewardsKeys.map((rewardItem) => {
+                            const rewardQty = STATE.CHANCE.natural({ min: 1, max: crate.maxReward });
 
+                            // Indicate that at least one reward was given.
                             anyRewardGiven = true;
-                            await ItemsHelper.add(user.id, reward, rewardItemQuantity);
 
+                            // Give the user the item via the database.
+                            ItemsHelper.add(user.id, rewardItem, rewardQty);
 
-                            setTimeout(async () => {
-                                const rewardMessageText = `${user.username} took ${reward}x${rewardItemQuantity} from the crate!`;
-                                ChannelsHelper.propagate(msg, rewardMessageText, 'ACTIONS');
-                            }, rateLimitBypassDelay);
-                        });
+                            const itemEmoji = MessagesHelper._displayEmojiCode(rewardItem);
+                            return `${itemEmoji} ${rewardItem}x${rewardQty}`;
+                        }).map(', '));
                     }
+
+                    listLootString += '.\n';
                 });
         
             }
@@ -193,11 +199,13 @@ export default class CratedropMinigame {
             const tenseStr = hitterNames.length > 1 ? 'were' : 'was';
             const usersRewardedText = `${hitterNamesStr} ${tenseStr} rewarded ${crate.openingPoints} points`;
             const rewardTypeText = `${!anyRewardGiven ? 'empty ' : ''}${rarity.replace('_', ' ').toLowerCase()}`;
-            const pointsRewardString = `${usersRewardedText} for opening the ${rewardTypeText}!`;
-            ChannelsHelper.propagate(msg, pointsRewardString, 'ACTIONS');
+            const pointsRewardString = `**${usersRewardedText} for opening the ${rewardTypeText}!**\n\n`;
+            const crateLootText = pointsRewardString + listLootString;
+
+            ChannelsHelper.propagate(msg, crateLootText, 'ACTIONS');
 
             // Remove the opened crate.
-            MessagesHelper.delayDelete(msg, 15000);
+            MessagesHelper.delayDelete(msg, 10000);
         }, 666);
     }
 

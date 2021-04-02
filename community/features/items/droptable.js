@@ -99,4 +99,46 @@ export default class DropTable {
         return STATE.CHANCE.pickone(this.TIERS[level]);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+    // TODO: Refactor this from crate open. :D BAD TEXT MESSAGE.
+    static randomRewardGroupTiered() {
+        // STATE.CHANCE.pickset(hitters, rewardedUsersNum).forEach((user, rewardeeIndex) => {
+        //     // Calculate a random amount of rewards to give to the user.
+        //     const rewardItemsNum = STATE.CHANCE.natural({ min: 0, max: crate.maxReward });
+        //     const rewardsKeys = STATE.CHANCE.pickset(crate.rewards, rewardItemsNum);
+
+        //     if (rewardItemsNum > 0) {
+        //         // Grant rewards to users with a random quantity.
+        //         rewardsKeys.forEach(async (reward, rewardIndex) => {
+        //             const rewardItemQuantity = STATE.CHANCE.natural({ min: 1, max: crate.maxReward });
+        //             const rateLimitBypassDelay = (rewardeeIndex * 666) + (333 * rewardIndex);
+
+        //             anyRewardGiven = true;
+        //             await ItemsHelper.add(user.id, reward, rewardItemQuantity);
+
+
+        //             setTimeout(async () => {
+        //                 const rewardMessageText = `${user.username} took ${reward}x${rewardItemQuantity} from the crate!`;
+        //                 ChannelsHelper.propagate(msg, rewardMessageText, 'ACTIONS');
+        //             }, rateLimitBypassDelay);
+        //         });
+        //     }
+        // });
+    }
+
+
+
+
+
 }
