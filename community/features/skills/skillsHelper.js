@@ -1,4 +1,6 @@
+import ChannelsHelper from "../../../core/entities/channels/channelsHelper";
 import DatabaseHelper from "../../../core/entities/databaseHelper";
+import UsersHelper from "../../../core/entities/users/usersHelper";
 import Database from "../../../core/setup/database";
 
 
@@ -38,8 +40,9 @@ export default class SkillsHelper {
         return Math.round(conversion);
     }
 
-    static calcLvl(num) {
-        const xpLvlConversion = Math.pow(num, 1 / 3) - 1;
+    // Calculate the level from the xp amount/int.
+    static calcLvl(xp) {
+        const xpLvlConversion = Math.pow(xp, 1 / 3) - 1;
         return Math.round(this.clampLvl(xpLvlConversion, 1, 99));
     }
 
@@ -92,24 +95,42 @@ export default class SkillsHelper {
         return result;
     }
 
-    // TODO: Useful for skills leaderboard.
-    static async getHighestSkill(skill) {
-
-    }
-
-    // TODO: Useful for skills leaderboard.
-    static async getHighestAllSkills() {
-
-    }
-
     static async addXP(userID, skill, xpNum) {
-        return await Database.query({
+        const result = await DatabaseHelper.singleQuery({
             name: `add-player-${skill}-xp`,
             text: `INSERT INTO skills(player_id, ${skill})
                 VALUES($1, $2)
-                ON CONFLICT (player_id) DO UPDATE SET ${skill} = skills.${skill} + EXCLUDED.${skill}`,
+                ON CONFLICT (player_id) DO UPDATE SET ${skill} = skills.${skill} + EXCLUDED.${skill}
+                RETURNING ${skill}`,
             values: [userID, xpNum]
         });
+
+        // Calculate and intercept level ups here.
+        const prevXP = result[skill] - xpNum;
+        const currXP = result[skill];
+
+        const prevLevel = this.calcLvl(prevXP);
+        const currLevel = this.calcLvl(currXP);
+
+        if (prevLevel !== currLevel) {
+            const { user } = UsersHelper._get(userID);
+            
+            // Level 99 level up, big announce.
+            if (prevLevel < 99 && currLevel === 99) {
+                ChannelsHelper._codes(
+                    ['TALK', 'ACTIONS', 'FEED', 'STREAM'], 
+                    `${user.username} achieved level 99 in ${skill}!!`
+                );
+                
+            } else {
+                // Standard level up
+                const levelUpText = `${user.username} reached level ${currLevel} ${skill}!`;
+                ChannelsHelper._postToChannelCode('ACTIONS', levelUpText);
+            }
+        }
+
+
+        return result;
     }
 
 
@@ -118,8 +139,7 @@ export default class SkillsHelper {
 
         return await DatabaseHelper.manyQuery({
             name: `get-total-xp-leaderboard`,
-            text: `
-                SELECT player_id, (${summingQueryFmt.join(' + ')}) AS total_xp
+            text: `SELECT player_id, (${summingQueryFmt.join(' + ')}) AS total_xp
                 FROM skills 
                 ORDER BY total_xp DESC
                 OFFSET $1

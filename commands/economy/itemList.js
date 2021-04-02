@@ -19,11 +19,16 @@ export default class ItemListCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 
-		const usableItems = ItemsHelper.getUsableItems().map((x) => ItemsHelper.beautifyItemCode(x)).join('\n');
-		const usableItemsMsgText = `Usable Items:\n${usableItems}`;
-		const listMsg = await msg.say(usableItemsMsgText);
+		// TODO: Format and batch, 4 per line.
+		const usableItems = ItemsHelper.getUsableItems()
+			.map((itemCode) => ItemsHelper.beautifyItemCode(itemCode));
 
-		MessagesHelper.delayDelete(listMsg, 10000);
+		const itemListChunks = [...Array(Math.ceil(usableItems.length / 4))].map(() => usableItems.splice(0, 4))
+
+		const usableItemsMsgText = `**Usable Items:\n\n**` +
+			itemListChunks.map(chunk => chunk.join(', ')).join('\n');
+
+		MessagesHelper.selfDestruct(msg, usableItemsMsgText, 0, 10000);
     }
     
 };

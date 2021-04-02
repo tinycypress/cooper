@@ -4,15 +4,7 @@ import STATE from './state';
 import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
-import fetch from 'node-fetch';
-import UsersHelper from './entities/users/usersHelper';
-import ServerHelper from './entities/server/serverHelper';
-import CratedropMinigame from '../community/features/minigame/small/cratedrop';
-import ElectionHelper from '../community/features/hierarchy/election/electionHelper';
-import SacrificeHelper from '../community/features/events/sacrificeHelper';
-import RolesHelper from './entities/roles/rolesHelper';
-import BuffsHelper, { BUFF_TYPES } from '../community/features/conquest/buffsHelper';
-import SkillsHelper from '../community/features/skills/skillsHelper';
+
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -22,6 +14,9 @@ dotenv.config();
 
     // General/Straightforward
         // Sacrifice message at the top of channel HALF_DONE
+        // RPG
+        
+
 
     // Hard, Quick:
 
@@ -43,9 +38,8 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // RPG
-        // Level up detection and reward on being first to get 99
-        
+
+
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

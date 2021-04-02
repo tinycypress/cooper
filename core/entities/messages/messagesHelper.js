@@ -176,11 +176,7 @@ export default class MessagesHelper {
             const idParts = emojiID.split(':');
             if (idParts.length > 1) return idParts[2].length > 1 ? `<${emojiID}>` : emojiID;
         }
-        return '_' + emojiID;
-    }
-
-    static itemCodeFromMisc(miscString) {
-        
+        return emojiID;
     }
 
     static titleCase = (str) => {
