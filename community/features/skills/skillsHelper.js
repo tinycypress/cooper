@@ -96,14 +96,14 @@ export default class SkillsHelper {
     }
 
     static async addXP(userID, skill, xpNum) {
-        const result = await DatabaseHelper.singleQuery({
+        const query = {
             name: `add-player-${skill}-xp`,
             text: `INSERT INTO skills(player_id, ${skill})
                 VALUES($1, $2)
-                ON CONFLICT (player_id) DO UPDATE SET ${skill} = skills.${skill} + EXCLUDED.${skill}
-                RETURNING ${skill}`,
+                ON CONFLICT (player_id) DO UPDATE SET ${skill} = EXCLUDED.${skill} + skills.${skill} RETURNING ${skill}`,
             values: [userID, xpNum]
-        });
+        };
+        const result = await DatabaseHelper.singleQuery(query);
 
         // Calculate and intercept level ups here.
         const prevXP = result[skill] - xpNum;

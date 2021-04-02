@@ -2,6 +2,7 @@ import { Client } from 'discord.js-commando';
 import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
+import SkillsHelper from '../community/features/skills/skillsHelper';
 
 // v DEV IMPORT AREA v
 
@@ -14,18 +15,15 @@ dotenv.config();
 
     // Done
         // Crafting recipies command
-
+        // Make sure that fry gives cooking xp. :D
+        // Add RPG to .use() 
+        // Add RPG emoji for reactions
 
     // General/Straightforward
         // RPG
-            // Add RPG to .use() 
-            // Add RPG emoji for reactions
-
             // Check RPG triggers reaction.
 
         // Clean up crate drop message
-
-        // Make sure that fry gives cooking xp. :D
 
         // Add health + bigboi role
 
@@ -33,6 +31,7 @@ dotenv.config();
         // When someone posts a spam egg... trick them.
         // Gold coin purchase logic, balance, deficit.
         // Check toxic egg works with frying pan
+        
         // Enable decimal item quantity columns
         // Enable floats in some item commands/trade etc.
         
@@ -57,8 +56,6 @@ const shallowBot = async () => {
     STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

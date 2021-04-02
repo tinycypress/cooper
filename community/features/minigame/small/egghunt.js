@@ -13,6 +13,7 @@ import ServerHelper from '../../../../core/entities/server/serverHelper';
 import MessagesHelper from '../../../../core/entities/messages/messagesHelper';
 import ChannelsHelper from '../../../../core/entities/channels/channelsHelper';
 import UsableItemHelper from '../../items/usableItemHelper';
+import SkillsHelper from '../../skills/skillsHelper';
 
 
 export const EGG_DATA = {
@@ -181,9 +182,12 @@ export default class EggHuntMinigame {
     
                 // TODO: Create omelette item after being cooked.
     
+                // TODO: Maybe include in output message??
+                await SkillsHelper.addXP(user.id, 'cooking', 5);
+
                 // Generate feedback test based on the changes.
                 const feedbackText = `${user.username} fried <${emoji}>! ` +
-                    `Resulting in ${actionReward} point(s) change. (${updatedPoints})`;
+                    `Resulting in ${actionReward} point(s) change (now ${updatedPoints}) and 5 cooking XP!`;
                 
                 // Delete the original egg, now it has been fried.
                 await reaction.message.delete();
