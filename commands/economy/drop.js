@@ -32,20 +32,13 @@ export default class DropCommand extends CoopCommand {
 		try {
 			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
-			console.log('drop ' + itemCode);
-
 			// Check item code is usable and valid with command guard.
 			const isUsable = usableItemCodeGuard(msg, itemCode, msg.author.username);
-			console.log('usable ' + itemCode, isUsable);
 			if (!isUsable) return null;
-
 
 			// Use a guard to ensure the item was used.
 			const didUse = await didUseGuard(msg.author, itemCode, msg);
-			console.log('didUse ' + itemCode, didUse);
 			if (!didUse) return null;
-
-			console.log('Using! ' + itemCode);
 
 			// Drop the item based on its code.
 			const emojiText = MessagesHelper.emojiText(EMOJIS[itemCode]);

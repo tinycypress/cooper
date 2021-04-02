@@ -3,6 +3,10 @@ import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
 import SkillsHelper from '../community/features/skills/skillsHelper';
+import RPGHandler from '../community/features/items/handlers/rpgHandler';
+
+// Commonly useful.
+const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
 
 // v DEV IMPORT AREA v
 
@@ -31,7 +35,7 @@ dotenv.config();
         // When someone posts a spam egg... trick them.
         // Gold coin purchase logic, balance, deficit.
         // Check toxic egg works with frying pan
-        
+
         // Enable decimal item quantity columns
         // Enable floats in some item commands/trade etc.
         
@@ -56,6 +60,12 @@ const shallowBot = async () => {
     STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+        listenReactions(RPGHandler.onReaction);
+
+        listenReactions((reaction, user) => {
+            // console.log(reaction, reaction.emoji);
+        });
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

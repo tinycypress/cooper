@@ -1,6 +1,7 @@
 import MessagesHelper from "../../../core/entities/messages/messagesHelper";
 import Database from "../../../core/setup/database";
 
+import ITEMS from '../../../core/config/items.json';
 import EMOJIS from '../../../core/config/emojis.json';
 import RAW_EMOJIS from '../../../core/config/rawemojis.json';
 
@@ -257,7 +258,14 @@ export default class ItemsHelper {
         return total;
     }
 
+    static codeToFlake(code) {
+        let flake = null;
 
+        const item = ITEMS[code] || null;
+        if (item) flake = item.EMOJI.flake;
+
+        return flake;
+    }
 
     static async getRichest() {
         const query = {

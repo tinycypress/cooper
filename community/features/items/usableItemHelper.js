@@ -18,6 +18,7 @@ import ReactionHelper from "../../../core/entities/messages/reactionHelper";
 import Chicken from "../../chicken";
 import STATE from "../../../core/state";
 import ItemsHelper from "./itemsHelper";
+import RPGHandler from "./handlers/rpgHandler";
 
 
 export default class UsableItemHelper {
@@ -30,6 +31,7 @@ export default class UsableItemHelper {
             BombHandler.onReaction(reaction, user);
             DiamondHandler.onReaction(reaction, user);
             ShieldHandler.onReaction(reaction, user);
+            RPGHandler.onReaction(reaction, user);
             				
             // Check if message is dropped item message being picked up.
             if (this.isPickupable(reaction, user)) {
