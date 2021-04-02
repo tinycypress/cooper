@@ -2,6 +2,7 @@ import ChannelsHelper from "../../../core/entities/channels/channelsHelper";
 import DatabaseHelper from "../../../core/entities/databaseHelper";
 import Database from "../../../core/setup/database";
 import ItemsHelper from "../items/itemsHelper";
+import UsableItemHelper from "../items/usableItemHelper";
 
 export default class TradeHelper {
 
@@ -146,7 +147,7 @@ export default class TradeHelper {
             // Trade may have been removed before accept.
             if (trade) {
                 // Try to use/fulfil the trade.
-                const didUse = await ItemsHelper.use(accepteeID, trade.receive_item, trade.receive_qty);
+                const didUse = await UsableItemHelper.use(accepteeID, trade.receive_item, trade.receive_qty);
                 if (didUse) {
                     // Add the offer items to the acceptee.
                     await ItemsHelper.add(accepteeID, trade.offer_item, trade.offer_qty);

@@ -5,6 +5,7 @@ import STATE from "../../../../core/state";
 import EMOJIS from "../../../../core/config/emojis.json";
 import ItemsHelper from "../../items/itemsHelper";
 import UsersHelper from "../../../../core/entities/users/usersHelper";
+import UsableItemHelper from "../../items/usableItemHelper";
 
 
 export const BAR_DATA = {
@@ -41,7 +42,7 @@ export default class InstantFurnaceMinigame {
             if (!hasQty) return MessagesHelper.selfDestruct(reaction.message, `${user.username} lacks ${oreLimitMin}xMETAL_ORE.`, 0, 5000);
 
             // Guard the action from those not sincerely using the item.
-            const didUse = await ItemsHelper.use(user.id, 'METAL_ORE', oreLimitMin);
+            const didUse = await UsableItemHelper.use(user.id, 'METAL_ORE', oreLimitMin);
             if (!didUse) return MessagesHelper.selfDestruct(reaction.message, `${user.username}, something went wrong smelting your ore. ;(`, 5000);
 
             // Add smelting multiplier effect.

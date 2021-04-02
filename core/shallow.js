@@ -23,6 +23,10 @@ dotenv.config();
 
             // Check RPG triggers reaction.
 
+        // Clean up crate drop message
+
+        // Make sure that fry gives cooking xp. :D
+
         // Add health + bigboi role
 
         // Sacrifice message at the top of channel HALF_DONE
@@ -55,7 +59,6 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
-        // 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

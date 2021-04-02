@@ -10,6 +10,7 @@ import EconomyNotifications from "../economyNotifications";
 import ServerHelper from "../../../../core/entities/server/serverHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import SkillsHelper from "../../skills/skillsHelper";
+import UsableItemHelper from "../../items/usableItemHelper";
 
 
 export default class WoodcuttingMinigame {
@@ -66,7 +67,7 @@ export default class WoodcuttingMinigame {
 
         const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });
         if (didBreak) {
-            const axeUpdate = await ItemsHelper.use(user.id, 'AXE', 1);
+            const axeUpdate = await UsableItemHelper.use(user.id, 'AXE', 1);
             if (axeUpdate) {
                 const brokenDamage = -2;
                 const pointsDamageResult = await PointsHelper.addPointsByID(user.id, brokenDamage);

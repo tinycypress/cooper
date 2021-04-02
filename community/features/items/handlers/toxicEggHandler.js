@@ -4,12 +4,13 @@ import ChannelsHelper from "../../../../core/entities/channels/channelsHelper";
 import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import PointsHelper from "../../points/pointsHelper";
-import ItemsHelper from "../itemsHelper";
 
 import STATE from "../../../../core/state";
 import BuffsHelper from "../../conquest/buffsHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 
+// TODO: All eggs should extend base egg handler, same for food items / food item handlers.
 export default class ToxicEggHandler {
 
     static async onReaction(reaction, user) {
@@ -17,7 +18,7 @@ export default class ToxicEggHandler {
 
         if (reaction.emoji.name === 'toxic_egg') {
             try {
-                const didUse = await ItemsHelper.use(user.id, 'TOXIC_EGG', 1);
+                const didUse = await UsableItemHelper.use(user.id, 'TOXIC_EGG', 1);
                 if (!didUse) {
                     const unableText = `${user.username} tried to use a toxic egg, but has none.`;
                     MessagesHelper.selfDestruct(msg, unableText, 0, 5000);
@@ -30,7 +31,6 @@ export default class ToxicEggHandler {
                     // Base action text.
                     let actionInfoText = `${user.username} used a toxic egg on ${author.username}`;
                     
-
                     // Check if target has invincibility buff.
                     if (BuffsHelper.has('INVINCIBILITY', targetID)) {
 

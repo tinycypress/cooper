@@ -5,6 +5,7 @@ import TradeHelper from '../../community/features/economy/tradeHelper';
 import UsersHelper from '../../core/entities/users/usersHelper';
 import ChannelsHelper from '../../core/entities/channels/channelsHelper';
 import CHANNELS from '../../core/config/channels.json';
+import UsableItemHelper from '../../community/features/items/usableItemHelper';
 
 // TODO: Move to Reactions/Message helper.
 const userDesiredReactsFilter = (emojis = []) =>
@@ -93,6 +94,8 @@ export default class TradeCommand extends CoopCommand {
 
 			// TODO: Support moving all personal confirmations to DM.
 
+			// TODO: Refactor confirmation into something more abstracted and reuse it. :D
+
 			// Post the confirmation message and add reactions to assist interaction.
 			const confirmMsg = await MessagesHelper.selfDestruct(msg, confirmStr, 0, 30000);
 			MessagesHelper.delayReact(confirmMsg, '❎', 666);
@@ -145,7 +148,7 @@ export default class TradeCommand extends CoopCommand {
 				} else {
 					// Use the items to create a trade, so we can assume its always fulfillable,
 					//  the item becomes a trade credit note, can be converted back.
-					const didUse = await ItemsHelper.use(tradeeID, offerItemCode, offerQty);
+					const didUse = await UsableItemHelper.use(tradeeID, offerItemCode, offerQty);
 					if (didUse) {
 						const createdOfferID = await TradeHelper.create(
 							tradeeID, tradeeName,

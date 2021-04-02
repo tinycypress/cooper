@@ -40,6 +40,8 @@ export default class UseCommand extends CoopCommand {
 		const ownEnough = await ownEnoughGuard(msg.author, msg, itemCode, qty);
 		if (!ownEnough) return false;
 
+		// TODO: Assume that it will be used before .use() is fired and consume here and now via guard?
+
 		// TODO: ADD QTY TO THESE HANDLERS?
 		
 		// Item is usable, therefore use it.

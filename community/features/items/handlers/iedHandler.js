@@ -2,6 +2,7 @@ import ChannelsHelper from "../../../../core/entities/channels/channelsHelper";
 import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
 import PointsHelper from "../../points/pointsHelper";
 import ItemsHelper from "../itemsHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 export default class IEDHandler {
 
@@ -15,7 +16,7 @@ export default class IEDHandler {
         if (reaction.emoji.name === '💣') {
             try {
                 // TODO: Change the itemcode, wrong!
-                const didUse = await ItemsHelper.use(user.id, 'BOMB', 1);
+                const didUse = await UsableItemHelper.use(user.id, 'BOMB', 1);
                 if (!didUse) {
                     // TODO: Warn that the user is missing the item
                     return await reaction.users.remove(user.id);

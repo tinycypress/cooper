@@ -2,6 +2,7 @@ import ItemsHelper from '../../community/features/items/itemsHelper';
 import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
 import EMOJIS from '../../core/config/emojis.json';
+import UsableItemHelper from '../../community/features/items/usableItemHelper';
 
 export default class ItemsCommand extends CoopCommand {
 
@@ -31,6 +32,9 @@ export default class ItemsCommand extends CoopCommand {
 		});
 	}
 
+
+	// TODO: If no targer user provided, but first argument is valid item code
+		// then return that item type count owned by the person asking
 	async run(msg, { targetUser, itemCode }) {
 		super.run(msg);
 
@@ -41,6 +45,7 @@ export default class ItemsCommand extends CoopCommand {
 		const itemInput = ItemsHelper.interpretItemCodeArg(itemCode);
 
         try {
+
 			const name = targetUser.username;
 
 			// Retrieve all item counts that user owns.
@@ -58,7 +63,7 @@ export default class ItemsCommand extends CoopCommand {
 			}
 
 			// Check if itemCode valid to use.
-			if (!ItemsHelper.isUsable(itemInput))
+			if (!UsableItemHelper.isUsable(itemInput))
 				return MessagesHelper.selfDestruct(msg, `${name}, ${itemInput} seems invalid.`, 0, 5000);
 
 			// Check a specific item instead.

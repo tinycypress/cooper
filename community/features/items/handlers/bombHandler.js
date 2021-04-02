@@ -3,6 +3,7 @@ import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
 import BuffsHelper from "../../conquest/buffsHelper";
 import PointsHelper from "../../points/pointsHelper";
 import ItemsHelper from "../itemsHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 export default class BombHandler {
 
@@ -14,7 +15,7 @@ export default class BombHandler {
         
         if (reaction.emoji.name === '💣') {
             try {
-                const didUse = await ItemsHelper.use(user.id, 'BOMB', 1);
+                const didUse = await UsableItemHelper.use(user.id, 'BOMB', 1);
                 if (!didUse) {
                     MessagesHelper.selfDestruct(msg, `${user.username} lacks a bomb to use on ${target.username}`);
                     return await reaction.users.remove(user.id);

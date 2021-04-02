@@ -12,6 +12,7 @@ import PointsHelper from '../../points/pointsHelper';
 import ServerHelper from '../../../../core/entities/server/serverHelper';
 import MessagesHelper from '../../../../core/entities/messages/messagesHelper';
 import ChannelsHelper from '../../../../core/entities/channels/channelsHelper';
+import UsableItemHelper from '../../items/usableItemHelper';
 
 
 export const EGG_DATA = {
@@ -66,7 +67,7 @@ export default class EggHuntMinigame {
             if (isEggCollectible && isBombEmoji) this.explode(reaction, user);
 
             // Prevent collection of dropped egg effects (cyclical).
-            const wasDropped = ItemsHelper.isDroppedItemMsg(reaction.message);
+            const wasDropped = UsableItemHelper.isDroppedItemMsg(reaction.message);
 
             // Disallow egghunt effects on dropped eggs.
             const egghuntDroppedEgg = isEggCollectible && isBasketEmoji && !wasDropped;
@@ -165,7 +166,7 @@ export default class EggHuntMinigame {
     static async fry(reaction, user) {
         try {
             // Attempt to use the laxative item
-            const didUsePan = await ItemsHelper.use(user.id, 'FRYING_PAN', 1);
+            const didUsePan = await UsableItemHelper.use(user.id, 'FRYING_PAN', 1);
     
             // Respond to usage result.
             if (didUsePan) {

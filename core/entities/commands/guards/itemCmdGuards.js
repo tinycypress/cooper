@@ -1,4 +1,5 @@
 import ItemsHelper from '../../../../community/features/items/itemsHelper';
+import UsableItemHelper from '../../../../community/features/items/usableItemHelper';
 import MessagesHelper from '../../messages/messagesHelper';
 import ServerHelper from '../../server/serverHelper';
 import UsersHelper from '../../users/usersHelper';
@@ -27,7 +28,7 @@ export async function useManyGuard(user, msg, itemManifest) {
             };
 
             // Indicate guard failed.
-            const wasUsed = await ItemsHelper.use(user.id, itemCode, itemManifestQty);
+            const wasUsed = await UsableItemHelper.use(user.id, itemCode, itemManifestQty);
             if (wasUsed) result.used = true;
 
             return result;
@@ -133,7 +134,7 @@ export async function ownEnoughManyGuard(user, msg, itemManifest) {
 export async function didUseGuard(user, itemCode, msgRef, reactEmoji = null) {
     try {
         // Attempt to use the shield item
-        const didUseItem = await ItemsHelper.use(user.id, itemCode, 1);
+        const didUseItem = await UsableItemHelper.use(user.id, itemCode, 1);
     
         // Provide error feedback, since this prevents action.
         if (didUseItem) return true;
@@ -162,7 +163,7 @@ export async function ownNoneErrorFeedback(msgRef, itemCode, username, reactEmoj
 
 export function usableItemCodeGuard(msgRef, itemCode, username) {
     // Check if this item code can be given.
-    if (!ItemsHelper.isUsable(itemCode) || itemCode === null) {
+    if (!UsableItemHelper.isUsable(itemCode) || itemCode === null) {
         const errorText = `${username}, ${itemCode} is not a usable/matching item code.`;
         return MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
     }
@@ -183,14 +184,14 @@ export const itemQtyArg = {
     prompt: 'Please enter item quantity.',
     type: 'float',
     default: 1
-}
+};
 
 export const itemQtyArgInt = {
     key: 'qty',
     prompt: 'Please enter item quantity.',
     type: 'integer',
     default: 1
-}
+};
 
 export const itemCodeArg = {
     key: 'itemCode',

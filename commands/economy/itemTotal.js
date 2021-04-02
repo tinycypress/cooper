@@ -1,4 +1,5 @@
 import ItemsHelper from '../../community/features/items/itemsHelper';
+import UsableItemHelper from '../../community/features/items/usableItemHelper';
 import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
 import ServerHelper from '../../core/entities/server/serverHelper';
@@ -26,7 +27,7 @@ export default class ItemTotalCommand extends CoopCommand {
 	}
 
 	static async getStat(itemCode) {
-		if (!ItemsHelper.getUsableItems().includes(itemCode)) 
+		if (!UsableItemHelper.getUsableItems().includes(itemCode)) 
 			return 'Invalid item code. ' + itemCode;
 
 		const total = await ItemsHelper.count(itemCode);
@@ -46,7 +47,7 @@ export default class ItemTotalCommand extends CoopCommand {
 		const parsedItemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
 		// TODO: Convert into invalid item code guard and REUSE FFS!!
-		if (!ItemsHelper.isUsable(parsedItemCode)) {
+		if (!UsableItemHelper.isUsable(parsedItemCode)) {
 			const invalidText = `${itemCode} does not exist, please provide a valid item code.`;
 			return MessagesHelper.selfDestruct(msg, invalidText, 0, 5000);
 		}

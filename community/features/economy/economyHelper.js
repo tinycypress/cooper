@@ -1,12 +1,12 @@
 import ItemTotalCommand from "../../../commands/economy/itemTotal";
 import ChannelsHelper from "../../../core/entities/channels/channelsHelper";
 import STATE from "../../../core/state";
-import ItemsHelper from "../items/itemsHelper";
+import UsableItemHelper from "../items/usableItemHelper";
 
 export default class EconomyHelper {
 
     static async circulation() {
-        const items = ItemsHelper.getUsableItems();
+        const items = UsableItemHelper.getUsableItems();
         const itemCode = STATE.CHANCE.pickone(items);
         const stat = await ItemTotalCommand.getStat(itemCode);
 

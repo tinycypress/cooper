@@ -6,13 +6,14 @@ import { EGG_DATA } from '../../minigame/small/egghunt';
 import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import UsersHelper from "../../../../core/entities/users/usersHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 export default class LegendaryEggHandler {
 
     static async onReaction(reaction, user) {
         if (reaction.emoji.name === 'legendary_egg') {
             try {
-                const didUse = await ItemsHelper.use(user.id, 'LEGENDARY_EGG', 1);
+                const didUse = await UsableItemHelper.use(user.id, 'LEGENDARY_EGG', 1);
                 if (!didUse) {
                     const failureText = `${user.username} tried to use a legendary egg, but has none l-`;
                     MessagesHelper.selfDestruct(reaction.message, failureText, 0, 5000);

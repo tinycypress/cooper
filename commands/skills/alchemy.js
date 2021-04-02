@@ -1,5 +1,6 @@
 import DropTable from '../../community/features/items/droptable';
 import ItemsHelper from '../../community/features/items/itemsHelper';
+import UsableItemHelper from '../../community/features/items/usableItemHelper';
 import ChannelsHelper from '../../core/entities/channels/channelsHelper';
 import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
@@ -55,7 +56,7 @@ export default class AlchemyCommand extends CoopCommand {
 		const rewardQty = drop.qty * alcQty;
 
 		// Take the ingredients from the user.
-		const didUse = await ItemsHelper.use(msg.author.id, itemCode, qty);
+		const didUse = await UsableItemHelper.use(msg.author.id, itemCode, qty);
 		if (!didUse)
 			return MessagesHelper.selfDestruct(msg, 'Not enough eggs.')
 

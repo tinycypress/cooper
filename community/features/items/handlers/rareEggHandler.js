@@ -8,13 +8,14 @@ import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
 import EMOJIS from "../../../../core/config/emojis.json";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import UsersHelper from "../../../../core/entities/users/usersHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 export default class RareEggHandler {
 
     static async onReaction(reaction, user) {
         if (reaction.emoji.name === 'rare_egg') {
             try {
-                const didUse = await ItemsHelper.use(user.id, 'RARE_EGG', 1);
+                const didUse = await UsableItemHelper.use(user.id, 'RARE_EGG', 1);
                 if (!didUse) {
                     const failureText = `${user.username} tried to use a rare egg, but has none...`;
                     MessagesHelper.selfDestruct(reaction.message, failureText, 0, 5000);

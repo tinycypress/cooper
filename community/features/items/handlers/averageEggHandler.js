@@ -7,6 +7,7 @@ import ItemsHelper from "../itemsHelper";
 import EMOJIS from "../../../../core/config/emojis.json";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import UsersHelper from "../../../../core/entities/users/usersHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 
 // TODO: Make into "ReactionUsableItem" and add callback
@@ -17,7 +18,7 @@ export default class AverageEggHandler {
     static async onReaction(reaction, user) {
         if (reaction.emoji.name === 'average_egg') {
             try {
-                const didUse = await ItemsHelper.use(user.id, 'AVERAGE_EGG', 1);
+                const didUse = await UsableItemHelper.use(user.id, 'AVERAGE_EGG', 1);
                 if (!didUse) {
                     const failureText = `${user.username} tried to use an average egg, but has none. Lul.`;
                     MessagesHelper.selfDestruct(reaction.message, failureText);

@@ -10,6 +10,7 @@ import EconomyNotifications from "../economyNotifications";
 import ServerHelper from "../../../../core/entities/server/serverHelper";
 import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import SkillsHelper from "../../skills/skillsHelper";
+import UsableItemHelper from "../../items/usableItemHelper";
 
 
 export default class MiningMinigame {
@@ -65,7 +66,7 @@ export default class MiningMinigame {
         // Test the pickaxe for breaking.
         const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });
         if (didBreak) {
-            const pickaxeUpdate = await ItemsHelper.use(user.id, 'PICK_AXE', 1);
+            const pickaxeUpdate = await UsableItemHelper.use(user.id, 'PICK_AXE', 1);
             if (pickaxeUpdate) {
                 const brokenPickDamage = -2;
                 const pointsDamageResult = await PointsHelper.addPointsByID(user.id, brokenPickDamage);

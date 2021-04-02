@@ -4,12 +4,13 @@ import STATE from "../../../../core/state";
 
 import CratedropMinigame from "../../minigame/small/cratedrop";
 import ItemsHelper from "../itemsHelper";
+import UsableItemHelper from "../usableItemHelper";
 
 export default class FlareHandler {
 
     static async use(commandMsg, user) {
         // Attempt to use the laxative item
-        const didUseFlare = await ItemsHelper.use(user.id, 'FLARE', 1);
+        const didUseFlare = await UsableItemHelper.use(user.id, 'FLARE', 1);
 
         // Respond to usage result.
         if (didUseFlare) {

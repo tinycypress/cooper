@@ -15,6 +15,7 @@ import ElectionHelper from '../../features/hierarchy/election/electionHelper';
 import AboutHelper from '../../features/server/aboutHelper';
 import LinkPreviewFilter from '../../features/messages/linkPreviewFilter';
 import InstantFurnaceMinigame from '../../features/minigame/small/instantfurnace';
+import UsableItemHelper from '../../features/items/usableItemHelper';
 
 
 export default async function reactAddedHandler(reaction, user) {
@@ -22,7 +23,7 @@ export default async function reactAddedHandler(reaction, user) {
 
     try {      
         // Check for usable items being exercised.
-        ItemsHelper.onReaction(reaction, user);
+        UsableItemHelper.onReaction(reaction, user);
 
         // Reaction based minigame react processors.
         EggHuntMinigame.onReaction(reaction, user);
