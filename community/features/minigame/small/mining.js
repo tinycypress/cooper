@@ -119,8 +119,9 @@ export default class MiningMinigame {
             else await msg.delete();
             
             // Provide feedback.
+            const metalOreEmoji = MessagesHelper._displayEmojiCode('METAL_ORE');
             const actionText = `${user.username} successfully mined a rock.`;
-            const rewardText = `+1 point (${addPoints}), +${extractedOreNum} metal ore (${addMetalOre})!`;
+            const rewardText = `+1 point (${addPoints}), +${extractedOreNum} ${metalOreEmoji} (${addMetalOre})!`;
             ChannelsHelper.propagate(msg, `${actionText} ${rewardText}`, 'ACTIONS');
         }
     }

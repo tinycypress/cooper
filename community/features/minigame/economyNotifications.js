@@ -1,4 +1,5 @@
 import ChannelsHelper from "../../../core/entities/channels/channelsHelper";
+import MessagesHelper from "../../../core/entities/messages/messagesHelper";
 import STATE from "../../../core/state";
 
 // EGGS FOUND
@@ -16,6 +17,8 @@ import STATE from "../../../core/state";
     // Diamonds and broken pickaxes
     // Update total data
     // Diamonds and broken pickaxes
+
+const coopEmoji = MessagesHelper._displayEmojiCode('COOP');
 
 export default class EconomyNotifications {
   
@@ -46,7 +49,7 @@ export default class EconomyNotifications {
                     Object.keys(woodcutting.users)
                         .map(wcUserID => {
                             const wcUser = woodcutting.users[wcUserID];
-                            return `${wcUser.username} +${wcUser.points}P ${wcUser.cut}x:wood:`;
+                            return `${wcUser.username} ${wcUser.points}x${coopEmoji} ${wcUser.cut}x:wood:`;
                         })
                         .join(', ') +
 
@@ -55,6 +58,10 @@ export default class EconomyNotifications {
 
             if (STATE.EVENTS_HISTORY['MINING']) {
                 const mining = STATE.EVENTS_HISTORY['MINING'];
+
+
+
+                const metalOreEmoji = MessagesHelper._displayEmojiCode('METAL_ORE');
 
                 notificationString += `**Latest Mining Totals:**\n` +
                     `Hits: ${mining.totals.hits}\n` +
@@ -68,7 +75,7 @@ export default class EconomyNotifications {
                         .map(mnUserID => {
                             const mnUser = mining.users[mnUserID];
                             // TODO: Add metal ore and diamonds here (emojis display):
-                            return `${mnUser.username} +${mnUser.points}P +${mnUser.mined}OM`;
+                            return `${mnUser.username} ${mnUser.points}x${coopEmoji} ${mnUser.mined}x${metalOreEmoji}`;
                         })
                         .join(', ') +
 
@@ -168,8 +175,6 @@ export default class EconomyNotifications {
     static updateWoodcutting(woodcuttingEvent) {
         const userID = woodcuttingEvent.playerID;
 
-        console.log(woodcuttingEvent);
-
         if (typeof STATE.EVENTS_HISTORY['WOODCUTTING'] === 'undefined') {
             STATE.EVENTS_HISTORY['WOODCUTTING'] = {
                 users: {
@@ -178,7 +183,8 @@ export default class EconomyNotifications {
                 totals: {
                     cut: woodcuttingEvent.recWood || 0,
                     brokenAxes: woodcuttingEvent.brokenAxes || 0,
-                    points: woodcuttingEvent.pointGain || 0
+                    points: woodcuttingEvent.pointGain || 0,
+                    hits: 0
                 }
             }
         }
@@ -213,6 +219,12 @@ export default class EconomyNotifications {
 
         if (typeof woodcuttingEvent.brokenAxes !== 'undefined')
             STATE.EVENTS_HISTORY['WOODCUTTING'].totals.brokenAxes += woodcuttingEvent.brokenAxes;
+
+            
+        // TODO: This shouldn't be updated if adding a broken axe event.
+
+        // Updated every hit, so track hits.
+        STATE.EVENTS_HISTORY['WOODCUTTING'].totals.hits++;
     }
 
     static updateCrateDrop(crateDropEvent) {
