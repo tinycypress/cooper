@@ -34,11 +34,11 @@ export default class UseCommand extends CoopCommand {
 
 		// Rely on is usable item guard and its feedback/error message.
 		const isUsable = usableItemCodeGuard(msg, itemCode, msg.author.username);
-		if (!isUsable) return false;
+		if (!isUsable) return null;
 
 		// Rely on own enough item qty guard and its feedback/error message.
 		const ownEnough = await ownEnoughGuard(msg.author, msg, itemCode, qty);
-		if (!ownEnough) return false;
+		if (!ownEnough) return null;
 
 		// TODO: Assume that it will be used before .use() is fired and consume here and now via guard?
 
