@@ -59,7 +59,8 @@ export default class SkillScoresCommand extends CoopCommand {
 				const skillLeaderboardText = `**Top ${15 + position} ${skill} XP skillers**\n\n` + 
 					skillLeaderboard.map((skillRow, index) => {
 						const { user } = UsersHelper._get(skillRow.player_id);
-						return `#${(index + 1) + position}: ${user.username} ${skillRow[skill]}XP\n`;
+						const xp = skillRow[skill] ? skillRow[skill] : 0;
+						return `#${(index + 1) + position}: ${user.username} ${xp}XP\n`;
 					});
 
 				return MessagesHelper.selfDestruct(msg, skillLeaderboardText);
