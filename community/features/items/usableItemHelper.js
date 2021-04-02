@@ -142,7 +142,7 @@ export default class UsableItemHelper {
 
             // Format and display success message temporarily to channel and as a record in actions channel.
             const emojiText = MessagesHelper.emojiText(emojiID);
-            const displayItemCode = this.escCode(itemCode);
+            const displayItemCode = ItemsHelper.escCode(itemCode);
 
             ChannelsHelper.propagate(
                 reaction.message,
