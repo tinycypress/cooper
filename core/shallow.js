@@ -45,24 +45,6 @@ const shallowBot = async () => {
 
         // RPG
         // Level up detection and reward on being first to get 99
-
-        
-        // Leaderboards for skill xp ALL and SPECIFIC
-
-        // const skillLeaderboard = await SkillsHelper.getSkillXPLeaderboard('crafting');
-        // console.log(skillLeaderboard);
-
-        const totalLeaderboard = await SkillsHelper.getTotalXPLeaderboard();
-        console.log(totalLeaderboard);
-
-
-        // SkillsHelper.addXP('786671654721683517', 'crafting', 1);
-
-
-        // EXP TO NEXT LEVEL COMMAND
-        // EXP TO LEVEL CONVERT COMMAND
-        // LEVEL TO EXP CONVERT COMMAND
-        // Give crafting, woodcutting, mining EXP.
         
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
