@@ -44,7 +44,7 @@ export default class RPGHandler {
 
         // TODO: Add an effect here for RPG
         const rpgEmojiText = MessagesHelper._displayEmojiCode('RPG');
-        const targetName = target.id === user.id ? 'their self' : target.username;
+        const targetName = target.id === attacker.id ? 'their self' : target.username;
         const successText = `${attacker.username} used an ${rpgEmojiText} RPG on ${targetName}, blasting them and potentially starting a chain reaction!`;
         MessagesHelper.selfDestruct(msg, successText, 0, 15000);
 
