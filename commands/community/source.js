@@ -153,7 +153,7 @@ export default class SourceCommand extends CoopCommand {
 					const attachment = new MessageAttachment(fileBuffer, fileNameExt);
 
 					// Send the file.
-					msg.channel.send(`Source code file ${filePath}\n${gitBaseUrl}${filePath}`, attachment);
+					msg.channel.send(`Source code file ${filePath}\n<${gitBaseUrl}${filePath}>`, attachment);
 				}
 			}
 
