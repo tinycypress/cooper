@@ -3,6 +3,8 @@ import MessagesHelper from '../../core/entities/messages/messagesHelper';
 
 // Work around due to Heroku hosting not seeming to like fs/promises import.
 import { default as fsWithCallbacks } from 'fs';
+import Path from 'path';
+
 import { MessageAttachment } from 'discord.js';
 const fs = fsWithCallbacks.promises
 
@@ -28,7 +30,7 @@ export default class SourceCommand extends CoopCommand {
 			examples: ['source', 'source example'],
 			args: [
 				{
-					key: 'path',
+					key: 'filePath',
 					prompt: 'Please provide the path you want sauce for:',
 					type: 'string',
 					default: './'
@@ -81,7 +83,7 @@ export default class SourceCommand extends CoopCommand {
 		}
 	}
 
-	async run(msg, { path }) {
+	async run(msg, { filePath }) {
 		super.run(msg);
 
 		try {
@@ -93,23 +95,23 @@ export default class SourceCommand extends CoopCommand {
 			// 	.replace('!source ', '').trim();
 
 			// If intended path is a folder, show the files in that folder instead.
-			if (isFolder(path)) {
+			if (isFolder(filePath)) {
 
-				const rawFolderContent = await SourceCommand.getFolderContent(path);
+				const rawFolderContent = await SourceCommand.getFolderContent(filePath);
 
 				// Guard invalid path.
 				if (!rawFolderContent) 
-					return MessagesHelper.selfDestruct(msg, `Could not load the folder (${path}).`, 0, 5000);
+					return MessagesHelper.selfDestruct(msg, `Could not load the folder (${filePath}).`, 0, 5000);
 	
 				// Decide if it will fit in an embed or not.
 				if (rawFolderContent.length > 0) {
 					// Form the folder content feedback.
-					const folderContent = `**Cooper's source (${path}):**\n` +
-						`<${gitBaseUrl}${path.replace('./', '')}>\n\n` +
+					const folderContent = `**Cooper's source (${filePath}):**\n` +
+						`<${gitBaseUrl}${filePath.replace('./', '')}>\n\n` +
 
 						// TODO: Add distance/breadcrumbs from root here.
 
-						`-- :file_folder: ${path}\n` +
+						`-- :file_folder: ${filePath}\n` +
 						`${rawFolderContent
 							.filter(folderItem => folderItem.indexOf('node_modules') === -1)
 							.filter(folderItem => folderItem.indexOf('@1') === -1)
@@ -125,25 +127,25 @@ export default class SourceCommand extends CoopCommand {
 					MessagesHelper.selfDestruct(msg, folderContent, 0, 10000);
 
 				} else 
-					MessagesHelper.selfDestruct(msg, `${path} is empty/invalid folder.`, 0, 10000);
+					MessagesHelper.selfDestruct(msg, `${filePath} is empty/invalid folder.`, 0, 10000);
 				
 			// File loading intended instead.
 			} else {
 				// Load the raw file source code.
-				const rawFileContent = await SourceCommand.getFileContent(path);
+				const rawFileContent = await SourceCommand.getFileContent(filePath);
 	
 				// Add file path comment to the top of the code.
-				const fileContent = `// ${path}\n// ${gitBaseUrl}${path}\n\n`;
+				const fileContent = `// ${filePath}\n// ${gitBaseUrl}${filePath}\n\n`;
 	
 				// Guard invalid path.
 				if (!rawFileContent) 
-					return MessagesHelper.selfDestruct(msg, `Could not load the file for ${path}.`, 0, 10000);
+					return MessagesHelper.selfDestruct(msg, `Could not load the file for ${filePath}.`, 0, 10000);
 	
 				// TODO: Try to support returning documentation and syntax of a js class function.
 
 				// Decide if it will fit in an embed or not.
 				if (rawFileContent.length > 1000 - 20)
-					MessagesHelper.selfDestruct(msg, fileContent.replace(gitBaseUrl + path, `<${gitBaseUrl + path}>`)
+					MessagesHelper.selfDestruct(msg, fileContent.replace(gitBaseUrl + filePath, `<${gitBaseUrl + filePath}>`)
 						+ `Source code too verbose (${rawFileContent.length}/980 chars), please view on Github.`, 0, 10000);
 				else {
 
@@ -153,13 +155,14 @@ export default class SourceCommand extends CoopCommand {
 					// 	{ files: [Buffer.from(await result.buffer())] 
 					// });
 
-					console.log(path);
+					console.log(filePath);
 
 					const fileBuffer = Buffer.from(rawFileContent, 'utf-8');
-					const attachment = new MessageAttachment(fileBuffer, path);
+					const fileNameExt = Path.basename(filePath);
+					const attachment = new MessageAttachment(fileBuffer, fileNameExt);
 
 					// Send the file.
-					msg.send('Source code file ' + path, attachment);
+					msg.send('Source code file ' + filePath, attachment);
 
 					// MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 0, 10000);
 				}
