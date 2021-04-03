@@ -144,8 +144,23 @@ export default class SourceCommand extends CoopCommand {
 				if (rawFileContent.length > 1000 - 20)
 					MessagesHelper.selfDestruct(msg, fileContent.replace(gitBaseUrl + path, `<${gitBaseUrl + path}>`)
 						+ `Source code too verbose (${rawFileContent.length}/980 chars), please view on Github.`, 0, 10000);
-				else 
-					MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 0, 10000);
+				else {
+					// Code isn't too long, send the file!
+					// msg.send(
+					// 	"**!calc result for " + queryString + "**:", 
+					// 	{ files: [Buffer.from(await result.buffer())] 
+					// });
+
+					console.log(path);
+
+					const fileBuffer = Buffer.from(rawFileContent, 'utf-8');
+					const attachment = new MessageAttachment(fileBuffer, path);
+					
+					// Send the file.
+					msg.send('Source code file ' + path, attachment);
+					
+					// MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 0, 10000);
+				}
 			}
 
 

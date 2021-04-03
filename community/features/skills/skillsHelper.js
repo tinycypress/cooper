@@ -10,7 +10,8 @@ export const SKILLS = {
     MINING: {},  
     WOODCUTTING: {},
     FISHING: {},
-    HUNTING: {}
+    HUNTING: {},
+    COOKING: {}
 };
 
 export const DEFAULT_LEVEL = 1;

@@ -70,7 +70,6 @@ export default class ItemsCommand extends CoopCommand {
 			const itemQty = await ItemsHelper.getUserItemQty(targetUser.id, itemInput);
 			
 			// Send specific item count.
-
 			const emoji = MessagesHelper.emojiText(EMOJIS[itemInput]);
 			if (itemQty > 0)  
 				return MessagesHelper.selfDestruct(msg, `${name} owns ${itemQty}x${itemInput} ${emoji}.`, 0, 5000);

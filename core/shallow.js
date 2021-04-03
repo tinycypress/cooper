@@ -2,11 +2,7 @@ import { Client } from 'discord.js-commando';
 import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
-import SkillsHelper from '../community/features/skills/skillsHelper';
-import RPGHandler from '../community/features/items/handlers/rpgHandler';
-import SacrificeHelper from '../community/features/events/sacrificeHelper';
-import ItemsHelper from '../community/features/items/itemsHelper';
-import EggHuntMinigame from '../community/features/minigame/small/egghunt';
+import UsersHelper from './entities/users/usersHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -37,6 +33,7 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Add bag emoji/bag word shows items via direct message.
+
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
