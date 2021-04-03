@@ -3,6 +3,7 @@ import MessagesHelper from '../../core/entities/messages/messagesHelper';
 
 // Work around due to Heroku hosting not seeming to like fs/promises import.
 import { default as fsWithCallbacks } from 'fs';
+import { MessageAttachment } from 'discord.js';
 const fs = fsWithCallbacks.promises
 
 const isFolder = (path) => {
@@ -145,6 +146,7 @@ export default class SourceCommand extends CoopCommand {
 					MessagesHelper.selfDestruct(msg, fileContent.replace(gitBaseUrl + path, `<${gitBaseUrl + path}>`)
 						+ `Source code too verbose (${rawFileContent.length}/980 chars), please view on Github.`, 0, 10000);
 				else {
+
 					// Code isn't too long, send the file!
 					// msg.send(
 					// 	"**!calc result for " + queryString + "**:", 
@@ -155,10 +157,10 @@ export default class SourceCommand extends CoopCommand {
 
 					const fileBuffer = Buffer.from(rawFileContent, 'utf-8');
 					const attachment = new MessageAttachment(fileBuffer, path);
-					
+
 					// Send the file.
 					msg.send('Source code file ' + path, attachment);
-					
+
 					// MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 0, 10000);
 				}
 			}

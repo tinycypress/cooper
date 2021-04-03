@@ -2,21 +2,21 @@ import CoopCommand from '../../core/entities/coopCommand';
 import MessagesHelper from '../../core/entities/messages/messagesHelper';
 import UsersHelper from '../../core/entities/users/usersHelper';
 
-export default class ItemsCommand extends CoopCommand {
+export default class HealthCommand extends CoopCommand {
 
 	constructor(client) {
 		super(client, {
-			name: 'items',
+			name: 'health',
 			group: 'economy',
-			memberName: 'items',
-			aliases: ['eggs', 'inv', 'inventory', 'i'],
+			memberName: 'health',
+			aliases: ['h', 'hlt', 'hlth'],
 			description: 'polls will always be stolen at The Coop by those who demand them.',
-			details: `Details of the items command`,
-			examples: ['items', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
+			details: `Details of the health command`,
+			examples: ['health', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
 			args: [
 				{
 					key: 'targetUser',
-					prompt: 'Whose items are you trying to check?',
+					prompt: 'Whose health are you trying to check?',
 					type: 'user',
 					default: ''
 				}

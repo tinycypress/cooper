@@ -23,7 +23,8 @@ export default () => {
             ['misc', 'Miscellaneous'],
             ['points', 'Points'],
             ['mod', 'Moderation'],
-            ['info', 'Information']
+            ['info', 'Information'],
+            ['conquest', 'Conquest']
         ])
         
         // Register default types for args usage.
