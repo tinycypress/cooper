@@ -62,6 +62,11 @@ export default class CraftingHelper {
 
         // Check ingredients are sufficient.
         const sufficiencyChecks = ownedIngredients.map(ingred => {
+            // Filter out unowned items.
+            if (!ingred) return false;
+
+            console.log(ingred);
+
             // Check sufficiency
             const req = ingredients[ingred.item_code] * qty;
             const owned = ingred.quantity;
