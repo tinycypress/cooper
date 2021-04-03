@@ -39,6 +39,9 @@ export default class CraftCommand extends CoopCommand {
 		// Shorthand for feedback.
 		const username = msg.author.username;
 
+		// Cap the number at 0 minimum and refactor into a common guard/validator.
+		qty = Math.max(qty, 0);
+
 		try {
 			// Check if emoji and handle emoji inputs.
 			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);

@@ -162,7 +162,7 @@ export default class SourceCommand extends CoopCommand {
 					const attachment = new MessageAttachment(fileBuffer, fileNameExt);
 
 					// Send the file.
-					msg.send('Source code file ' + filePath, attachment);
+					msg.channel.send('Source code file ' + filePath, attachment);
 
 					// MessagesHelper.selfDestruct(msg, `\`\`\`js\n${fileContent + rawFileContent}\n\`\`\``, 0, 10000);
 				}
