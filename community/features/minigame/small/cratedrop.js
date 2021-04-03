@@ -168,9 +168,11 @@ export default class CratedropMinigame {
                     const rewardItemsNum = STATE.CHANCE.natural({ min: 0, max: crate.maxReward });
                     const rewardsKeys = STATE.CHANCE.pickset(crate.rewards, rewardItemsNum);
 
-                    listLootString += `${user.username}'s loot: `;
-
+                    // Only add this string if the user gained a reward (exclude empty crates).
                     if (rewardItemsNum > 0) {
+                        // Begin the loot string section for this user.
+                        listLootString += `${user.username}'s loot: `;
+
                         // Grant rewards to users with a random quantity.
                         listLootString += (rewardsKeys.map((rewardItem) => {
                             const rewardQty = STATE.CHANCE.natural({ min: 1, max: crate.maxReward });
@@ -185,9 +187,9 @@ export default class CratedropMinigame {
                             const itemEmoji = MessagesHelper._displayEmojiCode(rewardItem);
                             return `${itemEmoji} ${rewardItem}x${rewardQty}`;
                         }).join(', '));
-                    }
 
-                    listLootString += '.\n';
+                        listLootString += '.\n';
+                    }
                 });
         
             }

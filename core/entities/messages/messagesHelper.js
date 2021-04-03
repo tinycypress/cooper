@@ -132,6 +132,8 @@ export default class MessagesHelper {
     }
 
     static delayDelete(msg, delay = 666) {
+        // TODO: Check if message is in a DM... since these can't be deleted.
+        // TODO: This should definitely be applied to temp_messages too, since... can't be deleted.
         if (msg) setTimeout(async () => { 
             try {
                 if (typeof msg.delete === 'function') await msg.delete();
