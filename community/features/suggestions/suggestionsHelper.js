@@ -27,9 +27,18 @@ export default class SuggestionsHelper {
         // Get last 25 suggestions to check through.
         const candidates = Array.from(await ChannelsHelper._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
         let processedOne = false;
+
+        // TODO: Make sure 
+
         candidates.map((suggestion, index) => {
             if (!processedOne) {
                 const dayMs = ((60 * 60) * 72) * 1000;
+
+                // Prevent invalid suggestions being processed (again?).
+                if (!suggestion) return false;
+                if (!suggestion.createdAt) return false;
+
+                // Process 
                 if (Date.now() - dayMs >= suggestion.createdAt.getTime()) {
                     const votes = this.parseVotes(suggestion);
                     if (votes.rejected) this.reject(suggestion, votes, index);

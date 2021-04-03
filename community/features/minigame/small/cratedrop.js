@@ -181,9 +181,10 @@ export default class CratedropMinigame {
                             // Give the user the item via the database.
                             ItemsHelper.add(user.id, rewardItem, rewardQty);
 
+                            // Get the item emoji.
                             const itemEmoji = MessagesHelper._displayEmojiCode(rewardItem);
                             return `${itemEmoji} ${rewardItem}x${rewardQty}`;
-                        }).map(', '));
+                        }).join(', '));
                     }
 
                     listLootString += '.\n';

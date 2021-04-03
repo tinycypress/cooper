@@ -152,6 +152,7 @@ export default class ChannelsHelper {
         if (!this.checkIsByCode(msgRef.channel.id, recordChan)) {
             const feedbackMsg = await msgRef.say(text);
             if (selfDestruct) MessagesHelper.delayDelete(feedbackMsg, 15000);
+            return feedbackMsg;
         }
         return this._postToChannelCode(recordChan, text, 666);
     }

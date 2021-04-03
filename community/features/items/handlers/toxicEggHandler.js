@@ -48,7 +48,7 @@ export default class ToxicEggHandler {
                     const updatedPoints = await PointsHelper.addPointsByID(targetID, damage);
 
                     const popularity = ReactionHelper.countType(msg, '☢️');
-                    if (popularity < 3) MessagesHelper.delayReactionRemove(reaction, 333);
+                    if (popularity <= 3) MessagesHelper.delayReactionRemove(reaction, 333);
 
 
                     // Add visuals animation
@@ -60,11 +60,8 @@ export default class ToxicEggHandler {
 
                     const feedbackMsgText = `${actionInfoText}: ${damageInfoText}.`;
 
-                    if (!ChannelsHelper.checkIsByCode(msg.channel.id, 'ACTIONS')) {
-                        const feedbackMsg = await MessagesHelper.selfDestruct(msg, feedbackMsgText, 5000);
-                        MessagesHelper.delayReact(feedbackMsg, '☢️', 1333);
-                    }
-                    await ChannelsHelper._postToChannelCode('ACTIONS', feedbackMsgText);
+                    const feedbackMsg = await ChannelsHelper.propagate(msg, feedbackMsgText, 'ACTIONS', true);
+                    MessagesHelper.delayReact(feedbackMsg, '☢️', 1333);
                 }
             } catch(e) {
                 console.error(e);
