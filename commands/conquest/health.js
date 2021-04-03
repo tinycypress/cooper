@@ -35,7 +35,7 @@ export default class HealthCommand extends CoopCommand {
 			const name = targetUser.username;
 
 			// Load their health.
-			const health = await UsersHelper.getField(targetUser.id, 'health');
+			const health = await UsersHelper.getField(targetUser.id, 'health') || 100;
 
 			// Return the health figure.
 			MessagesHelper.selfDestruct(msg, `${name}'s health is: ${health}.`);
