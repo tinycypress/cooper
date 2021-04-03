@@ -1,4 +1,5 @@
 import ITEMS from '../../../../core/config/items.json';
+import ChannelsHelper from '../../../../core/entities/channels/channelsHelper';
 import { didUseGuard } from '../../../../core/entities/commands/guards/itemCmdGuards';
 import MessagesHelper from '../../../../core/entities/messages/messagesHelper';
 import UsersHelper from '../../../../core/entities/users/usersHelper';
@@ -46,7 +47,8 @@ export default class RPGHandler {
         const rpgEmojiText = MessagesHelper._displayEmojiCode('RPG');
         const targetName = target.id === attacker.id ? 'their self' : target.username;
         const successText = `${attacker.username} used an ${rpgEmojiText} RPG on ${targetName}, blasting them and potentially starting a chain reaction!`;
-        MessagesHelper.selfDestruct(msg, successText, 0, 15000);
+
+        ChannelsHelper.propagate(msg, successText, 'ATTACKS', true);
 
 
         // if (BuffsHelper.has('INVINCIBILITY', targetID))
