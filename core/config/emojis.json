@@ -22,6 +22,7 @@
     "AVERAGE_EGG": ":average_egg:764511545522257932",
     "TOXIC_EGG": ":toxic_egg:766078771467386911",
     "CHRISTMAS_EGG": ":christmas_egg:789665936990535721",
+    "EASTER_EGG": ":easter_egg:828341042079203388",
 
     "LEGENDARY_CRATE": ":legendary_crate:766749241774178345",
     "LEGENDARY_CRATE_OPEN": ":legendary_crate_open:766749242198720573",
@@ -54,6 +55,7 @@
     "STEEL_BAR": ":steel_bar:796486327620599878",
     "SILVER_BAR": ":silver_bar:796486327491231774",
     "GOLD_BAR": ":gold_bar:796486326617636884",
+
 
     "DIAMOND": ":diamond:796490891317608499",
     "WOOD": ":wood:",

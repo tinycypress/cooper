@@ -4,6 +4,7 @@ import STATE from './state';
 import dotenv from 'dotenv';
 import UsersHelper from './entities/users/usersHelper';
 import CratedropMinigame from '../community/features/minigame/small/cratedrop';
+import ItemsHelper from '../community/features/items/itemsHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -34,7 +35,9 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Add bag emoji/bag word shows items via direct message.
-        CratedropMinigame.drop();
+        // Try to ping leaders msg.channel.send("<@&724394130465357915>", {allowedMentions: { roles: []}})
+
+        ItemsHelper.add('763258365186801694', 'EASTER_EGG', 1);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

@@ -56,8 +56,7 @@ export default class RolesHelper {
         try {
             const member = UsersHelper._getMemberByID(userID);
 
-            console.log('Toggling role ' + roleCode);
-
+            // TODO: Track roles self-changed as statistic.
             if (!member) return false;
             if (!Object.keys(ROLES).includes(roleCode)) return false;
     

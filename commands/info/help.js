@@ -70,7 +70,7 @@ export default class HelpCommand extends CoopCommand {
 			.map(cmd => commandNames.push(cmd.memberName.toLowerCase()))
 		);
 
-		console.log(categoryNames);
+		// console.log(categoryNames);
 
 		// Check the message for matching category.
 		let categoryOpt = null;
