@@ -1,7 +1,7 @@
 {
     "MEMBER": {
-        "id": "724394130465357915",
-        "name": "member 💛‍"
+        "name": "member 💛‍",
+        "id": "724394130465357915"
     },
     "COMMANDER": {
         "name": "👑.  commander",
@@ -12,7 +12,8 @@
         "id": "723676356818239773"
     },
     "BEGINNER": {
-        "name": "beginner 🥚"
+        "name": "beginner 🥚",
+        "id": "725531274973937664"
     },
     "SUBSCRIBER": {
         "name": "announcements",
