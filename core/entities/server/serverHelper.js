@@ -20,7 +20,8 @@ export default class ServerHelper {
     // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
     // Consider this a correction from Cooper/more recent data.
     static async addTempMessage(msg, deleteSecs) {
-        const expiry = Math.round((Date.now() / 1000) + deleteSecs);
+        let lifetimeSecs = !isNaN(parseInt(deleteSecs)) ? parseInt(deleteSecs) : 1;
+        let expiry = Math.round((Date.now() / 1000) + lifetimeSecs);
 
         const messageLink = MessagesHelper.link(msg);
 

@@ -2,12 +2,11 @@ import { Client } from 'discord.js-commando';
 import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
-import UsersHelper from './entities/users/usersHelper';
-import CratedropMinigame from '../community/features/minigame/small/cratedrop';
-import ItemsHelper from '../community/features/items/itemsHelper';
 import MessagesHelper from './entities/messages/messagesHelper';
 import ChannelsHelper from './entities/channels/channelsHelper';
 import EasterMinigame from '../community/features/minigame/holidays/easter';
+
+import EMOJIS from './config/emojis.json';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -47,6 +46,13 @@ const shallowBot = async () => {
         // listenReactions(EasterMinigame.onReaction);
         // EasterMinigame.spawn();
 
+
+        // REFACTOR THIS TO AN ANNOUNCE COMMAND, GUARDED TO LEADERSHIP.
+        // const emojiText = MessagesHelper._displayEmojiCode('EASTER_EGG');
+        // const announceText = `@everyone, collect our limited edition ${emojiText}${emojiText} easter egg for easter! Happy Easter.`;        
+        // const announceMsg = await ChannelsHelper._postToChannelCode('KEY_INFO', announceText);
+        // MessagesHelper.delayReact(announceMsg, EMOJIS.COOP, 333);
+        
 
 
         // ItemsHelper.add('763258365186801694', 'EASTER_EGG', 1);

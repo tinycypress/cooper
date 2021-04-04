@@ -13,11 +13,8 @@ export default class EasterMinigame {
 
     // Burn metal ore into metal
     static async onReaction(reaction, user) {
-        console.log('Confirm basket matches this.');
-        console.log(reaction.emoji);
-
-
-
+        // console.log('Confirm basket matches this.');
+        // console.log(reaction.emoji);
 
         // if (this.isPickupable(reaction, user)) {
         //     this.pickup(reaction, user);
@@ -68,14 +65,6 @@ export default class EasterMinigame {
         //     console.log('Failure reacting to easter spawn (reaction).');
         //     console.error(e);
         // }
-    }
-
-    static async spawn() {
-        // Run based on roll.
-        // ItemsHelper.drop(ChannelsHelper._getCode('TALK'), 'EASTER_EGG', 30, true);
-
-        // Run on the pick up version until the other way is figured out.
-        ItemsHelper.drop(ChannelsHelper._getCode('TALK'), 'EASTER_EGG', 30);
     }
 
     // TODO: Consider getting a server time from somewhere to standardise all time?
