@@ -110,6 +110,9 @@ export default class UsableItemHelper {
         // Check if they are trying to collect via basket
         if (reaction.emoji.name !== EMOJIS.BASKET) return false;
 
+        // Don't allow more pickups after 1 count.
+        if (reaction.count > 2) return false;
+    
         // Appears to be safe to pickup.
         return true;
     }

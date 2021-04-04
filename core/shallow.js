@@ -43,9 +43,31 @@ const shallowBot = async () => {
         // Add bag emoji/bag word shows items via direct message.
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", {allowedMentions: { roles: []}})
 
-        // listenReactions(EasterMinigame.onReaction);
-        // EasterMinigame.spawn();
 
+
+        setInterval(() => {
+            // listenReactions(EasterMinigame.onReaction);
+            EasterMinigame.run();
+
+            for (let i = 0; i < 10; i++) {
+                const likelihood = i * 5;
+                const randomDelayMax = STATE.CHANCE.natural({ min: 5000, max: 60000 });
+                if (STATE.CHANCE.bool({ likelihood })) {
+                    setTimeout(() => EasterMinigame.run(), randomDelayMax * i);
+                }
+            }
+
+    
+            // Format and output text.
+            const emojiText = MessagesHelper._displayEmojiCode('EASTER_EGG');
+            const talk = ChannelsHelper._getCode('TALK');
+            const keyInfo = ChannelsHelper._getCode('KEY_INFO');
+            MessagesHelper.selfDestruct(keyInfo, `${emojiText.repeat(3)} May drop one in talk now... ;) <#${talk.id}>`, 0, 30000);
+        }, (2 * (60)) * 1000);
+
+
+
+        
 
         // REFACTOR THIS TO AN ANNOUNCE COMMAND, GUARDED TO LEADERSHIP.
         // const emojiText = MessagesHelper._displayEmojiCode('EASTER_EGG');
