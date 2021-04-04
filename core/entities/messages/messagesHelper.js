@@ -140,6 +140,8 @@ export default class MessagesHelper {
                 else console.log('Logging msg.delete not function', msg);
             } catch(e) {
                 console.log('Delay delete error.');
+                console.log(e.name);
+                
                 // console.error(e);
             }
         }, delay);

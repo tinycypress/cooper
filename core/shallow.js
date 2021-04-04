@@ -3,6 +3,7 @@ import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
 import UsersHelper from './entities/users/usersHelper';
+import CratedropMinigame from '../community/features/minigame/small/cratedrop';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -33,7 +34,7 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Add bag emoji/bag word shows items via direct message.
-
+        CratedropMinigame.drop();
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

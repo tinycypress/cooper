@@ -69,6 +69,9 @@ export default class CratedropMinigame {
             const crateEmojiNames = _.map(_.values(CRATE_DATA), "emoji");
             if (!crateEmojiNames.includes(emojiIdentifier)) return false;
             
+            // Debug crate drops...
+            console.log(`${user.username} hitting ${this.calculateRarityFromMessage(reaction.message)}`);
+
             this.axeHit(reaction, user);
         } catch(e) {
             console.error(e);
@@ -174,19 +177,21 @@ export default class CratedropMinigame {
                         listLootString += `${user.username}'s loot: `;
 
                         // Grant rewards to users with a random quantity.
-                        listLootString += (rewardsKeys.map((rewardItem) => {
+                        listLootString += rewardsKeys.map((rewardItem) => {
                             const rewardQty = STATE.CHANCE.natural({ min: 1, max: crate.maxReward });
 
                             // Indicate that at least one reward was given.
                             anyRewardGiven = true;
 
                             // Give the user the item via the database.
-                            ItemsHelper.add(user.id, rewardItem, rewardQty);
+                            ItemsHelper.add(user.id, rewardItem, rewardQty)
+
+                            console.log('Adding ' + rewardItem + ' to ' + user.username);
 
                             // Get the item emoji.
                             const itemEmoji = MessagesHelper._displayEmojiCode(rewardItem);
                             return `${itemEmoji} ${rewardItem}x${rewardQty}`;
-                        }).join(', '));
+                        }).join(', ');
 
                         listLootString += '.\n';
                     }
@@ -205,6 +210,7 @@ export default class CratedropMinigame {
             const pointsRewardString = `**${usersRewardedText} for opening the ${rewardTypeText}!**\n\n`;
             const crateLootText = pointsRewardString + listLootString;
 
+            // Send the update.
             ChannelsHelper.propagate(msg, crateLootText, 'ACTIONS');
 
             // Remove the opened crate.
