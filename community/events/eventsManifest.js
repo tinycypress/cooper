@@ -27,10 +27,13 @@ import ItemsHelper from "../features/items/itemsHelper";
 import ChestPopMinigame from "../features/minigame/small/chestpop";
 import BuffsHelper from "../features/conquest/buffsHelper";
 import AboutHelper from "../features/server/aboutHelper";
+import EasterMinigame from "../features/minigame/holidays/easter";
 
 
 export const baseTickDur = 60 * 25 * 1000;
 
+
+// Events manifest should load baseTickDuration from STATE (which loads from database of community set values)
 export default function eventsManifest() {
 
   // Bring in the new minigame.
@@ -94,8 +97,17 @@ export default function eventsManifest() {
   EventsHelper.chanceRunInterval(() => MiningMinigame.run(), 45, baseTickDur * 6);
   EventsHelper.runInterval(() => CratedropMinigame.run(), baseTickDur * 5);
   EventsHelper.chanceRunInterval(() => EggHuntMinigame.run(), 2.5, baseTickDur / 10);
-
   EventsHelper.chanceRunInterval(() => InstantFurnaceMinigame.run(), 45, baseTickDur * 7.5);
+
+  // If easter, double egg spawns too.
+
+
+  // Holiday related!
+  EventsHelper.chanceRunInterval(() => EasterMinigame.run(), 33, baseTickDur / 3);
+
+
+  // Update trades channel message
+  EventsHelper.runInterval(() => TradingHelper.updateChannel(), baseTickDur * 2);
 
   // Clean up CONQUEST buffs/item effects.
   EventsHelper.runInterval(() => BuffsHelper.cleanupExpired(), baseTickDur / 3);

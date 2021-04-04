@@ -15,8 +15,12 @@ export default class ServerHelper {
     static _coop() {
         return this.getByCode(STATE.CLIENT, 'PROD');
     }
+
+
+    // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
+    // Consider this a correction from Cooper/more recent data.
     static async addTempMessage(msg, deleteSecs) {
-        const expiry = Math.round(Date.now() / 1000) + deleteSecs;
+        const expiry = Math.round((Date.now() / 1000) + deleteSecs);
 
         const messageLink = MessagesHelper.link(msg);
 

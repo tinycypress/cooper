@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 import UsersHelper from './entities/users/usersHelper';
 import CratedropMinigame from '../community/features/minigame/small/cratedrop';
 import ItemsHelper from '../community/features/items/itemsHelper';
+import MessagesHelper from './entities/messages/messagesHelper';
+import ChannelsHelper from './entities/channels/channelsHelper';
+import EasterMinigame from '../community/features/minigame/holidays/easter';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -19,6 +22,8 @@ const listenMessages = (fn) => STATE.CLIENT.on('message', fn);
 dotenv.config();
 
 // NOTES AND LONGER TERM CHALLENGES/ISSUES:
+    // Treasure room and temporary channel access.
+    // Paid temporary/private channels
 
 
 const shallowBot = async () => {
@@ -34,10 +39,17 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // Detect easter with last_easter detected emoji, that way can launch a message. :D
+
         // Add bag emoji/bag word shows items via direct message.
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", {allowedMentions: { roles: []}})
 
-        ItemsHelper.add('763258365186801694', 'EASTER_EGG', 1);
+        // listenReactions(EasterMinigame.onReaction);
+        // EasterMinigame.spawn();
+
+
+
+        // ItemsHelper.add('763258365186801694', 'EASTER_EGG', 1);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

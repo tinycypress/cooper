@@ -22,6 +22,9 @@ export default class MessageSpamHelper {
         if (msg.content.includes('The command will automatically be cancelled in 30 seconds.'))
             return MessagesHelper.delayDelete(msg, 30000);
 
+        if (msg.content === 'cancel')
+            return MessagesHelper.delayDelete(msg, 30000);
+
 
             
     }

@@ -14,6 +14,7 @@ import EmojiHelper from "./emojiHelper";
 import RolesHelper from "../../../core/entities/roles/rolesHelper";
 import PointsHelper from "../points/pointsHelper";
 import UsableItemHelper from "./usableItemHelper";
+import ServerHelper from "../../../core/entities/server/serverHelper";
 
 
 export default class ItemsHelper {
@@ -381,6 +382,25 @@ export default class ItemsHelper {
     }
 
 
+    // Drop an item.
+    // TODO: Maybe approach drop and other things on a channel basis?
+    static async drop(msgRef, itemCode, lifetimeSecs = 400, unmarked = false) {
+        // Drop the item based on its code.
+        const emojiText = MessagesHelper.emojiText(EMOJIS[itemCode]);
+
+        // Send drop emoji text and update message ref
+        msgRef = await MessagesHelper.selfDestruct(msgRef, emojiText, 0, lifetimeSecs * 1000)
+
+        // Make it a temporary message to it gets cleaned up after an hour.
+        ServerHelper.addTempMessage(msgRef, lifetimeSecs);
+
+        // Add indicative and suggestive icons, maybe refactor.
+        MessagesHelper.delayReact(msgRef, EMOJIS.BASKET, 666);
+
+        // Only mark it as dropped if not specified otherwise.
+        if (!unmarked)
+            MessagesHelper.delayReact(msgRef, RAW_EMOJIS.DROPPED, 333);
+    }
 
 
 }

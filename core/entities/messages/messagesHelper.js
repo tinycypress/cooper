@@ -158,13 +158,29 @@ export default class MessagesHelper {
         }, delay);
     }
 
-    static selfDestruct(msgRef, content, delayMs = 666, fuseMs = 30000) {
+    static selfDestruct(msgOrChannelRef, content, delayMs = 666, fuseMs = 30000) {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 try {
-                    const createdMsg = await msgRef.say(content);
-                    this.delayDelete(createdMsg, fuseMs);
-                    resolve(createdMsg);
+                    if (msgOrChannelRef) {
+                        // Add a reference to help ensure another layer of cleanup.
+                        let messageRef = null;
+
+                        // If passed a message directly, use "say" method.
+                        if (typeof msgOrChannelRef.say === 'function')
+                            messageRef = await msgOrChannelRef.say(content);
+
+                        // If passed a channel, use channel's "say" method.
+                        if (typeof msgOrChannelRef.send === 'function')
+                            messageRef = await msgOrChannelRef.send(content);
+                        
+                        if (messageRef) {
+                            this.delayDelete(messageRef, fuseMs);
+                            ServerHelper.addTempMessage(messageRef)
+                            resolve(messageRef);
+                        }
+                    }
+
                 } catch(e) {
                     console.log('Error self-destructing message.');
                     console.error(e);
