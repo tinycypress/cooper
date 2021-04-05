@@ -27,7 +27,11 @@ export default class ServerHelper {
 
         const query = {
             name: "add-temp-message",
-            text: `INSERT INTO temp_messages(message_link, expiry_time) VALUES ($1, $2)`,
+            text: `INSERT INTO temp_messages(message_link, expiry_time) VALUES ($1, $2)
+                ON CONFLICT (message_link)
+                DO 
+                UPDATE SET expiry_time = LEAST(temp_messages.expiry_time, EXCLUDED.expiry_time)
+                RETURNING expiry_time`,
             values: [messageLink, expiry]
         };
 
