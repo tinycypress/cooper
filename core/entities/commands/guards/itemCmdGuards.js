@@ -178,8 +178,13 @@ export function validUserArgGuard(msgRef, target, username) {
     const targetMember = UsersHelper.getMemberByID(ServerHelper._coop(), target.id);
     if (!target || !targetMember) {
         const errorText = `${username}, the user you tried to reference (${target}) is invalid.`;
-        return MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
+        MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
+
+        return false;
     }
+
+    // Indicate guard passed.
+    return true;
 }
 
 
