@@ -57,24 +57,24 @@ export default class GiveCommand extends CoopCommand {
 
 			// Check if this item code can be given.		
 			const isUsableCode = usableItemCodeGuard(msg, itemCode, msg.author.username);
-			console.log('isUsableCode', isUsableCode, msg.author.username);
 			if (!isUsableCode) return null;
 
 			// Attempt to load target just to check it can be given.
 			const isValidUser = validUserArgGuard(msg, target, msg.author.username);
-			console.log('isValidUser', isValidUser, msg.author.username);
 			if (!isValidUser) return null;
 
 			// Check the user has required gift items and giftbox.
 			// Attempt to use item and only grant once returned successful, avoid double gift glitching.
 			const itemsWereUsed = await useManyGuard(msg.author, msg, itemManifest);
-			console.log('itemsWereUsed', itemsWereUsed, msg.author.username);
-			if (itemsWereUsed) return null;
+			if (!itemsWereUsed) return null;
 
 			// REVIEWS: Maybe a guard/check with an error is needed for item add too? :D
 
 			// Add the item to the gift recepient.
 			await ItemsHelper.add(target.id, itemCode, qty);
+
+			// TODO: create .addManifest and let them have the giftbox too :D.
+			// TODO: Make sure pickups are logged/recorded in a channel (drop too).
 			
 			// Intercept the giving of election items.
 			if (itemCode === 'LEADERS_SWORD' || itemCode === 'ELECTION_CROWN')
