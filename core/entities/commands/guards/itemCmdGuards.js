@@ -35,6 +35,7 @@ export async function useManyGuard(user, msg, itemManifest) {
         }));
 
         // Check all sufficient and either pass guard or provide error feedback.
+        console.log('used all', hasAll.every(item => item.used));
         if (hasAll.every(item => item.used)) {
             return true;
 

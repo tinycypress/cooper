@@ -58,16 +58,18 @@ export default class GiveCommand extends CoopCommand {
 			// Check if this item code can be given.		
 			const isUsableCode = usableItemCodeGuard(msg, itemCode, msg.author.username);
 			if (!isUsableCode) return null;
+			console.log('isUsableCode', isUsableCode, msg.author.username);
 
 			// Attempt to load target just to check it can be given.
 			const isValidUser = validUserArgGuard(msg, target, msg.author.username);
 			if (!isValidUser) return null;
+			console.log('isValidUser', isValidUser, msg.author.username);
 
 			// Check the user has required gift items and giftbox.
 			// Attempt to use item and only grant once returned successful, avoid double gift glitching.
 			const itemsWereUsed = await useManyGuard(msg.author, msg, itemManifest);
 			if (itemsWereUsed) return null;
-
+			console.log('itemsWereUsed', itemsWereUsed, msg.author.username);
 
 			// REVIEWS: Maybe a guard/check with an error is needed for item add too? :D
 
