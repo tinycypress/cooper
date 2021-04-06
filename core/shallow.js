@@ -3,6 +3,8 @@ import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
 import SuggestionsHelper from '../community/features/suggestions/suggestionsHelper';
+import MessagesHelper from './entities/messages/messagesHelper';
+import UsersHelper from './entities/users/usersHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -31,7 +33,6 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
-        SuggestionsHelper.check();
 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.

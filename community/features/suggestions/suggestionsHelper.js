@@ -28,7 +28,8 @@ export default class SuggestionsHelper {
         const suggestionsParts = Array.from(await ChannelsHelper._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
         let processedOne = false;
 
-        // TODO: Make sure 
+        // Process latest ONE suggestion.
+        // TODO: Sort by eldest.
         suggestionsParts.map((suggestionPart, index) => {
             const suggestion = suggestionPart[1] || null;
 

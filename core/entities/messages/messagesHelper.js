@@ -120,15 +120,16 @@ export default class MessagesHelper {
     }
 
     static delayReact(msg, emoji, delay = 666) {
-        setTimeout(() => { 
-            if (typeof msg.react === 'function') 
+        if (typeof msg.react === 'function') 
+            setTimeout(() => { 
                 msg.react(emoji)
                     .then()
                     .catch(e => {
-                        console.log('Delay react error.');
-                        console.error(e);
+                        // Ignore already deleted messages.
+                        if (e.message !== 'Unknown Message')
+                            console.error(e);
                     });
-        }, delay);
+            }, delay);
     }
 
     static delayDelete(msg, delay = 666) {

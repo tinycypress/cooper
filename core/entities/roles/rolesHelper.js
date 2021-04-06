@@ -3,6 +3,21 @@ import ServerHelper from '../server/serverHelper';
 import UsersHelper from '../users/usersHelper';
 
 export default class RolesHelper {
+
+    static _allWith(roleCode) {
+        const role = ROLES[roleCode].id || null;
+        if (!role) return [];
+        return UsersHelper._cache()
+            .filter(member => member.roles.cache.has(role));
+    }
+
+    static _allWithout(roleCode) {
+        const role = ROLES[roleCode].id || null;
+        if (!role) return [];
+        return UsersHelper._cache()
+            .filter(member => !member.roles.cache.has(role));
+    }
+
     static getRoles(guild, rolesSelection) {
         return guild.roles.cache.filter(r => rolesSelection.includes(r.name));
     }

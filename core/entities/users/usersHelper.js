@@ -9,6 +9,7 @@ import ROLES from '../../config/roles.json';
 import _ from 'lodash';
 import ChannelsHelper from "../channels/channelsHelper";
 import MessagesHelper from "../messages/messagesHelper";
+import RolesHelper from "../roles/rolesHelper";
 
 export default class UsersHelper {
     static avatar(user) {
@@ -240,11 +241,12 @@ export default class UsersHelper {
         // Pluck the list of their IDs for comparison with latest data.
         const includedIDs = _.map(dbUsers, "discord_id");
         
-        // Find the missing/unrecognised users.
-        const missingItems = this._cache().filter(member => includedIDs.indexOf(member.user.id) === -1);
+        // Find the missing/unrecognised users (MEMBER role only).
+        const allWithout = RolesHelper._allWithout('MEMBER')
+            .filter(member => includedIDs.indexOf(member.user.id) === -1);
 
         // Attempt to recognise each unrecognised user.
-        missingItems.forEach(async (member, index) => {
+        allWithout.forEach(async (member, index) => {
             try {
                 // Insert and respond to successful/failed insertion.
                 const dbRes = await this.addToDatabase(member.user.id, member.joinedTimestamp);
