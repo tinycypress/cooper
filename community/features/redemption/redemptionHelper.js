@@ -11,6 +11,10 @@ import RolesHelper from '../../../core/entities/roles/rolesHelper';
 import ServerHelper from '../../../core/entities/server/serverHelper';
 
 
+export const STARTING_ROLES = [
+    'MEMBER', 'BEGINNER', 'SUBSCRIBER', 'SOCIAL',
+    'PROSPECT', 'ANNOUNCEMENTS', 'MISC', 'PROJECTS'
+];
 
 export default class RedemptionHelper {
 
@@ -74,8 +78,7 @@ export default class RedemptionHelper {
                 UsersHelper.addToDatabase(targetMember.user.id, targetMember.joinedDate);
 
                 // Give intro roles
-                const introRoles = RolesHelper._getCodes(['MEMBER', 'BEGINNER', 'SUBSCRIBER', 'PROSPECT']);
-                targetMember.roles.add(introRoles);
+                RolesHelper._addManyToMember(targetMember, STARTING_ROLES);
                 
                 // Inform community.
                 ChannelsHelper._codes(['ENTRY', 'TALK'], 

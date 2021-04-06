@@ -40,14 +40,15 @@ export default async (msg) => {
       const username = memberSubject.user.username;
 
       // Post message in feed
-      await ChannelsHelper._codes(['FEED', 'ENTRY'], `${username} posted an introduction! 👋`);
+      const introText = `${username} posted an introduction in <$${CHANNELS.INTRO}> ! 👋`;
+      await ChannelsHelper._codes(['TALK', 'ENTRY', 'FEED'], introText);
 
       // Send embed to approval channel for redeeming non-members via introduction.
       if (!UsersHelper.hasRoleID(memberSubject, ROLES.MEMBER.id)) {
         await ChannelsHelper._postToChannelCode('ENTRY', MessagesHelper.embed({
           url: MessagesHelper.link(msg),
-          title: `${username}, you are being considered for approval!`,
-          description: `Vote for/against ${username} using reaction emojis on their intro message.`,
+          title: `${username}, is being considered for approval.`,
+          description: `Vote for/against ${username} using reaction emojis on their <$${CHANNELS.INTRO}> post.`,
           thumbnail: UsersHelper.avatar(memberSubject.user)
         }));
       }

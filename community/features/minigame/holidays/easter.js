@@ -68,33 +68,65 @@ export default class EasterMinigame {
     }
 
     // TODO: Consider getting a server time from somewhere to standardise all time?
-
+    // TODO: Detect easter with last_easter detected column, that way can launch a message. :D
     static isEaster() {
-        var curdate = new Date();
-        var year = curdate.getFullYear();
-        var a = year % 19;
-        var b = Math.floor(year / 100);
-        var c = year % 100;
-        var d = Math.floor(b / 4); 
-        var e = b % 4;
-        var f = Math.floor((b + 8) / 25);
-        var g = Math.floor((b - f + 1) / 3); 
-        var h = (19 * a + b - d - g + 15) % 30;
-        var i = Math.floor(c / 4);
-        var k = c % 4;
-        var l = (32 + 2 * e + 2 * i - h - k) % 7;
-        var m = Math.floor((a + 11 * h + 22 * l) / 451);
-        var n0 = (h + l + 7 * m + 114)
-        var n = Math.floor(n0 / 31) - 1;
-        var p = n0 % 31 + 1;
-        var date = new Date(year,n,p);
-        return ((curdate.getMonth() == date.getMonth())&&(curdate.getDate() == date.getDate()));
+        const dateNow = new Date();
+        const year = dateNow.getFullYear();
+        const century = Math.floor(year / 100);
+
+        const goldenNum = year % 19;
+
+        const nextCentury = year % 100;
+        const quadrennial = Math.floor(century / 4); 
+        const quadrennialYear = century % 4;
+
+        // Relabel if feeling brave enough to annotate Gauss's Easter algorithm.
+        const f = Math.floor((century + 8) / 25);
+        const g = Math.floor((century - f + 1) / 3); 
+        const startMonthOffset = (19 * goldenNum + century - quadrennial - g + 15) % 30;
+        
+        const i = Math.floor(nextCentury / 4);
+        const k = nextCentury % 4;
+        const l = (32 + 2 * quadrennialYear + 2 * i - startMonthOffset - k) % 7;
+        const m = Math.floor((goldenNum + 11 * startMonthOffset + 22 * l) / 451);
+        const n0 = (startMonthOffset + l + 7 * m + 114)
+        
+        // Check if easter.
+        const easterMonth = Math.floor(n0 / 31) - 1;
+        const easterDay = n0 % 31 + 1;
+        const easterDate = new Date(year, easterMonth, easterDay);
+        return (
+            dateNow.getMonth() === easterDate.getMonth() 
+            && 
+            dateNow.getDate() === easterDate.getDate()
+        );
     }
 
     static async run() {
-        // TODO: Only spawn on easter
-        if (this.isEaster())
+        // Only spawn on easter
+        if (this.isEaster()) 
             ItemsHelper.drop(ChannelsHelper._getCode('TALK'), 'EASTER_EGG', 30);
+
+            // TODO: Announce current easter and mass drop for 2 hours.
+            // setInterval(() => {
+            //     // listenReactions(EasterMinigame.onReaction);
+            //     EasterMinigame.run();
+    
+            //     for (let i = 0; i < 10; i++) {
+            //         const likelihood = i * 5;
+            //         const randomDelayMax = STATE.CHANCE.natural({ min: 5000, max: 60000 });
+            //         if (STATE.CHANCE.bool({ likelihood })) {
+            //             setTimeout(() => EasterMinigame.run(), randomDelayMax * i);
+            //         }
+            //     }
+    
+        
+            //     // Format and output text.
+            //     const emojiText = MessagesHelper._displayEmojiCode('EASTER_EGG');
+            //     const talk = ChannelsHelper._getCode('TALK');
+            //     const keyInfo = ChannelsHelper._getCode('KEY_INFO');
+            //     MessagesHelper.selfDestruct(keyInfo, `${emojiText.repeat(3)} May drop one in talk now... ;) <#${talk.id}>`, 0, 30000);
+            // }, (2 * (60)) * 1000);    
     }
 
 

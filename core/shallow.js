@@ -7,6 +7,7 @@ import ChannelsHelper from './entities/channels/channelsHelper';
 import EasterMinigame from '../community/features/minigame/holidays/easter';
 
 import EMOJIS from './config/emojis.json';
+import RolesHelper from './entities/roles/rolesHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -38,46 +39,15 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Detect easter with last_easter detected emoji, that way can launch a message. :D
-
+        
         // Add bag emoji/bag word shows items via direct message.
-        // Try to ping leaders msg.channel.send("<@&724394130465357915>", {allowedMentions: { roles: []}})
+
+        // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
+        // message.channel.send('content', {"allowedMentions": { "users" : []}})
 
 
 
-        setInterval(() => {
-            // listenReactions(EasterMinigame.onReaction);
-            EasterMinigame.run();
 
-            for (let i = 0; i < 10; i++) {
-                const likelihood = i * 5;
-                const randomDelayMax = STATE.CHANCE.natural({ min: 5000, max: 60000 });
-                if (STATE.CHANCE.bool({ likelihood })) {
-                    setTimeout(() => EasterMinigame.run(), randomDelayMax * i);
-                }
-            }
-
-    
-            // Format and output text.
-            const emojiText = MessagesHelper._displayEmojiCode('EASTER_EGG');
-            const talk = ChannelsHelper._getCode('TALK');
-            const keyInfo = ChannelsHelper._getCode('KEY_INFO');
-            MessagesHelper.selfDestruct(keyInfo, `${emojiText.repeat(3)} May drop one in talk now... ;) <#${talk.id}>`, 0, 30000);
-        }, (2 * (60)) * 1000);
-
-
-
-        
-
-        // REFACTOR THIS TO AN ANNOUNCE COMMAND, GUARDED TO LEADERSHIP.
-        // const emojiText = MessagesHelper._displayEmojiCode('EASTER_EGG');
-        // const announceText = `@everyone, collect our limited edition ${emojiText}${emojiText} easter egg for easter! Happy Easter.`;        
-        // const announceMsg = await ChannelsHelper._postToChannelCode('KEY_INFO', announceText);
-        // MessagesHelper.delayReact(announceMsg, EMOJIS.COOP, 333);
-        
-
-
-        // ItemsHelper.add('763258365186801694', 'EASTER_EGG', 1);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

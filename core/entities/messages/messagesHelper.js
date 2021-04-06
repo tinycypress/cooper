@@ -136,13 +136,16 @@ export default class MessagesHelper {
         // TODO: This should definitely be applied to temp_messages too, since... can't be deleted.
         if (msg) setTimeout(async () => { 
             try {
-                if (typeof msg.delete === 'function') await msg.delete();
-                else console.log('Logging msg.delete not function', msg);
+                if (typeof msg.delete === 'function') 
+                    await msg.delete();
+
             } catch(e) {
-                console.log('Delay delete error.');
-                console.log(e.name);
-                
-                // console.error(e);
+                // Ignore messages already deleted.
+                if (e.message.trim() !== 'Unknown Message') {
+                    // Report other types of error.
+                    console.log('Delay delete error.');
+                    console.error(e);
+                }
             }
         }, delay);
     }

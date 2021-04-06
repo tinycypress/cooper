@@ -24,12 +24,10 @@ export default class RolesHelper {
     static _getCodes(roleCodes = []) {
         let roles = [];
         const guild = ServerHelper._coop();
-        return roleCodes.map(code => {
+        roleCodes.map(code => {
             const roleConfig = ROLES[code];
-            if (roleConfig) {
-                const role = this.getRoleByID(guild, roleConfig.id);
-                if (role) roles.push(role);
-            }
+            const role = this.getRoleByID(guild, roleConfig.id);
+            if (role) roles.push(role);
         });
         return roles;
     }
@@ -49,7 +47,10 @@ export default class RolesHelper {
             console.log('Error adding role');
             console.error(e);
         }
+    }
 
+    static _addManyToMember(member, roleCodes) {
+        return member.roles.add(RolesHelper._getCodes(roleCodes));
     }
 
     static async toggle(userID, roleCode) {

@@ -204,7 +204,7 @@ export default class SacrificeHelper {
         const lastMsgSecs = await UsersHelper.getField(user.id, 'last_msg_secs');
         if (lastMsgSecs) lastMessageFmt = TimeHelper.secsLongFmt(lastMsgSecs);
 
-        const totalMsgsSent = await UsersHelper.getField(user.id, 'total_msgs');
+        const totalMsgsSent = await UsersHelper.getField(user.id, 'total_msgs') || 0;
         const points = await PointsHelper.getPointsByID(user.id);
         const totalItems = await ItemsHelper.getUserTotal(user.id);
 
