@@ -25,22 +25,27 @@ export default class SuggestionsHelper {
 
     static async check() {
         // Get last 25 suggestions to check through.
-        const candidates = Array.from(await ChannelsHelper._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
+        const suggestionsParts = Array.from(await ChannelsHelper._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
         let processedOne = false;
 
         // TODO: Make sure 
+        suggestionsParts.map((suggestionPart, index) => {
+            const suggestion = suggestionPart[1] || null;
 
-        candidates.map((suggestion, index) => {
             if (!processedOne) {
-                const dayMs = ((60 * 60) * 72) * 1000;
-
                 // Prevent invalid suggestions being processed (again?).
                 if (!suggestion) return false;
-                if (!suggestion.createdAt) return false;
 
-                // Process 
-                if (Date.now() - dayMs >= suggestion.createdAt.getTime()) {
+                // Calculate if completed based on time/duration.
+                const considerDuration = ((60 * 60) * 72) * 1000;
+                const isCompleted = considerDuration + suggestion.createdTimestamp <= Date.now();
+                
+                // If this suggestion is completed, attempt to process it.
+                if (isCompleted) {
+                    // Calculate the decision of this suggestion based on reaction votes.
                     const votes = this.parseVotes(suggestion);
+
+                    // Handle the will of the people.
                     if (votes.rejected) this.reject(suggestion, votes, index);
                     if (votes.passed) this.pass(suggestion, votes, index);
                     if (votes.tied) this.tied(suggestion, votes, index);
@@ -49,7 +54,8 @@ export default class SuggestionsHelper {
                     if (votes.invalid) this.invalidate(suggestion, index);
     
                     // Prevent processing more, one action per iteration is enough.
-                    if (votes.tied || votes.passed || votes.rejected) processedOne = true;
+                    if (votes.tied || votes.passed || votes.rejected) 
+                        processedOne = true;
                 }
             }
         });

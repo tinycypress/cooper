@@ -68,10 +68,8 @@ export default class CratedropMinigame {
             const emojiIdentifier = MessagesHelper.getEmojiIdentifier(reaction.message);
             const crateEmojiNames = _.map(_.values(CRATE_DATA), "emoji");
             if (!crateEmojiNames.includes(emojiIdentifier)) return false;
-            
-            // Debug crate drops...
-            console.log(`${user.username} hitting ${this.calculateRarityFromMessage(reaction.message)}`);
-
+        
+            // Process the hit and potentially reward.
             this.axeHit(reaction, user);
         } catch(e) {
             console.error(e);
@@ -184,9 +182,7 @@ export default class CratedropMinigame {
                             anyRewardGiven = true;
 
                             // Give the user the item via the database.
-                            ItemsHelper.add(user.id, rewardItem, rewardQty)
-
-                            console.log('Adding ' + rewardItem + ' to ' + user.username);
+                            ItemsHelper.add(user.id, rewardItem, rewardQty);
 
                             // Get the item emoji.
                             const itemEmoji = MessagesHelper._displayEmojiCode(rewardItem);

@@ -2,12 +2,7 @@ import { Client } from 'discord.js-commando';
 import Database from './setup/database';
 import STATE from './state';
 import dotenv from 'dotenv';
-import MessagesHelper from './entities/messages/messagesHelper';
-import ChannelsHelper from './entities/channels/channelsHelper';
-import EasterMinigame from '../community/features/minigame/holidays/easter';
-
-import EMOJIS from './config/emojis.json';
-import RolesHelper from './entities/roles/rolesHelper';
+import SuggestionsHelper from '../community/features/suggestions/suggestionsHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -20,10 +15,6 @@ const listenMessages = (fn) => STATE.CLIENT.on('message', fn);
 
 // Load ENV variables.
 dotenv.config();
-
-// NOTES AND LONGER TERM CHALLENGES/ISSUES:
-    // Treasure room and temporary channel access.
-    // Paid temporary/private channels
 
 
 const shallowBot = async () => {
@@ -39,14 +30,8 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        
-        // Add bag emoji/bag word shows items via direct message.
 
-        // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
-        // message.channel.send('content', {"allowedMentions": { "users" : []}})
-
-
-
+        SuggestionsHelper.check();
 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
