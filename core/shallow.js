@@ -33,6 +33,10 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
+        // Easter egg gives you the average number of coop 
+
+        // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
+        // message.channel.send('content', {"allowedMentions": { "users" : []}})
 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
