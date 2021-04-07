@@ -28,13 +28,13 @@ export default class GiveCommand extends CoopCommand {
 					key: 'itemCode',
 					prompt: 'What is the code of the item you wish to give? Use !items if not sure',
 					type: 'string',
-					default: null
+					default: ''
 				},
 				{
 					key: 'target',
 					prompt: 'Who do you wish to give the item to? @ them.',
 					type: 'user',
-					default: null
+					default: ''
 				},
 				{
 					key: 'qty',
@@ -49,9 +49,24 @@ export default class GiveCommand extends CoopCommand {
 	async run(msg, { itemCode, target, qty }) {
 		super.run(msg);
 
+
+		// TODO: Allow them to run this even if arguments aren't in the right order!
+
+
 		try {
 			// Interpret, parse, and format item code.
 			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+
+			// If no item code found, attempt to infer one from the rest of the message.
+			if (!itemCode) itemCode = ItemsHelper.interpretItemCodeArg(msg.content);
+
+			// If no target given in correct order, attempt to infer from mentions
+			if (!target && msg.mentions.users.first()) 
+				target = msg.mentions.users.first();
+
+			// If a bad number gets given as qty, defalt it to 1.
+			// TODO, this may block float/decimal gifts.
+			if (isNaN(parseInt(qty))) qty = 1;
 
 			// Configure item manifest for this item command.
 			const itemManifest = {

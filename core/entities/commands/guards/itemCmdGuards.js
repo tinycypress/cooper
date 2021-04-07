@@ -116,13 +116,13 @@ export async function ownEnoughManyGuard(user, msg, itemManifest) {
 
         } else {
             // Ensure sufficient qty guard passes.
-            const notEnoughText = `${user.username} you do not own enough of the following for this gift:\n` +
-                Object.keys(itemManifest)
-                    // Only give details on what is insufficient.
-                    .filter(itemCode => !itemManifest[itemCode].sufficient)
-
-                    .map(itemCode => `${MessagesHelper._displayEmojiCode(itemCode)} ${itemCode}` + 
-                        `${itemManifest[itemCode].has}/${itemManifest[itemCode].required}`)
+            const notEnoughText = `${user.username}, you have insufficient items for that action:\n` +
+                // Only give details on what is insufficient.
+                hasAll.filter(itemCheck => !itemCheck.sufficient)
+                
+                    // Format it.
+                    .map(itemCheck => `${MessagesHelper._displayEmojiCode(itemCheck.item)} ${itemCheck.item}` + 
+                        ` ${itemCheck.has}/${itemCheck.required}`)
                     .join(', ') + '.';
             
             // Destroy warning automatically.
