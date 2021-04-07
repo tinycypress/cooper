@@ -242,11 +242,13 @@ export default class UsersHelper {
         const includedIDs = _.map(dbUsers, "discord_id");
         
         // Find the missing/unrecognised users (MEMBER role only).
-        const allWithout = RolesHelper._allWithout('MEMBER')
-            .filter(member => includedIDs.indexOf(member.user.id) === -1);
+        const allWithout = Array.from(RolesHelper._allWith('MEMBER')
+            .filter(member => !includedIDs.includes(member.user.id)));
 
         // Attempt to recognise each unrecognised user.
         allWithout.forEach(async (member, index) => {
+            console.log('this should be an index val', index);
+            
             try {
                 // Insert and respond to successful/failed insertion.
                 const dbRes = await this.addToDatabase(member.user.id, member.joinedTimestamp);

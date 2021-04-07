@@ -65,6 +65,8 @@ export default class CratedropMinigame {
             if (this.isCrateOpen(reaction.message)) return false;
             if (reaction.emoji.name !== '🪓')  return false;
 
+            // TODO: Add MemberOnlyGuard ffs! :D
+
             const emojiIdentifier = MessagesHelper.getEmojiIdentifier(reaction.message);
             const crateEmojiNames = _.map(_.values(CRATE_DATA), "emoji");
             if (!crateEmojiNames.includes(emojiIdentifier)) return false;

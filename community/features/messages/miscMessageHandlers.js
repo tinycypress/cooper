@@ -170,10 +170,15 @@ export default class MiscMessageHandlers {
         }
 
         // surprise lmf, i hope this works ;--;
-        if (msg.author.id === '786671654721683517') {
-            if (STATE.CHANCE.bool({ likelihood: 1.5 }))
-                MessagesHelper.delayReact(msg, '737182281130704936', 333);            
-            }
-    }
+        if (msg.author.id === '786671654721683517' && STATE.CHANCE.bool({ likelihood: 1.5 }))
+            MessagesHelper.delayReact(msg, '737182281130704936', 333);
 
+        // Surprise Ortia. :D
+        if (msg.author.id === '268163597371310082' && STATE.CHANCE.bool({ likelihood: 0.5 }))
+            MessagesHelper.delayReact(msg, '✡️', 333);
+
+        if (msg.author.id === '268163597371310082' && STATE.CHANCE.bool({ likelihood: 0.25 }))
+            MessagesHelper.delayReact(msg, '🚿', 333);
+
+    }
 }
