@@ -4,5 +4,6 @@
     "DROPPED": "⤵️",
     "BASKET": "🧺",
     "BOMB": "💣",
-    "SHIELD": "🛡️"
+    "SHIELD": "🛡️",
+    "EMPTY_GIFTBOX": "🎁"
 }

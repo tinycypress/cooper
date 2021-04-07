@@ -126,8 +126,9 @@ export default class UsableItemHelper {
                 
             // If invalid item code or not usable, don't allow pick up event.
             if (!itemCode || !this.isUsable(itemCode))
+                // TODO: Maybe use reply functionality to point to message they tried to pick up?
                 return MessagesHelper.selfDestruct(reaction.message,
-                    `${user.username} you can't pick that up. (${itemCode})`
+                    `${user.username} you can't pick that up.`
                 );
 
             // If collecting a dropped egg, high chance (40%) of breaking due to having been dropped.

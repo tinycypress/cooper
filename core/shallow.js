@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import SuggestionsHelper from '../community/features/suggestions/suggestionsHelper';
 import MessagesHelper from './entities/messages/messagesHelper';
 import UsersHelper from './entities/users/usersHelper';
+import ChannelsHelper from './entities/channels/channelsHelper';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -38,6 +39,7 @@ const shallowBot = async () => {
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
         // message.channel.send('content', {"allowedMentions": { "users" : []}})
 
+        ChannelsHelper._postToChannelCode('TALK', 'Community velocity is sleazy.');
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
