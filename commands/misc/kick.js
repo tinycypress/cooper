@@ -8,7 +8,7 @@ export default class KickCommand extends CoopCommand {
 
 	constructor(client) {
 		super(client, {
-			name: 'kick ',
+			name: 'kick',
 			group: 'misc',
 			memberName: 'kick',
 			aliases: [],
