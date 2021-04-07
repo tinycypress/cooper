@@ -5,7 +5,11 @@ import ChannelsHelper from '../../core/entities/channels/channelsHelper';
 import ItemsHelper from '../../community/features/items/itemsHelper';
 import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
 
-import { usableItemCodeGuard, useManyGuard, validUserArgGuard } from '../../core/entities/commands/guards/itemCmdGuards';
+import { 
+	usableItemCodeGuard, 
+	useManyGuard, 
+	validUserArgGuard
+} from '../../core/entities/commands/guards/itemCmdGuards';
 
 
 export default class GiveCommand extends CoopCommand {

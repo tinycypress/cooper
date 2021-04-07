@@ -38,10 +38,6 @@ const shallowBot = async () => {
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
         // message.channel.send('content', {"allowedMentions": { "users" : []}})
 
-        // const laci = await UsersHelper.loadSingle('697781570076934164');
-        // console.log(laci);
-
-        UsersHelper.populateUsers();
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

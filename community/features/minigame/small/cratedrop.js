@@ -198,7 +198,8 @@ export default class CratedropMinigame {
             }
 
             // Remove the reward message because it was placed in a random channel.
-            if (!anyRewardGiven) MessagesHelper.selfDestruct(msg, 'No items were inside this crate! >:D', 0, 5000);
+            // if (!anyRewardGiven) 
+            //     return MessagesHelper.selfDestruct(msg, 'No items were inside this crate! >:D', 0, 5000);
 
             // Post and delete the points reward message feedback.
             const hitterNamesStr = hitterNames.join(', ');
@@ -209,7 +210,7 @@ export default class CratedropMinigame {
             const crateLootText = pointsRewardString + listLootString;
 
             // Send the update.
-            ChannelsHelper.propagate(msg, crateLootText, 'ACTIONS');
+            ChannelsHelper.propagate(msg, crateLootText, 'ACTIONS', false);
 
             // Remove the opened crate.
             MessagesHelper.delayDelete(msg, 10000);
