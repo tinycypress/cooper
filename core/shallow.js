@@ -40,7 +40,7 @@ const shallowBot = async () => {
         // MOTW
 
         // This would nicely introduce some decimal numbers.
-        // Easter egg gives you the average number of coop points from !it
+        // Easter egg gives you the 25% average number of coop points from !it
 
 
         // Add some more silent hyperlinked mentions. :D

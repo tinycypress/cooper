@@ -21,6 +21,9 @@ export default class KickCommand extends CoopCommand {
 	async run(msg) {
         super.run(msg);
 
+		// Restrict to shinoa if it gets abused.
+		// 672165988527243306
+
         MessagesHelper.selfDestruct(msg, 'You are being kicked in 3...', 333);
         MessagesHelper.selfDestruct(msg, 'You are being kicked in 2...', 1333);
         MessagesHelper.selfDestruct(msg, 'You are being kicked in 1...', 2333);
