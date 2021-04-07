@@ -10,6 +10,28 @@ import Statistics from "../../statistics";
 
 export default class MessageNotifications {
 
+    // TODO: Return active servers in order of activity.
+    static getActiveChannels() {
+        const actives = STATE.MESSAGE_HISTORY;
+        const channelIDs = Object.keys(actives);
+
+        // Sort by most active, check this for dropping in LEAST active lol.
+        channelIDs.sort((a, b) => actives[a].count - actives[b].count);
+
+        // Could always return count and use that as a multipler? :)
+        const channels = channelIDs.map(id => ChannelsHelper._get(id));
+
+        return channels;
+    }
+
+    // Get current activity of channel.
+    static getFreshMsgCount(channelCode) {
+        const channel = CHANNELS[channelCode].id;
+        const fresh = STATE.MESSAGE_HISTORY[channel];
+        const count = fresh.count || 0;
+        return count;
+    }
+
     static add(msg) {
         const channelID = msg.channel.id;
         const authorID = msg.author.id;

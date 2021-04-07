@@ -33,16 +33,19 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // Community velocity
+            // Calculate + persist + feedback the number, less often (unless fast).
+            // Affect item drops and minigame speeds.
 
-        // Easter egg gives you the average number of coop 
+        // MOTW
 
+        // This would nicely introduce some decimal numbers.
+        // Easter egg gives you the average number of coop points from !it
+
+
+        // Add some more silent hyperlinked mentions. :D
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
         // message.channel.send('content', {"allowedMentions": { "users" : []}})
-
-        const msg = await ChannelsHelper._postToChannelCode('TALK', 'test');
-
-        const propped = await ChannelsHelper.propagate(msg, 'testing', 'ACTIONS');
-        console.log(propped);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

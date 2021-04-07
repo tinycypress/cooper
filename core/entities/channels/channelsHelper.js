@@ -3,6 +3,7 @@ import CHANNELS from '../../config/channels.json';
 import STATE from '../../state';
 import ServerHelper from '../server/serverHelper';
 import MessagesHelper from '../messages/messagesHelper';
+import MessageNotifications from '../../../community/events/message/messageNotifications';
 
 export default class ChannelsHelper {
 
@@ -137,7 +138,23 @@ export default class ChannelsHelper {
 
     static _randomText() {
         const server = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
-        return ChannelsHelper.fetchRandomTextChannel(server);
+        return this.fetchRandomTextChannel(server);
+    }
+
+    static _randomOnlyActive() {
+        // Try to select a random active text channel.
+        return MessageNotifications.getActiveChannels();
+    }
+
+    // Implement as part of community velocity reform.
+    static _randomSomewhatActive() {
+        // Only run this half the time, so we don't only drop in active channels.
+        if (STATE.CHANCE.bool({ likelihood: 50 }))
+            // Try to select a random active text channel.
+            return MessageNotifications.getActiveChannels();
+        else 
+            // Default to basic random channel.
+            return this._randomText();
     }
 
     static checkIsByCode(id, code) {
