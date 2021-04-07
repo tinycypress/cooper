@@ -149,12 +149,16 @@ export default class ChannelsHelper {
     }
 
     static async propagate(msgRef, text, recordChan, selfDestruct = true) {
-        if (!this.checkIsByCode(msgRef.channel.id, recordChan)) {
-            const feedbackMsg = await msgRef.say(text);
-            if (selfDestruct) MessagesHelper.delayDelete(feedbackMsg, 15000);
-            return feedbackMsg;
-        }
-        return this._postToChannelCode(recordChan, text, 666);
+        // If channel isn't identical to record channel, post there too.
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
+            MessagesHelper.selfDestruct(msgRef, text, 0, 15000);
+
+        // If channel isn't identical to record channel but no self, post there too without deleting.
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && !selfDestruct)
+            msgRef.say(text);
+
+        // Post to the record channel and return the outcome.
+        return await this._postToChannelCode(recordChan, text, 666);
     }
 
     static async _delete(id) {

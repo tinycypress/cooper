@@ -210,8 +210,7 @@ export default class CratedropMinigame {
             const crateLootText = pointsRewardString + listLootString;
 
             // Send the update.
-            console.log('Propagating', crateLootText);
-            ChannelsHelper.propagate(msg, crateLootText, 'ACTIONS', false);
+            ChannelsHelper.propagate(msg, crateLootText, 'ACTIONS');
 
             // Remove the opened crate.
             MessagesHelper.delayDelete(msg, 10000);

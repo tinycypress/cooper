@@ -39,7 +39,10 @@ const shallowBot = async () => {
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
         // message.channel.send('content', {"allowedMentions": { "users" : []}})
 
-        ChannelsHelper._postToChannelCode('TALK', 'Community velocity is sleazy.');
+        const msg = await ChannelsHelper._postToChannelCode('TALK', 'test');
+
+        const propped = await ChannelsHelper.propagate(msg, 'testing', 'ACTIONS');
+        console.log(propped);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
