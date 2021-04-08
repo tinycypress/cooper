@@ -97,18 +97,67 @@ export default class ChannelsHelper {
         });
     }
 
-    static sendByCodes(guild, codes, message) {
-        return ChannelsHelper
-            .filterByCodes(guild, codes)
-            .map(async channel => await channel.send(message));
-    }
-
-    static _codes(codes, message) {
+    static _codes(codes, message, opts) {
         const guild = ServerHelper._coop();
         return ChannelsHelper
             .filterByCodes(guild, codes)
-            .map(async channel => await channel.send(message));
+            .map(channel => channel.send(message, opts));
     }
+
+    static _randomText() {
+        const server = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
+        return this.fetchRandomTextChannel(server);
+    }
+
+    static _randomOnlyActive() {
+        // Try to select a random active text channel.
+        return MessageNotifications.getActiveChannels();
+    }
+
+    // Implement as part of community velocity reform.
+    static _randomSomewhatActive() {
+        // Only run this half the time, so we don't only drop in active channels.
+        if (STATE.CHANCE.bool({ likelihood: 50 }))
+            // Try to select a random active text channel.
+            return MessageNotifications.getActiveChannels();
+        else 
+            // Default to basic random channel.
+            return this._randomText();
+    }
+
+
+    static async propagate(msgRef, text, recordChan, selfDestruct = true) {
+        // If channel isn't identical to record channel, post there too.
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
+            MessagesHelper.selfDestruct(msgRef, text, 0, 15000);
+
+        // If channel isn't identical to record channel but no self, post there too without deleting.
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && !selfDestruct)
+            msgRef.say(text);
+
+        // Post to the record channel and return the outcome.
+        return await this._postToChannelCode(recordChan, text, 666);
+    }
+
+    static async _delete(id) {
+        const guild = ServerHelper._coop();
+        const channel = guild.channels.cache.get(id);
+        return channel.delete();
+    }
+
+    static async _create(name, options) {
+        return ServerHelper._coop().channels.create(name, options);
+    }
+
+    static _all = () => ServerHelper._coop().channels.cache || [];
+
+    static sendByCodes(guild, codes, message, opts = {}) {
+        return ChannelsHelper
+            .filterByCodes(guild, codes)
+            .map(channel => channel.send(message, opts));
+    }
+
+
 
     static fetchRandomTextChannel(guild) {       
         let result = null;
@@ -136,26 +185,7 @@ export default class ChannelsHelper {
         return result;
     }
 
-    static _randomText() {
-        const server = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
-        return this.fetchRandomTextChannel(server);
-    }
 
-    static _randomOnlyActive() {
-        // Try to select a random active text channel.
-        return MessageNotifications.getActiveChannels();
-    }
-
-    // Implement as part of community velocity reform.
-    static _randomSomewhatActive() {
-        // Only run this half the time, so we don't only drop in active channels.
-        if (STATE.CHANCE.bool({ likelihood: 50 }))
-            // Try to select a random active text channel.
-            return MessageNotifications.getActiveChannels();
-        else 
-            // Default to basic random channel.
-            return this._randomText();
-    }
 
     static checkIsByCode(id, code) {
         const channel = CHANNELS[code];
@@ -165,28 +195,5 @@ export default class ChannelsHelper {
         return result;
     }
 
-    static async propagate(msgRef, text, recordChan, selfDestruct = true) {
-        // If channel isn't identical to record channel, post there too.
-        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
-            MessagesHelper.selfDestruct(msgRef, text, 0, 15000);
 
-        // If channel isn't identical to record channel but no self, post there too without deleting.
-        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && !selfDestruct)
-            msgRef.say(text);
-
-        // Post to the record channel and return the outcome.
-        return await this._postToChannelCode(recordChan, text, 666);
-    }
-
-    static async _delete(id) {
-        const guild = ServerHelper._coop();
-        const channel = guild.channels.cache.get(id);
-        return channel.delete();
-    }
-
-    static async _create(name, options) {
-        return ServerHelper._coop().channels.create(name, options);
-    }
-
-    static _all = () => ServerHelper._coop().channels.cache || [];
 }

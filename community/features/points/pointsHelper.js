@@ -9,6 +9,7 @@ import UsersHelper from "../../../core/entities/users/usersHelper";
 import ItemsHelper from "../items/itemsHelper";
 import Chicken from "../../chicken";
 import TimeHelper from "../server/timeHelper";
+import MessagesHelper from "../../../core/entities/messages/messagesHelper";
 
 
 
@@ -106,44 +107,102 @@ export default class PointsHelper {
     }
 
     static async updateMOTW() {
-        // Check time since last election commentation message (prevent spam).
-        const lastMOTWCheck = parseInt(await Chicken.getConfigVal('last_motwcheck_secs'));
-        const hour = 3600;
-        const week = hour * 24 * 7;
-        const fresh = TimeHelper._secs() < lastMOTWCheck - week;
-        if (fresh) return false;
+        try {
+            // Check time since last election commentation message (prevent spam).
+            const lastMOTWCheck = parseInt(await Chicken.getConfigVal('last_motwcheck_secs'));
+            const hour = 3600;
+            const week = hour * 24 * 7;
+            const fresh = TimeHelper._secs() <= lastMOTWCheck + week;
+            if (fresh) return false;
+    
+            // Load player points and historical points.
+            const users = await UsersHelper.load();
+            const updateData = [];
+            const percChanges = await Promise.all(users.map(async (user) => {
+                // TODO: Can optimise by skilling users with no points.
+                const result = await this.getPercChange(user.discord_id);
+    
+                if (result.points !== result.lastWeekPoints)
+                    updateData.push({ id: result.user, points: result.points });
+    
+                return result;
+            }));
+    
+            // Sort the points changes by highest (positive) perc change first.
+            percChanges.sort((a, b) => {
+                if (a.percChange === Infinity) return 1;
+                if (a.percChange < 0) return 1;
+                if (a.percChange >= b.percChange) return -1;
+                if (a.percChange === b.percChange) return 0;
+            });
+    
+            const membersOfWeek = RolesHelper._allWith('MEMBEROFWEEK');
+    
+            // Check if that winner has the role already.
+            const highestChange = percChanges[0];
+    
+            // Remove other member of the week.
+            let hadAlready = false;
+            let prevWinner = null;
+            await membersOfWeek.map(member => {
+                if (member.id !== highestChange) {
+                    prevWinner = member;
+                    return RolesHelper._remove(member.id)
+                } else {
+                    // Found already, won twice in a row. Bonus?
+                    hadAlready = true;
+                    return true
+                }
+            });
+            
+            // Build update text for check/status.
+            let updateText = `^^MOTW check ran!**\n`;
+    
+            if (hadAlready) {
+                // Declare they won again.
+                updateText = `^^MOTW check ran and <@${highestChange.user}> wins again!**\n\n`
+            } else {
+                // Give the winner the role.
+                RolesHelper._add(highestChange.user, 'MEMBEROFWEEK');
+    
+                // Took it from previous winner.
+                if (prevWinner) {
+                    updateText = `^^MOTW check ran and <@${highestChange.user}> seizes the role from <@${prevWinner.id}>!**\n\n`;
+                } else {
+                    updateText = `^^MOTW check ran and <@${highestChange.user}> seizes the role!**\n\n`;
+                }
+            }
+    
+            // Add reasoning.
+            updateText += `<@${highestChange.user}> was selected by MOTW as the best/most promising member this week!\n\n`;
+    
+            // TODO: Show 3/4 runners up.
+    
+    
+            // Give the winner the reward.
+            const cpDisplay = MessagesHelper._displayEmojiCode('COOP_POINT');
+            await ItemsHelper.add(highestChange.user, 'COOP_POINT', 30);
+            updateText += `_Given 50${cpDisplay} for MOTW reward._`;
+    
+            // Inform the community.
+            ChannelsHelper._codes(['FEED', 'TALK'], updateText, {
+                allowedMentions: { users: [], roles: [] }
+            });
+            
+            // Make sure all historical_points are updated.
+            updateData.map(({ id, points }) => UsersHelper.updateField(id, 'historical_points', points));
+    
+            // Ensure Cooper knows when the last time this was updated (sent).
+            // Track member of week by historical_points DB COL and check every week.
+            Chicken.setConfig('last_motwcheck_secs', TimeHelper._secs());
 
-        // Load player points and historical points.
-        const users = await UsersHelper.load();
-        const percChanges = await Promise.all(users.map(async (user) => {
-            return await this.getPercChange(user.discord_id);
-        }));
+            // Send DM :D
+            UsersHelper._dm(highestChange.user, 'You were given MEMBER OF THE WEEK reward! Check talk channel for more info.');
 
-        // Sort the points changes by highest (positive) perc change first.
-
-        // Check if that winner has the role already.
-
-        // Give the winner the role.
-
-        // Give the winner the reward.
-
-        // Inform the community.
-
-
-		// Create an item that lets people try this and make it vote-guarded.
-        // Track member of week by historical_points DB COL and check every week.
-        // Schedule weekly growth analysis like election works...
-        // Need at least 2 db alters or chicken.setConfig to track last analysis time.
-        // const memberOfWeekRole = RolesHelper.getRoleByID(ServerHelper._coop(), ROLES.MEMBEROFWEEK.id);
-        // const membersOfWeek = UsersHelper.getMembersByRoleID(ServerHelper._coop(), ROLES.MEMBEROFWEEK.id);
-        
-        // historical_points
-        // all points
-
-        ChannelsHelper._codes(['FEED', 'TALK'], 'MOTW check ran.');
-
-        // Ensure Cooper knows when the last time this was updated (sent).
-        Chicken.setConfig('last_motwcheck_secs', TimeHelper._secs());
+        } catch(e) {
+            console.log('Error updating MOTW');
+            console.error(e);
+        }
     }
 
     static async updateCurrentWinner() {

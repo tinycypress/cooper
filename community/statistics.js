@@ -1,5 +1,6 @@
 import ChannelsHelper from "../core/entities/channels/channelsHelper";
 import STATE from "../core/state";
+import MessageNotifications from "./events/message/messageNotifications";
 
 export default class Statistics {
 
@@ -16,7 +17,12 @@ export default class Statistics {
     }
 
     static calcCommunityVelocity() {
-        return 1;
+        let velocity = 1;
+
+        // Add score of messages (1 per message).
+        velocity += MessageNotifications.getFreshMsgTotalCount();
+
+        return velocity;
     }
 
     // Use this to calculate and update community velocity.
