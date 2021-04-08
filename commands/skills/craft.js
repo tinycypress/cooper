@@ -37,7 +37,7 @@ export default class CraftCommand extends CoopCommand {
 		super.run(msg);
 
 		// Shorthand for feedback.
-		const username = msg.author.username;
+		const userID = msg.author.id;
 
 		// Cap the number at 0 minimum and refactor into a common guard/validator.
 		qty = Math.max(qty, 0);
@@ -64,23 +64,26 @@ export default class CraftCommand extends CoopCommand {
 			// Check user has sufficient level/exp.
 			if (reqLevel > crafterLevel) {
 				// TODO: Add emoji
-				const lackLevelText = `${username} lacks level ${reqLevel} crafting required to make ${itemCode}`;
-				return MessagesHelper.selfDestruct(msg, lackLevelText);
+				const lackLevelText = `<#${userID}> lacks level ${reqLevel} crafting required to make ${itemCode}`;
+				return MessagesHelper.silentSelfDestruct(msg, lackLevelText, 0, 5000);
 			}
 
 			// Check for ingredients and multiply quantities.
 			const canCraft = await CraftingHelper.canFulfilIngredients(msg.author.id, itemCode, qty);
 			
 			// TODO: Improve this error.
-			if (!canCraft) return MessagesHelper.selfDestruct(msg, `Insufficient crafting supplies.`, 0, 7500);
+			if (!canCraft) return MessagesHelper.silentSelfDestruct(msg, `Insufficient crafting supplies.`, 0, 7500);
 
 			// Attempt to craft the object.
 			const craftResult = await CraftingHelper.craft(msg.author.id, itemCode, qty);
 			if (craftResult) {
-				const addText = `${username} crafted ${itemCode}x${qty}.`;
-				ChannelsHelper.propagate(msg, addText, 'ACTIONS');
+				const addText = `<#${userID}> crafted ${itemCode}x${qty}.`;
+				// ChannelsHelper.propagate(msg, addText, 'ACTIONS');
+
+				ChannelsHelper.silentPropagate(msg, addText, 'ACTIONS');
+
 			} else {
-				MessagesHelper.selfDestruct(msg, `${username} failed to craft ${qty}x${itemCode}...`, 0, 15000);
+				MessagesHelper.silentSelfDestruct(msg, `<#${userID}> failed to craft ${qty}x${itemCode}...`, 0, 15000);
 			}
 
 		} catch(e) {
