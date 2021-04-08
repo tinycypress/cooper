@@ -183,6 +183,12 @@ export default class PointsHelper {
             const cpDisplay = MessagesHelper._displayEmojiCode('COOP_POINT');
             await ItemsHelper.add(highestChange.user, 'COOP_POINT', 30);
             updateText += `_Given 50${cpDisplay} for MOTW reward._`;
+
+
+            // TODO: Give them 1-2 weeks of sacrifice protection too
+
+            // TODO: Give them some random eggs and items.
+
     
             // Inform the community.
             ChannelsHelper._codes(['FEED', 'TALK'], updateText, {

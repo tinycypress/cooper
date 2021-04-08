@@ -125,6 +125,12 @@ export default class ItemsHelper {
         return count;
     }
 
+    static async perBeak(itemCode) {
+        const userCount = ServerHelper._coop().memberCount || 0;
+        const total = await this.count(itemCode);
+        return total / userCount;
+    }
+
     static async read(userID, itemCode) {
         const query = {
             name: "read-item",

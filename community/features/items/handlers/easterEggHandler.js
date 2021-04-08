@@ -17,8 +17,8 @@ export default class EasterEggHandler {
         if (!didUse) return false;
 
         // Calculate reward.
-        const rewardBase = await ItemsHelper.count('COOP_POINT');
-        const reward = rewardBase * .25;
+        const rewardBase = await ItemsHelper.perBeak('COOP_POINT');
+        const reward = parseInt(rewardBase * .25);
 
         // Add the points to the user.
         ItemsHelper.add(user.id, 'COOP_POINT', reward);
