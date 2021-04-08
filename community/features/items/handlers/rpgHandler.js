@@ -50,10 +50,10 @@ export default class RPGHandler {
 
         // TODO: Add an effect here for RPG
         const rpgEmojiText = MessagesHelper._displayEmojiCode('RPG');
-        const targetName = target.id === attacker.id ? 'their self' : target.username;
-        const successText = `${attacker.username} used an ${rpgEmojiText} RPG on ${targetName}, blasting them and potentially starting a chain reaction!`;
+        const targetName = target.id === attacker.id ? 'their self' : `<@${target.id}`;
+        const successText = `<@${attacker.id}> used an ${rpgEmojiText} RPG on ${targetName}, blasting them and potentially starting a chain reaction!`;
 
-        ChannelsHelper.propagate(msg, successText, 'ATTACKS', true);
+        ChannelsHelper.silentPropagate(msg, successText, 'ATTACKS', true);
 
 
         // if (BuffsHelper.has('INVINCIBILITY', targetID))

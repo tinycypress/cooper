@@ -64,7 +64,7 @@ export default class CraftCommand extends CoopCommand {
 			// Check user has sufficient level/exp.
 			if (reqLevel > crafterLevel) {
 				// TODO: Add emoji
-				const lackLevelText = `<#${userID}> lacks level ${reqLevel} crafting required to make ${itemCode}`;
+				const lackLevelText = `<@${userID}> lacks level ${reqLevel} crafting required to make ${itemCode}`;
 				return MessagesHelper.silentSelfDestruct(msg, lackLevelText, 0, 5000);
 			}
 
@@ -77,13 +77,13 @@ export default class CraftCommand extends CoopCommand {
 			// Attempt to craft the object.
 			const craftResult = await CraftingHelper.craft(msg.author.id, itemCode, qty);
 			if (craftResult) {
-				const addText = `<#${userID}> crafted ${itemCode}x${qty}.`;
+				const addText = `<@${userID}> crafted ${itemCode}x${qty}.`;
 				// ChannelsHelper.propagate(msg, addText, 'ACTIONS');
 
 				ChannelsHelper.silentPropagate(msg, addText, 'ACTIONS');
 
 			} else {
-				MessagesHelper.silentSelfDestruct(msg, `<#${userID}> failed to craft ${qty}x${itemCode}...`, 0, 15000);
+				MessagesHelper.silentSelfDestruct(msg, `<@${userID}> failed to craft ${qty}x${itemCode}...`, 0, 15000);
 			}
 
 		} catch(e) {

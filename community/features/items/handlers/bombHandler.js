@@ -17,7 +17,7 @@ export default class BombHandler {
             try {
                 const didUse = await UsableItemHelper.use(user.id, 'BOMB', 1);
                 if (!didUse) {
-                    MessagesHelper.selfDestruct(msg, `${user.username} lacks a bomb to use on ${target.username}`);
+                    MessagesHelper.silentSelfDestruct(msg, `<@${user.id}> lacks a bomb to use on <@${target.id}>`);
                     return await reaction.users.remove(user.id);
                 } else {
                     // Check and prevent bombing target with invincibility buff.
@@ -25,7 +25,8 @@ export default class BombHandler {
                         // TODO: Add some kind of animation via message edit. :D
                         // TODO: Count invincibility blocks into stats.
                         const shieldEmoji = MessagesHelper._displayEmojiCode('SHIELD');
-                        return MessagesHelper.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${target.username} was protected from ${user.username}'s bomb by invincibility buff! `)
+                        return MessagesHelper.silentSelfDestruct(msg, 
+                            `${shieldEmoji.repeat(2)} <@${target.id}> was protected from <@${user.id}>'s bomb by invincibility buff! `)
                     }
 
                     // Allow five seconds for people to stack bombs.
@@ -44,11 +45,13 @@ export default class BombHandler {
                         let doubledInfo = '';
                         if (reaction.count > 1) doubledInfo = `(x${reaction.count})`;
 
-                        const subjectsInvolved = `${user.username} bombed ${target.username}`;
+                        const subjectsInvolved = `<@${user.id}> bombed <@${target.id}>`;
                         const changesOccurred = `${damage}${doubledInfo} points (${updatedPoints}).`;
                         const feedbackText = `${subjectsInvolved}: ${changesOccurred}`;
 
-                        // Propagate without pinging.
+                        // TODO: After one of these hits... should remove all reactions etc.
+
+                        // Propagate without pinging.   
                         ChannelsHelper.silentPropagate(msg, feedbackText, 'ATTACKS');
                     }, 5000);
                 }
