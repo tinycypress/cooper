@@ -43,6 +43,8 @@ const shallowBot = async () => {
         // Easter egg gives you the 25% average number of coop points from !it
 
 
+        ChannelsHelper._postToChannelCode('TALK', '?');
+
         // Add some more silent hyperlinked mentions. :D
         // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
         // message.channel.send('content', {"allowedMentions": { "users" : []}})

@@ -24,6 +24,8 @@ export default class PirateCommand extends CoopCommand {
 				.replace('!pirate ', '')
 				.replace('!prt ', '')
 		);
+
+		// searchStr.replace('')
 		
 		// Generate feedback flash
 		const linkMsg = await MessagesHelper.selfDestruct(msg, 'https://moviesjoy.to/search/' + searchStr, 0, 15000);

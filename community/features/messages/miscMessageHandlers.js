@@ -169,6 +169,10 @@ export default class MiscMessageHandlers {
             msg.react('⚾');
         }
 
+        if (STATE.CHANCE.bool({ likelihood: 25 }) && msg.author.id === '266840470624272385' && msg.content === '?') {
+            msg.say('?');
+        }
+
         // surprise lmf, i hope this works ;--;
         if (msg.author.id === '786671654721683517' && STATE.CHANCE.bool({ likelihood: 1.5 }))
             MessagesHelper.delayReact(msg, '737182281130704936', 333);
