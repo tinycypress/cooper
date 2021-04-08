@@ -34,7 +34,7 @@ export default class MessageNotifications {
 
     static getFreshMsgTotalCount() {
         const channelActivity = STATE.MESSAGE_HISTORY;
-        const count = Object.keys(channelActivity).reduce((acc, curr) => acc += curr.count, 0);
+        const count = Object.keys(channelActivity).reduce((acc, curr) => acc += channelActivity[curr].count, 0);
         return count;
     }
 
