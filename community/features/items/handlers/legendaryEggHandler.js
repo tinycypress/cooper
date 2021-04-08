@@ -47,7 +47,9 @@ export default class LegendaryEggHandler {
 
                     const feedbackMsgText = `${actionInfoText}: ${damageInfoText}.`;
                     ChannelsHelper.codeShoutReact(reaction.message, feedbackMsgText, 'ACTIONS', '💜');
-                    ChannelsHelper._postToChannelCode('FEED', feedbackMsgText, 666);
+
+                    // Also notify feed channel due to the rarity of the egg.
+                    ChannelsHelper._send('FEED', feedbackMsgText, 666);
                 }
             } catch(e) {
                 console.error(e);

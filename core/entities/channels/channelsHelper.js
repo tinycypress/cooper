@@ -54,7 +54,7 @@ export default class ChannelsHelper {
         return ChannelsHelper.filter(guild, filter);
     }
 
-    static _postToFeed(message, delay = 666) {
+    static _postToFeed(message, delay = 333) {
         const prodServer = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
         const feedChannel = this.getByCode(prodServer, 'FEED');
         return new Promise((resolve, reject) => {
@@ -66,36 +66,35 @@ export default class ChannelsHelper {
         });
     }
 
-    static codeSay(channelCode, messageText, delay = 666) {
+    static codeSay(channelCode, messageText, delay = 333) {
         return this._postToChannelCode(channelCode, messageText, delay);
     }
 
-    static codeSayReact(channelCode, messageText, emoji, delay = 666) {
+    static codeSayReact(channelCode, messageText, emoji, delay = 333) {
         return this.codeSay(channelCode, messageText, emoji, delay)
             .then(msg => {
                 if (msg) MessagesHelper.delayReact(msg, emoji, delay * 1.5);
             });
     }
 
-    static codeShout(msgRef, text, recordChan, selfDestruct = true) {
-        if (!this.checkIsByCode(msgRef.channel.id, recordChan)) {
-            msgRef.say(text).then(msg => {
-                if (selfDestruct) MessagesHelper.delayDelete(msg, 15000);
-            });
-        }
-        return this._postToChannelCode(recordChan, text, 666);
+    static codeShout(msgRef, text, recordChan) {
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan))
+            MessagesHelper.silentSelfDestruct(msgRef, text, 0, 10000);
+
+        return this._send(recordChan, text);
     }
 
-    static codeShoutReact(msgRef, text, recordChan, emoji, selfDestruct = true) {
-        return this.codeShout(msgRef, text, recordChan, selfDestruct)
-            .then(msg => {
-                if (msg) MessagesHelper.delayReact(emoji)
-            });
+    static codeShoutReact(msgRef, text, recordChan, emoji) {
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan))
+            MessagesHelper.silentSelfDestruct(msgRef, text, 0, 10000)
+                .then(msg => MessagesHelper.delayReact(msg, emoji));
+
+        return this._send(recordChan, text);
     }
 
     // This function may be a good example/starting point for a lib 
     // for handling request timeouts and reject enforcement...?
-    static _postToChannelCode(name, message, delay = 666) {
+    static _postToChannelCode(name, message, delay = 333) {
         const prodServer = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
         const feedChannel = this.getByCode(prodServer, name);
 

@@ -63,13 +63,13 @@ export default class AverageEggHandler {
                 }
 
                 // Detect self and format text accordingly.
-                let target = author.username;
+                let target = `<#${author.id}>`;
                 if (isSelf) target = 'their self';
 
                 // Create the action/feedback text.
-                let actionInfoText = `${user.username} used an average egg on ${target}`;
-                if (backFired) actionInfoText = `${user.username} tried to use an average egg on ${target}, but it backfired`;
-                if (backFired && isSelf) actionInfoText = `${user.username} tried to use an average egg on ${target}, but it broke.`;
+                let actionInfoText = `<#${user.id}> used an average egg on ${target}`;
+                if (backFired) actionInfoText = `<#${user.id}> tried to use an average egg on ${target}, but it backfired`;
+                if (backFired && isSelf) actionInfoText = `<#${user.id}> tried to use an average egg on ${target}, but it broke.`;
 
                 // Post it.
                 const feedbackMsgText = `${actionInfoText}${damageInfoText}.`;
