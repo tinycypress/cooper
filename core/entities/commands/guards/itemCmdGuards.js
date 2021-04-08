@@ -6,6 +6,10 @@ import UsersHelper from '../../users/usersHelper';
 
 // TODO: Break these into separate files as export default functions.
 
+
+// TODO: Write this method to combine doesOwn and didUse into one command.
+// export async function doesOwnDidUseGuard() {}
+
 // Check has enough of many and then use them or provide clear feedback error.
 export async function useManyGuard(user, msg, itemManifest) {
     try {

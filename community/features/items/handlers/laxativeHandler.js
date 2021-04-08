@@ -1,28 +1,25 @@
 import ChannelsHelper from "../../../../core/entities/channels/channelsHelper";
-import MessagesHelper from "../../../../core/entities/messages/messagesHelper";
+import { didUseGuard, ownEnoughGuard } from "../../../../core/entities/commands/guards/itemCmdGuards";
 import EggHuntMinigame from "../../minigame/small/egghunt";
-import ItemsHelper from "../itemsHelper";
-import UsableItemHelper from "../usableItemHelper";
+
 
 export default class LaxativeHandler {
 
-    static async use(commandMsg, user) {
-        // Attempt to use the laxative item
-        const didUseLax = await UsableItemHelper.use(user.id, 'LAXATIVE', 1);
+    static async use(commandMsg, user) {       
+        // Check the user even owns enough before proceeding. 
+        const ownEnough = await ownEnoughGuard(user, commandMsg, 'LAXATIVE', 1)
+        if (!ownEnough) return false;
 
-        // Respond to usage result.
-        if (didUseLax) {
-            const feedbackText = `${user.username} used laxative and potentially triggered egg drops!`;
-            ChannelsHelper.propagate(commandMsg, feedbackText, 'ACTIONS');
+        // Check consumed before firing effect.
+        const didUse = await didUseGuard(user, 'LAXATIVE', commandMsg, '🍫');
+        if (!didUse) return false;
 
-            // Attempt to run egg drop. :D
-            EggHuntMinigame.run();
-            
-        } else {
-            const unableMsg = await commandMsg.say('Unable to use LAXATIVE, you own none. :/');
-            MessagesHelper.delayReact(unableMsg, '🍫', 1333);
-            MessagesHelper.delayDelete(unableMsg, 10000);
-        }
+        // Attempt to run egg drop. :D
+        EggHuntMinigame.run();
+
+        // Add feedback.
+        const feedbackText = `${user.username} used laxative and potentially triggered egg drops!`;
+        ChannelsHelper.propagate(commandMsg, feedbackText, 'ACTIONS');
     }
    
 }

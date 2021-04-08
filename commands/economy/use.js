@@ -6,6 +6,7 @@ import CoopCommand from '../../core/entities/coopCommand';
 import ShieldHandler from '../../community/features/items/handlers/shieldHandler';
 import RPGHandler from '../../community/features/items/handlers/rpgHandler';
 import { itemCodeArg, itemQtyArg, ownEnoughGuard, usableItemCodeGuard } from '../../core/entities/commands/guards/itemCmdGuards';
+import EasterEggHandler from '../../community/features/items/handlers/easterEggHandler';
 
 
 export default class UseCommand extends CoopCommand {
@@ -49,7 +50,9 @@ export default class UseCommand extends CoopCommand {
 		if (itemCode === 'FLARE') FlareHandler.use(msg, msg.author);
 		if (itemCode === 'EMPTY_GIFTBOX') GiftboxHandler.use(msg);
 		if (itemCode === 'SHIELD') ShieldHandler.use(msg);
+
 		if (itemCode === 'RPG') RPGHandler.use(msg); // TODO: WIP
+		if (itemCode === 'RPG') EasterEggHandler.use(msg, msg.author); // TODO: WIP
     }
     
 };

@@ -5,7 +5,17 @@ import ServerHelper from '../server/serverHelper';
 import MessagesHelper from '../messages/messagesHelper';
 import MessageNotifications from '../../../community/events/message/messageNotifications';
 
+
+const silentOpts = { allowedMentions: { users: [], roles: [] }};
+
 export default class ChannelsHelper {
+
+    // TODO: Need to reuse this a lot! Ping/link without pinging! <3 <3 
+    static _send(code, msg, opts = silentOpts) {
+        const coop = ServerHelper._coop();
+        const chan = this.getByCode(coop, code);
+        return chan.send(msg, opts);
+    }
 
     static getByID(guild, id) {
         return guild.channels.cache.get(id);
@@ -113,6 +123,9 @@ export default class ChannelsHelper {
         // Try to select a random active text channel.
         return MessageNotifications.getActiveChannels();
     }
+
+
+
 
     // Implement as part of community velocity reform.
     static _randomSomewhatActive() {

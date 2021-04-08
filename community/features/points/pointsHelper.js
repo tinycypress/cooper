@@ -156,20 +156,20 @@ export default class PointsHelper {
             });
             
             // Build update text for check/status.
-            let updateText = `^^MOTW check ran!**\n`;
+            let updateText = `**MOTW check ran!**\n`;
     
             if (hadAlready) {
                 // Declare they won again.
-                updateText = `^^MOTW check ran and <@${highestChange.user}> wins again!**\n\n`
+                updateText = `**MOTW check ran and <@${highestChange.user}> wins again!**\n\n`
             } else {
                 // Give the winner the role.
                 RolesHelper._add(highestChange.user, 'MEMBEROFWEEK');
     
                 // Took it from previous winner.
                 if (prevWinner) {
-                    updateText = `^^MOTW check ran and <@${highestChange.user}> seizes the role from <@${prevWinner.id}>!**\n\n`;
+                    updateText = `**MOTW check ran and <@${highestChange.user}> seizes the role from <@${prevWinner.id}>!**\n\n`;
                 } else {
-                    updateText = `^^MOTW check ran and <@${highestChange.user}> seizes the role!**\n\n`;
+                    updateText = `**MOTW check ran and <@${highestChange.user}> seizes the role!**\n\n`;
                 }
             }
     

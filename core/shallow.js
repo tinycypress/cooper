@@ -45,18 +45,6 @@ const shallowBot = async () => {
         // Easter egg gives you the 25% average number of coop points from !it
 
         // Add some more silent hyperlinked mentions. :D
-        // Try to ping leaders msg.channel.send("<@&724394130465357915>", { allowedMentions: { roles: []}})
-        // message.channel.send('content', {"allowedMentions": { "users" : []}})
-
-
-        // const isFresh = await PointsHelper.updateMOTW();
-        // console.log(isFresh);
-
-        const membersOfWeek = RolesHelper._allWith('MEMBEROFWEEK');
-        membersOfWeek.map(memb => {
-            console.log(memb.id);
-            console.log(memb.user.id);
-        });
 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
