@@ -25,22 +25,25 @@ export default class Statistics {
 
         // Add score of messages (1 per message).
         const totalMsgs = MessageNotifications.getFreshMsgTotalCount();
-        const msgPerBeak = totalMsgs / numUsers;
+        const beakAverage = totalMsgs / numUsers;
+        const msgPerBeak = isNaN(beakAverage) ? 0 : beakAverage;
 
         const activeChannels = Object.keys(STATE.MESSAGE_HISTORY);
-        const msgPerChannelBeak = msgPerBeak / activeChannels.length;
+        const channelAverage = msgPerBeak / activeChannels.length;
+        const msgPerChannel = isNaN(channelAverage) ? 0 : channelAverage;
 
         // Calculate the number of active talkers adjusted for average.
         const activeMessagers = activeChannels.reduce((acc, channelID) => {
-            const numUsers = STATE.MESSAGE_HISTORY[channelID].users.length;
+            const authors = STATE.MESSAGE_HISTORY[channelID].authors;
+            const numUsers = Object.keys(authors).length;
             return acc += numUsers / numUsers;
         }, 0);
-        
+
         // TODO: Adjust / little bonus for more active messagers.
         velocity += activeMessagers;
 
         // Add velocity for the channel activity.
-        velocity += msgPerChannelBeak;
+        velocity += msgPerChannel;
 
         return velocity;
     }

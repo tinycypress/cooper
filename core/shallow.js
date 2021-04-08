@@ -10,6 +10,7 @@ import PointsHelper from '../community/features/points/pointsHelper';
 import RolesHelper from './entities/roles/rolesHelper';
 import ItemsHelper from '../community/features/items/itemsHelper';
 import Chicken from '../community/chicken';
+import Statistics from '../community/statistics';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -40,13 +41,18 @@ const shallowBot = async () => {
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).
             // Affect item drops and minigame speeds.
+            // Detect velocity highscore
+
+        // Fix Cooper reaction spam that he doesn't have an egg.
+
+        // Structures
 
         // Add some more silent hyperlinked mentions. :D
         
         // Fail properly and loud on database not queryable.
 
-        const isNew = await Chicken.isNewDay();
-        console.log(isNew);
+
+        // !accuse command and court system, create a case channel.
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

@@ -1,13 +1,11 @@
 import EMOJIS from '../../../../core/config/emojis.json';
-import RAW_EMOJIS from '../../../../core/config/rawemojis.json';
 import MessagesHelper from '../../../../core/entities/messages/messagesHelper';
 import UsersHelper from '../../../../core/entities/users/usersHelper';
 import BuffsHelper, { BUFF_TYPES } from '../../conquest/buffsHelper';
 import TimeHelper from '../../server/timeHelper';
-import ItemsHelper from '../itemsHelper';
 
 
-import { didUseGuard } from '../../../../core/entities/commands/guards/itemCmdGuards';
+import { usedOwnedUsableGuard } from '../../../../core/entities/commands/guards/itemCmdGuards';
 
 // Give shield user protected state for a set amount of time.
 
@@ -35,8 +33,9 @@ export default class ShieldHandler {
 
         // TODO: Add emoji here, Can add another emoji reaction suitable param(?) to pass , ':shield:'
         // Attempt to use the shield item
-        const didUse = await didUseGuard(user, 'SHIELD', msg, RAW_EMOJIS.SHIELD);
-        if (!didUse) return false;
+        const used = await usedOwnedUsableGuard(user, 'SHIELD', 1, msg);
+        if (!used) return false;
+
 
         // Reference the shielding target.
         const target = reaction.message.author;
@@ -55,8 +54,8 @@ export default class ShieldHandler {
     // TODO: Will need to pass target?
     static async use(msg) {
         // Attempt to use the shield item
-        const didUse = await didUseGuard(msg.author, 'SHIELD', msg, RAW_EMOJIS.SHIELD)
-        if (!didUse) return false;
+        const used = await usedOwnedUsableGuard(msg.author, 'SHIELD', 1, msg);
+        if (!used) return false;
 
         // Respond to usage result.
         const protectionExpiry = this.runEffect(msg.author.id);

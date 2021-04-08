@@ -1,24 +1,24 @@
 import ChannelsHelper from "../../../../core/entities/channels/channelsHelper";
-import { didUseGuard, ownEnoughGuard } from "../../../../core/entities/commands/guards/itemCmdGuards";
+import { usedOwnedUsableGuard } from "../../../../core/entities/commands/guards/itemCmdGuards";
+import STATE from "../../../../core/state";
 import EggHuntMinigame from "../../minigame/small/egghunt";
 
 
 export default class LaxativeHandler {
 
     static async use(commandMsg, user) {       
-        // Check the user even owns enough before proceeding. 
-        const ownEnough = await ownEnoughGuard(user, commandMsg, 'LAXATIVE', 1)
-        if (!ownEnough) return false;
-
-        // Check consumed before firing effect.
-        const didUse = await didUseGuard(user, 'LAXATIVE', commandMsg, '🍫');
-        if (!didUse) return false;
+        const used = await usedOwnedUsableGuard(user, 'LAXATIVE', 1, commandMsg);;
+        if (!used) return false;
 
         // Attempt to run egg drop. :D
-        EggHuntMinigame.run();
+        const succeeded = STATE.CHANCE.bool({ likelihood: 45 });
+        if (succeeded) 
+            EggHuntMinigame.run();
+
+        // Add chance to do bonus eggs! Refactor in egg hunt.
 
         // Add feedback.
-        const feedbackText = `${user.username} used laxative and potentially triggered egg drops!`;
+        const feedbackText = `${user.username} used laxative and ${succeeded ? 'successfully' : 'potentially'} triggered egg drops!`;
         ChannelsHelper.propagate(commandMsg, feedbackText, 'ACTIONS');
     }
    

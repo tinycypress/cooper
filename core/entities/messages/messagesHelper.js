@@ -1,4 +1,4 @@
-import ChannelsHelper from "../channels/channelsHelper";
+import ChannelsHelper, { silentOpts } from "../channels/channelsHelper";
 import ServerHelper from "../server/serverHelper";
 import EMOJIS from "../../config/emojis.json";
 import createEmbed from "./embedHelper";
@@ -162,6 +162,42 @@ export default class MessagesHelper {
                 console.error(e);
             }
         }, delay);
+    }
+
+
+
+    static silentSelfDestruct(msgOrChannelRef, content, delayMs = 666, fuseMs = 30000) {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                try {
+                    if (msgOrChannelRef) {
+                        // Add a reference to help ensure another layer of cleanup.
+                        let messageRef = null;
+
+                        // If passed a message directly, use "say" method.
+                        if (typeof msgOrChannelRef.say === 'function')
+                            messageRef = await msgOrChannelRef.say(content, silentOpts);
+
+                        // If passed a channel, use channel's "say" method.
+                        if (typeof msgOrChannelRef.send === 'function')
+                            messageRef = await msgOrChannelRef.send(content, silentOpts);
+                        
+                        if (messageRef) {
+                            this.delayDelete(messageRef, fuseMs);
+                            ServerHelper.addTempMessage(messageRef)
+                            resolve(messageRef);
+                        } else {
+                            resolve(null);
+                        }
+                    }
+
+                } catch(e) {
+                    console.log('Error silent-self-destructing message.');
+                    console.error(e);
+                    reject('self_destruct_message_error');
+                }
+            }, delayMs);
+        });
     }
 
     static selfDestruct(msgOrChannelRef, content, delayMs = 666, fuseMs = 30000) {

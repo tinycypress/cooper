@@ -6,7 +6,7 @@ import MessagesHelper from '../messages/messagesHelper';
 import MessageNotifications from '../../../community/events/message/messageNotifications';
 
 
-const silentOpts = { allowedMentions: { users: [], roles: [] }};
+export const silentOpts = { allowedMentions: { users: [], roles: [] }};
 
 export default class ChannelsHelper {
 
@@ -16,6 +16,17 @@ export default class ChannelsHelper {
         const chan = this.getByCode(coop, code);
         return chan.send(msg, opts);
     }
+    
+
+    static async silentPropagate(msgRef, text, recordChan, selfDestruct = true) {
+        // If channel isn't identical to record channel, post there too.
+        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
+            MessagesHelper.silentSelfDestruct(msgRef, text, 0, 15000);
+
+        // Post to the record channel and return the outcome.
+        return this._send(recordChan, text);
+    }
+
 
     static getByID(guild, id) {
         return guild.channels.cache.get(id);
@@ -88,11 +99,13 @@ export default class ChannelsHelper {
         const prodServer = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
         const feedChannel = this.getByCode(prodServer, name);
 
+        
         return new Promise((resolve, reject) => {
             let request = null;
             setTimeout(() => {
                 if (feedChannel && typeof feedChannel.send === 'function') {
                     request = feedChannel.send(message);
+                    
                     resolve(request);
                 } else {
                     console.log(name + 'channel send failure');
@@ -144,12 +157,8 @@ export default class ChannelsHelper {
         if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
             MessagesHelper.selfDestruct(msgRef, text, 0, 15000);
 
-        // If channel isn't identical to record channel but no self, post there too without deleting.
-        if (!this.checkIsByCode(msgRef.channel.id, recordChan) && !selfDestruct)
-            msgRef.say(text);
-
         // Post to the record channel and return the outcome.
-        return await this._postToChannelCode(recordChan, text, 666);
+        return this._send(recordChan, text);
     }
 
     static async _delete(id) {

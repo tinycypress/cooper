@@ -5,10 +5,31 @@ import ServerHelper from '../../server/serverHelper';
 import UsersHelper from '../../users/usersHelper';
 
 // TODO: Break these into separate files as export default functions.
+export async function usedOwnedUsableGuard(user, itemCode, qty, msgRef) {
+    // Check item code is usable and valid with command guard.
+    const isUsable = usableItemCodeGuard(msgRef, itemCode, user.username);
+    if (!isUsable) return false;
+
+    // Check they own it and it was consumed.
+    const doesOwnDidUseGuard = await doesOwnDidUsableGuard(msg.author, itemCode, qty, msg);
+    if (!doesOwnDidUseGuard) return false;
+
+    // Guard passed.
+    return true;
+}
 
 
 // TODO: Write this method to combine doesOwn and didUse into one command.
-// export async function doesOwnDidUseGuard() {}
+export async function doesOwnDidUseGuard(user, itemCode, qty, msgRef) {
+    if (!await ownEnoughGuard(user, itemCode, qty, msgRef))
+        return false;
+
+    if (!await didUseGuard(user, itemCode, qty, msgRef))
+        return false;
+
+    // Guard passed.
+    return true;
+}
 
 // Check has enough of many and then use them or provide clear feedback error.
 export async function useManyGuard(user, msg, itemManifest) {
@@ -63,13 +84,13 @@ export async function useManyGuard(user, msg, itemManifest) {
     }
 }
 
-export async function ownEnoughGuard(user, msg, itemCode, qty) {
+export async function ownEnoughGuard(user, itemCode, qty, msgRef) {
     try {
         // Load the user's owned item qty.
         const itemQty = await ItemsHelper.getUserItemQty(user.id, itemCode);
         if (itemQty < 0 || itemQty - qty < 0) {
             const notEnoughText = `${user.username} do not own enough ${itemCode}. ${itemQty}/${qty}`
-            MessagesHelper.selfDestruct(msg, notEnoughText, 0, 10000);
+            MessagesHelper.selfDestruct(msgRef, notEnoughText, 0, 10000);
 
             // Indicate guard failed.
             return false;
@@ -145,10 +166,10 @@ export async function ownEnoughManyGuard(user, msg, itemManifest) {
 }
 
 // Maybe change emoji to emoji code...?
-export async function didUseGuard(user, itemCode, msgRef, reactEmoji = null) {
+export async function didUseGuard(user, itemCode, qty = 1, msgRef, reactEmoji = null) {
     try {
         // Attempt to use the shield item
-        const didUseItem = await UsableItemHelper.use(user.id, itemCode, 1);
+        const didUseItem = await UsableItemHelper.use(user.id, itemCode, qty);
     
         // Provide error feedback, since this prevents action.
         if (didUseItem) return true;

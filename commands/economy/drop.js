@@ -9,7 +9,7 @@ import ItemsHelper from '../../community/features/items/itemsHelper';
 import EggHuntMinigame from '../../community/features/minigame/small/egghunt';
 
 import STATE from '../../core/state';
-import { didUseGuard, usableItemCodeGuard, itemCodeArg } from '../../core/entities/commands/guards/itemCmdGuards';
+import { itemCodeArg, usedOwnedUsableGuard } from '../../core/entities/commands/guards/itemCmdGuards';
 
 export default class DropCommand extends CoopCommand {
 
@@ -32,13 +32,9 @@ export default class DropCommand extends CoopCommand {
 		try {
 			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 
-			// Check item code is usable and valid with command guard.
-			const isUsable = usableItemCodeGuard(msg, itemCode, msg.author.username);
-			if (!isUsable) return null;
-
-			// Use a guard to ensure the item was used.
-			const didUse = await didUseGuard(msg.author, itemCode, msg);
-			if (!didUse) return null;
+			// Check item code is usable, was used, and valid with multi-guard.
+			const used = await usedOwnedUsableGuard(msg.author, itemCode, 1, msg);
+			if (!used) return null;
 
 			// Drop the item based on its code.
 			const emojiText = MessagesHelper.emojiText(EMOJIS[itemCode]);
