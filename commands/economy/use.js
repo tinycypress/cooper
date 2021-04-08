@@ -52,7 +52,7 @@ export default class UseCommand extends CoopCommand {
 		if (itemCode === 'SHIELD') ShieldHandler.use(msg);
 
 		if (itemCode === 'RPG') RPGHandler.use(msg); // TODO: WIP
-		if (itemCode === 'RPG') EasterEggHandler.use(msg, msg.author); // TODO: WIP
+		if (itemCode === 'EASTER_EGG') EasterEggHandler.use(msg, msg.author); // TODO: WIP
     }
     
 };

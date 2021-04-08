@@ -9,7 +9,7 @@ export default class EasterEggHandler {
 
     static async use(commandMsg, user) {       
         // Check the user even owns enough before proceeding. 
-        const ownEnough = await ownEnoughGuard(user, commandMsg, 'EASTER_EGG', 1)
+        const ownEnough = await ownEnoughGuard(user, commandMsg, 'EASTER_EGG', 1);
         if (!ownEnough) return false;
 
         // Check consumed before firing effect.
