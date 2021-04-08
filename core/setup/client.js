@@ -19,6 +19,7 @@ export default () => {
             ['sacrifice', 'Sacrifice'],
             ['items', 'Item'],
             ['economy', 'Economy'],
+            ['gamble', 'Gamble'],
             ['skills', 'Skills'],
             ['misc', 'Miscellaneous'],
             ['points', 'Points'],

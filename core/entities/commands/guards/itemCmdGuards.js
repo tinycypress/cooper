@@ -11,7 +11,7 @@ export async function usedOwnedUsableGuard(user, itemCode, qty, msgRef) {
     if (!isUsable) return false;
 
     // Check they own it and it was consumed.
-    const doesOwnDidUseGuard = await doesOwnDidUsableGuard(msg.author, itemCode, qty, msg);
+    const doesOwnDidUseGuard = await doesOwnDidUseGuard(msg.author, itemCode, qty, msg);
     if (!doesOwnDidUseGuard) return false;
 
     // Guard passed.
