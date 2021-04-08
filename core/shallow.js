@@ -43,6 +43,8 @@ const shallowBot = async () => {
 
         // Add some more silent hyperlinked mentions. :D
         
+        // Fail properly and loud on database not queryable.
+
         const isNew = await Chicken.isNewDay();
         console.log(isNew);
 

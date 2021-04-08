@@ -1,4 +1,5 @@
 import ChannelsHelper from "../core/entities/channels/channelsHelper";
+import ServerHelper from "../core/entities/server/serverHelper";
 import STATE from "../core/state";
 import MessageNotifications from "./events/message/messageNotifications";
 
@@ -19,8 +20,27 @@ export default class Statistics {
     static calcCommunityVelocity() {
         let velocity = 1;
 
+        // Calculate the number of current users to adjust ratios.
+        const numUsers = ServerHelper._count();
+
         // Add score of messages (1 per message).
-        velocity += MessageNotifications.getFreshMsgTotalCount();
+        const totalMsgs = MessageNotifications.getFreshMsgTotalCount();
+        const msgPerBeak = totalMsgs / numUsers;
+
+        const activeChannels = Object.keys(STATE.MESSAGE_HISTORY);
+        const msgPerChannelBeak = msgPerBeak / activeChannels.length;
+
+        // Calculate the number of active talkers adjusted for average.
+        const activeMessagers = activeChannels.reduce((acc, channelID) => {
+            const numUsers = STATE.MESSAGE_HISTORY[channelID].users.length;
+            return acc += numUsers / numUsers;
+        }, 0);
+        
+        // TODO: Adjust / little bonus for more active messagers.
+        velocity += activeMessagers;
+
+        // Add velocity for the channel activity.
+        velocity += msgPerChannelBeak;
 
         return velocity;
     }
@@ -32,6 +52,10 @@ export default class Statistics {
         // Bonus, if bigger author:messages ratio this is better((?))
         // Count # reactions
         // ChannelsHelper._postToChannelCode('TALK', 'Calculate community velocity? Based on? Messages, reactions, joins, boosts, missing any user-driven activity?')
+
+
+        // If community velocity is higher than record, reward community
+        // A rare crate, bonus eggs, etc.
 
         const velocityText = `Community velocity is ${this.calcCommunityVelocity()}.`
         ChannelsHelper._postToChannelCode('TALK', velocityText);

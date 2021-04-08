@@ -8,6 +8,8 @@ import ReactionHelper from "../../../../core/entities/messages/reactionHelper";
 import UsersHelper from "../../../../core/entities/users/usersHelper";
 import UsableItemHelper from "../usableItemHelper";
 
+import EMOJIS from "../../../../core/config/emojis.json";
+
 export default class LegendaryEggHandler {
 
     static async onReaction(reaction, user) {

@@ -48,7 +48,7 @@ export default class BombHandler {
                         const changesOccurred = `${damage}${doubledInfo} points (${updatedPoints}).`;
                         const feedbackText = `${subjectsInvolved}: ${changesOccurred}`;
 
-                        ChannelsHelper.propagate(msg, feedbackText, 'ACTIONS');
+                        ChannelsHelper.propagate(msg, feedbackText, 'ATTACKS');
                     }, 5000);
                 }
             } catch(e) {

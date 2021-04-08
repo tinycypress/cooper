@@ -16,6 +16,11 @@ export default class ServerHelper {
         return this.getByCode(STATE.CLIENT, 'PROD');
     }
 
+    static _count() {
+        const userCount = this._coop().memberCount || 0;
+        return userCount;
+    }
+
 
     // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
     // Consider this a correction from Cooper/more recent data.
