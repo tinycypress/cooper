@@ -8,6 +8,8 @@ import UsersHelper from './entities/users/usersHelper';
 import ChannelsHelper from './entities/channels/channelsHelper';
 import PointsHelper from '../community/features/points/pointsHelper';
 import RolesHelper from './entities/roles/rolesHelper';
+import ItemsHelper from '../community/features/items/itemsHelper';
+import Chicken from '../community/chicken';
 
 // Commonly useful.
 const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
@@ -39,13 +41,10 @@ const shallowBot = async () => {
             // Calculate + persist + feedback the number, less often (unless fast).
             // Affect item drops and minigame speeds.
 
-        // MOTW
-
-        // This would nicely introduce some decimal numbers.
-        // Easter egg gives you the 25% average number of coop points from !it
-
         // Add some more silent hyperlinked mentions. :D
-
+        
+        const isNew = await Chicken.isNewDay();
+        console.log(isNew);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
