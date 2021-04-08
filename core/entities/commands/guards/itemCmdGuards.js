@@ -4,20 +4,21 @@ import MessagesHelper from '../../messages/messagesHelper';
 import ServerHelper from '../../server/serverHelper';
 import UsersHelper from '../../users/usersHelper';
 
-// TODO: Break these into separate files as export default functions.
-export async function usedOwnedUsableGuard(user, itemCode, qty, msgRef) {
-    // Check item code is usable and valid with command guard.
-    const isUsable = usableItemCodeGuard(msgRef, itemCode, user.username);
-    if (!isUsable) return false;
 
-    // Check they own it and it was consumed.
-    const doesOwnDidUseGuard = await doesOwnDidUseGuard(msg.author, itemCode, qty, msg);
-    if (!doesOwnDidUseGuard) return false;
 
-    // Guard passed.
+export function usableItemCodeGuard(msgRef, itemCode, username) {
+    // Check if this item code can be given.
+    if (!UsableItemHelper.isUsable(itemCode) || itemCode === null) {
+        const errorText = `${username}, ${itemCode} is not a usable/matching item code.`;
+        MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
+
+        // Indicate that the code guard failed.
+        return false;
+    }
+
+    // Indicate that the code guard passed.
     return true;
 }
-
 
 // TODO: Write this method to combine doesOwn and didUse into one command.
 export async function doesOwnDidUseGuard(user, itemCode, qty, msgRef) {
@@ -26,6 +27,20 @@ export async function doesOwnDidUseGuard(user, itemCode, qty, msgRef) {
 
     if (!await didUseGuard(user, itemCode, qty, msgRef))
         return false;
+
+    // Guard passed.
+    return true;
+}
+
+// TODO: Break these into separate files as export default functions.
+export async function usedOwnedUsableGuard(user, itemCode, qty, msgRef) {
+    // Check item code is usable and valid with command guard.
+    const isUsable = usableItemCodeGuard(msgRef, itemCode, user.username);
+    if (!isUsable) return false;
+
+    // Check they own it and it was consumed.
+    const used = await doesOwnDidUseGuard(msg.author, itemCode, qty, msg);
+    if (!used) return false;
 
     // Guard passed.
     return true;
@@ -193,19 +208,6 @@ export async function didUseGuard(user, itemCode, qty = 1, msgRef, reactEmoji = 
 }
 
 
-export function usableItemCodeGuard(msgRef, itemCode, username) {
-    // Check if this item code can be given.
-    if (!UsableItemHelper.isUsable(itemCode) || itemCode === null) {
-        const errorText = `${username}, ${itemCode} is not a usable/matching item code.`;
-        MessagesHelper.selfDestruct(msgRef, errorText, 0, 5000);
-
-        // Indicate that the code guard failed.
-        return false;
-    }
-
-    // Indicate that the code guard passed.
-    return true;
-}
 
 export function validUserArgGuard(msgRef, target, username) {
     // Check if this item code can be given.
