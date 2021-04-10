@@ -6,7 +6,8 @@
   "scripts": {
     "startBot": "node -r esm ./index.js",
     "db": "heroku pg:psql --app cooperchickenbot",
-    "shallowBot": "nodemon --exec babel-node ./origin/setup/shallow.js"
+    "dev": "nodemon --exec babel-node ./origin/setup/shallow.js",
+    "lint": "eslint ."
   },
   "engines": {
     "node": "12.x",

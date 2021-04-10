@@ -26,6 +26,11 @@ export default class ServerHelper {
     // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
     // Consider this a correction from Cooper/more recent data.
     static async addTempMessage(msg, deleteSecs) {
+        if (msg.channel.type === 'dm') {
+            console.log('not allowing temp message for dm atm', msg.content);
+            return false;
+        }
+
         let lifetimeSecs = !isNaN(parseInt(deleteSecs)) ? parseInt(deleteSecs) : 1;
         let expiry = Math.round((Date.now() / 1000) + lifetimeSecs);
 

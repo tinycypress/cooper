@@ -1,5 +1,4 @@
-const { Client } = require('pg');
-
+import Client from 'pg/lib/client';
 
 export default class Database {
 

@@ -7,8 +7,10 @@ export default class CoopCommand extends Command {
 	}
 
 	async run(msg) {
-		// Remove calling command.
-		msg.delete();
+		// Remove user's calling command.
+		if (msg.channel.type !== 'dm')
+			msg.delete();
+
 
 		// TODO: Log calling command.
 
