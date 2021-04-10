@@ -1,6 +1,6 @@
 import { map as _map, values as _values } from 'lodash';
 import { RAW_EMOJIS, EMOJIS } from '../../../origin/config';
-import COOP, { STATE, CHANNELS, ITEMS, MESSAGES } from '../../../origin/coop';
+import COOP, { STATE, CHANNELS, ITEMS, MESSAGES, USERS } from '../../../origin/coop';
 
 
 import DropTable from '../medium/economy/items/droptable';
@@ -379,6 +379,7 @@ export default class EggHuntMinigame {
 
     static async antiTroll(msg) {
         // Check if message is egg hunt drop but not Cooper.
+        const isUserMessage = !USERS.isCooperMsg(msg);
         const isEgghuntDrop = this.isEgghuntDrop(msg.content);
         const eggRarity = this.calculateRarityFromMessage(msg);
         const isTrollEgg = isUserMessage && isEgghuntDrop && eggRarity;
