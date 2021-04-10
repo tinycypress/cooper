@@ -41,13 +41,19 @@ export default class RolesHelper {
         const guild = SERVER._coop();
 
         roleCodes.map(code => {
-            const roleConfig = ROLES[code] || null;
-            const roleID = roleConfig.id || null;
-            const role = this.getRoleByID(guild, roleID);
+            let roleConfig = ROLES[code] || null;
+            if (roleConfig) {
+                const roleID = roleConfig.id || null;
+                if (!roleID) {
+                    const role = this.getRoleByID(guild, roleID);
+        
+                    // Push roles
+                    if (role) 
+                        roles.push(role);
+                }
+    
+            }
 
-            // Push roles
-            if (roleConfig && roleID && role) 
-                roles.push(role);
         });
         return roles;
     }
