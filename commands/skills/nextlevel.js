@@ -1,7 +1,7 @@
 import SkillsHelper, { SKILLS } from '../../operations/minigames/medium/skills/skillsHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 
 export default class NextLevelCommand extends CoopCommand {
@@ -64,7 +64,7 @@ export default class NextLevelCommand extends CoopCommand {
 			const xp = await SkillsHelper.getXP(skillCode, msg.author.id);
 
 			// TODO: Calculate next level diff
-			const diff = 1337;
+			const diff = 1337 + xp;
 
 			const levelText = `${username}'s next ${skillCode} level (${level + 1}) is ${diff} xp away!`;
 			return COOP.MESSAGES.selfDestruct(msg, levelText);

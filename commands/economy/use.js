@@ -7,7 +7,7 @@ import EasterEggHandler from '../../operations/minigames/medium/economy/items/ha
 import { itemCodeArg, itemQtyArg } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 export default class UseCommand extends CoopCommand {
 
@@ -29,6 +29,7 @@ export default class UseCommand extends CoopCommand {
 
 		// Fix to 1 for now until further tested.
 		qty = 1;
+		console.log('Tried to !use qty: ' + qty);
 
 		// Interpret item code from text/string/emoji/item_code.
 		itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);

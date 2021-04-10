@@ -16,7 +16,6 @@ import CleanupHandler from "./messages/cleanupHandler";
 import LinkPreviewFilter from './messages/linkPreviewFilter';
 
 import COOP, { USABLE, STATE } from "../../origin/coop";
-import { EMOJIS } from "../../origin/config";
 
 
 

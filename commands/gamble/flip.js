@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, STATE, TIME } from '../../origin/coop';
+import COOP, { STATE } from '../../origin/coop';
 
 export default class FlipCommand extends CoopCommand {
 

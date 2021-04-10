@@ -2,7 +2,8 @@ import DatabaseHelper from "../../../databaseHelper";
 import COOP, { USABLE } from "../../../../origin/coop";
 import Database from "../../../../origin/setup/database";
 
-export default class TradeHelper {
+// TODO: Rename file.
+export default class TradingHelper {
 
     static async remove(tradeID) {
         const query = {
@@ -205,7 +206,7 @@ export default class TradeHelper {
 
     // Calculate conversion rate between items based on current open trade rates.
     static async conversionRate(offerItem, receiveItem) {
-        const matches = await TradeHelper.findOfferReceiveMatches(offerItem, receiveItem);
+        const matches = await this.findOfferReceiveMatches(offerItem, receiveItem);
         const ratios = matches.map(match => match.receive_qty / match.offer_qty);
         const sumAverage = ratios.reduce((acc, val) => {
           acc += val;

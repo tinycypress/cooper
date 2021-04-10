@@ -3,8 +3,7 @@ import ElectionHelper from '../../operations/members/hierarchy/election/election
 import { usableItemCodeGuard, useManyGuard, validUserArgGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { STATE, SERVER } from '../../origin/coop';
-import { EMOJIS, RAW_EMOJIS } from '../../origin/config';
+import COOP from '../../origin/coop';
 
 
 

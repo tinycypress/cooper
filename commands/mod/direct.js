@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP, { SERVER } from '../../origin/coop';
 
 
 export default class DirectCommand extends CoopCommand {

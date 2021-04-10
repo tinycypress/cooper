@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 // Calculate the % point change historically for a user.
 export default class PointChangeCommand extends CoopCommand {

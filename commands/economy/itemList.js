@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { STATE, SERVER } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 export default class ItemListCommand extends CoopCommand {
 

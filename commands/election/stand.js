@@ -1,7 +1,7 @@
 import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER } from '../../origin/coop';
+import COOP from '../../origin/coop';
 import { EMOJIS, CHANNELS } from '../../origin/config';
 
 

@@ -1,5 +1,4 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP from '../../origin/coop';
 
 export default class MOTWCommand extends CoopCommand {
 

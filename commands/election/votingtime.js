@@ -1,7 +1,7 @@
 import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP, { TIME } from '../../origin/coop';
 import { CHANNELS } from '../../origin/config';
 
 

@@ -53,7 +53,7 @@ export default class Statistics {
 
     // Use this to calculate and update community velocity.
     // TODO: Drop rates command and velocity command for comparison.
-    static offloadMessageStats(data) {
+    static offloadMessageStats() {
         // TODO: Count # messages
         // Bonus, if bigger author:messages ratio this is better((?))
         // Count # reactions

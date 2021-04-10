@@ -1,7 +1,7 @@
 import DropTable from '../../operations/minigames/medium/economy/items/droptable';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP, { USABLE } from '../../origin/coop';
 
 export default class AlchemyCommand extends CoopCommand {
 

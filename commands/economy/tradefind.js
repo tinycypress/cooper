@@ -1,6 +1,6 @@
 import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 export default class TradeFindCommand extends CoopCommand {
 

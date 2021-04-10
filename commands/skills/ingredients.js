@@ -1,7 +1,7 @@
 import CraftingHelper from '../../operations/minigames/medium/skills/crafting/craftingHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 
 export default class IngredientsCommand extends CoopCommand {
@@ -18,7 +18,7 @@ export default class IngredientsCommand extends CoopCommand {
 			args: [
 				{
 					key: 'itemCode',
-					prompt: 'Which item\s ingredients do you want to check?',
+					prompt: 'Which item\'s ingredients do you want to check?',
 					type: 'string'
 				},
 				{

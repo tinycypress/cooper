@@ -1,6 +1,6 @@
 import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 export default class TradesCommand extends CoopCommand {
 
@@ -35,7 +35,7 @@ export default class TradesCommand extends CoopCommand {
 
 		try {
 			// Load trades for that user.
-			const myTrades = await TradeHelper.getByTrader(msg.author.id);
+			const myTrades = await TradingHelper.getByTrader(msg.author.id);
 			
 			// Interpret item codes from strings or emojis.
 			const offerItemCode = COOP.ITEMS.interpretItemCodeArg(offerItemCodeStr);
@@ -56,7 +56,7 @@ export default class TradesCommand extends CoopCommand {
 			// User did not specify a preference, show default response.
 			if (offerItemCodeStr === '') {
 				// Display all trades
-				const allTradesStr = TradeHelper.manyTradeItemsStr(myTrades);
+				const allTradesStr = TradingHelper.manyTradeItemsStr(myTrades);
 				const allTitleStr = `**All ${msg.author.username}'s trades:**\n\n`;
 				return COOP.MESSAGES.selfDestruct(msg, allTitleStr + tradeslotStr + allTradesStr);
 		
@@ -67,7 +67,7 @@ export default class TradesCommand extends CoopCommand {
 				// Get trades based on a match.
 				const matchingOffered = myTrades.filter(trade => trade.offer_item === offerItemCode);
 				const matchingTitleStr = `**Trades requiring your ${offerItemCode}:**\n\n`;
-				const matchingTradesStr = TradeHelper.manyTradeItemsStr(matchingOffered);
+				const matchingTradesStr = TradingHelper.manyTradeItemsStr(matchingOffered);
 				return COOP.MESSAGES.selfDestruct(msg, matchingTitleStr + matchingTradesStr);				
 			
 			// User attempted to provide both item codes, find only matches.
@@ -77,7 +77,7 @@ export default class TradesCommand extends CoopCommand {
 					trade.offer_item === offerItemCode && trade.receive_item === receiveItemCode
 				);
 				const matchesTitleStr = `**Trades exchanging ${offerItemCode} for ${receiveItemCode}:**\n\n`;
-				const matchingOfferedReceivedStr = TradeHelper.manyTradeItemsStr(matchingOfferedReceived);
+				const matchingOfferedReceivedStr = TradingHelper.manyTradeItemsStr(matchingOfferedReceived);
 				return COOP.MESSAGES.selfDestruct(msg, matchesTitleStr + matchingOfferedReceivedStr);
 			}
 			

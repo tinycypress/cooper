@@ -1,6 +1,6 @@
  import CoopCommand from '../../operations/activity/messages/coopCommand';
 
-import COOP, { STATE } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 export default class CleanupRoadmapCommand extends CoopCommand {
 

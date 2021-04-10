@@ -1,5 +1,4 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { CHICKEN } from '../../origin/coop';
 
 export default class RolesCommand extends CoopCommand {
 

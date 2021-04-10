@@ -1,7 +1,7 @@
 import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import COOP from '../../origin/coop';
 
 
 export default class LevelXPCommand extends CoopCommand {
