@@ -221,7 +221,7 @@ export default class ItemsHelper {
         itemCode = this.parseFromStr(text.trim());
 
         // Prioritse emoji overwriting/preference over text (if supplied).
-        const emojiID = COOP.MESSAGESstrToEmojiID(text);
+        const emojiID = COOP.MESSAGES.strToEmojiID(text);
         const emojiSupportedCode = this.emojiToItemCode(emojiID);
         if (emojiSupportedCode) itemCode = emojiSupportedCode;
 
