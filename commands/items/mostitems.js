@@ -20,7 +20,7 @@ export default class MostItemsCommand extends CoopCommand {
 		super.run(msg);
 
 		// Get user with the most items.
-		const mostItems = await COOP.ITEMSgetBiggestWhale();
+		const mostItems = await COOP.ITEMS.getBiggestWhale();
 		const mostItemsUser = COOP.USERS._get(mostItems.owner_id).user;
 
 		// Provide the result to the user.

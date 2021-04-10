@@ -51,10 +51,10 @@ export default class GiveCommand extends CoopCommand {
 
 		try {
 			// Interpret, parse, and format item code.
-			itemCode = COOP.ITEMSinterpretItemCodeArg(itemCode);
+			itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 			// If no item code found, attempt to infer one from the rest of the message.
-			if (!itemCode) itemCode = COOP.ITEMSinterpretItemCodeArg(msg.content);
+			if (!itemCode) itemCode = COOP.ITEMS.interpretItemCodeArg(msg.content);
 
 			// If no target given in correct order, attempt to infer from mentions
 			if (!target && msg.mentions.users.first()) 
@@ -86,7 +86,7 @@ export default class GiveCommand extends CoopCommand {
 			// REVIEWS: Maybe a guard/check with an error is needed for item add too? :D
 
 			// Add the item to the gift recepient.
-			await COOP.ITEMSadd(target.id, itemCode, qty);
+			await COOP.ITEMS.add(target.id, itemCode, qty);
 
 			// TODO: create .addManifest and let them have the giftbox too :D.
 			// TODO: Make sure pickups are logged/recorded in a channel (drop too).

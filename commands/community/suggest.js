@@ -21,7 +21,7 @@ export default class SuggestCommand extends CoopCommand {
 		super.run(msg);
 
 		if (msg.content.includes('@everyone') || msg.content.includes('@here'))
-			return COOP.MESSAGESelfDestruct(msg, 'Pinging via Cooper disallowed.');
+			return COOP.MESSAGES.selfDestruct(msg, 'Pinging via Cooper disallowed.');
 
         try {
 			// Post in suggestions.
@@ -29,18 +29,18 @@ export default class SuggestCommand extends CoopCommand {
 				msg.content.replace('!suggest', ''));
 
 			// Add reactions for people to use.
-			COOP.MESSAGESelayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
-			COOP.MESSAGESelayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
+			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
+			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
 
 			// Add intended for roadmap, add roadmap reaction for adding to roadmap.
 			if (msg.content.toLowerCase().indexOf('roadmap') > -1) {
-				COOP.MESSAGESelayReact(pollAcknowledgement, EMOJIS.ROADMAP, 999);
+				COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.ROADMAP, 999);
 			}
 		
 			// Send poll tracking link.
 			await msg.direct(
 				'I started your poll, track its progress with this link: ' + 
-				COOP.MESSAGESink(pollAcknowledgement) + 
+				COOP.MESSAGES.link(pollAcknowledgement) + 
 				+ " \n\n\n " + " _ " + msg.content
 			);
 

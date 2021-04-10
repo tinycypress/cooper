@@ -50,7 +50,7 @@ export default class CraftingHelper {
         const ingredients = this.CRAFTABLES[itemCode].ingredients;
         const ingredList = Object.keys(this.CRAFTABLES[itemCode].ingredients);
         const ownedIngredients = await Promise.all(
-            ingredList.map(ingred => COOP.ITEMSgetUserItem(memberID, ingred)
+            ingredList.map(ingred => COOP.ITEMS.getUserItem(memberID, ingred)
         ));
 
         // Check ingredients are sufficient.
@@ -94,11 +94,11 @@ export default class CraftingHelper {
             // Subtract all of the ingredients.
             await Promise.all(
                 // TODO: Optimise into one database call.
-                ingredList.map(ingred => COOP.ITEMSsubtract(memberID, ingred, ingredients[ingred] * qty)
+                ingredList.map(ingred => COOP.ITEMS.subtract(memberID, ingred, ingredients[ingred] * qty)
             ));
 
             // Add the resultant item.
-            await COOP.ITEMSadd(memberID, itemCode, qty);
+            await COOP.ITEMS.add(memberID, itemCode, qty);
 
             // Calculate experience
             SkillsHelper.addXP(memberID, 'crafting', product.xpReward * qty);

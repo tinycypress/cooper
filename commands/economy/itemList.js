@@ -19,8 +19,8 @@ export default class ItemListCommand extends CoopCommand {
 		super.run(msg);
 
 		// TODO: Format and batch, 4 per line.
-		const usableItems = COOP.ITEMSUsableItemHelper()
-			.map((itemCode) => COOP.ITEMSbeautifyItemCode(itemCode));
+		const usableItems = COOP.USABLE.getUsableItems()
+			.map((itemCode) => COOP.ITEMS.beautifyItemCode(itemCode));
 
 		const itemListChunks = [...Array(Math.ceil(usableItems.length / 4))].map(() => usableItems.splice(0, 4))
 

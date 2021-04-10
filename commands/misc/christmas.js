@@ -34,7 +34,7 @@ export default class ChristmasCommand extends CoopCommand {
 		// 	` thank you for being part of The Coop! ${coopEmoji}\n` +
 		// 	`Merry Christmas, ${user.username}!`;
 
-		// await COOP.ITEMSadd(user.id, 'CHRISTMAS_EGG', 1)
+		// await COOP.ITEMS.add(user.id, 'CHRISTMAS_EGG', 1)
 		// await COOP.USERS.directMSG(SERVER._coop(), user.id, msgText);
     }
     

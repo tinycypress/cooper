@@ -53,10 +53,10 @@ export default class AverageEggHandler {
                     // Remove the egg based on popularity.
                     const popularity = ReactionHelper.countType(reaction.message, '💚');
                     if (popularity < 3 && !COOP.USERS.isCooper(user.id)) 
-                        COOP.MESSAGESlayReactionRemove(reaction, 333);
+                        COOP.MESSAGES.delayReactionRemove(reaction, 333);
 
                     // Add Cooper's popularity suggestion.
-                    COOP.MESSAGESlayReact(reaction.message, '💚', 666);
+                    COOP.MESSAGES.delayReact(reaction.message, '💚', 666);
                 }
 
                 // Detect self and format text accordingly.
@@ -80,7 +80,7 @@ export default class AverageEggHandler {
 
         // On 3 average hearts, allow average egg suggestion.
         if (this.shouldTriggerSuggest(reaction))
-            COOP.MESSAGESlayReact(reaction.message, EMOJIS.AVERAGE_EGG, 333);
+            COOP.MESSAGES.delayReact(reaction.message, EMOJIS.AVERAGE_EGG, 333);
     }
    
 }

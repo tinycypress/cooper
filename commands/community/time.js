@@ -24,7 +24,7 @@ export default class TimeCommand extends CoopCommand {
 			const timeMsg = await msg.say(`Current Time: ${dateString}`);
 
 			// Delete after sixty seconds.
-			COOP.MESSAGESelayDelete(timeMsg, 60000);
+			COOP.MESSAGES.delayDelete(timeMsg, 60000);
 
 		} catch(e) {
 			console.error(e);

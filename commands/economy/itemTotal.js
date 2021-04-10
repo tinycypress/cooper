@@ -30,7 +30,7 @@ export default class ItemTotalCommand extends CoopCommand {
 		const total = await COOP.ITEMS.count(itemCode);
 
 		const beaks = COOP.USERS.count(SERVER._coop(), false)
-		const emoji = COOP.MESSAGES_displayEmojiCode(itemCode);
+		const emoji = COOP.MESSAGES._displayEmojiCode(itemCode);
 		
 		return `**Economic circulation:**\n` +
 			`${total}x${emoji} | _${(total / beaks).toFixed(2)} per beak_ | (${itemCode})`;

@@ -31,7 +31,7 @@ export default class UseCommand extends CoopCommand {
 		qty = 1;
 
 		// Interpret item code from text/string/emoji/item_code.
-		itemCode = COOP.ITEMSinterpretItemCodeArg(itemCode);
+		itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 		// Item is usable, therefore use it.
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);

@@ -27,7 +27,7 @@ export default class ChannelHelper {
     static async silentPropagate(msgRef, text, recordChan, selfDestruct = true) {
         // If channel isn't identical to record channel, post there too.
         if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
-            COOP.MESSAGESsilentSelfDestruct(msgRef, text, 0, 15000);
+            COOP.MESSAGES.silentSelfDestruct(msgRef, text, 0, 15000);
 
         // Post to the record channel and return the outcome.
         return this._send(recordChan, text);
@@ -85,14 +85,14 @@ export default class ChannelHelper {
 
     static codeShout(msgRef, text, recordChan) {
         if (!this.checkIsByCode(msgRef.channel.id, recordChan))
-            COOP.MESSAGESsilentSelfDestruct(msgRef, text, 0, 10000);
+            COOP.MESSAGES.silentSelfDestruct(msgRef, text, 0, 10000);
 
         return this._send(recordChan, text);
     }
 
     static codeShoutReact(msgRef, text, recordChan, emoji) {
         if (!this.checkIsByCode(msgRef.channel.id, recordChan))
-            COOP.MESSAGESsilentSelfDestruct(msgRef, text, 0, 10000)
+            COOP.MESSAGES.silentSelfDestruct(msgRef, text, 0, 10000)
                 .then(msg => COOP.MESSAGES.delayReact(msg, emoji));
 
         return this._send(recordChan, text);

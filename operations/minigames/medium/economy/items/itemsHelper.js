@@ -190,7 +190,7 @@ export default class ItemsHelper {
     }
     
     static itemEmojiQtyStr(itemCode, itemQty = 1) {
-        return `${COOP.MESSAGES_displayEmojiCode(itemCode)}x${itemQty}`;
+        return `${COOP.MESSAGES._displayEmojiCode(itemCode)}x${itemQty}`;
     }
 
     static gainItemQtyStr(itemCode, itemQty = 1) {
@@ -378,7 +378,7 @@ export default class ItemsHelper {
     // TODO: Maybe approach drop and other things on a channel basis?
     static async drop(msgRef, itemCode, lifetimeSecs = 400, unmarked = false) {
         // Drop the item based on its code.
-        const emojiText = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
+        const emojiText = COOP.MESSAGES.emojiText(EMOJIS[itemCode]);
 
         // Send drop emoji text and update message ref
         msgRef = await COOP.MESSAGES.selfDestruct(msgRef, emojiText, 0, lifetimeSecs * 1000)

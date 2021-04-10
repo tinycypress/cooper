@@ -20,12 +20,12 @@ export default class BangCommand extends CoopCommand {
 		
 		const placedMsg = await msg.say('🧨');
 
-		COOP.MESSAGESdelayEdit(placedMsg, '🔥', 333);
-		COOP.MESSAGESdelayEdit(placedMsg, '💥', 666);
-		COOP.MESSAGESdelayEdit(placedMsg, '💨', 999);
+		COOP.MESSAGES.delayEdit(placedMsg, '🔥', 333);
+		COOP.MESSAGES.delayEdit(placedMsg, '💥', 666);
+		COOP.MESSAGES.delayEdit(placedMsg, '💨', 999);
 
 		// Clear the message, animation completed.
-		COOP.MESSAGESdelayDelete(placedMsg, 1666);
+		COOP.MESSAGES.delayDelete(placedMsg, 1666);
     }
     
 };

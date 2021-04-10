@@ -9,7 +9,7 @@ const userDesiredReactsFilter = (emojis = []) =>
 	({ emoji }, user) => emojis.includes(emoji.name) && !COOP.USERS.isCooper(user.id)
 
 // TODO: Create delayAppend() method.
-// 	COOP.MESSAGESdelayEdit(confirmMsg, confirmMsg.content + `...`);
+// 	COOP.MESSAGES.delayEdit(confirmMsg, confirmMsg.content + `...`);
 // TODO: Could potentially allow others to take the same trade with this. GME FTW.
 // TODO: Ensure trades expire, may need a new date/time on open_trades table.
 
@@ -74,8 +74,8 @@ export default class TradeCommand extends CoopCommand {
 			if (!canUserFulfil) return COOP.MESSAGES.selfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
 
 			// Generate strings with emojis based on item codes.
-			const tradeAwayStr = `${COOP.MESSAGES_displayEmojiCode(offerItemCode)}x${offerQty}`;
-			const receiveBackStr = `${COOP.MESSAGES_displayEmojiCode(receiveItemCode)}x${receiveQty}`;
+			const tradeAwayStr = `${COOP.MESSAGES._displayEmojiCode(offerItemCode)}x${offerQty}`;
+			const receiveBackStr = `${COOP.MESSAGES._displayEmojiCode(receiveItemCode)}x${receiveQty}`;
 			const exchangeString = `<- ${tradeAwayStr}\n-> ${receiveBackStr}`;
 
 			// Check if there is an existing offer matching this specifically.
@@ -135,7 +135,7 @@ export default class TradeCommand extends CoopCommand {
 							const actionsLinkStr = `\n\n_View in <#${COOP.CHANNELS.config().TRADE.id}>_`;
 		
 							// Post accepted trade to channel and record channel.
-							COOP.MESSAGESdelayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 333);
+							COOP.MESSAGES.delayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 333);
 					} else {
 						// Edit failure onto message.
 						COOP.MESSAGES.selfDestruct(confirmMsg, 'Failure confirming instant trade.', 666, 5000);
@@ -154,7 +154,7 @@ export default class TradeCommand extends CoopCommand {
 						);
 
 						// Remove the original message now to simplify the UI.
-						COOP.MESSAGESdelayDelete(confirmMsg, 999);
+						COOP.MESSAGES.delayDelete(confirmMsg, 999);
 
 						// Offer feedback for trade creation. :)
 						COOP.CHANNELS.propagate(msg, 
@@ -176,7 +176,7 @@ export default class TradeCommand extends CoopCommand {
 				// console.log('Trade cancelled');
 
 				// Trade cancelled, remove message.
-				COOP.MESSAGESdelayDelete(confirmMsg);
+				COOP.MESSAGES.delayDelete(confirmMsg);
 			}
 			
 		} catch(e) {

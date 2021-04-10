@@ -33,7 +33,7 @@ export default class DropCommand extends CoopCommand {
 			if (!used) return null;
 
 			// Drop the item based on its code.
-			const emojiText = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
+			const emojiText = COOP.MESSAGES.emojiText(EMOJIS[itemCode]);
 			const dropMsg = await msg.say(emojiText);
 
 			// High chance of egg breaking if dropped.
@@ -41,10 +41,10 @@ export default class DropCommand extends CoopCommand {
 			const breakRoll = STATE.CHANCE.bool({ likelihood: 45 });
 			if (eggDrop && breakRoll) {
 				// Change the message text to indicate breakage.
-				COOP.MESSAGESdelayEdit(dropMsg, `${msg.author.username} broke ${emojiText} by dropping it, d'oh.`);
+				COOP.MESSAGES.delayEdit(dropMsg, `${msg.author.username} broke ${emojiText} by dropping it, d'oh.`);
 
 				// Clear the message.
-				COOP.MESSAGESdelayDelete(dropMsg, 4444);
+				COOP.MESSAGES.delayDelete(dropMsg, 4444);
 			}
 
 			// TODO: Add to statistics.
@@ -57,7 +57,7 @@ export default class DropCommand extends CoopCommand {
 			COOP.MESSAGES.delayReact(dropMsg, EMOJIS.BASKET, 666);
 
 			// Add success feedback message. (Could edit instead)
-			const emoji = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
+			const emoji = COOP.MESSAGES.emojiText(EMOJIS[itemCode]);
 			const userDroppedText = `${msg.author.username} dropped ${itemCode} ${emoji}.`;
 			COOP.MESSAGES.selfDestruct(dropMsg, userDroppedText, 0, 5000);
 	
