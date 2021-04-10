@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import COOP, { SERVER } from '../../origin/coop';
+import COOP, { SERVER, STATE } from '../../origin/coop';
 import { ROLES } from '../../origin/config';
 import DatabaseHelper from "../databaseHelper";
 import Database from "../../origin/setup/database";
