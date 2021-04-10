@@ -1,4 +1,3 @@
-import { ROLES } from '../../../origin/config';
 import COOP from '../../../origin/coop';
 
 export default class CommunityOpts {

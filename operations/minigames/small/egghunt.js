@@ -44,6 +44,9 @@ export default class EggHuntMinigame {
 
     static onReaction(reaction, user) {
         try {
+            // Prevent Cooper from collecting his own eggs.
+            if (USERS.isCooper(user.id)) return false;
+
             const isCooperMessage = USERS.isCooperMsg(reaction.message);
             const isEgghuntDrop = this.isEgghuntDrop(reaction.message.content);
             const hasEggRarity = this.calculateRarityFromMessage(reaction.message);

@@ -7,8 +7,8 @@ import VotingHelper from '../../operations/activity/redemption/votingHelper';
 import COOP from '../coop';
 
 // Commonly useful.
-const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
-const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
+// const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
+// const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
 
 
 // v DEV IMPORT AREA v

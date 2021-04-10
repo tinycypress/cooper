@@ -47,7 +47,8 @@ export default class CDNManager {
         };
 
         try {            
-            const response = await axios(config);
+            // const response = 
+            await axios(config);
 
         } catch(e) {
             console.error(e);

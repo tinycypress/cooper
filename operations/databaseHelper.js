@@ -24,4 +24,4 @@ export default class DatabaseHelper {
 		return DatabaseHelper.many(queryResult);
 	}
 
-};
+}

@@ -25,4 +25,4 @@ export default function embedHelper(params) {
     if (params.thumbnail === 'none') delete embed.thumbnail;
 
     return embed;
-};
+}

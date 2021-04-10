@@ -17,4 +17,4 @@ export default class CoopCommand extends Command {
 		// TODO: Acknowledge first coop-command usage + points/achievement too.
     }
     
-};
+}

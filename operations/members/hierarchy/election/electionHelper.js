@@ -276,8 +276,8 @@ export default class ElectionHelper {
 
     static async resetHierarchyRoles() {
         try {
-            const exCommander = COOP.ROLES.getUsersWithRoleCodes(['COMMANDER']).first();
-            const exLeaders = COOP.ROLES.getUsersWithRoleCodes(['LEADER']);
+            const exCommander = COOP.ROLES._getUsersWithRoleCodes(['COMMANDER']).first();
+            const exLeaders = COOP.ROLES._getUsersWithRoleCodes(['LEADER']);
             
             // Remove the former leader roles.
             let index = 0;
@@ -667,8 +667,8 @@ export default class ElectionHelper {
 
     static _roleHierarchy() {
         const hierarchy = {
-            commander: COOP.ROLES.getUserWithCode('COMMANDER'),
-            leaders: COOP.ROLES.getUsersWithRoleCodes(['LEADER'])
+            commander: COOP.ROLES._getUserWithCode('COMMANDER'),
+            leaders: COOP.ROLES._getUsersWithRoleCodes(['LEADER'])
         };
         return hierarchy;
     }

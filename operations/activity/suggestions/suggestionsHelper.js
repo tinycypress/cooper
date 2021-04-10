@@ -10,11 +10,11 @@ export default class SuggestionsHelper {
             COOP.CHANNELS._postToFeed(`New suggestion: <#${CHANNELS.SUGGESTIONS.id}>`);
     }
 
-    static async onReaction(reaction, user) {
+    static async onReaction() {
         console.log('Suggestion reaction');
     }
 
-    static async onAdd(msg) {
+    static async onAdd() {
         // Validate a suggestion when it is originally added, part of house cleaning.   
     }
 
