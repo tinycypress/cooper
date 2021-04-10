@@ -48,7 +48,7 @@ export default class LevelsCommand extends CoopCommand {
 							`(${userSkills[skillKey].xp} XP)`
 						).join('\n');
 
-				return COOP.MESSAGESselfDestruct(msg, allSkillsText);
+				return COOP.MESSAGES.selfDestruct(msg, allSkillsText);
 			}
 
 			const skillCodeList = Object.keys(SKILLS);
@@ -56,7 +56,7 @@ export default class LevelsCommand extends CoopCommand {
 
 			// Check if input is a valid item code.
 			if (!isValid)
-				return COOP.MESSAGESselfDestruct(msg, `Invalid skill code ${skillCode}.`);
+				return COOP.MESSAGES.selfDestruct(msg, `Invalid skill code ${skillCode}.`);
 
 
 			// Calculate
@@ -64,7 +64,7 @@ export default class LevelsCommand extends CoopCommand {
 			const xp = await SkillsHelper.getXP(skillCode, msg.author.id);
 
 			const levelText = `${username} has level ${level} ${skillCode} (${xp}XP)!`
-			return COOP.MESSAGESselfDestruct(msg, levelText);
+			return COOP.MESSAGES.selfDestruct(msg, levelText);
 
 
 

@@ -79,7 +79,7 @@ export default class ChannelHelper {
     static codeSayReact(channelCode, messageText, emoji, delay = 333) {
         return this.codeSay(channelCode, messageText, emoji, delay)
             .then(msg => {
-                if (msg) COOP.MESSAGESdelayReact(msg, emoji, delay * 1.5);
+                if (msg) COOP.MESSAGES.delayReact(msg, emoji, delay * 1.5);
             });
     }
 
@@ -93,7 +93,7 @@ export default class ChannelHelper {
     static codeShoutReact(msgRef, text, recordChan, emoji) {
         if (!this.checkIsByCode(msgRef.channel.id, recordChan))
             COOP.MESSAGESsilentSelfDestruct(msgRef, text, 0, 10000)
-                .then(msg => COOP.MESSAGESdelayReact(msg, emoji));
+                .then(msg => COOP.MESSAGES.delayReact(msg, emoji));
 
         return this._send(recordChan, text);
     }
@@ -160,7 +160,7 @@ export default class ChannelHelper {
     static async propagate(msgRef, text, recordChan, selfDestruct = true) {
         // If channel isn't identical to record channel, post there too.
         if (!this.checkIsByCode(msgRef.channel.id, recordChan) && selfDestruct)
-            COOP.MESSAGESselfDestruct(msgRef, text, 0, 15000);
+            COOP.MESSAGES.selfDestruct(msgRef, text, 0, 15000);
 
         // Post to the record channel and return the outcome.
         return this._send(recordChan, text);

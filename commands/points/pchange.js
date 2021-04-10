@@ -26,6 +26,6 @@ export default class PointChangeCommand extends CoopCommand {
         // historical_points
         // all points
 
-		COOP.MESSAGESselfDestruct(msg, 'Calculating points change... :D Later.')
+		COOP.MESSAGES.selfDestruct(msg, 'Calculating points change... :D Later.')
     }    
 };

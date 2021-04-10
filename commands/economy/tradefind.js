@@ -38,11 +38,11 @@ export default class TradeFindCommand extends CoopCommand {
 
 		// Check if offer item code is default (all) or valid.
 		if (offerItemCodeStr !== '' && !offerItemCode)
-			return COOP.MESSAGESselfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 5000);
 
 		// Check if receive item code is default (all) or valid.
 		if (receiveItemCodeStr !== '' && !receiveItemCode)
-			return COOP.MESSAGESselfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 5000);
 
 		// Check for index request/all/latest.
 		if (offerItemCodeStr === '') {
@@ -52,14 +52,14 @@ export default class TradeFindCommand extends CoopCommand {
 			// Add feedback for no trades currently.
 			if (all.length === 0) {
 				const noMatchesStr = `No existing trades listed/open.`;
-				return COOP.MESSAGESselfDestruct(msg, noMatchesStr, 0, 7500);
+				return COOP.MESSAGES.selfDestruct(msg, noMatchesStr, 0, 7500);
 			}
 			
 			// Give feedback about trade listings.
 
 			// TODO: Provide more tips about !tradeaccept
 			const allTitleStr = `**Latest ${all.length} trade listings:**\n\n`;
-			return COOP.MESSAGESselfDestruct(msg, allTitleStr + TradingHelper.manyTradeItemsStr(all));
+			return COOP.MESSAGES.selfDestruct(msg, allTitleStr + TradingHelper.manyTradeItemsStr(all));
 
 		} else if (offerItemCodeStr !== '' && receiveItemCodeStr !== '') {
 			// If receive item code has been given, make sure only those matching returned.
@@ -68,14 +68,14 @@ export default class TradeFindCommand extends CoopCommand {
 			// Return no matching trades warning.
 			if (matches.length === 0) {
 				const noMatchesStr = `No existing trades exchanging ${offerItemCode} for ${receiveItemCode}`;
-				return COOP.MESSAGESselfDestruct(msg, noMatchesStr, 0, 7500);
+				return COOP.MESSAGES.selfDestruct(msg, noMatchesStr, 0, 7500);
 
 			// Return matching trades.
 			} else {
 				// Format and present the matches if they exist.
 				const matchesTitleStr = `**Trades exchanging ${offerItemCode} for ${receiveItemCode}:**\n\n`;
 				const matchesStr = TradingHelper.manyTradeItemsStr(matches);
-				return COOP.MESSAGESselfDestruct(msg, matchesTitleStr + matchesStr);
+				return COOP.MESSAGES.selfDestruct(msg, matchesTitleStr + matchesStr);
 			}
 
 		} else if (offerItemCodeStr !== '' && receiveItemCodeStr === '') {
@@ -85,14 +85,14 @@ export default class TradeFindCommand extends CoopCommand {
 			// Return no matching trades types warning.
 			if (types.length === 0) {
 				const noTypesStr = `No existing trades offering ${offerItemCode}`
-				return COOP.MESSAGESselfDestruct(msg, noTypesStr, 0, 5000);
+				return COOP.MESSAGES.selfDestruct(msg, noTypesStr, 0, 5000);
 
 			// Return matching trades.
 			} else {
 				// Format and present the matches if they exist.
 				const typesTitleStr = `**Trades requiring your ${offerItemCode}:**\n\n`;
 				const typesStr = TradingHelper.manyTradeItemsStr(types);
-				return COOP.MESSAGESselfDestruct(msg, typesTitleStr + typesStr);
+				return COOP.MESSAGES.selfDestruct(msg, typesTitleStr + typesStr);
 			}
 		}
 

@@ -35,7 +35,7 @@ export default class LastSacrificeCommand extends CoopCommand {
 
 		// Requires a valid user.
 		if (!targetUser) 
-			return COOP.MESSAGESselfDestruct(msg, '!lastsac requires a valid user target to provide results.');
+			return COOP.MESSAGES.selfDestruct(msg, '!lastsac requires a valid user target to provide results.');
 
 		// Default status for last sacrifice date.
 		let lastSacrificeFmt = 'unknown';
@@ -46,7 +46,7 @@ export default class LastSacrificeCommand extends CoopCommand {
 		
 		// Provide the result to the user.
 		const msgText = `${targetUser.username}'s last sacrifice was: ${lastSacrificeFmt}.`;
-		COOP.MESSAGESselfDestruct(msg, msgText);
+		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
 };

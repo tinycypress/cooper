@@ -21,10 +21,10 @@ export default class KickCommand extends CoopCommand {
 		// Restrict to shinoa if it gets abused.
 		// 672165988527243306
 
-        COOP.MESSAGESselfDestruct(msg, 'You are being kicked in 3...', 333);
-        COOP.MESSAGESselfDestruct(msg, 'You are being kicked in 2...', 1333);
-        COOP.MESSAGESselfDestruct(msg, 'You are being kicked in 1...', 2333);
-        COOP.MESSAGESselfDestruct(msg, '!kick is a social construct.', 3333);
+        COOP.MESSAGES.selfDestruct(msg, 'You are being kicked in 3...', 333);
+        COOP.MESSAGES.selfDestruct(msg, 'You are being kicked in 2...', 1333);
+        COOP.MESSAGES.selfDestruct(msg, 'You are being kicked in 1...', 2333);
+        COOP.MESSAGES.selfDestruct(msg, '!kick is a social construct.', 3333);
     }
     
 };

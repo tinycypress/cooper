@@ -53,13 +53,13 @@ export default class DropCommand extends CoopCommand {
 			SERVER.addTempMessage(dropMsg, 60 * 60);
 
 			// Add indicative and suggestive icons, maybe refactor.
-			COOP.MESSAGESdelayReact(dropMsg, RAW_EMOJIS.DROPPED, 333);
-			COOP.MESSAGESdelayReact(dropMsg, EMOJIS.BASKET, 666);
+			COOP.MESSAGES.delayReact(dropMsg, RAW_EMOJIS.DROPPED, 333);
+			COOP.MESSAGES.delayReact(dropMsg, EMOJIS.BASKET, 666);
 
 			// Add success feedback message. (Could edit instead)
 			const emoji = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
 			const userDroppedText = `${msg.author.username} dropped ${itemCode} ${emoji}.`;
-			COOP.MESSAGESselfDestruct(dropMsg, userDroppedText, 0, 5000);
+			COOP.MESSAGES.selfDestruct(dropMsg, userDroppedText, 0, 5000);
 	
 		} catch(e) {
 			console.log('Error with drop command.');

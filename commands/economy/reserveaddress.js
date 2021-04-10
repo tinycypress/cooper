@@ -24,7 +24,7 @@ export default class ReserveAddressCommand extends CoopCommand {
 		// Use say here instead of leave, so there's a record/advertisemnt. :D
 		msg.say(`**Reserves' Wallet Address:**\n${address}`);
 
-		// COOP.MESSAGESselfDestruct(msg, );
+		// COOP.MESSAGES.selfDestruct(msg, );
     }
     
 };

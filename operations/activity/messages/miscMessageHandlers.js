@@ -14,7 +14,7 @@ export default class MiscMessageHandlers {
 
         // If message added by Ktrn that is only emojis, react to it.
         // TODO: Does not respond to messages contain EXTERNAL server emojis due to isOnlyEmojisOrIDs shortcoming.
-        if (msg.author.id === '652820176726917130' && COOP.MESSAGESisOnlyEmojisOrIDs(msg.content)) {
+        if (msg.author.id === '652820176726917130' && COOP.MESSAGES.isOnlyEmojisOrIDs(msg.content)) {
             setTimeout(() => { msg.react('🐇'); }, 666);
             setTimeout(() => { msg.react('🐰'); }, 666);
         }
@@ -35,7 +35,7 @@ export default class MiscMessageHandlers {
                     `${msg.author.username} ${twentyPercRoll ? 'won' : 'lost'} ${type}-roulette. (${updatedPoints})!`
                 );
 
-                COOP.MESSAGESdelayDelete(feedbackMsg, 15000);
+                COOP.MESSAGES.delayDelete(feedbackMsg, 15000);
 
                 setTimeout(() => {
                     if (STATE.CHANCE.bool({ likelihood: 1.5 })) {
@@ -109,55 +109,55 @@ export default class MiscMessageHandlers {
 
         // Randon for sal
         if (msg.author.id === '443416818963578881') {
-            if (STATE.CHANCE.bool({ likelihood: 2.5 })) COOP.MESSAGESdelayReact(msg, '💙', 333);
+            if (STATE.CHANCE.bool({ likelihood: 2.5 })) COOP.MESSAGES.delayReact(msg, '💙', 333);
         }
 
         // Add easter egg for ghost
         if (msg.author.id === '407913114818969611') {
             if (STATE.CHANCE.bool({ likelihood: 2.5 })) {
-                COOP.MESSAGESdelayReact(msg, '👀', 333);
+                COOP.MESSAGES.delayReact(msg, '👀', 333);
             }
 
             if (STATE.CHANCE.bool({ likelihood: 0.5 })) {
-                COOP.MESSAGESdelayReact(msg, '👻', 333);
+                COOP.MESSAGES.delayReact(msg, '👻', 333);
             }
         }
 
         // Add chance of adding emojis to LF infrequently
         if (msg.author.id === '697781570076934164') {
             if (STATE.CHANCE.bool({ likelihood: 2.5 })) {
-                COOP.MESSAGESdelayReact(msg, '🐧', 333);
+                COOP.MESSAGES.delayReact(msg, '🐧', 333);
 
                 if (STATE.CHANCE.bool({ likelihood: 2.5 }))
-                    COOP.MESSAGESdelayReact(msg, '🤍 ', 666);
+                    COOP.MESSAGES.delayReact(msg, '🤍 ', 666);
             }
         }
 
         if (msg.author.id === '763258365186801694') {
             if (STATE.CHANCE.bool({ likelihood: 1.5 }))
-                COOP.MESSAGESdelayReact(msg, '🧼', 333);            
+                COOP.MESSAGES.delayReact(msg, '🧼', 333);            
         }
 
 
         if (msg.author.id === '697781570076934164') {
             if (STATE.CHANCE.bool({ likelihood: 1.5 }))
-                COOP.MESSAGESdelayReact(msg, '🐧', 333);            
+                COOP.MESSAGES.delayReact(msg, '🐧', 333);            
         }
 
         
         // Add chance of adding mountain snow to slatxyo message :mountain_snow:
         if (msg.author.id === '498409882211581962') {
             if (STATE.CHANCE.bool({ likelihood: 2.5 }))
-                COOP.MESSAGESdelayReact(msg, '🏔️', 333);
+                COOP.MESSAGES.delayReact(msg, '🏔️', 333);
         }
 
         // Random encouragement for ZeePheesh
         if (msg.author.id === '272479872792920065') {
             if (STATE.CHANCE.bool({ likelihood: 2.5 }) && msg.channel.id === CHANNELS.DIFFRACTION.id)
-                COOP.MESSAGESdelayReact(msg, '🛩️', 333);
+                COOP.MESSAGES.delayReact(msg, '🛩️', 333);
 
             // if (STATE.CHANCE.bool({ likelihood: 2.5 }) && msg.channel.id === CHANNELS.SOLATWAR.id)
-                // COOP.MESSAGESdelayReact(msg, '🪐', 333);
+                // COOP.MESSAGES.delayReact(msg, '🪐', 333);
         }
 
         // Luni, based.
@@ -171,14 +171,14 @@ export default class MiscMessageHandlers {
 
         // surprise lmf, i hope this works ;--;
         if (msg.author.id === '786671654721683517' && STATE.CHANCE.bool({ likelihood: 1.5 }))
-            COOP.MESSAGESdelayReact(msg, '737182281130704936', 333);
+            COOP.MESSAGES.delayReact(msg, '737182281130704936', 333);
 
         // Surprise Ortia. :D
         if (msg.author.id === '268163597371310082' && STATE.CHANCE.bool({ likelihood: 0.5 }))
-            COOP.MESSAGESdelayReact(msg, '✡️', 333);
+            COOP.MESSAGES.delayReact(msg, '✡️', 333);
 
         if (msg.author.id === '268163597371310082' && STATE.CHANCE.bool({ likelihood: 0.25 }))
-            COOP.MESSAGESdelayReact(msg, '🚿', 333);
+            COOP.MESSAGES.delayReact(msg, '🚿', 333);
 
     }
 }

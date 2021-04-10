@@ -46,12 +46,12 @@ export default class ItemTotalCommand extends CoopCommand {
 		// TODO: Convert into invalid item code guard and REUSE FFS!!
 		if (!USABLE.isUsable(parsedItemCode)) {
 			const invalidText = `${itemCode} does not exist, please provide a valid item code.`;
-			return COOP.MESSAGESselfDestruct(msg, invalidText, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, invalidText, 0, 5000);
 		}
 
 
 		const statText = await ItemTotalCommand.getStat(parsedItemCode);
-		COOP.MESSAGESselfDestruct(msg, statText, 333)
+		COOP.MESSAGES.selfDestruct(msg, statText, 333)
     }
     
 };

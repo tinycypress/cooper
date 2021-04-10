@@ -39,22 +39,22 @@ export default class TradeFindCommand extends CoopCommand {
 
 		// Check if offer item code is default (all) or valid.
 		if (!offerItemCode)
-			return COOP.MESSAGESselfDestruct(msg, `Invalid item code (${offerItemCode}).`, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, `Invalid item code (${offerItemCode}).`, 0, 5000);
 
 		// Check if receive item code is default (all) or valid.
 		if (!receiveItemCode)
-			return COOP.MESSAGESselfDestruct(msg, `Invalid item code (${receiveItemCode}).`, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, `Invalid item code (${receiveItemCode}).`, 0, 5000);
 
 		// If receive item code has been given, make sure only those matching returned.
-		const matches = await TradeHelper.findOfferReceiveMatches(offerItemCode, receiveItemCode);
+		const matches = await TradingHelper.findOfferReceiveMatches(offerItemCode, receiveItemCode);
 		
 		// Return no matching trades warning.
 		if (matches.length === 0) {
 			const noMatchesStr = `No conversion data/existing trades including ${offerItemCode} for ${receiveItemCode}.`;
-			return COOP.MESSAGESselfDestruct(msg, noMatchesStr, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, noMatchesStr, 0, 5000);
 		}
-		const conversionRate = await TradeHelper.conversionRate(offerItemCode, receiveItemCode);
-		return COOP.MESSAGESselfDestruct(msg, `1 ${offerItemCode} = ${conversionRate}* _(* Based on open trades)_.`, 0, 20000);
+		const conversionRate = await TradingHelper.conversionRate(offerItemCode, receiveItemCode);
+		return COOP.MESSAGES.selfDestruct(msg, `1 ${offerItemCode} = ${conversionRate}* _(* Based on open trades)_.`, 0, 20000);
 
     }
     

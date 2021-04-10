@@ -33,7 +33,7 @@ export default class LastMessageCommand extends CoopCommand {
 
 		// Requires a valid user.
 		if (!targetUser) 
-			return COOP.MESSAGESselfDestruct(msg, '!lastmsg requires a valid user target to provide results.');
+			return COOP.MESSAGES.selfDestruct(msg, '!lastmsg requires a valid user target to provide results.');
 
 		// Default status for last sacrifice date.
 		let lastMsgFmt = 'unknown';
@@ -44,7 +44,7 @@ export default class LastMessageCommand extends CoopCommand {
 		
 		// Provide the result to the user.
 		const msgText = `${targetUser.username}'s last message was: ${lastMsgFmt}.`;
-		COOP.MESSAGESselfDestruct(msg, msgText);
+		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
 };

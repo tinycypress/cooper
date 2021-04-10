@@ -381,17 +381,17 @@ export default class ItemsHelper {
         const emojiText = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
 
         // Send drop emoji text and update message ref
-        msgRef = await COOP.MESSAGESselfDestruct(msgRef, emojiText, 0, lifetimeSecs * 1000)
+        msgRef = await COOP.MESSAGES.selfDestruct(msgRef, emojiText, 0, lifetimeSecs * 1000)
 
         // Make it a temporary message to it gets cleaned up after an hour.
         SERVER.addTempMessage(msgRef, lifetimeSecs);
 
         // Add indicative and suggestive icons, maybe refactor.
-        COOP.MESSAGESdelayReact(msgRef, EMOJIS.BASKET, 666);
+        COOP.MESSAGES.delayReact(msgRef, EMOJIS.BASKET, 666);
 
         // Only mark it as dropped if not specified otherwise.
         if (!unmarked)
-            COOP.MESSAGESdelayReact(msgRef, RAW_EMOJIS.DROPPED, 333);
+            COOP.MESSAGES.delayReact(msgRef, RAW_EMOJIS.DROPPED, 333);
     }
 
 

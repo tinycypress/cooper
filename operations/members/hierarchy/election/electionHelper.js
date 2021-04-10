@@ -158,7 +158,7 @@ export default class ElectionHelper {
             );
 
             // React crown to this message.
-            COOP.MESSAGESdelayReact(feedMsg, '👑', 666);
+            COOP.MESSAGES.delayReact(feedMsg, '👑', 666);
 
         } catch(e) {
             console.log('Starting the election failed... :\'(');

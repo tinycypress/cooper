@@ -27,7 +27,7 @@ export default class ItemListCommand extends CoopCommand {
 		const usableItemsMsgText = `**Usable Items:\n\n**` +
 			itemListChunks.map(chunk => chunk.join(', ')).join('\n');
 
-		COOP.MESSAGESselfDestruct(msg, usableItemsMsgText, 0, 10000);
+		COOP.MESSAGES.selfDestruct(msg, usableItemsMsgText, 0, 10000);
     }
     
 };

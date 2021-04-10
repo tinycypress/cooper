@@ -65,13 +65,13 @@ export default class TradeCommand extends CoopCommand {
 			receiveItemCode = COOP.ITEMS.interpretItemCodeArg(receiveItemCode);
 
 			// Check if valid item codes given.
-			if (!offerItemCode || !receiveItemCode) return COOP.MESSAGESselfDestruct(msg, 
+			if (!offerItemCode || !receiveItemCode) return COOP.MESSAGES.selfDestruct(msg, 
 				`Invalid item codes for trade, ${offerItemCode} ${receiveItemCode}`, 0, 7500);
 			
 			// Check if user can fulfil the trade.
 			const canUserFulfil = await COOP.ITEMS.hasQty(tradeeID, offerItemCode, offerQty);
 			// TODO: Provide a more useful error message here with qty details.
-			if (!canUserFulfil) return COOP.MESSAGESselfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
+			if (!canUserFulfil) return COOP.MESSAGES.selfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
 
 			// Generate strings with emojis based on item codes.
 			const tradeAwayStr = `${COOP.MESSAGES_displayEmojiCode(offerItemCode)}x${offerQty}`;
@@ -94,9 +94,9 @@ export default class TradeCommand extends CoopCommand {
 			// TODO: Refactor confirmation into something more abstracted and reuse it. :D
 
 			// Post the confirmation message and add reactions to assist interaction.
-			const confirmMsg = await COOP.MESSAGESselfDestruct(msg, confirmStr, 0, 30000);
-			COOP.MESSAGESdelayReact(confirmMsg, '❎', 666);
-			COOP.MESSAGESdelayReact(confirmMsg, '✅', 999);
+			const confirmMsg = await COOP.MESSAGES.selfDestruct(msg, confirmStr, 0, 30000);
+			COOP.MESSAGES.delayReact(confirmMsg, '❎', 666);
+			COOP.MESSAGES.delayReact(confirmMsg, '✅', 999);
 
 			// Setup the reaction collector for trade confirmation interaction handling.
 			const interactions = await confirmMsg.awaitReactions(
@@ -138,7 +138,7 @@ export default class TradeCommand extends CoopCommand {
 							COOP.MESSAGESdelayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 333);
 					} else {
 						// Edit failure onto message.
-						COOP.MESSAGESselfDestruct(confirmMsg, 'Failure confirming instant trade.', 666, 5000);
+						COOP.MESSAGES.selfDestruct(confirmMsg, 'Failure confirming instant trade.', 666, 5000);
 					}
 
 
@@ -167,7 +167,7 @@ export default class TradeCommand extends CoopCommand {
 
 						// TODO: Add to trade stats
 					} else {
-						COOP.MESSAGESselfDestruct(confirmMsg, 'Error creating trade.', 666, 5000);
+						COOP.MESSAGES.selfDestruct(confirmMsg, 'Error creating trade.', 666, 5000);
 					}
 				}
 

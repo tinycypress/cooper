@@ -51,7 +51,7 @@ export default class SkillScoresCommand extends CoopCommand {
 					return `#${(index + 1) + position}: ${user.username} ${skillRow.total_xp}XP`;
 				}).join('\n');
 
-				return COOP.MESSAGESselfDestruct(msg, totalLeaderboardText);
+				return COOP.MESSAGES.selfDestruct(msg, totalLeaderboardText);
 
 			// Return a specific skill leaderboard if valid.
 			} else {
@@ -64,7 +64,7 @@ export default class SkillScoresCommand extends CoopCommand {
 						return `#${(index + 1) + position}: ${user.username} ${xp}XP`;
 					}).join('\n');
 
-				return COOP.MESSAGESselfDestruct(msg, skillLeaderboardText);
+				return COOP.MESSAGES.selfDestruct(msg, skillLeaderboardText);
 			}
 
 
