@@ -34,4 +34,4 @@ export default class AnnounceCommand extends CoopCommand {
 
     }
     
-};
+}

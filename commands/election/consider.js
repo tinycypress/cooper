@@ -41,9 +41,8 @@ export default class ConsiderCommand extends CoopCommand {
 
 		// Otherwise show the list in a self-destruct msg.
 		const candidates = await ElectionHelper.getAllCandidates();
-		const VotesCounts = await ElectionHelper.countVotes();
 
-		const resultsText = candidates.map(u => `${u.candidate_id}:${VotesCounts[u.candidate_id]}`).join('\n');
+		const resultsText = candidates.map(u => `${u.candidate_id}: ?}`).join('\n');
 		COOP.MESSAGES.selfDestruct(msg, resultsText);
 
 		// if (candidate) {
@@ -55,4 +54,4 @@ export default class ConsiderCommand extends CoopCommand {
 		// }	
     }
     
-};
+}

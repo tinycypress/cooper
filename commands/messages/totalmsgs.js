@@ -47,4 +47,4 @@ export default class TotalMsgsCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
-};
+}

@@ -20,4 +20,4 @@ export default class AboutCommand extends CoopCommand {
 		await msg.reply('Check the about channel, under welcome category!');
     }
     
-};
+}

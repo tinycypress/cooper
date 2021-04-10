@@ -7,7 +7,7 @@ const wrapString = (str) =>
 
 const chopperStr = (blade = false, lineSpc = 0) => {
     let bladeString = (blade ? ` ___.___` : `    .`);
-    let bodyString = '0-cC0D\`=--/';
+    let bodyString = '0-cC0D`=--/';
 
     if (lineSpc < 0) {
         bladeString = bladeString.slice(lineSpc);

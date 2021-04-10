@@ -74,4 +74,4 @@ export default class XpCommand extends CoopCommand {
 		}
     }
     
-};
+}

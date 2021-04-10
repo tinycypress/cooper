@@ -7,7 +7,7 @@ import COOP, { STATE } from "../../../../../../origin/coop";
 export default class LaxativeHandler {
 
     static async use(commandMsg, user) {       
-        const used = await usedOwnedUsableGuard(user, 'LAXATIVE', 1, commandMsg);;
+        const used = await usedOwnedUsableGuard(user, 'LAXATIVE', 1, commandMsg);
         if (!used) return false;
 
         // Attempt to run egg drop. :D

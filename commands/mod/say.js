@@ -38,4 +38,4 @@ export default class SayCommand extends CoopCommand {
 
     }
     
-};
+}

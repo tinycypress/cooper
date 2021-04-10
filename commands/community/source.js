@@ -163,4 +163,4 @@ export default class SourceCommand extends CoopCommand {
 		}
     }
     
-};
+}

@@ -28,4 +28,4 @@ export default class MostItemsCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
-};
+}

@@ -5,8 +5,7 @@ import SkillsHelper from "../medium/skills/skillsHelper";
 import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 
 import COOP, { STATE, REACTIONS, SERVER } from "../../../origin/coop";
-
-
+import { EMOJIS } from "../../../origin/config";
 
 export default class MiningMinigame {
     

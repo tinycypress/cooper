@@ -29,4 +29,4 @@ export default class RichestCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
-};
+}

@@ -27,4 +27,4 @@ export default class ReserveAddressCommand extends CoopCommand {
 		// COOP.MESSAGES.selfDestruct(msg, );
     }
     
-};
+}

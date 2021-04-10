@@ -98,4 +98,4 @@ export default class TradeFindCommand extends CoopCommand {
 
     }
     
-};
+}

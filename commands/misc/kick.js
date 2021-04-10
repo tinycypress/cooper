@@ -27,4 +27,4 @@ export default class KickCommand extends CoopCommand {
         COOP.MESSAGES.selfDestruct(msg, '!kick is a social construct.', 3333);
     }
     
-};
+}

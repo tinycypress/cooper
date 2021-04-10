@@ -17,7 +17,8 @@ export default class ServerHelper {
     }
 
     static _count() {
-        const userCount = this._coop().memberCount || 0;
+        const numBots = 1;
+        const userCount = this._coop().memberCount - numBots || 0;
         return userCount;
     }
 

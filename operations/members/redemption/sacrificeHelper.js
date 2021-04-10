@@ -121,7 +121,7 @@ export default class SacrificeHelper {
     }
 
 
-    static async processBackDagger(reaction, user) {
+    static async processBackDagger(reaction) {
         const guild = COOP.SERVER.getByCode(COOP.STATE.CLIENT, 'PROD');
 
         // Calculate the number of required votes for the redemption poll.
@@ -153,13 +153,14 @@ export default class SacrificeHelper {
                 // May have got stabbed more in the past 3 seconds.
                 // TODO: Implement backstabbers list.
                 let updatedNumVotes = sacrificeVotes;
-                const backstabbers = [];
+                // const backstabbers = [];
                 reaction.message.reactions.cache.map(reactionType => {
                     const emoji = reactionType.emoji.name;
                     if (emoji === EMOJIS.DAGGER) updatedNumVotes = reactionType.count;
                 });
 
-                const backstabMsg = await reaction.message.say(
+                // const backstabMsg = 
+                await reaction.message.say(
                     `${targetMember.user.username} got backstabbed! ${EMOJIS.DAGGER.repeat(updatedNumVotes)}`
                 );
             }, 3000);

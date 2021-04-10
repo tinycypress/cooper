@@ -49,4 +49,4 @@ export default class SlatxyoCommand extends CoopCommand {
         }, 250);
     }
     
-};
+}

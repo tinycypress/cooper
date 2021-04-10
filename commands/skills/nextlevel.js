@@ -77,7 +77,7 @@ export default class NextLevelCommand extends CoopCommand {
 		}
     }
     
-};
+}
 
 
 

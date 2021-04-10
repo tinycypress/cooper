@@ -35,4 +35,4 @@ export default class LevelXPCommand extends CoopCommand {
 		return COOP.MESSAGES.selfDestruct(msg, levelText);
     }
     
-};
+}

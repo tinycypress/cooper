@@ -185,4 +185,4 @@ export default class TradeCommand extends CoopCommand {
 		}
     }
     
-};
+}

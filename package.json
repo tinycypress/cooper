@@ -6,7 +6,7 @@
   "scripts": {
     "startBot": "node -r esm ./index.js",
     "db": "heroku pg:psql --app cooperchickenbot",
-    "shallowBot": "node -r esm ./origin/setup/shallow.js"
+    "shallowBot": "nodemon --exec babel-node ./origin/setup/shallow.js"
   },
   "engines": {
     "node": "12.x",
@@ -34,6 +34,11 @@
     "pg-promise": "^10.7.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/eslint-parser": "^7.13.14",
+    "@babel/node": "^7.13.13",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.15",
     "eslint": "^7.24.0",
     "nodemon": "^2.0.7"
   },

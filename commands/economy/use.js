@@ -41,4 +41,4 @@ export default class UseCommand extends CoopCommand {
 		if (itemCode === 'EASTER_EGG') EasterEggHandler.use(msg, msg.author); // TODO: WIP
     }
     
-};
+}

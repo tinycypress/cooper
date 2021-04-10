@@ -32,4 +32,4 @@ export default class CountCommand extends CoopCommand {
 		}
     }
     
-};
+}

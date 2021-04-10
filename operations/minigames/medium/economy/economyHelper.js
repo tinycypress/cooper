@@ -1,5 +1,6 @@
 import { USABLE, CHANNELS, STATE } from "../../../../origin/coop";
-// import ItemTotalCommand from "../../../commands/economy/itemTotal";
+
+import ItemTotalCommand from "../../../../commands/economy/itemTotal";
 
 
 export default class EconomyHelper {

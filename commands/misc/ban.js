@@ -36,5 +36,5 @@ export default class BanCommand extends CoopCommand {
         }
     }
     
-};
+}
 

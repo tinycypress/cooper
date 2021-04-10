@@ -54,4 +54,4 @@ export default class ItemTotalCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, statText, 333)
     }
     
-};
+}

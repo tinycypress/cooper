@@ -31,4 +31,4 @@ export default class NextDayCommand extends CoopCommand {
 		}
     }
     
-};
+}

@@ -69,4 +69,4 @@ export default class AlchemyCommand extends CoopCommand {
 		return COOP.CHANNELS.propagate(msg, dropText, 'ACTIONS');
     }
     
-};
+}

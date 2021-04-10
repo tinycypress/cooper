@@ -115,7 +115,6 @@ export default class EggHuntMinigame {
             const rarity = this.calculateRarityFromMessage(reaction.message);
             const reward = EGG_DATA[rarity].points;
             const emoji = EGG_DATA[rarity].emoji;
-            const channelName = reaction.message.channel.name;
 
             // Remove reaction by user without a bomb and prevent usage.
             if (bombQuantity <= 0) return await reaction.users.remove(user.id);
@@ -131,6 +130,7 @@ export default class EggHuntMinigame {
             const channelMessages = reaction.message.channel.messages;
             const surroundingMsgs = await channelMessages.fetch({ around: reaction.message.id, limit: 40 });
             const aroundUsers = surroundingMsgs.reduce((acc, msg) => {
+                const notCooper = !USERS.isCooperMsg(msg);
                 const notIncluded = typeof acc[msg.author.id] === 'undefined';
                 if (notIncluded && notCooper) acc[msg.author.id] = msg.author;
                 return acc;
@@ -305,6 +305,7 @@ export default class EggHuntMinigame {
 
     static async dmDrop(rarity) {
         try {
+            const randomMember = await USERS.random();
             if (randomMember) {
                 const name = randomMember.user.username;
                 const emojiText = MESSAGES.emojiText(EGG_DATA[rarity].emoji);

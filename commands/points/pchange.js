@@ -28,4 +28,4 @@ export default class PointChangeCommand extends CoopCommand {
 
 		COOP.MESSAGES.selfDestruct(msg, 'Calculating points change... :D Later.')
     }    
-};
+}

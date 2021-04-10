@@ -49,4 +49,4 @@ export default class SuggestCommand extends CoopCommand {
         }
     }
     
-};
+}

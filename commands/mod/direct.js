@@ -42,4 +42,4 @@ export default class DirectCommand extends CoopCommand {
 
 	}
 
-};
+}

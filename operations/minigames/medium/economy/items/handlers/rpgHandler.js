@@ -1,4 +1,4 @@
-import BuffsHelper, { BUFF_TYPES } from '../../../conquest/buffsHelper';
+// import BuffsHelper, { BUFF_TYPES } from '../../../conquest/buffsHelper';
 import { usedOwnedUsableGuard } from '../../itemCmdGuards';
 
 import COOP from '../../../../../../origin/coop';
@@ -22,7 +22,8 @@ export default class RPGHandler {
         if (!used) return false;
 
         // Run the RPG effect.
-        const result = this.runEffect(reaction.message.author, reaction.message, user);
+        // const result = 
+            this.runEffect(reaction.message.author, reaction.message, user);
     }
 
 

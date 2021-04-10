@@ -28,4 +28,4 @@ export default class NukeCommand extends CoopCommand {
 		await msg.reply('☢☢☢☢☢☢☢ing channel:: ' + msg.channel.name);
     }
     
-};
+}

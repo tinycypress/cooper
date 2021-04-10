@@ -30,4 +30,4 @@ export default class ItemListCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, usableItemsMsgText, 0, 10000);
     }
     
-};
+}

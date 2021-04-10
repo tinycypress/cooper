@@ -40,4 +40,4 @@ export default class SefyCommand extends CoopCommand {
         }, 5000);
     }
     
-};
+}

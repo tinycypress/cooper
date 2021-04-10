@@ -91,4 +91,4 @@ export default class CraftCommand extends CoopCommand {
 		}
     }
     
-};
+}

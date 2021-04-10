@@ -1,5 +1,6 @@
-import { usedOwnedUsableGuard } from "../../itemCmdGuards";
-import COOP, { USABLE, STATE } from '../../origin/coop';
+// import { usedOwnedUsableGuard } from "../../itemCmdGuards";
+// import COOP, { USABLE, STATE } from '../../origin/coop';
+import { USABLE } from '../../origin/coop';
 
 
 export default class IEDHandler {

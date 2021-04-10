@@ -28,4 +28,4 @@ export default class NextElectionCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
-};
+}

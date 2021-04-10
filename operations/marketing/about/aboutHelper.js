@@ -10,16 +10,6 @@ export default class AboutHelper {
 
     // Refactor to a reduce.
     static getEmojiHandler(emoji) {
-        let handler = null;
-        Object.keys(this.sectionEmojis).map(section => {
-            const methods = this.sectionEmojis[section];
-            if (typeof methods[emoji] === 'function')
-                handler = methods[emoji];
-        });
-        return handler;
-    }
-
-    static getEmojiHandler(emoji) {
         return Object.keys(this.sectionEmojis).reduce((acc, section) => {
             const methods = this.sectionEmojis[section];
             if (typeof methods[emoji] === 'function') return acc = methods[emoji];

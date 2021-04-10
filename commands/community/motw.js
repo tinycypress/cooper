@@ -25,4 +25,4 @@ export default class MOTWCommand extends CoopCommand {
         // historical_points
         // all points
     }    
-};
+}

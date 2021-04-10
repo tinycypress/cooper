@@ -1,5 +1,4 @@
 import moment from 'moment';
-import _ from 'lodash';
 
 import Chicken from "../../../chicken";
 
@@ -479,17 +478,6 @@ export default class ElectionHelper {
         }
     }
 
-    static async countVotes() {
-        const query = {
-            name: "get-candidate",
-            text: `SELECT candidateID, COUNT(*) FROM votes GROUP BY candidateID`,
-            values: [userID]
-        };
-
-        const result = await Database.query(query);
-        return result;
-    }
-
     static calcHierarchy(votes) {
         const commander = votes[0];
         const numLeaders = this.getMaxNumLeaders();
@@ -503,13 +491,13 @@ export default class ElectionHelper {
     static async loadAllCampaigns() {
         const candidates = await this.getAllCandidates();
         const preloadMsgIDs = candidates.map(candidate => 
-            COOP.MESSAGESparselink(candidate.campaign_msg_link)
+            COOP.MESSAGES.parselink(candidate.campaign_msg_link)
         );
 
         // Preload each candidate message.
         let campaigns = await Promise.allSettled(preloadMsgIDs.map((idSet, index) => {
             const guild = COOP.SERVER._coop();
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 setTimeout(async () => {
                     try {
                         // This could be more efficient.

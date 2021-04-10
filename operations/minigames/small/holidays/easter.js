@@ -1,5 +1,4 @@
-import COOP, { USABLE, MESSAGES, SERVER, STATE } from "../../../../origin/coop";
-import { EMOJIS } from "../../../../origin/config";
+import COOP from "../../../../origin/coop";
 
 export default class EasterMinigame {
 
@@ -7,7 +6,9 @@ export default class EasterMinigame {
     static async onReaction(reaction, user) {
         // console.log('Confirm basket matches this.');
         // console.log(reaction.emoji);
-
+        if (user.id !== 1) return false;
+        console.log(reaction);
+        
         // if (this.isPickupable(reaction, user)) {
         //     this.pickup(reaction, user);
         // }

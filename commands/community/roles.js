@@ -20,4 +20,4 @@ export default class RolesCommand extends CoopCommand {
 		
 		msg.say('ROLES')
     }
-};
+}

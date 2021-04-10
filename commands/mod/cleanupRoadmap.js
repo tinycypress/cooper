@@ -40,4 +40,4 @@ export default class CleanupRoadmapCommand extends CoopCommand {
 		forRemoval.map(msg => msg.delete());
     }
     
-};
+}

@@ -131,4 +131,4 @@ export default class HelpCommand extends CoopCommand {
         }
     }
     
-};
+}

@@ -81,4 +81,4 @@ export default class ItemsCommand extends CoopCommand {
         }
     }
     
-};
+}

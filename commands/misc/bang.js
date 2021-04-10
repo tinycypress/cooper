@@ -28,4 +28,4 @@ export default class BangCommand extends CoopCommand {
 		COOP.MESSAGES.delayDelete(placedMsg, 1666);
     }
     
-};
+}

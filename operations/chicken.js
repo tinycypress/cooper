@@ -96,31 +96,6 @@ export default class Chicken {
         return isNewDay;
     }
 
-
-    static async checkIfNewDay() {
-        try {
-            const isNewDay = await this.isNewDay();
-            if (!isNewDay) return false;
-
-
-            // TODO: Improve where server announces new day.
-            COOP.CHANNELS._postToFeed('A new day begins!');
-
-            if (STATE.CHANCE.bool({ likelihood: 15 })) CooperMorality.giveaway();
-
-            // Check the most important things at the beginning of a new day.
-            ElectionHelper.checkProgress();
-            
-            // If election is running, it should announce something at beginning of day, with time remaining.
-            await this.setConfig('current_day', '' + COOP.TIME._secs());
-            return true;
-            
-        } catch(e) {
-            console.log('New data detection failed.')
-            console.error(e);
-        }
-    }
-
     static async checkIfNewDay() {
         try {
             // Comparison to internal state may show a way to detect day end too.

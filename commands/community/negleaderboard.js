@@ -65,4 +65,4 @@ export default class NegativeLeaderboardCommand extends CoopCommand {
 		}
     }
     
-};
+}

@@ -2,7 +2,7 @@ import BuffsHelper, { BUFF_TYPES } from '../../../conquest/buffsHelper';
 
 import { usedOwnedUsableGuard } from '../../itemCmdGuards';
 
-import COOP from '../../../../../../origin/coop';
+import COOP, { MESSAGES } from '../../../../../../origin/coop';
 import { EMOJIS } from '../../../../../../origin/config';
 
 // Give shield user protected state for a set amount of time.

@@ -29,4 +29,4 @@ export default class GoogleCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, 'https://www.google.com/search?q=' + searchStr);
     }
     
-};
+}

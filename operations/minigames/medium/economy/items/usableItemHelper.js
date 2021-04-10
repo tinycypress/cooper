@@ -27,7 +27,7 @@ export default class UsableItemHelper {
             RPGHandler.onReaction(reaction, user);
 
             // TODO: CHECK THAT NOBODY ELSE REACTED.
-            				
+
             // Check if message is dropped item message being picked up.
             if (this.isPickupable(reaction, user)) {
                 this.pickup(reaction, user);
@@ -96,7 +96,7 @@ export default class UsableItemHelper {
     ];
 
     // Check if a message has an emoji and is pickupable.
-    static isPickupable(reaction, user) {
+    static isPickupable(reaction) {
         // Check if message has dropped emoji and by Cooper (official/valid drop).
         if (!this.isDroppedItemMsg(reaction.message)) return false;
 

@@ -101,10 +101,6 @@ export default class RolesHelper {
         // 723676356818239773 LEADER
     }
 
-    static addRoleCodeToUserID(userID, roleCode) {
-
-    }
-
     static _has(member, roleCode) {
         const roleID = ROLES[roleCode].id;
         return member.roles.cache.has(roleID);

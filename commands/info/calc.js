@@ -52,4 +52,4 @@ export default class CalcCommand extends CoopCommand {
 		}
     }
     
-};
+}

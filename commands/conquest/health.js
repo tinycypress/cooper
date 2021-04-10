@@ -44,4 +44,4 @@ export default class HealthCommand extends CoopCommand {
         }
     }
     
-};
+}

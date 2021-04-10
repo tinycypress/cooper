@@ -49,4 +49,4 @@ export default class LastSacrificeCommand extends CoopCommand {
 		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
-};
+}

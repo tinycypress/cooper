@@ -47,8 +47,8 @@ export default class UsersHelper {
             .some(role => member.roles.cache.has(role.id));
 
     // TODO: Refactor since fragments were turned off, this becomes a bit weirder/easier.
-    static count(guild, includeBots = false) {
-        return guild.memberCount;
+    static count(guild, includeCooper = false) {
+        return guild.memberCount - (includeCooper ? 0 : 1);
     }
 
     static directMSG = (guild, userID, msg) => {

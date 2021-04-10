@@ -1,14 +1,11 @@
-
-
-
 import DatabaseHelper from "../../../../databaseHelper";
 import Database from "../../../../../origin/setup/database";
 
-import STATE from "../../../../../origin/state";
-
 import Chicken from "../../../../chicken";
 
-import { ROLES } from "../../../../../origin/config";
+
+// import { ROLES } from "../../../../../origin/config";
+import COOP, {STATE } from "../../../../../origin/coop";
 
 
 

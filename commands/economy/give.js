@@ -106,4 +106,4 @@ export default class GiveCommand extends CoopCommand {
 		}
     }
     
-};
+}

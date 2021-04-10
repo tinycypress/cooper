@@ -33,4 +33,4 @@ export default class PirateCommand extends CoopCommand {
 		COOP.MESSAGES.delayReact(linkMsg, '🏴‍☠️', 333);
     }
     
-};
+}

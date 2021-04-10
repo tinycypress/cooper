@@ -87,4 +87,4 @@ export default class TradesCommand extends CoopCommand {
 		}
     }
     
-};
+}

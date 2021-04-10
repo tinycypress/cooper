@@ -34,5 +34,5 @@ export default class FlipCommand extends CoopCommand {
 		// Provide feedback with silent ping.
 		COOP.MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> is testing flip. ${result}`);
     }
-};
+}
     

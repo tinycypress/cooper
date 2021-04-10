@@ -31,4 +31,4 @@ export default class TimeCommand extends CoopCommand {
 		}
     }
     
-};
+}

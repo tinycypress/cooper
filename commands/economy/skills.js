@@ -1,4 +1,4 @@
-import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
+import { SKILLS } from '../../operations/minigames/medium/skills/skillsHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP, { USABLE, SERVER } from '../../origin/coop';
@@ -29,4 +29,4 @@ export default class SkillsCommand extends CoopCommand {
 		);
     }
     
-};
+}

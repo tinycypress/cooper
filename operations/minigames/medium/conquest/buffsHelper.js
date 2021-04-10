@@ -41,7 +41,7 @@ export default class BuffsHelper {
     }
 
     static isValidBuffCode(str) {
-        return BUFF_TYPES.hasOwnProperty(str);
+        return typeof BUFF_TYPES[str] !== 'undefined';
     }
 
     // Add a temporary (memory-based) game buff to a user.
@@ -86,7 +86,7 @@ export default class BuffsHelper {
     // Checks if a user has a temporary (memory-based) game buff.
     static has(buffCode, userID) {
         const buffsOfType = STATE.BUFFS[buffCode] || {};
-        return buffsOfType.hasOwnProperty(userID);
+        return typeof buffsOfType[userID] !== 'undefined';
     }
 
 

@@ -121,7 +121,7 @@ export default class CratedropMinigame {
         return crateRarity;
     }
 
-    static async open(reaction, user) {
+    static async open(reaction) {
         // Added fetch to message to ensure proper reaction counting.
         const msg = await reaction.message.fetch();
 
@@ -160,7 +160,7 @@ export default class CratedropMinigame {
             let listLootString = '';
             if (rewardedUsersNum > 0) {
                 // Pick the amount of rewarded users.   
-                STATE.CHANCE.pickset(hitters, rewardedUsersNum).forEach((user, rewardeeIndex) => {
+                STATE.CHANCE.pickset(hitters, rewardedUsersNum).forEach(user => {
                     // Calculate a random amount of rewards to give to the user.
                     const rewardItemsNum = STATE.CHANCE.natural({ min: 0, max: crate.maxReward });
                     const rewardsKeys = STATE.CHANCE.pickset(crate.rewards, rewardItemsNum);
@@ -222,13 +222,13 @@ export default class CratedropMinigame {
     }
     
     // TODO: Implement using bomb on crate.
-    static async explode(reaction, user) {
+    // static async explode(reaction, user) {
         // Check user actually has a bomb to use
         // Potentially require 2 bombs.
         // UsableItemHelper.use(user.id, 'BOMB', 2);
         // Edit message to explosion emoji, THEN open.
         // this.open(reaction, user);
-    }
+    // }
 
     static async drop() {
         try {

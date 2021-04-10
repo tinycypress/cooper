@@ -75,4 +75,4 @@ export default class LevelsCommand extends CoopCommand {
 		}
     }
     
-};
+}

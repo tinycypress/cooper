@@ -38,4 +38,4 @@ export default class ChristmasCommand extends CoopCommand {
 		// await COOP.USERS.directMSG(SERVER._coop(), user.id, msgText);
     }
     
-};
+}
