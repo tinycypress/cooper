@@ -1,7 +1,6 @@
-import TradeHelper from '../../community/features/economy/tradeHelper';
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 export default class TradeFindCommand extends CoopCommand {
 
@@ -34,66 +33,66 @@ export default class TradeFindCommand extends CoopCommand {
 	async run(msg, { offerItemCodeStr, receiveItemCodeStr }) {
 		super.run(msg);
 
-		const offerItemCode = ItemsHelper.interpretItemCodeArg(offerItemCodeStr);
-		const receiveItemCode = ItemsHelper.interpretItemCodeArg(receiveItemCodeStr);
+		const offerItemCode = COOP.ITEMS.interpretItemCodeArg(offerItemCodeStr);
+		const receiveItemCode = COOP.ITEMS.interpretItemCodeArg(receiveItemCodeStr);
 
 		// Check if offer item code is default (all) or valid.
 		if (offerItemCodeStr !== '' && !offerItemCode)
-			return MessagesHelper.selfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 5000);
+			return COOP.MESSAGESselfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 5000);
 
 		// Check if receive item code is default (all) or valid.
 		if (receiveItemCodeStr !== '' && !receiveItemCode)
-			return MessagesHelper.selfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 5000);
+			return COOP.MESSAGESselfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 5000);
 
 		// Check for index request/all/latest.
 		if (offerItemCodeStr === '') {
 			// Return a list of 15 latest trades.
-			const all = await TradeHelper.all();
+			const all = await TradingHelper.all();
 			
 			// Add feedback for no trades currently.
 			if (all.length === 0) {
 				const noMatchesStr = `No existing trades listed/open.`;
-				return MessagesHelper.selfDestruct(msg, noMatchesStr, 0, 7500);
+				return COOP.MESSAGESselfDestruct(msg, noMatchesStr, 0, 7500);
 			}
 			
 			// Give feedback about trade listings.
 
 			// TODO: Provide more tips about !tradeaccept
 			const allTitleStr = `**Latest ${all.length} trade listings:**\n\n`;
-			return MessagesHelper.selfDestruct(msg, allTitleStr + TradeHelper.manyTradeItemsStr(all));
+			return COOP.MESSAGESselfDestruct(msg, allTitleStr + TradingHelper.manyTradeItemsStr(all));
 
 		} else if (offerItemCodeStr !== '' && receiveItemCodeStr !== '') {
 			// If receive item code has been given, make sure only those matching returned.
-			const matches = await TradeHelper.findOfferReceiveMatches(offerItemCode, receiveItemCode);
+			const matches = await TradingHelper.findOfferReceiveMatches(offerItemCode, receiveItemCode);
 			
 			// Return no matching trades warning.
 			if (matches.length === 0) {
 				const noMatchesStr = `No existing trades exchanging ${offerItemCode} for ${receiveItemCode}`;
-				return MessagesHelper.selfDestruct(msg, noMatchesStr, 0, 7500);
+				return COOP.MESSAGESselfDestruct(msg, noMatchesStr, 0, 7500);
 
 			// Return matching trades.
 			} else {
 				// Format and present the matches if they exist.
 				const matchesTitleStr = `**Trades exchanging ${offerItemCode} for ${receiveItemCode}:**\n\n`;
-				const matchesStr = TradeHelper.manyTradeItemsStr(matches);
-				return MessagesHelper.selfDestruct(msg, matchesTitleStr + matchesStr);
+				const matchesStr = TradingHelper.manyTradeItemsStr(matches);
+				return COOP.MESSAGESselfDestruct(msg, matchesTitleStr + matchesStr);
 			}
 
 		} else if (offerItemCodeStr !== '' && receiveItemCodeStr === '') {
 			// If only offer item given, list all of that type.
-			const types = await TradeHelper.findReceiveMatches(offerItemCode);
+			const types = await TradingHelper.findReceiveMatches(offerItemCode);
 
 			// Return no matching trades types warning.
 			if (types.length === 0) {
 				const noTypesStr = `No existing trades offering ${offerItemCode}`
-				return MessagesHelper.selfDestruct(msg, noTypesStr, 0, 5000);
+				return COOP.MESSAGESselfDestruct(msg, noTypesStr, 0, 5000);
 
 			// Return matching trades.
 			} else {
 				// Format and present the matches if they exist.
 				const typesTitleStr = `**Trades requiring your ${offerItemCode}:**\n\n`;
-				const typesStr = TradeHelper.manyTradeItemsStr(types);
-				return MessagesHelper.selfDestruct(msg, typesTitleStr + typesStr);
+				const typesStr = TradingHelper.manyTradeItemsStr(types);
+				return COOP.MESSAGESselfDestruct(msg, typesTitleStr + typesStr);
 			}
 		}
 

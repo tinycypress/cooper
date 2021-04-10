@@ -1,7 +1,7 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import ServerHelper from '../../core/entities/server/serverHelper';
-import EMOJIS from '../../core/config/emojis.json';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+
+import COOP, { SERVER } from '../../origin/coop';
+import { EMOJIS } from '../../origin/config';
 
 export default class CountCommand extends CoopCommand {
 
@@ -22,10 +22,10 @@ export default class CountCommand extends CoopCommand {
 
 		try {
 			// Delete after sixty seconds.
-            const emojiText = MessagesHelper.emojiText(EMOJIS.COOP);
-            const userCount = ServerHelper._coop().memberCount || 0;
+            const emojiText = COOP.MESSAGES.emojiText(EMOJIS.COOP);
+            const userCount = SERVER._coop().memberCount || 0;
             const countText = `${userCount} #beaks presently in The Coop ${emojiText}!`;
-			MessagesHelper.selfDestruct(msg, countText, 0, 20000);
+			COOP.MESSAGES.selfDestruct(msg, countText, 0, 20000);
 
 		} catch(e) {
 			console.error(e);

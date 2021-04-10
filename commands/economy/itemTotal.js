@@ -1,9 +1,5 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import UsableItemHelper from '../../community/features/items/usableItemHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import ServerHelper from '../../core/entities/server/serverHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 export default class ItemTotalCommand extends CoopCommand {
 
@@ -26,14 +22,15 @@ export default class ItemTotalCommand extends CoopCommand {
 		});
 	}
 
+	// TODO: Refactor, belongs somewhere else.
 	static async getStat(itemCode) {
-		if (!UsableItemHelper.getUsableItems().includes(itemCode)) 
+		if (!USABLE.getUsableItems().includes(itemCode)) 
 			return 'Invalid item code. ' + itemCode;
 
-		const total = await ItemsHelper.count(itemCode);
+		const total = await COOP.ITEMS.count(itemCode);
 
-		const beaks = UsersHelper.count(ServerHelper._coop(), false)
-		const emoji = MessagesHelper._displayEmojiCode(itemCode);
+		const beaks = COOP.USERS.count(SERVER._coop(), false)
+		const emoji = COOP.MESSAGES_displayEmojiCode(itemCode);
 		
 		return `**Economic circulation:**\n` +
 			`${total}x${emoji} | _${(total / beaks).toFixed(2)} per beak_ | (${itemCode})`;
@@ -44,17 +41,17 @@ export default class ItemTotalCommand extends CoopCommand {
 
 
 		// TODO: Also incorporate this into the guard... either a truthy item code interpreted or false, fail.
-		const parsedItemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+		const parsedItemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 		// TODO: Convert into invalid item code guard and REUSE FFS!!
-		if (!UsableItemHelper.isUsable(parsedItemCode)) {
+		if (!USABLE.isUsable(parsedItemCode)) {
 			const invalidText = `${itemCode} does not exist, please provide a valid item code.`;
-			return MessagesHelper.selfDestruct(msg, invalidText, 0, 5000);
+			return COOP.MESSAGESselfDestruct(msg, invalidText, 0, 5000);
 		}
 
 
 		const statText = await ItemTotalCommand.getStat(parsedItemCode);
-		MessagesHelper.selfDestruct(msg, statText, 333)
+		COOP.MESSAGESselfDestruct(msg, statText, 333)
     }
     
 };

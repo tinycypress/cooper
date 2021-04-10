@@ -1,7 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-
-import UsersHelper from '../../core/entities/users/usersHelper';
-import ServerHelper from '../../core/entities/server/serverHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class DirectCommand extends CoopCommand {
@@ -37,7 +35,7 @@ export default class DirectCommand extends CoopCommand {
 
 		try {
 
-			await UsersHelper.directMSG(ServerHelper._coop(), target.id, message);
+			await COOP.USERS.directMSG(SERVER._coop(), target.id, message);
 		} catch (e) {
 			console.error(e);
 		}

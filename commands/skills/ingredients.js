@@ -1,7 +1,7 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CraftingHelper from '../../community/features/skills/crafting/craftingHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CraftingHelper from '../../operations/minigames/medium/skills/crafting/craftingHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class IngredientsCommand extends CoopCommand {
@@ -36,28 +36,28 @@ export default class IngredientsCommand extends CoopCommand {
 
 		try {
 			// Check if emoji and handle emoji inputs.
-			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+			itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 			// Check if input is a valid item code.
 			if (!itemCode)
-				return MessagesHelper.selfDestruct(msg, `Cannot craft invalid item code (${itemCode}).`, 0, 5000);
+				return COOP.MESSAGES.selfDestruct(msg, `Cannot craft invalid item code (${itemCode}).`, 0, 5000);
 
 			// Check if item is craftable
 			if (!CraftingHelper.isItemCraftable(itemCode))
-				return MessagesHelper.selfDestruct(msg, `${itemCode} is a valid item/code but uncraftable.`, 0, 7500);
+				return COOP.MESSAGES.selfDestruct(msg, `${itemCode} is a valid item/code but uncraftable.`, 0, 7500);
 
 			// Access required crafting level for item.
 			const craftingItem = CraftingHelper.CRAFTABLES[itemCode];
-			const craftItemEmoji = MessagesHelper._displayEmojiCode(itemCode); 
+			const craftItemEmoji = COOP.MESSAGES._displayEmojiCode(itemCode); 
 
 			// Format text and send feedback.
 			const ingredientsText = `Ingredients required for crafting ${craftItemEmoji} ${itemCode}x${qty}: ` + 
 				Object.keys(craftingItem.ingredients).map(ingredKey => {
-					const emoji = MessagesHelper._displayEmojiCode(ingredKey);
+					const emoji = COOP.MESSAGES._displayEmojiCode(ingredKey);
 					return `${emoji} ${ingredKey}x${craftingItem.ingredients[ingredKey] * qty}`;
 				}).join(', ');
 
-			return MessagesHelper.selfDestruct(msg, ingredientsText, 0, 10000);
+			return COOP.MESSAGES.selfDestruct(msg, ingredientsText, 0, 10000);
 
 
 		} catch(e) {

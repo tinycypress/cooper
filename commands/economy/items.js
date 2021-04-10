@@ -1,8 +1,7 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import EMOJIS from '../../core/config/emojis.json';
-import UsableItemHelper from '../../community/features/items/usableItemHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE } from '../../origin/coop';
+import { EMOJIS } from '../../origin/config';
+
 
 export default class ItemsCommand extends CoopCommand {
 
@@ -42,7 +41,7 @@ export default class ItemsCommand extends CoopCommand {
 		if (!targetUser) targetUser = msg.author;
 		
 		// Try to interpret itemCode/itemEmoji arg
-		const itemInput = ItemsHelper.interpretItemCodeArg(itemCode);
+		const itemInput = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
         try {
 
@@ -51,30 +50,30 @@ export default class ItemsCommand extends CoopCommand {
 			// Retrieve all item counts that user owns.
 			if (itemCode === 'ALL') {
 				const noItemsMsg = `${name} does not own any items.`;
-				const items = await ItemsHelper.getUserItems(targetUser.id);
-				if (items.length === 0) return MessagesHelper.selfDestruct(msg, noItemsMsg, 0, 5000);
+				const items = await COOP.ITEMS.getUserItems(targetUser.id);
+				if (items.length === 0) return COOP.MESSAGESselfDestruct(msg, noItemsMsg, 0, 5000);
 				else {
 					// Sort owned items by most first.
 					items.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
 
-					const itemDisplayMsg = ItemsHelper.formItemDropText(targetUser, items);
-					return MessagesHelper.selfDestruct(msg, itemDisplayMsg, 666, 30000);
+					const itemDisplayMsg = COOP.ITEMS.formItemDropText(targetUser, items);
+					return COOP.MESSAGESselfDestruct(msg, itemDisplayMsg, 666, 30000);
 				}
 			}
 
 			// Check if itemCode valid to use.
-			if (!UsableItemHelper.isUsable(itemInput))
-				return MessagesHelper.selfDestruct(msg, `${name}, ${itemInput} seems invalid.`, 0, 5000);
+			if (!USABLE.isUsable(itemInput))
+				return COOP.MESSAGESselfDestruct(msg, `${name}, ${itemInput} seems invalid.`, 0, 5000);
 
 			// Check a specific item instead.
-			const itemQty = await ItemsHelper.getUserItemQty(targetUser.id, itemInput);
+			const itemQty = await COOP.ITEMS.getUserItemQty(targetUser.id, itemInput);
 			
 			// Send specific item count.
-			const emoji = MessagesHelper.emojiText(EMOJIS[itemInput]);
+			const emoji = COOP.MESSAGESemojiText(EMOJIS[itemInput]);
 			if (itemQty > 0)  
-				return MessagesHelper.selfDestruct(msg, `${name} owns ${itemQty}x${itemInput} ${emoji}.`, 0, 5000);
+				return COOP.MESSAGESselfDestruct(msg, `${name} owns ${itemQty}x${itemInput} ${emoji}.`, 0, 5000);
 			else 
-				return MessagesHelper.selfDestruct(msg, `${name} does not own ${itemInput}.`, 0, 5000);
+				return COOP.MESSAGESselfDestruct(msg, `${name} does not own ${itemInput}.`, 0, 5000);
 
 
         } catch(err) {

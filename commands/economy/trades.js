@@ -1,7 +1,6 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import TradeHelper from '../../community/features/economy/tradeHelper';
+import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 export default class TradesCommand extends CoopCommand {
 
@@ -39,16 +38,16 @@ export default class TradesCommand extends CoopCommand {
 			const myTrades = await TradeHelper.getByTrader(msg.author.id);
 			
 			// Interpret item codes from strings or emojis.
-			const offerItemCode = ItemsHelper.interpretItemCodeArg(offerItemCodeStr);
-			const receiveItemCode = ItemsHelper.interpretItemCodeArg(receiveItemCodeStr);
+			const offerItemCode = COOP.ITEMS.interpretItemCodeArg(offerItemCodeStr);
+			const receiveItemCode = COOP.ITEMS.interpretItemCodeArg(receiveItemCodeStr);
 	
 			// Check if offer item code is default (all) or valid.
 			if (offerItemCodeStr !== '' && !offerItemCode)
-				return MessagesHelper.selfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 7500);
+				return COOP.MESSAGESselfDestruct(msg, `Invalid offer item code (${offerItemCodeStr}).`, 0, 7500);
 	
 			// Check if receive item code is default (all) or valid.
 			if (receiveItemCodeStr !== '' && !receiveItemCode)
-				return MessagesHelper.selfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 7500);
+				return COOP.MESSAGESselfDestruct(msg, `Invalid receive item code (${receiveItemCodeStr}).`, 0, 7500);
 
 			// Calculate used/total trade slots.
 			// TODO: Implement trade slots as a separate command.
@@ -59,7 +58,7 @@ export default class TradesCommand extends CoopCommand {
 				// Display all trades
 				const allTradesStr = TradeHelper.manyTradeItemsStr(myTrades);
 				const allTitleStr = `**All ${msg.author.username}'s trades:**\n\n`;
-				return MessagesHelper.selfDestruct(msg, allTitleStr + tradeslotStr + allTradesStr);
+				return COOP.MESSAGESselfDestruct(msg, allTitleStr + tradeslotStr + allTradesStr);
 		
 				// Do this and then prevent eggs from removing themselves under that condition....
 
@@ -69,7 +68,7 @@ export default class TradesCommand extends CoopCommand {
 				const matchingOffered = myTrades.filter(trade => trade.offer_item === offerItemCode);
 				const matchingTitleStr = `**Trades requiring your ${offerItemCode}:**\n\n`;
 				const matchingTradesStr = TradeHelper.manyTradeItemsStr(matchingOffered);
-				return MessagesHelper.selfDestruct(msg, matchingTitleStr + matchingTradesStr);				
+				return COOP.MESSAGESselfDestruct(msg, matchingTitleStr + matchingTradesStr);				
 			
 			// User attempted to provide both item codes, find only matches.
 			} else if (offerItemCodeStr !== '' && receiveItemCodeStr !== '') {
@@ -79,7 +78,7 @@ export default class TradesCommand extends CoopCommand {
 				);
 				const matchesTitleStr = `**Trades exchanging ${offerItemCode} for ${receiveItemCode}:**\n\n`;
 				const matchingOfferedReceivedStr = TradeHelper.manyTradeItemsStr(matchingOfferedReceived);
-				return MessagesHelper.selfDestruct(msg, matchesTitleStr + matchingOfferedReceivedStr);
+				return COOP.MESSAGESselfDestruct(msg, matchesTitleStr + matchingOfferedReceivedStr);
 			}
 			
 		} catch(e) {

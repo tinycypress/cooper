@@ -1,6 +1,5 @@
-import ReservesHelper from '../../community/features/economy/reservesHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import ReservesHelper from '../../operations/minigames/medium/economy/reservesHelper';
 
 export default class ReserveAddressCommand extends CoopCommand {
 
@@ -25,7 +24,7 @@ export default class ReserveAddressCommand extends CoopCommand {
 		// Use say here instead of leave, so there's a record/advertisemnt. :D
 		msg.say(`**Reserves' Wallet Address:**\n${address}`);
 
-		// MessagesHelper.selfDestruct(msg, );
+		// COOP.MESSAGESselfDestruct(msg, );
     }
     
 };

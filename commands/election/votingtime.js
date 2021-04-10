@@ -1,10 +1,8 @@
-import CoopCommand from '../../core/entities/coopCommand';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
-import CHANNELS from '../../core/config/channels.json';
-
-import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import TimeHelper from '../../community/features/server/timeHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import { CHANNELS } from '../../origin/config';
 
 
 export default class VotingTimeCommand extends CoopCommand {
@@ -29,13 +27,13 @@ export default class VotingTimeCommand extends CoopCommand {
 
 		if (isOn) {
 			const votingSecs = await ElectionHelper.votingPeriodLeftSecs();
-			const readableRemaining = TimeHelper.humaniseSecs(votingSecs);
-			MessagesHelper.selfDestruct(msg, `${chanTag} voting time remaining: ${readableRemaining}.`);
+			const readableRemaining = TIME.humaniseSecs(votingSecs);
+			COOP.MESSAGES.selfDestruct(msg, `${chanTag} voting time remaining: ${readableRemaining}.`);
 
 			// TODO: Improve to a more readable/useful output.
 			// const msgText = `Next Election: ${dateFmt}, (${humanRemaining}).`;
 		} else {
-			MessagesHelper.selfDestruct(msg, `${chanTag} is not running.`);
+			COOP.MESSAGES.selfDestruct(msg, `${chanTag} is not running.`);
 		}
 
     }

@@ -1,8 +1,5 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
-
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 export default class MostItemsCommand extends CoopCommand {
 
@@ -23,12 +20,12 @@ export default class MostItemsCommand extends CoopCommand {
 		super.run(msg);
 
 		// Get user with the most items.
-		const mostItems = await ItemsHelper.getBiggestWhale();
-		const mostItemsUser = UsersHelper._get(mostItems.owner_id).user;
+		const mostItems = await COOP.ITEMSgetBiggestWhale();
+		const mostItemsUser = COOP.USERS._get(mostItems.owner_id).user;
 
 		// Provide the result to the user.
 		const msgText = `${mostItemsUser.username} has the most items (${mostItems.total}).`;
-		MessagesHelper.selfDestruct(msg, msgText);
+		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
 };

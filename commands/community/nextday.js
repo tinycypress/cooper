@@ -1,6 +1,5 @@
-import Chicken from '../../community/chicken';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { CHICKEN } from '../../origin/coop';
 
 export default class NextDayCommand extends CoopCommand {
 
@@ -21,11 +20,11 @@ export default class NextDayCommand extends CoopCommand {
 
 		try {
 			// Check time until next day
-			const timeUntilNext = await Chicken._nextdayis();
+			const timeUntilNext = await CHICKEN._nextdayis();
 			const timeUntilMsg = await msg.say(`Time until next day: ${timeUntilNext}`);
 
 			// Delete after sixty seconds.
-			MessagesHelper.delayDelete(timeUntilMsg, 60000);
+			COOP.MESSAGES.delayDelete(timeUntilMsg, 60000);
 
 		} catch(e) {
 			console.error(e);

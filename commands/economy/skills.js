@@ -1,7 +1,8 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import SkillsHelper, { SKILLS } from '../../community/features/skills/skillsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
+
 
 export default class SkillsCommand extends CoopCommand {
 
@@ -23,7 +24,7 @@ export default class SkillsCommand extends CoopCommand {
 		// TODO: Improve formatting.
 		const skillNames = Object.keys(SKILLS);
 		
-		MessagesHelper.selfDestruct(msg,
+		COOP.MESSAGES.selfDestruct(msg,
 			`**Skills of Coopverse**\n\n` + skillNames.join(', ')
 		);
     }

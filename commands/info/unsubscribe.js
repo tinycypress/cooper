@@ -1,5 +1,7 @@
-import SubscriptionHelper from '../../community/newsletter/subscriptionHelper';
-import CoopCommand from '../../core/entities/coopCommand';
+import SubscriptionHelper from '../../operations/marketing/newsletter/subscriptionHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+
 
 export default class UnsubscribeCommand extends CoopCommand {
 

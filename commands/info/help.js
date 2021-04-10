@@ -1,5 +1,4 @@
-import CoopCommand from '../../core/entities/coopCommand';
-
+import CoopCommand from "../../operations/activity/messages/coopCommand";
 
 
 const textSplitter = (str, l) => {

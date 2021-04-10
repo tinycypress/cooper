@@ -1,4 +1,4 @@
-import CoopCommand from '../../core/entities/coopCommand';
+ import CoopCommand from '../../operations/activity/messages/coopCommand';
 
 export default class AboutCommand extends CoopCommand {
 

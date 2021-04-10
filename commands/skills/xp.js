@@ -1,6 +1,7 @@
-import SkillsHelper, { SKILLS } from '../../community/features/skills/skillsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import SkillsHelper, { SKILLS } from '../../operations/minigames/medium/skills/skillsHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class XpCommand extends CoopCommand {
@@ -47,7 +48,7 @@ export default class XpCommand extends CoopCommand {
 							`level ${userSkills[skillKey].level}`
 						).join('\n');
 
-				return MessagesHelper.selfDestruct(msg, allSkillsText);
+				return COOP.MESSAGES.selfDestruct(msg, allSkillsText);
 			}
 
 			const skillCodeList = Object.keys(SKILLS);
@@ -55,7 +56,7 @@ export default class XpCommand extends CoopCommand {
 
 			// Check if input is a valid item code.
 			if (!isValid)
-				return MessagesHelper.selfDestruct(msg, `Invalid skill code ${skillCode}.`);
+				return COOP.MESSAGES.selfDestruct(msg, `Invalid skill code ${skillCode}.`);
 
 
 			// Calculate
@@ -63,7 +64,7 @@ export default class XpCommand extends CoopCommand {
 			const xp = await SkillsHelper.getXP(skillCode, msg.author.id);
 
 			const levelText = `${username} has ${xp} ${skillCode} XP (level ${level})!`;
-			return MessagesHelper.selfDestruct(msg, levelText);
+			return COOP.MESSAGES.selfDestruct(msg, levelText);
 
 
 

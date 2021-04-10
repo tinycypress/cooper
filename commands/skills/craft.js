@@ -1,9 +1,8 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CraftingHelper from '../../community/features/skills/crafting/craftingHelper';
-import SkillsHelper from '../../community/features/skills/skillsHelper';
-import ChannelsHelper from '../../core/entities/channels/channelsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CraftingHelper from '../../operations/minigames/medium/skills/crafting/craftingHelper';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class CraftCommand extends CoopCommand {
@@ -44,15 +43,15 @@ export default class CraftCommand extends CoopCommand {
 
 		try {
 			// Check if emoji and handle emoji inputs.
-			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+			itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 			// Check if input is a valid item code.
 			if (!itemCode)
-				return MessagesHelper.selfDestruct(msg, `Cannot craft invalid item code (${itemCode}).`, 0, 5000);
+				return COOP.MESSAGES.selfDestruct(msg, `Cannot craft invalid item code (${itemCode}).`, 0, 5000);
 
 			// Check if item is craftable
 			if (!CraftingHelper.isItemCraftable(itemCode))
-				return MessagesHelper.selfDestruct(msg, `${itemCode} is a valid item/code but uncraftable.`, 0, 7500);
+				return COOP.MESSAGES.selfDestruct(msg, `${itemCode} is a valid item/code but uncraftable.`, 0, 7500);
 
 			// Access required crafting level for item.
 			const craftingItem = CraftingHelper.CRAFTABLES[itemCode];
@@ -65,25 +64,25 @@ export default class CraftCommand extends CoopCommand {
 			if (reqLevel > crafterLevel) {
 				// TODO: Add emoji
 				const lackLevelText = `<@${userID}> lacks level ${reqLevel} crafting required to make ${itemCode}`;
-				return MessagesHelper.silentSelfDestruct(msg, lackLevelText, 0, 5000);
+				return COOP.MESSAGES.silentSelfDestruct(msg, lackLevelText, 0, 5000);
 			}
 
 			// Check for ingredients and multiply quantities.
 			const canCraft = await CraftingHelper.canFulfilIngredients(msg.author.id, itemCode, qty);
 			
 			// TODO: Improve this error.
-			if (!canCraft) return MessagesHelper.silentSelfDestruct(msg, `Insufficient crafting supplies.`, 0, 7500);
+			if (!canCraft) return COOP.MESSAGES.silentSelfDestruct(msg, `Insufficient crafting supplies.`, 0, 7500);
 
 			// Attempt to craft the object.
 			const craftResult = await CraftingHelper.craft(msg.author.id, itemCode, qty);
 			if (craftResult) {
 				const addText = `<@${userID}> crafted ${itemCode}x${qty}.`;
-				// ChannelsHelper.propagate(msg, addText, 'ACTIONS');
+				// COOP.CHANNELS.propagate(msg, addText, 'ACTIONS');
 
-				ChannelsHelper.silentPropagate(msg, addText, 'ACTIONS');
+				COOP.CHANNELS.silentPropagate(msg, addText, 'ACTIONS');
 
 			} else {
-				MessagesHelper.silentSelfDestruct(msg, `<@${userID}> failed to craft ${qty}x${itemCode}...`, 0, 15000);
+				COOP.MESSAGES.silentSelfDestruct(msg, `<@${userID}> failed to craft ${qty}x${itemCode}...`, 0, 15000);
 			}
 
 		} catch(e) {

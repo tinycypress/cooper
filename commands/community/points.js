@@ -1,5 +1,5 @@
-import PointsHelper from '../../community/features/points/pointsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { CHICKEN } from '../../origin/coop';
 
 export default class PointsCommand extends CoopCommand {
 
@@ -22,7 +22,7 @@ export default class PointsCommand extends CoopCommand {
 		if (msg.mentions.users.first()) targetUser = msg.mentions.users.first();
 
         try {
-			const points = await PointsHelper.getPointsByID(targetUser.id);
+			const points = await COOP.POINTS.getPointsByID(targetUser.id);
 			await msg.channel.send(`${targetUser.username}'s points: ${points}`);
 
         } catch(err) {

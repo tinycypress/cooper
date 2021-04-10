@@ -1,5 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 // Calculate the % point change historically for a user.
 export default class PointChangeCommand extends CoopCommand {
@@ -26,6 +26,6 @@ export default class PointChangeCommand extends CoopCommand {
         // historical_points
         // all points
 
-		MessagesHelper.selfDestruct(msg, 'Calculating points change... :D Later.')
+		COOP.MESSAGESselfDestruct(msg, 'Calculating points change... :D Later.')
     }    
 };

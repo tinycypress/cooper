@@ -1,7 +1,7 @@
-import SacrificeHelper from '../../community/features/events/sacrificeHelper';
-import TimeHelper from '../../community/features/server/timeHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class LastSacrificeCommand extends CoopCommand {
@@ -35,18 +35,18 @@ export default class LastSacrificeCommand extends CoopCommand {
 
 		// Requires a valid user.
 		if (!targetUser) 
-			return MessagesHelper.selfDestruct(msg, '!lastsac requires a valid user target to provide results.');
+			return COOP.MESSAGESselfDestruct(msg, '!lastsac requires a valid user target to provide results.');
 
 		// Default status for last sacrifice date.
 		let lastSacrificeFmt = 'unknown';
 
 		// Load and format last sacrifice time.
 		const lastSacSecs = await SacrificeHelper.getLastSacrificeSecs(targetUser.id);
-		if (lastSacSecs) lastSacrificeFmt = TimeHelper.secsLongFmt(lastSacSecs);
+		if (lastSacSecs) lastSacrificeFmt = TIME.secsLongFmt(lastSacSecs);
 		
 		// Provide the result to the user.
 		const msgText = `${targetUser.username}'s last sacrifice was: ${lastSacrificeFmt}.`;
-		MessagesHelper.selfDestruct(msg, msgText);
+		COOP.MESSAGESselfDestruct(msg, msgText);
     }
     
 };

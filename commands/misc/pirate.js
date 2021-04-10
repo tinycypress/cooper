@@ -1,5 +1,6 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+
 
 export default class PirateCommand extends CoopCommand {
 
@@ -28,8 +29,8 @@ export default class PirateCommand extends CoopCommand {
 		// searchStr.replace('')
 		
 		// Generate feedback flash
-		const linkMsg = await MessagesHelper.selfDestruct(msg, 'https://moviesjoy.to/search/' + searchStr, 0, 15000);
-		MessagesHelper.delayReact(linkMsg, '🏴‍☠️', 333);
+		const linkMsg = await COOP.MESSAGES.selfDestruct(msg, 'https://moviesjoy.to/search/' + searchStr, 0, 15000);
+		COOP.MESSAGES.delayReact(linkMsg, '🏴‍☠️', 333);
     }
     
 };

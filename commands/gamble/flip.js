@@ -1,6 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import STATE from '../../core/state';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, STATE, TIME } from '../../origin/coop';
 
 export default class FlipCommand extends CoopCommand {
 
@@ -33,7 +32,7 @@ export default class FlipCommand extends CoopCommand {
 
 
 		// Provide feedback with silent ping.
-		MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> is testing flip. ${result}`);
+		COOP.MESSAGESsilentSelfDestruct(msg, `<@${msg.author.id}> is testing flip. ${result}`);
     }
 };
     

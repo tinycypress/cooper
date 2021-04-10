@@ -1,6 +1,7 @@
-import SkillsHelper, { SKILLS } from '../../community/features/skills/skillsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class LevelXPCommand extends CoopCommand {
@@ -31,7 +32,7 @@ export default class LevelXPCommand extends CoopCommand {
 		const xpRequired = SkillsHelper.calcXP(level);
 
 		const levelText = `${xpRequired}XP required for level ${level}!`;
-		return MessagesHelper.selfDestruct(msg, levelText);
+		return COOP.MESSAGES.selfDestruct(msg, levelText);
     }
     
 };

@@ -1,5 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
 
 // Work around due to Heroku hosting not seeming to like fs/promises import.
 import { default as fsWithCallbacks } from 'fs';
@@ -101,7 +101,7 @@ export default class SourceCommand extends CoopCommand {
 
 				// Guard invalid path.
 				if (!rawFolderContent) 
-					return MessagesHelper.selfDestruct(msg, `Could not load the folder (${filePath}).`, 0, 5000);
+					return COOP.MESSAGES.selfDestruct(msg, `Could not load the folder (${filePath}).`, 0, 5000);
 	
 				// Decide if it will fit in an embed or not.
 				if (rawFolderContent.length > 0) {
@@ -124,10 +124,10 @@ export default class SourceCommand extends CoopCommand {
 						}).join('\n')}`;
 
 					// Output the display text lines of the folders.
-					MessagesHelper.selfDestruct(msg, folderContent, 0, 10000);
+					COOP.MESSAGES.selfDestruct(msg, folderContent, 0, 10000);
 
 				} else 
-					MessagesHelper.selfDestruct(msg, `${filePath} is empty/invalid folder.`, 0, 10000);
+					COOP.MESSAGES.selfDestruct(msg, `${filePath} is empty/invalid folder.`, 0, 10000);
 				
 			// File loading intended instead.
 			} else {
@@ -139,13 +139,13 @@ export default class SourceCommand extends CoopCommand {
 	
 				// Guard invalid path.
 				if (!rawFileContent) 
-					return MessagesHelper.selfDestruct(msg, `Could not load the file for ${filePath}.`, 0, 10000);
+					return COOP.MESSAGES.selfDestruct(msg, `Could not load the file for ${filePath}.`, 0, 10000);
 	
 				// TODO: Try to support returning documentation and syntax of a js class function.
 
 				// Decide if it will fit in an embed or not.
 				if (rawFileContent.length > 2000 - 20)
-					MessagesHelper.selfDestruct(msg, fileContent.replace(gitBaseUrl + filePath, `<${gitBaseUrl + filePath}>`)
+					COOP.MESSAGES.selfDestruct(msg, fileContent.replace(gitBaseUrl + filePath, `<${gitBaseUrl + filePath}>`)
 						+ `Source code too verbose (${rawFileContent.length}/1980 chars), please view on Github.`, 0, 10000);
 				else {
 					const fileBuffer = Buffer.from(rawFileContent, 'utf-8');

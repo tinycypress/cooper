@@ -1,8 +1,7 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import TradeHelper from '../../community/features/economy/tradeHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 
 export default class TradeAcceptCommand extends CoopCommand {
@@ -37,20 +36,20 @@ export default class TradeAcceptCommand extends CoopCommand {
 			const tradeeName = msg.author.username;
 
 			// Check if valid trade ID given.
-			const trade = await TradeHelper.get(tradeID);
-			if (!trade) return MessagesHelper.selfDestruct(msg, `Invalid trade ID - already sold?`, 0, 5000);
+			const trade = await TradingHelper.get(tradeID);
+			if (!trade) return COOP.MESSAGES.selfDestruct(msg, `Invalid trade ID - already sold?`, 0, 5000);
 			
 			// Check if user can fulfil the trade.
-			const hasEnough = await ItemsHelper.hasQty(tradeeID, trade.receive_item, trade.receive_qty);
-			if (!hasEnough) return MessagesHelper.selfDestruct(msg, `Insufficient offer quantity for trade.`, 0, 5000);
+			const hasEnough = await COOP.ITEMS.hasQty(tradeeID, trade.receive_item, trade.receive_qty);
+			if (!hasEnough) return COOP.MESSAGES.selfDestruct(msg, `Insufficient offer quantity for trade.`, 0, 5000);
 
 			// Let helper handle accepting logic as it's used in multiple places so far.
-			const tradeAccepted = await TradeHelper.accept(tradeID, tradeeID, tradeeName);
+			const tradeAccepted = await TradingHelper.accept(tradeID, tradeeID, tradeeName);
 			if (tradeAccepted) {
-				MessagesHelper.selfDestruct(msg, 'Trade accepted.', 0, 10000);
+				COOP.MESSAGES.selfDestruct(msg, 'Trade accepted.', 0, 10000);
 			} else {
 				// Log cancelled trades
-				MessagesHelper.selfDestruct(msg, 'Trade could not be accepted.', 0, 5000);
+				COOP.MESSAGES.selfDestruct(msg, 'Trade could not be accepted.', 0, 5000);
 				console.log('Trade accept failed');
 			}
 			

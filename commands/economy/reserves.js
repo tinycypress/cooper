@@ -1,6 +1,8 @@
-import ReservesHelper from '../../community/features/economy/reservesHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import ReservesHelper from '../../operations/minigames/medium/economy/reservesHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
+
 
 export default class ReservesCommand extends CoopCommand {
 
@@ -21,7 +23,7 @@ export default class ReservesCommand extends CoopCommand {
 
 		// TODO: This should be updated in an economy channel somewhere.
 		// TODO: Notify community with over 10% change to reserves.
-		MessagesHelper.selfDestruct(
+		COOP.MESSAGESselfDestruct(
 			msg, 
 			`**Economy Reserves:**\n${await ReservesHelper.balanceText()}`
 		);

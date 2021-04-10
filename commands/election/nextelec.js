@@ -1,6 +1,7 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 
 export default class NextElectionCommand extends CoopCommand {
@@ -24,7 +25,7 @@ export default class NextElectionCommand extends CoopCommand {
 		const dateFmt = await ElectionHelper.nextElecFmt();
 		const humanRemaining = await ElectionHelper.humanRemainingNext();
 		const msgText = `Next Election: ${dateFmt}, (${humanRemaining}).`;
-		MessagesHelper.selfDestruct(msg, msgText);
+		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
 };

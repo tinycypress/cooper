@@ -1,8 +1,5 @@
-import SacrificeHelper from '../../community/features/events/sacrificeHelper';
-import TimeHelper from '../../community/features/server/timeHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class LastMessageCommand extends CoopCommand {
@@ -36,18 +33,18 @@ export default class LastMessageCommand extends CoopCommand {
 
 		// Requires a valid user.
 		if (!targetUser) 
-			return MessagesHelper.selfDestruct(msg, '!lastmsg requires a valid user target to provide results.');
+			return COOP.MESSAGESselfDestruct(msg, '!lastmsg requires a valid user target to provide results.');
 
 		// Default status for last sacrifice date.
 		let lastMsgFmt = 'unknown';
 
 		// Load and format last sacrifice time.
-		const lastMsgSecs = await UsersHelper.getField(targetUser.id, 'last_msg_secs')
-		if (lastMsgSecs) lastMsgFmt = TimeHelper.secsLongFmt(lastMsgSecs);
+		const lastMsgSecs = await COOP.USERS.getField(targetUser.id, 'last_msg_secs')
+		if (lastMsgSecs) lastMsgFmt = TIME.secsLongFmt(lastMsgSecs);
 		
 		// Provide the result to the user.
 		const msgText = `${targetUser.username}'s last message was: ${lastMsgFmt}.`;
-		MessagesHelper.selfDestruct(msg, msgText);
+		COOP.MESSAGESselfDestruct(msg, msgText);
     }
     
 };

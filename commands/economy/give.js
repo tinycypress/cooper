@@ -1,15 +1,11 @@
-import CoopCommand from '../../core/entities/coopCommand';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
-import ChannelsHelper from '../../core/entities/channels/channelsHelper';
+import { usableItemCodeGuard, useManyGuard, validUserArgGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { STATE, SERVER } from '../../origin/coop';
+import { EMOJIS, RAW_EMOJIS } from '../../origin/config';
 
-import { 
-	usableItemCodeGuard, 
-	useManyGuard, 
-	validUserArgGuard
-} from '../../core/entities/commands/guards/itemCmdGuards';
 
 
 export default class GiveCommand extends CoopCommand {
@@ -55,10 +51,10 @@ export default class GiveCommand extends CoopCommand {
 
 		try {
 			// Interpret, parse, and format item code.
-			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+			itemCode = COOP.ITEMSinterpretItemCodeArg(itemCode);
 
 			// If no item code found, attempt to infer one from the rest of the message.
-			if (!itemCode) itemCode = ItemsHelper.interpretItemCodeArg(msg.content);
+			if (!itemCode) itemCode = COOP.ITEMSinterpretItemCodeArg(msg.content);
 
 			// If no target given in correct order, attempt to infer from mentions
 			if (!target && msg.mentions.users.first()) 
@@ -90,7 +86,7 @@ export default class GiveCommand extends CoopCommand {
 			// REVIEWS: Maybe a guard/check with an error is needed for item add too? :D
 
 			// Add the item to the gift recepient.
-			await ItemsHelper.add(target.id, itemCode, qty);
+			await COOP.ITEMSadd(target.id, itemCode, qty);
 
 			// TODO: create .addManifest and let them have the giftbox too :D.
 			// TODO: Make sure pickups are logged/recorded in a channel (drop too).
@@ -102,7 +98,7 @@ export default class GiveCommand extends CoopCommand {
 			// Send feedback message.
 			// TODO: State how many both have now after gift.
 			const addText = `${msg.author.username} gave ${target.username} ${itemCode}x${qty}.`;
-			ChannelsHelper.propagate(msg, addText, 'FEED');
+			COOP.CHANNELS.propagate(msg, addText, 'FEED');
 
 		} catch(e) {
 			console.log('Failed to give item.');

@@ -1,15 +1,11 @@
-import CoopCommand from '../../core/entities/coopCommand';
+import EggHuntMinigame from '../../operations/minigames/small/egghunt';
 
-import EMOJIS from '../../core/config/emojis.json';
-import RAW_EMOJIS from '../../core/config/rawemojis.json';
 
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import ServerHelper from '../../core/entities/server/serverHelper';
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import EggHuntMinigame from '../../community/features/minigame/small/egghunt';
 
-import STATE from '../../core/state';
-import { itemCodeArg, usedOwnedUsableGuard } from '../../core/entities/commands/guards/itemCmdGuards';
+import { itemCodeArg, usedOwnedUsableGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { STATE, SERVER } from '../../origin/coop';
+import { EMOJIS, RAW_EMOJIS } from '../../origin/config';
 
 export default class DropCommand extends CoopCommand {
 
@@ -30,14 +26,14 @@ export default class DropCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
-			itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+			itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 			// Check item code is usable, was used, and valid with multi-guard.
 			const used = await usedOwnedUsableGuard(msg.author, itemCode, 1, msg);
 			if (!used) return null;
 
 			// Drop the item based on its code.
-			const emojiText = MessagesHelper.emojiText(EMOJIS[itemCode]);
+			const emojiText = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
 			const dropMsg = await msg.say(emojiText);
 
 			// High chance of egg breaking if dropped.
@@ -45,25 +41,25 @@ export default class DropCommand extends CoopCommand {
 			const breakRoll = STATE.CHANCE.bool({ likelihood: 45 });
 			if (eggDrop && breakRoll) {
 				// Change the message text to indicate breakage.
-				MessagesHelper.delayEdit(dropMsg, `${msg.author.username} broke ${emojiText} by dropping it, d'oh.`);
+				COOP.MESSAGESdelayEdit(dropMsg, `${msg.author.username} broke ${emojiText} by dropping it, d'oh.`);
 
 				// Clear the message.
-				MessagesHelper.delayDelete(dropMsg, 4444);
+				COOP.MESSAGESdelayDelete(dropMsg, 4444);
 			}
 
 			// TODO: Add to statistics.
 
 			// Make it a temporary message to it gets cleaned up after an hour.
-			ServerHelper.addTempMessage(dropMsg, 60 * 60);
+			SERVER.addTempMessage(dropMsg, 60 * 60);
 
 			// Add indicative and suggestive icons, maybe refactor.
-			MessagesHelper.delayReact(dropMsg, RAW_EMOJIS.DROPPED, 333);
-			MessagesHelper.delayReact(dropMsg, EMOJIS.BASKET, 666);
+			COOP.MESSAGESdelayReact(dropMsg, RAW_EMOJIS.DROPPED, 333);
+			COOP.MESSAGESdelayReact(dropMsg, EMOJIS.BASKET, 666);
 
 			// Add success feedback message. (Could edit instead)
-			const emoji = MessagesHelper.emojiText(EMOJIS[itemCode]);
+			const emoji = COOP.MESSAGESemojiText(EMOJIS[itemCode]);
 			const userDroppedText = `${msg.author.username} dropped ${itemCode} ${emoji}.`;
-			MessagesHelper.selfDestruct(dropMsg, userDroppedText, 0, 5000);
+			COOP.MESSAGESselfDestruct(dropMsg, userDroppedText, 0, 5000);
 	
 		} catch(e) {
 			console.log('Error with drop command.');

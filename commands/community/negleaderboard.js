@@ -1,7 +1,5 @@
-import PointsHelper from '../../community/features/points/pointsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import ServerHelper from '../../core/entities/server/serverHelper';
-import STATE from '../../core/state';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { SERVER, STATE } from '../../origin/coop';
 
 export default class NegativeLeaderboardCommand extends CoopCommand {
 
@@ -33,10 +31,10 @@ export default class NegativeLeaderboardCommand extends CoopCommand {
 			// None: show top 15
 			// User: show user position and 5 either side
 			// Number: show rank number and 5 either side
-			const leaderboardRows = await PointsHelper.getNegLeaderboard(position);
+			const leaderboardRows = await COOP.POINTS.getNegLeaderboard(position);
 			const placeholderMsg = await msg.say('Calculating leaderboard, please wait.');
 
-			const guild = ServerHelper.getByCode(STATE.CLIENT, 'PROD');
+			const guild = SERVER.getByCode(STATE.CLIENT, 'PROD');
 			
 			// Form leaderboard text
 			const rowUsers = await Promise.all(leaderboardRows.map(async (row, index) => {

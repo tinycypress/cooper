@@ -1,6 +1,6 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import ChannelsHelper from '../../core/entities/channels/channelsHelper';
-import STATE from '../../core/state';
+ import CoopCommand from '../../operations/activity/messages/coopCommand';
+
+import COOP, { STATE } from '../../origin/coop';
 
 export default class CleanupRoadmapCommand extends CoopCommand {
 
@@ -23,7 +23,7 @@ export default class CleanupRoadmapCommand extends CoopCommand {
 		super.run(msg);
 		
 		// Delete all messages with check marks inside roadmap
-		const roadmap = ChannelsHelper._getCode('ROADMAP');
+		const roadmap = COOP.CHANNELS._getCode('ROADMAP');
 
 		const msgs = await roadmap.messages.fetch({ limit: 100 });
 		const forRemoval = msgs.filter(msg => {

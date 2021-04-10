@@ -1,5 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
 
 export default class TimeCommand extends CoopCommand {
 
@@ -24,7 +24,7 @@ export default class TimeCommand extends CoopCommand {
 			const timeMsg = await msg.say(`Current Time: ${dateString}`);
 
 			// Delete after sixty seconds.
-			MessagesHelper.delayDelete(timeMsg, 60000);
+			COOP.MESSAGESelayDelete(timeMsg, 60000);
 
 		} catch(e) {
 			console.error(e);

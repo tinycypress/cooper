@@ -1,5 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 export default class GoogleCommand extends CoopCommand {
 
@@ -26,7 +26,7 @@ export default class GoogleCommand extends CoopCommand {
 		);
 
 		// Generate feedback flash
-		MessagesHelper.selfDestruct(msg, 'https://www.google.com/search?q=' + searchStr);
+		COOP.MESSAGES.selfDestruct(msg, 'https://www.google.com/search?q=' + searchStr);
     }
     
 };

@@ -1,6 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import STATE from '../../core/state';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { STATE } from '../../origin/coop';
 
 
 export default class BanCommand extends CoopCommand {
@@ -30,10 +29,10 @@ export default class BanCommand extends CoopCommand {
         if (msg.author.id !== '208938112720568320') return msg.say('Only sefy can pretend to ban people.')
         else {
             //         const repeatNum = STATE.CHANCE.natural({ min: 1, max: 20 });
-            MessagesHelper.selfDestruct(msg, 'You are being banned in 3...', 333);
-            MessagesHelper.selfDestruct(msg, 'You are being banned in 2...', 1333);
-            MessagesHelper.selfDestruct(msg, 'You are being banned in 1...', 2333);
-            MessagesHelper.selfDestruct(msg, 'sefy cannot ban you.', 3333);
+            COOP.MESSAGESselfDestruct(msg, 'You are being banned in 3...', 333);
+            COOP.MESSAGESselfDestruct(msg, 'You are being banned in 2...', 1333);
+            COOP.MESSAGESselfDestruct(msg, 'You are being banned in 1...', 2333);
+            COOP.MESSAGESselfDestruct(msg, 'sefy cannot ban you.', 3333);
         }
     }
     

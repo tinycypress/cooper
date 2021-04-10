@@ -1,6 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
 
 export default class HealthCommand extends CoopCommand {
 
@@ -35,10 +34,10 @@ export default class HealthCommand extends CoopCommand {
 			const name = targetUser.username;
 
 			// Load their health.
-			const health = await UsersHelper.getField(targetUser.id, 'health') || 100;
+			const health = await COOP.USERS.getField(targetUser.id, 'health') || 100;
 
 			// Return the health figure.
-			MessagesHelper.selfDestruct(msg, `${name}'s health is: ${health}.`);
+			COOP.MESSAGES.selfDestruct(msg, `${name}'s health is: ${health}.`);
 
         } catch(err) {
             console.error(err);

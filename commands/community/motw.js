@@ -1,5 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import RolesHelper from '../../core/entities/roles/rolesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
 
 export default class MOTWCommand extends CoopCommand {
 

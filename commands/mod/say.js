@@ -1,4 +1,4 @@
-import CoopCommand from '../../core/entities/coopCommand';
+ import CoopCommand from '../../operations/activity/messages/coopCommand';
 
 
 export default class SayCommand extends CoopCommand {
@@ -28,7 +28,7 @@ export default class SayCommand extends CoopCommand {
 			await msg.say(statement)
 
 			// if (channelParam) {
-			// 	const channel = ChannelsHelper.getByCode(guild, channelReq);
+			// 	const channel = COOP.CHANNELS.getByCode(guild, channelReq);
 			// 	await channel.say(statement);
 			// }
 

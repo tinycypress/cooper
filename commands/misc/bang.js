@@ -1,5 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 export default class BangCommand extends CoopCommand {
 
@@ -20,12 +20,12 @@ export default class BangCommand extends CoopCommand {
 		
 		const placedMsg = await msg.say('🧨');
 
-		MessagesHelper.delayEdit(placedMsg, '🔥', 333);
-		MessagesHelper.delayEdit(placedMsg, '💥', 666);
-		MessagesHelper.delayEdit(placedMsg, '💨', 999);
+		COOP.MESSAGESdelayEdit(placedMsg, '🔥', 333);
+		COOP.MESSAGESdelayEdit(placedMsg, '💥', 666);
+		COOP.MESSAGESdelayEdit(placedMsg, '💨', 999);
 
 		// Clear the message, animation completed.
-		MessagesHelper.delayDelete(placedMsg, 1666);
+		COOP.MESSAGESdelayDelete(placedMsg, 1666);
     }
     
 };

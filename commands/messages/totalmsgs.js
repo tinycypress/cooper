@@ -1,6 +1,5 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class TotalMsgsCommand extends CoopCommand {
@@ -34,18 +33,18 @@ export default class TotalMsgsCommand extends CoopCommand {
 
 		// Requires a valid user.
 		if (!targetUser) 
-			return MessagesHelper.selfDestruct(msg, '!totalmsgs requires a valid user target to provide results.');
+			return COOP.MESSAGES.selfDestruct(msg, '!totalmsgs requires a valid user target to provide results.');
 
 		// Default status for last sacrifice date.
 		let totalMsgs = 'unknown';
 
 		// Load and format last sacrifice time.
-		const userTotal = await UsersHelper.getField(targetUser.id, 'total_msgs');
+		const userTotal = await COOP.USERS.getField(targetUser.id, 'total_msgs');
 		if (userTotal) totalMsgs = userTotal;
 		
 		// Provide the result to the user.
 		const msgText = `${targetUser.username}'s total message count: ${totalMsgs}.`;
-		MessagesHelper.selfDestruct(msg, msgText);
+		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
 };

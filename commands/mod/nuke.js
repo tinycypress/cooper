@@ -1,5 +1,4 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import STATE from '../../core/state';
+import CoopCommand from "../../operations/activity/messages/coopCommand";
 
 
 export default class NukeCommand extends CoopCommand {

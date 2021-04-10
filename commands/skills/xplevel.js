@@ -1,7 +1,7 @@
-import SkillsHelper, { SKILLS } from '../../community/features/skills/skillsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
 
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
 
 export default class LevelXPCommand extends CoopCommand {
 
@@ -31,7 +31,7 @@ export default class LevelXPCommand extends CoopCommand {
 		const level = SkillsHelper.calcLvl(xp);
 
 		const levelText = `${xp}XP gives you level ${level} in a skill!`;
-		return MessagesHelper.selfDestruct(msg, levelText, 5000);
+		return COOP.MESSAGES.selfDestruct(msg, levelText, 5000);
     }
     
 };

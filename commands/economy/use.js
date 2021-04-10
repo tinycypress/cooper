@@ -1,12 +1,13 @@
-import FlareHandler from '../../community/features/items/handlers/flareHandler';
-import LaxativeHandler from '../../community/features/items/handlers/laxativeHandler';
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import ShieldHandler from '../../community/features/items/handlers/shieldHandler';
-import RPGHandler from '../../community/features/items/handlers/rpgHandler';
-import { itemCodeArg, itemQtyArg } from '../../core/entities/commands/guards/itemCmdGuards';
-import EasterEggHandler from '../../community/features/items/handlers/easterEggHandler';
+import FlareHandler from '../../operations/minigames/medium/economy/items/handlers/flareHandler';
+import LaxativeHandler from '../../operations/minigames/medium/economy/items/handlers/laxativeHandler';
+import ShieldHandler from '../../operations/minigames/medium/economy/items/handlers/shieldHandler';
+import RPGHandler from '../../operations/minigames/medium/economy/items/handlers/rpgHandler';
+import EasterEggHandler from '../../operations/minigames/medium/economy/items/handlers/easterEggHandler';
 
+import { itemCodeArg, itemQtyArg } from '../../operations/minigames/medium/economy/itemCmdGuards';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 export default class UseCommand extends CoopCommand {
 
@@ -30,7 +31,7 @@ export default class UseCommand extends CoopCommand {
 		qty = 1;
 
 		// Interpret item code from text/string/emoji/item_code.
-		itemCode = ItemsHelper.interpretItemCodeArg(itemCode);
+		itemCode = COOP.ITEMSinterpretItemCodeArg(itemCode);
 
 		// Item is usable, therefore use it.
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);

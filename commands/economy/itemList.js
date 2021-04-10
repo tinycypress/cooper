@@ -1,6 +1,5 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { STATE, SERVER } from '../../origin/coop';
 
 export default class ItemListCommand extends CoopCommand {
 
@@ -20,15 +19,15 @@ export default class ItemListCommand extends CoopCommand {
 		super.run(msg);
 
 		// TODO: Format and batch, 4 per line.
-		const usableItems = ItemsHelper.UsableItemHelper()
-			.map((itemCode) => ItemsHelper.beautifyItemCode(itemCode));
+		const usableItems = COOP.ITEMSUsableItemHelper()
+			.map((itemCode) => COOP.ITEMSbeautifyItemCode(itemCode));
 
 		const itemListChunks = [...Array(Math.ceil(usableItems.length / 4))].map(() => usableItems.splice(0, 4))
 
 		const usableItemsMsgText = `**Usable Items:\n\n**` +
 			itemListChunks.map(chunk => chunk.join(', ')).join('\n');
 
-		MessagesHelper.selfDestruct(msg, usableItemsMsgText, 0, 10000);
+		COOP.MESSAGESselfDestruct(msg, usableItemsMsgText, 0, 10000);
     }
     
 };

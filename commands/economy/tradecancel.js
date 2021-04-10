@@ -1,8 +1,7 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import TradeHelper from '../../community/features/economy/tradeHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 
 export default class TradeCancelCommand extends CoopCommand {
@@ -39,19 +38,19 @@ export default class TradeCancelCommand extends CoopCommand {
 
 			// Check if valid trade ID given.
 			const trade = await TradeHelper.get(tradeID);
-			if (!trade) return MessagesHelper.selfDestruct(msg, `Invalid # trade ID - already cancelled?`, 0, 5000);
+			if (!trade) return COOP.MESSAGES.selfDestruct(msg, `Invalid # trade ID - already cancelled?`, 0, 5000);
 			
 			// Check if user can fulfil the trade.
 			const isYours = trade.trader_id === tradeeID;
-			if (!isYours) return MessagesHelper.selfDestruct(msg, `Trade #${trade.id} is not yours to cancel.`, 0, 5000);
+			if (!isYours) return COOP.MESSAGES.selfDestruct(msg, `Trade #${trade.id} is not yours to cancel.`, 0, 5000);
 
 			// Let helper handle accepting logic as it's used in multiple places so far.
 			const tradeCancelled = await TradeHelper.cancel(tradeID, tradeeID, tradeeName);
 			if (tradeCancelled) {
 				// Log cancelled trades
-				MessagesHelper.selfDestruct(msg, `Trade #${trade.id} cancelled.`, 0, 7500);
+				COOP.MESSAGES.selfDestruct(msg, `Trade #${trade.id} cancelled.`, 0, 7500);
 			} else {
-				MessagesHelper.selfDestruct(msg, `Trade #${trade.id} could not be cancelled.`, 0, 10000);
+				COOP.MESSAGES.selfDestruct(msg, `Trade #${trade.id} could not be cancelled.`, 0, 10000);
 				console.log('Trade cancel failed');
 			}
 			

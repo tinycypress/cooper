@@ -1,7 +1,8 @@
-import SkillsHelper from '../../community/features/skills/skillsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
+// import SkillsHelper from '../../community/features/skills/skillsHelper';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 
 export default class SkillScoresCommand extends CoopCommand {
@@ -38,7 +39,7 @@ export default class SkillScoresCommand extends CoopCommand {
 		try {
 			// TODO: Check most xp and give skill-score role
 		
-			// const leaderboardMsgText = await PointsHelper.renderLeaderboard(leaderboardRows, position);
+			// const leaderboardMsgText = await COOP.POINTS.renderLeaderboard(leaderboardRows, position);
 
 			// If ALL skills, return total/top breakdown based on total.
 			if (skill === 'ALL') {
@@ -46,11 +47,11 @@ export default class SkillScoresCommand extends CoopCommand {
 
 				const totalLeaderboardText = `**Top ${15 + position} __total__ XP skillers**\n\n` + 
 				totalLeaderboard.map((skillRow, index) => {
-					const { user } = UsersHelper._get(skillRow.player_id);
+					const { user } = COOP.USERS._get(skillRow.player_id);
 					return `#${(index + 1) + position}: ${user.username} ${skillRow.total_xp}XP`;
 				}).join('\n');
 
-				return MessagesHelper.selfDestruct(msg, totalLeaderboardText);
+				return COOP.MESSAGESselfDestruct(msg, totalLeaderboardText);
 
 			// Return a specific skill leaderboard if valid.
 			} else {
@@ -58,12 +59,12 @@ export default class SkillScoresCommand extends CoopCommand {
 
 				const skillLeaderboardText = `**Top ${15 + position} ${skill} XP skillers**\n\n` + 
 					skillLeaderboard.map((skillRow, index) => {
-						const { user } = UsersHelper._get(skillRow.player_id);
+						const { user } = COOP.USERS._get(skillRow.player_id);
 						const xp = skillRow[skill] ? skillRow[skill] : 0;
 						return `#${(index + 1) + position}: ${user.username} ${xp}XP`;
 					}).join('\n');
 
-				return MessagesHelper.selfDestruct(msg, skillLeaderboardText);
+				return COOP.MESSAGESselfDestruct(msg, skillLeaderboardText);
 			}
 
 

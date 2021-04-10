@@ -1,18 +1,15 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import TradeHelper from '../../community/features/economy/tradeHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
-import ChannelsHelper from '../../core/entities/channels/channelsHelper';
-import CHANNELS from '../../core/config/channels.json';
-import UsableItemHelper from '../../community/features/items/usableItemHelper';
+import TradingHelper from '../../operations/minigames/medium/economy/items/tradingHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
+
 
 // TODO: Move to Reactions/Message helper.
 const userDesiredReactsFilter = (emojis = []) =>
-	({ emoji }, user) => emojis.includes(emoji.name) && !UsersHelper.isCooper(user.id)
+	({ emoji }, user) => emojis.includes(emoji.name) && !COOP.USERS.isCooper(user.id)
 
 // TODO: Create delayAppend() method.
-// 	MessagesHelper.delayEdit(confirmMsg, confirmMsg.content + `...`);
+// 	COOP.MESSAGESdelayEdit(confirmMsg, confirmMsg.content + `...`);
 // TODO: Could potentially allow others to take the same trade with this. GME FTW.
 // TODO: Ensure trades expire, may need a new date/time on open_trades table.
 
@@ -64,25 +61,25 @@ export default class TradeCommand extends CoopCommand {
 			const tradeeName = msg.author.username;
 
 			// Try to parse item codes.
-			offerItemCode = ItemsHelper.interpretItemCodeArg(offerItemCode);
-			receiveItemCode = ItemsHelper.interpretItemCodeArg(receiveItemCode);
+			offerItemCode = COOP.ITEMS.interpretItemCodeArg(offerItemCode);
+			receiveItemCode = COOP.ITEMS.interpretItemCodeArg(receiveItemCode);
 
 			// Check if valid item codes given.
-			if (!offerItemCode || !receiveItemCode) return MessagesHelper.selfDestruct(msg, 
+			if (!offerItemCode || !receiveItemCode) return COOP.MESSAGESselfDestruct(msg, 
 				`Invalid item codes for trade, ${offerItemCode} ${receiveItemCode}`, 0, 7500);
 			
 			// Check if user can fulfil the trade.
-			const canUserFulfil = await ItemsHelper.hasQty(tradeeID, offerItemCode, offerQty);
+			const canUserFulfil = await COOP.ITEMS.hasQty(tradeeID, offerItemCode, offerQty);
 			// TODO: Provide a more useful error message here with qty details.
-			if (!canUserFulfil) return MessagesHelper.selfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
+			if (!canUserFulfil) return COOP.MESSAGESselfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
 
 			// Generate strings with emojis based on item codes.
-			const tradeAwayStr = `${MessagesHelper._displayEmojiCode(offerItemCode)}x${offerQty}`;
-			const receiveBackStr = `${MessagesHelper._displayEmojiCode(receiveItemCode)}x${receiveQty}`;
+			const tradeAwayStr = `${COOP.MESSAGES_displayEmojiCode(offerItemCode)}x${offerQty}`;
+			const receiveBackStr = `${COOP.MESSAGES_displayEmojiCode(receiveItemCode)}x${receiveQty}`;
 			const exchangeString = `<- ${tradeAwayStr}\n-> ${receiveBackStr}`;
 
 			// Check if there is an existing offer matching this specifically.
-			const matchingOffers = await TradeHelper
+			const matchingOffers = await TradingHelper
 				.matches(receiveItemCode, offerItemCode, receiveQty, offerQty);
 
 			// Build the confirmation message string.
@@ -97,9 +94,9 @@ export default class TradeCommand extends CoopCommand {
 			// TODO: Refactor confirmation into something more abstracted and reuse it. :D
 
 			// Post the confirmation message and add reactions to assist interaction.
-			const confirmMsg = await MessagesHelper.selfDestruct(msg, confirmStr, 0, 30000);
-			MessagesHelper.delayReact(confirmMsg, '❎', 666);
-			MessagesHelper.delayReact(confirmMsg, '✅', 999);
+			const confirmMsg = await COOP.MESSAGESselfDestruct(msg, confirmStr, 0, 30000);
+			COOP.MESSAGESdelayReact(confirmMsg, '❎', 666);
+			COOP.MESSAGESdelayReact(confirmMsg, '✅', 999);
 
 			// Setup the reaction collector for trade confirmation interaction handling.
 			const interactions = await confirmMsg.awaitReactions(
@@ -127,7 +124,7 @@ export default class TradeCommand extends CoopCommand {
 					const cheapest = matchingOffers[0];
 
 					// Let helper handle accepting of the trade, with a msgRef.
-					const tradeAccepted = await TradeHelper.accept(cheapest.id, tradeeID, tradeeName);
+					const tradeAccepted = await TradingHelper.accept(cheapest.id, tradeeID, tradeeName);
 					if (tradeAccepted) {
 						const exchangeString = `-> ${tradeAwayStr}\n<- ${receiveBackStr}`;
 						const tradeConfirmStr = `**${tradeeName} accepted trade #${cheapest.id} from ${cheapest.trader_username}**\n\n` +
@@ -135,32 +132,32 @@ export default class TradeCommand extends CoopCommand {
 						
 						// If passed a message reference, handle interaction feedback.
 							// Refactor this hash string into channelsHelper?
-							const actionsLinkStr = `\n\n_View in <#${CHANNELS.TRADE.id}>_`;
+							const actionsLinkStr = `\n\n_View in <#${COOP.CHANNELS.config().TRADE.id}>_`;
 		
 							// Post accepted trade to channel and record channel.
-							MessagesHelper.delayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 333);
+							COOP.MESSAGESdelayEdit(confirmMsg, tradeConfirmStr + actionsLinkStr, 333);
 					} else {
 						// Edit failure onto message.
-						MessagesHelper.selfDestruct(confirmMsg, 'Failure confirming instant trade.', 666, 5000);
+						COOP.MESSAGESselfDestruct(confirmMsg, 'Failure confirming instant trade.', 666, 5000);
 					}
 
 
 				} else {
 					// Use the items to create a trade, so we can assume its always fulfillable,
 					//  the item becomes a trade credit note, can be converted back.
-					const didUse = await UsableItemHelper.use(tradeeID, offerItemCode, offerQty);
+					const didUse = await USABLE.use(tradeeID, offerItemCode, offerQty);
 					if (didUse) {
-						const createdOfferID = await TradeHelper.create(
+						const createdOfferID = await TradingHelper.create(
 							tradeeID, tradeeName,
 							offerItemCode, receiveItemCode,
 							offerQty, receiveQty
 						);
 
 						// Remove the original message now to simplify the UI.
-						MessagesHelper.delayDelete(confirmMsg, 999);
+						COOP.MESSAGESdelayDelete(confirmMsg, 999);
 
 						// Offer feedback for trade creation. :)
-						ChannelsHelper.propagate(msg, 
+						COOP.CHANNELS.propagate(msg, 
 							`**${tradeeName} created trade #${createdOfferID}**\n\n` +
 							exchangeString + `\n\n` +
 							`_Send message "!tradeaccept ${createdOfferID}" to accept this trade._`,
@@ -170,7 +167,7 @@ export default class TradeCommand extends CoopCommand {
 
 						// TODO: Add to trade stats
 					} else {
-						MessagesHelper.selfDestruct(confirmMsg, 'Error creating trade.', 666, 5000);
+						COOP.MESSAGESselfDestruct(confirmMsg, 'Error creating trade.', 666, 5000);
 					}
 				}
 
@@ -179,7 +176,7 @@ export default class TradeCommand extends CoopCommand {
 				// console.log('Trade cancelled');
 
 				// Trade cancelled, remove message.
-				MessagesHelper.delayDelete(confirmMsg);
+				COOP.MESSAGESdelayDelete(confirmMsg);
 			}
 			
 		} catch(e) {

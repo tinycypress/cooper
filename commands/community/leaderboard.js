@@ -1,6 +1,6 @@
-import PointsHelper from '../../community/features/points/pointsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
+
 
 
 export default class LeaderboardCommand extends CoopCommand {
@@ -33,12 +33,12 @@ export default class LeaderboardCommand extends CoopCommand {
 			// None: show top 15
 			// User: show user position and 5 either side
 			// Number: show rank number and 5 either side
-			const leaderboardRows = await PointsHelper.getLeaderboard(position);
-			const placeholderMsg = await MessagesHelper.selfDestruct(msg, 'Calculating leaderboard, please wait.', 0, 60000);
+			const leaderboardRows = await COOP.POINTS.getLeaderboard(position);
+			const placeholderMsg = await COOP.MESSAGES.selfDestruct(msg, 'Calculating leaderboard, please wait.', 0, 60000);
 
 			// Edit the content into the message.
-			const leaderboardMsgText = await PointsHelper.renderLeaderboard(leaderboardRows, position);
-			MessagesHelper.delayEdit(placeholderMsg, leaderboardMsgText, 2000);
+			const leaderboardMsgText = await COOP.POINTS.renderLeaderboard(leaderboardRows, position);
+			COOP.MESSAGES.delayEdit(placeholderMsg, leaderboardMsgText, 2000);
 
 		} catch(e) {
 			console.error(e);

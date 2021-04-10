@@ -1,8 +1,6 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import ChannelsHelper from '../../core/entities/channels/channelsHelper';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-
-import EMOJIS from '../../core/config/emojis.json';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP from '../../origin/coop';
+import { EMOJIS } from '../../origin/config';
 
 export default class SuggestCommand extends CoopCommand {
 
@@ -23,26 +21,26 @@ export default class SuggestCommand extends CoopCommand {
 		super.run(msg);
 
 		if (msg.content.includes('@everyone') || msg.content.includes('@here'))
-			return MessagesHelper.selfDestruct(msg, 'Pinging via Cooper disallowed.');
+			return COOP.MESSAGESelfDestruct(msg, 'Pinging via Cooper disallowed.');
 
         try {
 			// Post in suggestions.
-			const pollAcknowledgement = await ChannelsHelper._postToChannelCode('SUGGESTIONS', 
+			const pollAcknowledgement = await COOP.CHANNELS._postToChannelCode('SUGGESTIONS', 
 				msg.content.replace('!suggest', ''));
 
 			// Add reactions for people to use.
-			MessagesHelper.delayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
-			MessagesHelper.delayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
+			COOP.MESSAGESelayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
+			COOP.MESSAGESelayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
 
 			// Add intended for roadmap, add roadmap reaction for adding to roadmap.
 			if (msg.content.toLowerCase().indexOf('roadmap') > -1) {
-				MessagesHelper.delayReact(pollAcknowledgement, EMOJIS.ROADMAP, 999);
+				COOP.MESSAGESelayReact(pollAcknowledgement, EMOJIS.ROADMAP, 999);
 			}
 		
 			// Send poll tracking link.
 			await msg.direct(
 				'I started your poll, track its progress with this link: ' + 
-				MessagesHelper.link(pollAcknowledgement) + 
+				COOP.MESSAGESink(pollAcknowledgement) + 
 				+ " \n\n\n " + " _ " + msg.content
 			);
 

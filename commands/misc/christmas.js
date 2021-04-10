@@ -1,9 +1,6 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import ServerHelper from '../../core/entities/server/serverHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
-import EMOJIS from '../../core/config/emojis.json';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+import { EMOJIS } from '../../origin/config';
 
 export default class ChristmasCommand extends CoopCommand {
 
@@ -31,14 +28,14 @@ export default class ChristmasCommand extends CoopCommand {
 	async run(msg, { user }) {
 		super.run(msg);
 		
-		// const eggEmoji = MessagesHelper.emojiText(EMOJIS.CHRISTMAS_EGG);
-		// const coopEmoji = MessagesHelper.emojiText(EMOJIS.COOP);
+		// const eggEmoji = COOP.MESSAGES.emojiText(EMOJIS.CHRISTMAS_EGG);
+		// const coopEmoji = COOP.MESSAGES.emojiText(EMOJIS.COOP);
 		// const msgText = `You were given a Christmas Egg ${eggEmoji} as a reward,` +
 		// 	` thank you for being part of The Coop! ${coopEmoji}\n` +
 		// 	`Merry Christmas, ${user.username}!`;
 
-		// await ItemsHelper.add(user.id, 'CHRISTMAS_EGG', 1)
-		// await UsersHelper.directMSG(ServerHelper._coop(), user.id, msgText);
+		// await COOP.ITEMSadd(user.id, 'CHRISTMAS_EGG', 1)
+		// await COOP.USERS.directMSG(SERVER._coop(), user.id, msgText);
     }
     
 };

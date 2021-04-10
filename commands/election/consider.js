@@ -1,6 +1,7 @@
-import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
+
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
 
 
 export default class ConsiderCommand extends CoopCommand {
@@ -35,7 +36,7 @@ export default class ConsiderCommand extends CoopCommand {
 		if (!isElec) {
 			const nextElecFmt = await ElectionHelper.nextElecFmt();
 			const noElecText = `There is no election currently ongoing. !nextelec: ${nextElecFmt}`;
-			return MessagesHelper.selfDestruct(msg, noElecText, 0, 5000);
+			return COOP.MESSAGES.selfDestruct(msg, noElecText, 0, 5000);
 		}
 
 		// Otherwise show the list in a self-destruct msg.
@@ -43,12 +44,12 @@ export default class ConsiderCommand extends CoopCommand {
 		const VotesCounts = await ElectionHelper.countVotes();
 
 		const resultsText = candidates.map(u => `${u.candidate_id}:${VotesCounts[u.candidate_id]}`).join('\n');
-		MessagesHelper.selfDestruct(msg, resultsText);
+		COOP.MESSAGES.selfDestruct(msg, resultsText);
 
 		// if (candidate) {
 		// 	// Retrieve the campaign message of candidate
 		// 	console.log('should try to access candidate');
-		// 	MessagesHelper.selfDestruct(msg, 'You wanna know bout dis here candidate?');
+		// 	COOP.MESSAGES.selfDestruct(msg, 'You wanna know bout dis here candidate?');
 
 		// } else {
 		// }	

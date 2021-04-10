@@ -1,5 +1,6 @@
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
+
 import fetch from 'node-fetch';
 // import fileType from 'file-type';
 
@@ -24,7 +25,7 @@ export default class CalcCommand extends CoopCommand {
 		const queryString =  msg.content.trim().replace('!calc ', '');
 
 		// Guard.
-		if (!queryString) return MessagesHelper.selfDestruct(msg, 'Must include an equation/etc for calc.');
+		if (!queryString) return COOP.MESSAGES.selfDestruct(msg, 'Must include an equation/etc for calc.');
 		
 		const appID = "EL6YXA-LGWAWXQPHE";
 		const inputQueryStr = encodeURIComponent(queryString);
@@ -45,7 +46,7 @@ export default class CalcCommand extends CoopCommand {
 
 		} catch(e) {
 			// Generate feedback flash
-			MessagesHelper.selfDestruct(msg, '!calc failed');
+			COOP.MESSAGES.selfDestruct(msg, '!calc failed');
 			console.log('!calc failed');
 			console.error(e);
 		}

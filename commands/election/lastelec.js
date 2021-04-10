@@ -1,7 +1,8 @@
-import CoopCommand from '../../core/entities/coopCommand';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
-import ElectionHelper from '../../community/features/hierarchy/election/electionHelper';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER } from '../../origin/coop';
+
 
 
 export default class LastElectionCommand extends CoopCommand {
@@ -26,11 +27,11 @@ export default class LastElectionCommand extends CoopCommand {
 		const isOn = await ElectionHelper.isVotingPeriod();
 
 		if (isOn) {
-			MessagesHelper.selfDestruct(msg, 'Election is on now, recalculate one previous.');
+			COOP.MESSAGES.selfDestruct(msg, 'Election is on now, recalculate one previous.');
 		} else {
 			const dateFmt = await ElectionHelper.lastElecFmt();
 			const msgText = `Last Election: ${dateFmt}`;
-			MessagesHelper.selfDestruct(msg, msgText);
+			COOP.MESSAGES.selfDestruct(msg, msgText);
 		}
 
     }

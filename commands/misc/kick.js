@@ -1,8 +1,5 @@
-
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import STATE from '../../core/state';
-
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { STATE } from '../../origin/coop';
 
 export default class KickCommand extends CoopCommand {
 
@@ -24,10 +21,10 @@ export default class KickCommand extends CoopCommand {
 		// Restrict to shinoa if it gets abused.
 		// 672165988527243306
 
-        MessagesHelper.selfDestruct(msg, 'You are being kicked in 3...', 333);
-        MessagesHelper.selfDestruct(msg, 'You are being kicked in 2...', 1333);
-        MessagesHelper.selfDestruct(msg, 'You are being kicked in 1...', 2333);
-        MessagesHelper.selfDestruct(msg, '!kick is a social construct.', 3333);
+        COOP.MESSAGESselfDestruct(msg, 'You are being kicked in 3...', 333);
+        COOP.MESSAGESselfDestruct(msg, 'You are being kicked in 2...', 1333);
+        COOP.MESSAGESselfDestruct(msg, 'You are being kicked in 1...', 2333);
+        COOP.MESSAGESselfDestruct(msg, '!kick is a social construct.', 3333);
     }
     
 };

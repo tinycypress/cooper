@@ -1,8 +1,5 @@
-import ItemsHelper from '../../community/features/items/itemsHelper';
-import CoopCommand from '../../core/entities/coopCommand';
-import MessagesHelper from '../../core/entities/messages/messagesHelper';
-import UsersHelper from '../../core/entities/users/usersHelper';
-
+import CoopCommand from '../../operations/activity/messages/coopCommand';
+import COOP, { USABLE, SERVER, TIME } from '../../origin/coop';
 
 export default class RichestCommand extends CoopCommand {
 
@@ -23,13 +20,13 @@ export default class RichestCommand extends CoopCommand {
 		super.run(msg);
 
 		// Get user with the most items.
-		const mostItems = await ItemsHelper.getRichest();
-		const mostItemsUser = UsersHelper._get(mostItems.owner_id).user;
+		const mostItems = await COOP.ITEMSgetRichest();
+		const mostItemsUser = COOP.USERS._get(mostItems.owner_id).user;
 
 		// Provide the result to the user.
-		const emoji = MessagesHelper._displayEmojiCode('GOLD_COIN');
+		const emoji = COOP.MESSAGES._displayEmojiCode('GOLD_COIN');
 		const msgText = `${mostItemsUser.username} is the richest member (${mostItems.total}x${emoji}).`;
-		MessagesHelper.selfDestruct(msg, msgText);
+		COOP.MESSAGES.selfDestruct(msg, msgText);
     }
     
 };
