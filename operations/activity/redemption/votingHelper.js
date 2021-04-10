@@ -1,10 +1,9 @@
-import ServerHelper from "../../serverHelper";
-
+import { SERVER } from "../../../origin/coop";
 
 export default class VotingHelper {
 
   static getNumRequired(rate) {
-    return Math.ceil(ServerHelper._count() * rate);
+    return Math.ceil(SERVER._count() * rate);
   }
 
   static getResults(collected) {

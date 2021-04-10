@@ -1,10 +1,9 @@
-import { MESSAGES, USERS, SERVER, ITEMS } from '../../../../origin/coop';
-import UsableItemHelper from './items/usableItemHelper';
+import { MESSAGES, USERS, SERVER, ITEMS, USABLE } from '../../../../origin/coop';
 
 
 export function usableItemCodeGuard(msgRef, itemCode, username) {
     // Check if this item code can be given.
-    if (!UsableItemHelper.isUsable(itemCode) || itemCode === null) {
+    if (!USABLE.isUsable(itemCode) || itemCode === null) {
         const errorText = `${username}, ${itemCode} is not a usable/matching item code.`;
         MESSAGES.selfDestruct(msgRef, errorText, 0, 5000);
 
@@ -64,7 +63,7 @@ export async function useManyGuard(user, msg, itemManifest) {
             };
 
             // Indicate guard failed.
-            const wasUsed = await UsableItemHelper.use(user.id, itemCode, itemManifestQty);
+            const wasUsed = await USABLE.use(user.id, itemCode, itemManifestQty);
             if (wasUsed) result.used = true;
 
             return result;
@@ -181,7 +180,7 @@ export async function ownEnoughManyGuard(user, msg, itemManifest) {
 export async function didUseGuard(user, itemCode, qty = 1, msgRef, reactEmoji = null) {
     try {
         // Attempt to use the shield item
-        const didUseItem = await UsableItemHelper.use(user.id, itemCode, qty);
+        const didUseItem = await USABLE.use(user.id, itemCode, qty);
     
         // Provide error feedback, since this prevents action.
         if (didUseItem) return true;

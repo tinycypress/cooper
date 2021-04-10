@@ -1,7 +1,6 @@
 import BuffsHelper from "../../../conquest/buffsHelper";
-import UsableItemHelper from "../usableItemHelper";
 
-import COOP from "../../../../../../origin/coop";
+import COOP, { USABLE } from "../../../../../../origin/coop";
 
 export default class BombHandler {
 
@@ -13,7 +12,7 @@ export default class BombHandler {
         
         if (reaction.emoji.name === '💣') {
             try {
-                const didUse = await UsableItemHelper.use(user.id, 'BOMB', 1);
+                const didUse = await USABLE.use(user.id, 'BOMB', 1);
                 if (!didUse) {
                     COOP.MESSAGES.silentSelfDestruct(msg, `<@${user.id}> lacks a bomb to use on <@${target.id}>`);
                     return await reaction.users.remove(user.id);

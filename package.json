@@ -6,7 +6,7 @@
   "scripts": {
     "startBot": "node -r esm ./index.js",
     "db": "heroku pg:psql --app cooperchickenbot",
-    "shallowBot": "node -r esm ./core/shallow.js"
+    "shallowBot": "node -r esm ./origin/setup/shallow.js"
   },
   "engines": {
     "node": "12.x",
@@ -34,6 +34,7 @@
     "pg-promise": "^10.7.0"
   },
   "devDependencies": {
+    "eslint": "^7.24.0",
     "nodemon": "^2.0.7"
   },
   "repository": {

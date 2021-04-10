@@ -1,12 +1,14 @@
 import { Client } from 'discord.js-commando';
-import Database from './setup/database';
-import STATE from './state';
 import dotenv from 'dotenv';
 
+import Database from './database';
+
+import VotingHelper from '../../operations/activity/redemption/votingHelper';
+import COOP from '../coop';
 
 // Commonly useful.
-const listenReactions = (fn) => STATE.CLIENT.on('messageReactionAdd', fn);
-const listenMessages = (fn) => STATE.CLIENT.on('message', fn);
+const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
+const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
 
 
 // v DEV IMPORT AREA v
@@ -19,16 +21,20 @@ dotenv.config();
 
 const shallowBot = async () => {
     // Instantiate a CommandoJS "client".
-    STATE.CLIENT = new Client({ owner: '786671654721683517' });
+    COOP.STATE.CLIENT = new Client({ owner: '786671654721683517' });
 
     // Connect to Postgres database.
     await Database.connect();
     
     // Login, then wait for the bot to be fully online before testing.
-    await STATE.CLIENT.login(process.env.DISCORD_TOKEN);
-    STATE.CLIENT.on('ready', async () => {
+    await COOP.STATE.CLIENT.login(process.env.DISCORD_TOKEN);
+    COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+        console.log(VotingHelper.getNumRequired(.25));
+        
+        
 
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).

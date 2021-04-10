@@ -1,9 +1,8 @@
 import EconomyNotifications from "../../activity/information/economyNotifications";
 
 import SkillsHelper from "../medium/skills/skillsHelper";
-import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 
-import COOP, { STATE, REACTIONS, SERVER } from "../../../origin/coop";
+import COOP, { STATE, REACTIONS, SERVER, USABLE } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 
 
@@ -61,7 +60,7 @@ export default class WoodcuttingMinigame {
 
         const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });
         if (didBreak) {
-            const axeUpdate = await UsableItemHelper.use(user.id, 'AXE', 1);
+            const axeUpdate = await USABLE.use(user.id, 'AXE', 1);
             if (axeUpdate) {
                 const brokenDamage = -2;
                 const pointsDamageResult = await COOP.POINTS.addPointsByID(user.id, brokenDamage);
