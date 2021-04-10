@@ -1,3 +1,5 @@
+import EmojiHelper from "./emojiHelper";
+
 import COOP, { USABLE, SERVER } from "../../../../../origin/coop";
 import { ITEMS, EMOJIS, RAW_EMOJIS } from '../../../../../origin/config';
 import DatabaseHelper from "../../../../databaseHelper";
