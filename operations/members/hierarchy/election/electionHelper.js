@@ -166,7 +166,7 @@ export default class ElectionHelper {
     }
 
     static getMaxNumLeaders() {
-        return VotingHelper.getNumRequired(COOP.SERVER._coop(), .025);
+        return VotingHelper.getNumRequired(.025);
     }
 
     // Provide updates and functionality for an ongoing election.

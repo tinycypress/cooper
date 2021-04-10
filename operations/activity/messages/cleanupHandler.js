@@ -1,8 +1,6 @@
-import COOP from "../../../origin/coop";
-
 export default class CleanupHandler {
 
-    static async onReaction(msg) {
+    static async onReaction() {
         // if (msg.channel.type !== "dm") return false;
         // if (COOP.USERS.isCooperMsg(msg)) return false;
         // if (msg.command !== null) return false;
