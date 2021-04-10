@@ -73,8 +73,8 @@ export default class SacrificeHelper {
             if (!targetMember) return false;
             
             // Calculate the number of required votes for the redemption poll.
-            const reqSacrificeVotes = VotingHelper.getNumRequired(guild, .025);
-            const reqKeepVotes = VotingHelper.getNumRequired(guild, .02);
+            const reqSacrificeVotes = VotingHelper.getNumRequired(.025);
+            const reqKeepVotes = VotingHelper.getNumRequired(.02);
         
             // Get existing reactions on message.
             let sacrificeVotes = 0;
