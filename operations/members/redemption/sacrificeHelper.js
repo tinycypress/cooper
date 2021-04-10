@@ -27,7 +27,7 @@ export default class SacrificeHelper {
         const emoji = reaction.emoji.name;
         const channelID = reaction.message.channel.id;
         const isSacrificeChannel = channelID === CHANNELS.SACRIFICE.id;
-        const isDagger = COOP.MESSAGES.emojiToUni(emoji) === CCOOP.MESSAGESmojiToUni(EMOJIS.DAGGER);
+        const isDagger = COOP.MESSAGES.emojiToUni(emoji) === COOP.MESSAGESmojiToUni(EMOJIS.DAGGER);
 
         if (isSacrificeChannel) return false;
         if (user.bot) return false;
@@ -131,7 +131,7 @@ export default class SacrificeHelper {
         let sacrificeVotes = 0;
         reaction.message.reactions.cache.map(reactionType => {
             const emoji = reactionType.emoji.name;
-            if (COOP.MESSAGES.emojiToUni(emoji) === CCOOP.MESSAGESmojiToUni(EMOJIS.DAGGER)) {
+            if (COOP.MESSAGES.emojiToUni(emoji) === COOP.MESSAGESmojiToUni(EMOJIS.DAGGER)) {
                 sacrificeVotes = reactionType.count;
             }
         });
