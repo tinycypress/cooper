@@ -44,6 +44,7 @@ export default class EggHuntMinigame {
 
     static onReaction(reaction, user) {
         try {
+            const isCooperMessage = USERS.isCooperMsg(reaction.message);
             const isEgghuntDrop = this.isEgghuntDrop(reaction.message.content);
             const hasEggRarity = this.calculateRarityFromMessage(reaction.message);
             const isEggCollectible = isCooperMessage && isEgghuntDrop && hasEggRarity;

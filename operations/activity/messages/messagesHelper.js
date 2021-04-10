@@ -2,6 +2,7 @@ import createEmbed from "./embedHelper";
 
 import COOP, { SERVER }  from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
+import { silentOpts } from "../../channelHelper";
 
 export default class MessagesHelper {
 
