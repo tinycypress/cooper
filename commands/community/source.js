@@ -106,7 +106,7 @@ export default class SourceCommand extends CoopCommand {
 				// Decide if it will fit in an embed or not.
 				if (rawFolderContent.length > 0) {
 					// Form the folder content feedback.
-					const folderContent = `**Cooper's source (${filePath}):**\n` +
+					const folderContent = `**Behold, my innards! (${filePath}):**\n` +
 						`<${gitBaseUrl}${filePath.replace('./', '')}>\n\n` +
 
 						// TODO: Add distance/breadcrumbs from root here.
