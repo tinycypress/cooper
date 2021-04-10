@@ -27,7 +27,7 @@ export default class ItemsHelper {
     static beautifyItemCode(itemCode) {
         const lowerName = itemCode.replace("_", " ").toLowerCase();
         const nameCapitalized = lowerName.charAt(0).toUpperCase() + lowerName.slice(1);
-        const emoji = COOP.MESSAGESemojifyID(EMOJIS[itemCode]);
+        const emoji = COOP.MESSAGES.emojifyID(EMOJIS[itemCode]);
         return emoji + " " + nameCapitalized + " ";
     }
 
@@ -150,7 +150,7 @@ export default class ItemsHelper {
     static formItemDropText(user, items) {
         let itemDisplayMsg = `${user.username}'s items:`;
         items.forEach(item => {
-            const emojiIcon = COOP.MESSAGESemojifyID(EMOJIS[item.item_code]);
+            const emojiIcon = COOP.MESSAGES.emojifyID(EMOJIS[item.item_code]);
             const itemText = `\nx${item.quantity} ${this.escCode(item.item_code)} ${emojiIcon}`;
             itemDisplayMsg += itemText;
         })
