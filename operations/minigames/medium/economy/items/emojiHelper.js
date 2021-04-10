@@ -1,4 +1,4 @@
-import RAW_EMOJIS from '../../../core/config/rawemojis.json';
+import { RAW_EMOJIS } from '../../../../../origin/config';
 
 export default class EmojiHelper {
 
