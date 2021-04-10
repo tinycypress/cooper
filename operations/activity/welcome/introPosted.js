@@ -32,7 +32,7 @@ export default async (msg) => {
       const username = memberSubject.user.username;
 
       // Post message in feed
-      const introText = `${username} posted an introduction in <$${CHANNELS.INTRO}> ! 👋`;
+      const introText = `${username} posted an introduction in <#${CHANNELS.INTRO}> ! 👋`;
       await CHANNELS._codes(['TALK', 'ENTRY', 'FEED'], introText);
 
       // Send embed to approval channel for redeeming non-members via introduction.
@@ -40,7 +40,7 @@ export default async (msg) => {
         await CHANNELS._postToChannelCode('ENTRY', MESSAGES.embed({
           url: MESSAGES.link(msg),
           title: `${username}, is being considered for approval.`,
-          description: `Vote for/against ${username} using reaction emojis on their <$${CHANNELS.INTRO}> post.`,
+          description: `Vote for/against ${username} using reaction emojis on their <#${CHANNELS.INTRO}> post.`,
           thumbnail: USERS.avatar(memberSubject.user)
         }));
       }
