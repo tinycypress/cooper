@@ -50,7 +50,7 @@ export default class RPGHandler {
         const targetName = target.id === attacker.id ? 'their self' : `<@${target.id}`;
         const successText = `<@${attacker.id}> used an ${rpgEmojiText} RPG on ${targetName}, blasting them and potentially starting a chain reaction!`;
 
-        COOP.CHANNELSilentPropagate(msg, successText, 'ATTACKS', true);
+        COOP.CHANNELS.silentPropagate(msg, successText, 'ATTACKS', true);
 
 
         // if (BuffsHelper.has('INVINCIBILITY', targetID))

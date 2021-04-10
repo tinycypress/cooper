@@ -7,7 +7,7 @@ export default class SuggestionsHelper {
 
     static onMessage(msg) {
         if (msg.channel.id === CHANNELS.SUGGESTIONS.id && !msg.author.bot) 
-            COOP.CHANNELS_postToFeed(`New suggestion: <#${CHANNELS.SUGGESTIONS.id}>`);
+            COOP.CHANNELS._postToFeed(`New suggestion: <#${CHANNELS.SUGGESTIONS.id}>`);
     }
 
     static async onReaction(reaction, user) {
@@ -20,7 +20,7 @@ export default class SuggestionsHelper {
 
     static async check() {
         // Get last 25 suggestions to check through.
-        const suggestionsParts = Array.from(await COOP.CHANNELS_getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
+        const suggestionsParts = Array.from(await COOP.CHANNELS._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
         let processedOne = false;
 
         // Process latest ONE suggestion.
@@ -67,7 +67,7 @@ export default class SuggestionsHelper {
     
                 ['TALK', 'FEED'].forEach((channelKey, channelIndex) => {
                     setTimeout(
-                        () => COOP.CHANNELS_postToChannelCode(channelKey, tiedText), 
+                        () => COOP.CHANNELS._postToChannelCode(channelKey, tiedText), 
                         channelIndex * 666
                     );
                 });
@@ -140,13 +140,13 @@ export default class SuggestionsHelper {
                 // Inform the server of rejected suggestion.
                 ['TALK', 'FEED'].map((channelKey, channelIndex) => {
                     setTimeout(
-                        () => COOP.CHANNELS_postToChannelCode(channelKey, rejectedText), 
+                        () => COOP.CHANNELS._postToChannelCode(channelKey, rejectedText), 
                         channelIndex * 666
                     );
                 });
 
                 // Post to roadmap if necessary
-                if (votes.roadmap) COOP.CHANNELS_postToChannelCode('ROADMAP', suggestion.content);
+                if (votes.roadmap) COOP.CHANNELS._postToChannelCode('ROADMAP', suggestion.content);
 
                 // Delete the message with a delay to avoid rate limiting.
                 COOP.MESSAGES.delayDelete(suggestion, 3333 * index);
@@ -166,7 +166,7 @@ export default class SuggestionsHelper {
                 // Inform the server of rejected suggestion.
                 ['TALK', 'FEED'].forEach((channelKey, channelIndex) => {
                     setTimeout(
-                        () => COOP.CHANNELS_postToChannelCode(channelKey, rejectedText), 
+                        () => COOP.CHANNELS._postToChannelCode(channelKey, rejectedText), 
                         channelIndex * 666
                     );
                 });

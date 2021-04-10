@@ -73,7 +73,7 @@ export default class InstantFurnaceMinigame {
                 }`
 
             // Create record in channel and in actions.
-            COOP.CHANNELSpropagate(reaction.message, smeltString, 'ACTIONS');
+            COOP.CHANNELS.propagate(reaction.message, smeltString, 'ACTIONS');
 
         } catch(e) {
             console.log('Failure reacting to instant furnace');
@@ -85,7 +85,7 @@ export default class InstantFurnaceMinigame {
         // Run based on roll.
         try {
             // An instant furnace appears.
-            const msg = await COOP.CHANNELS_postToChannelCode('TALK', '🌋');
+            const msg = await COOP.CHANNELS._postToChannelCode('TALK', '🌋');
             
             // TODO: Maybe should be self-destruct too?
             // baseTickDur / 10

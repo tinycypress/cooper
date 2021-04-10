@@ -65,7 +65,7 @@ export default class RolesHelper {
     }
 
     static _addManyToMember(member, roleCodes) {
-        return member.roles.add(COOP.ROLES_getCodes(roleCodes));
+        return member.roles.add(COOP.ROLES._getCodes(roleCodes));
     }
 
     static async toggle(userID, roleCode) {

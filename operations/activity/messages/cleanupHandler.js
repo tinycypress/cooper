@@ -13,10 +13,10 @@ export default class CleanupHandler {
         // If so, delete the message, trash icon?
 
         // const annotatedMsgText = `DM message from ${msg.author.username}: ${msg.content}`;
-        // COOP.CHANNELS_postToChannelCode('LEADERS', annotatedMsgText);
+        // COOP.CHANNELS._postToChannelCode('LEADERS', annotatedMsgText);
 
         // setTimeout(async () => {
-        //     const replyableMsg = await COOP.CHANNELS_postToChannelCode('COOPERTESTS', annotatedMsgText);
+        //     const replyableMsg = await COOP.CHANNELS._postToChannelCode('COOPERTESTS', annotatedMsgText);
         //     replyableMsg.channel.awaitMessages(
         //         () => true,
         //         { max: 1, time: 30000, errors: ['time'] }

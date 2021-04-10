@@ -54,7 +54,7 @@ export default class SubscriptionHelper {
                                     COOP.ITEMS.add(msg.author.id, 'PICK_AXE', 5);
 
                                     setTimeout(async () => {
-                                        COOP.CHANNELS_postToFeed(rewardText + rewardAmountText);
+                                        COOP.CHANNELS._postToFeed(rewardText + rewardAmountText);
                                         confirmMsg.say(rewardText + rewardAmountText);
                                     }, 3000);
 
