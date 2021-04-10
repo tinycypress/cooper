@@ -74,7 +74,7 @@ export default class RedemptionHelper {
                 COOP.ROLES._addManyToMember(targetMember, STARTING_ROLES);
                 
                 // Inform community.
-                COOP.CHANNELS.codes(['ENTRY', 'TALK'], 
+                COOP.CHANNELS._codes(['ENTRY', 'TALK'], 
                     `${targetUser.username} approved based on votes!` +
                     `${forVotes ? `\n\n${EMOJIS.VOTE_FOR.repeat(forVotes)}` : ''}` +
                     `${againstVotes ? `\n\n${EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
@@ -86,7 +86,7 @@ export default class RedemptionHelper {
             // Handle user rejected.
             } else if (againstVotes >= reqAgainstVotes) {
                 // Inform community.
-                COOP.CHANNELS.codes(['ENTRY', 'TALK'], `${targetUser.username} was voted out, removed and banned.`);
+                COOP.CHANNELS._codes(['ENTRY', 'TALK'], `${targetUser.username} was voted out, removed and banned.`);
 
                 // TODO: List current leaders/command for contact in order to appeal.
                 await targetMember.ban();
@@ -102,7 +102,7 @@ export default class RedemptionHelper {
                 const lastVotetime = STATE.LAST_ENTRY_VOTE_TIME;
                 if (!lastVotetime || lastVotetime < currentTime - 5000) {
                     STATE.LAST_ENTRY_VOTE_TIME = currentTime;
-                    COOP.CHANNELS.codes(['ENTRY', 'TALK'], votingStatusText);
+                    COOP.CHANNELS._codes(['ENTRY', 'TALK'], votingStatusText);
                 }
             }
                 
