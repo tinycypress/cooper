@@ -41,7 +41,10 @@ export default class ShieldHandler {
         
         // Format and send the feedback text for shield effect.
         const targetName = target.id === user.id ? 'their self' : target.username;
-        const successText = `${user.username} used a ${MESSAGES._displayEmojiCode('SHIELD')} SHIELD on ${targetName}, extending their protection to ${protectionExpiry} 30 mins.`;
+
+        const successText = COOP.MESSAGES.noWhiteSpace`${user.username} used a ${MESSAGES._displayEmojiCode('SHIELD')} SHIELD
+            on ${targetName}, extending their protection to ${protectionExpiry} 30 mins.`;
+            
         COOP.MESSAGES.selfDestruct(reaction.message, successText, 0, 15000);
     }
 
@@ -75,7 +78,7 @@ export default class ShieldHandler {
             currentProtectionMins = updatedProtectionSecs;
 
         } else {
-            // Protect them by saving the buff data in state for this msg.author.
+            // Protect them by saving the buff data in state.
             BuffsHelper.add('INVINCIBILITY', targetID, currentProtectionMins);
         }
 

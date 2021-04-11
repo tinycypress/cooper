@@ -48,8 +48,8 @@ export default class MessagesHelper {
         return message.delete();
     }
 
+    // Build the string as normal, combining all the strings and placeholders:
     static noWhiteSpace(strings, ...placeholders) {
-        // Build the string as normal, combining all the strings and placeholders:
         let withSpace = strings.reduce((result, string, i) => (result + placeholders[i - 1] + string));
         let withoutSpace = withSpace.replace(/\s\s+/g, ' ');
         return withoutSpace;

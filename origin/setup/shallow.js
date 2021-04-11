@@ -6,6 +6,8 @@ import Database from './database';
 import VotingHelper from '../../operations/activity/redemption/votingHelper';
 import COOP from '../coop';
 import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
+import { BUFF_TYPES } from '../../operations/minigames/medium/conquest/buffsHelper';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -34,6 +36,9 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         
+        // console.log(BUFF_TYPES.INVINCIBILITY.duration);
+        ElectionHelper.ensureItemSeriousness();
+
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).
             // Affect item drops and minigame speeds.
