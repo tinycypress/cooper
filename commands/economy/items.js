@@ -67,13 +67,14 @@ export default class ItemsCommand extends CoopCommand {
 
 			// Check a specific item instead.
 			const itemQty = await COOP.ITEMS.getUserItemQty(targetUser.id, itemInput);
-			
+			const displayQty = this.displayQty(itemQty);
+
 			// Send specific item count.
 			const emoji = COOP.MESSAGES.emojiText(EMOJIS[itemInput]);
 			if (itemQty > 0)  
-				return COOP.MESSAGES.selfDestruct(msg, `${name} owns ${itemQty}x${itemInput} ${emoji}.`, 0, 5000);
+				return COOP.MESSAGES.selfDestruct(msg, `${name} owns ${displayQty}x${itemInput} ${emoji}.`, 0, 5000);
 			else 
-				return COOP.MESSAGES.selfDestruct(msg, `${name} does not own ${itemInput}.`, 0, 5000);
+				return COOP.MESSAGES.selfDestruct(msg, `${name} does not own any ${itemInput}.`, 0, 5000);
 
 
         } catch(err) {

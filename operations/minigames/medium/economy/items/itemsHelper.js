@@ -151,9 +151,10 @@ export default class ItemsHelper {
         let itemDisplayMsg = `${user.username}'s items:`;
         items.forEach(item => {
             const emojiIcon = COOP.MESSAGES.emojifyID(EMOJIS[item.item_code]);
-            const itemText = `\nx${item.quantity} ${this.escCode(item.item_code)} ${emojiIcon}`;
+            const displayQty = this.displayQty(item.quantity);
+            const itemText = `\nx${displayQty} ${this.escCode(item.item_code)} ${emojiIcon}`;
             itemDisplayMsg += itemText;
-        })
+        });
         return itemDisplayMsg
     }
 
@@ -394,6 +395,13 @@ export default class ItemsHelper {
         // Only mark it as dropped if not specified otherwise.
         if (!unmarked)
             COOP.MESSAGES.delayReact(msgRef, RAW_EMOJIS.DROPPED, 333);
+    }
+
+    // Round in a way that works for display.
+    static displayQty(num) {
+        const rounded = Math.round((num + Number.EPSILON) * 100) / 100;
+        const noZeroes = rounded.toString();
+        return noZeroes
     }
 
 

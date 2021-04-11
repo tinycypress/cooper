@@ -4,7 +4,7 @@ import ServerHelper from "../../serverHelper";
 
 import STATE from "../../../origin/state";
 
-import COOP from "../../../origin/coop";
+import COOP, { ITEMS } from "../../../origin/coop";
 
 export default class Statistics {
 
@@ -63,7 +63,8 @@ export default class Statistics {
         // If community velocity is higher than record, reward community
         // A rare crate, bonus eggs, etc.
 
-        const velocityText = `Community velocity is ${this.calcCommunityVelocity()}.`
+        const roundedVel = ITEMS.displayQty(this.calcCommunityVelocity());
+        const velocityText = `Community velocity is ${roundedVel}.`
         COOP.CHANNELS._postToChannelCode('TALK', velocityText);
     }
 
