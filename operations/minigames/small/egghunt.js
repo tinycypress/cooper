@@ -267,8 +267,7 @@ export default class EggHuntMinigame {
     }
 
     static async drop(rarity, dropText = null) {
-        const server = COOP.SERVER.getByCode(STATE.CLIENT, 'PROD');
-        const dropChannel = CHANNELS.fetchRandomTextChannel(server);
+        const dropChannel = CHANNELS._randomSomewhatActive();
         
         if (dropChannel) {
             const randomDelayBaseMs = 30000;

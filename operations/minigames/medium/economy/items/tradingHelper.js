@@ -1,9 +1,9 @@
 
 import { KEY_MESSAGES } from "../../../../../origin/config";
 import COOP, { USABLE, MESSAGES, TIME } from "../../../../../origin/coop";
+import DatabaseHelper from "../../../../databaseHelper";
+import Database from "../../../../../origin/setup/database";
 
-import DatabaseHelper from "../../../databaseHelper";
-import Database from "../../../../origin/setup/database";
 
 // TODO: Rename file.
 export default class TradingHelper {
