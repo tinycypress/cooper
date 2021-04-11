@@ -222,7 +222,7 @@ export default class SacrificeHelper {
         if (oneRoll && twentyRoll && cooperMood === 'NEUTRAL') moodText = ' all sacrificial rights reserved, The Coop';
 
         // Add message to sacrifice
-        const sacrificeEmbed = COOP.MESSAGESembed({ 
+        const sacrificeEmbed = COOP.MESSAGES.embed({ 
             title: `${user.username}, you may be sacrificed${moodText}!`,
             description: 
                 `**Decide <@${user.id}>'s fate**: React to choose! Dagger (remove) OR Shield (keep)!\n` +
@@ -292,6 +292,6 @@ export default class SacrificeHelper {
             + `How it works, current dagger/shield requirement count, last sacrifice, etc.`; 
 
         // Update the message.
-        COOP.MESSAGESeditByLink(sacrificeLink, sacrificeHeaderText);
+        COOP.MESSAGES.editByLink(sacrificeLink, sacrificeHeaderText);
     }
 }

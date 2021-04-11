@@ -11,8 +11,7 @@ export default async function memberJoined(member) {
     // Send direct message and channel message about next steps.
     await member.send(
       'Welcome to The Coop! View your welcome message and next steps here: ' + 
-      COOP.MESSAGES.link(welcomeMessage)
-    );
+      COOP.MESSAGES.link(welcomeMessage));
 
     // Notify community:
     COOP.CHANNELS._codes(['ENTRY', 'TALK'], `**Someone new joined "${member.user.username}": ${COOP.CHANNELS.codeText('INTRO')}!**`);

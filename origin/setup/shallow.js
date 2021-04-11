@@ -32,9 +32,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        console.log(VotingHelper.getNumRequired(.25));
         
         
+        // 638187165045489669
 
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).
