@@ -1,10 +1,7 @@
 import _ from 'lodash';
 
-import { baseTickDur } from '../../manifest';
-
 import VotingHelper from '../../activity/redemption/votingHelper';
 import DropTable from '../medium/economy/items/droptable';
-import EventsHelper from '../../eventsHelper';
 
 import COOP, { STATE } from '../../../origin/coop';
 import { EMOJIS } from '../../../origin/config';
@@ -50,8 +47,6 @@ const likelihood = 40;
 
 export default class CratedropMinigame {
     
-    static INTERVAL = baseTickDur * 5;
-
     // Reaction interceptor to check if user is attempting to play Crate Drop
     static onReaction(reaction, user) {
         try {

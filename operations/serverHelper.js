@@ -5,11 +5,6 @@ import DatabaseHelper from './databaseHelper';
 
 import COOP, { STATE } from '../origin/coop';
 import Statistics from './activity/information/statistics';
-import EggHuntMinigame from './minigames/small/egghunt';
-import WoodcuttingMinigame from './minigames/small/woodcutting';
-import MiningMinigame from './minigames/small/mining';
-import ChestPopMinigame from './minigames/small/chestpop';
-import InstantFurnaceMinigame from './minigames/small/instantfurnace';
 import { VELOCITY_EVENTS } from './manifest';
 
 export default class ServerHelper {

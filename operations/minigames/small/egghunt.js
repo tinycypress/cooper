@@ -1,7 +1,6 @@
 import { map as _map, values as _values } from 'lodash';
 import { RAW_EMOJIS, EMOJIS } from '../../../origin/config';
 import COOP, { STATE, CHANNELS, ITEMS, MESSAGES, USERS } from '../../../origin/coop';
-import { baseTickDur } from '../../manifest';
 
 
 import DropTable from '../medium/economy/items/droptable';
@@ -31,8 +30,6 @@ export const EGG_DATA = {
 
 
 export default class EggHuntMinigame {
-
-    static INTERVAL = baseTickDur / 10;
     
     static reactValid(reaction) {
         return this.isEgghuntDrop(reaction.message.content);

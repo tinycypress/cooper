@@ -4,12 +4,8 @@ import SkillsHelper from "../medium/skills/skillsHelper";
 
 import COOP, { STATE, REACTIONS, SERVER, USABLE } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
-import { baseTickDur } from "../../manifest";
-
 
 export default class WoodcuttingMinigame {
-    
-    static INTERVAL = baseTickDur * 5;
 
     // Reaction interceptor to check if user is attempting to interact.
     static async onReaction(reaction, user) {
