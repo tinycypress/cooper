@@ -37,7 +37,7 @@ export default class ServerHelper {
         // Check each event to see if its late via velocity timings.
         Object.keys(STATE.VELOCITY).map(eventType => {
             // Seconds since last occurred.
-            const absentSecs = STATE.VELOCITY[eventType] =+ 30;
+            const absentSecs = STATE.VELOCITY[eventType] += 30;
 
             // Desired interval for event type.
             const desiredInterval = VELOCITY_EVENTS[eventType].interval;
@@ -53,7 +53,6 @@ export default class ServerHelper {
                 VELOCITY_EVENTS[eventType]();
             }
         });
-        // STATE.VELOCITY
     }
 
 
