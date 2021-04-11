@@ -4,6 +4,14 @@ import COOP from "../../../../../origin/coop";
 export default class CraftingHelper {
 
     static CRAFTABLES = {
+        BOMB: {
+            levelReq: 4,
+            xpReward: 2,
+            ingredients: {
+                STEEL_BAR: 2,
+                TOXIC_EGG: 4
+            }
+        },
         PICK_AXE: {
             levelReq: 1,
             xpReward: 1,
