@@ -178,7 +178,7 @@ export default class EggHuntMinigame {
                 // TODO: Create omelette item after being cooked.
     
                 // TODO: Maybe include in output message??
-                await SkillsHelper.addXP(user.id, 'cooking', 5);
+                await SkillsHelper.addXP(user.id, 'cooking', 3);
 
                 // Generate feedback test based on the changes.
                 const feedbackText = `${user.username} fried <${emoji}>! ` +

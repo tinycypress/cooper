@@ -5,6 +5,7 @@ import Database from './database';
 
 import VotingHelper from '../../operations/activity/redemption/votingHelper';
 import COOP from '../coop';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -33,9 +34,6 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         
-        
-        // 638187165045489669
-
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).
             // Affect item drops and minigame speeds.

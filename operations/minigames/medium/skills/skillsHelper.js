@@ -29,7 +29,9 @@ export default class SkillsHelper {
         };
 
         const result = DatabaseHelper.single(await Database.query(query));
-        if (result && typeof result[skill] !== 'undefined') xp = result[skill];
+
+        if (result && typeof result[skill] !== 'undefined') 
+            xp = result[skill] || 0;
 
         return xp;
     }
@@ -42,6 +44,8 @@ export default class SkillsHelper {
 
     // Calculate the level from the xp amount/int.
     static calcLvl(xp) {
+        // This was recently changed, any xp difference may be due to this.
+        // const xpLvlConversion = Math.pow(xp, 1 / 3) - 1;
         const xpLvlConversion = Math.pow(xp, 1 / 3) - 1;
         return Math.round(this.clampLvl(xpLvlConversion, 1, 99));
     }
@@ -100,7 +104,8 @@ export default class SkillsHelper {
             name: `add-player-${skill}-xp`,
             text: `INSERT INTO skills(player_id, ${skill})
                 VALUES($1, $2)
-                ON CONFLICT (player_id) DO UPDATE SET ${skill} = EXCLUDED.${skill} + skills.${skill} RETURNING ${skill}`,
+                ON CONFLICT (player_id) DO UPDATE SET ${skill} = EXCLUDED.${skill} + COALESCE(skills.${skill}, 0)
+                RETURNING ${skill}`,
             values: [userID, xpNum]
         };
         const result = await DatabaseHelper.singleQuery(query);
@@ -112,7 +117,10 @@ export default class SkillsHelper {
         const prevLevel = this.calcLvl(prevXP);
         const currLevel = this.calcLvl(currXP);
 
-        if (prevLevel !== currLevel) {
+        console.log(currLevel, currXP);
+
+        // Count for level changes besides default level.
+        if (prevLevel !== currLevel && currLevel > 1) {
             const { user } = USERS._get(userID);
             
             // Level 99 level up, big announce.
