@@ -3,9 +3,7 @@ import dotenv from 'dotenv';
 
 import Database from './database';
 
-import COOP from '../coop';
-import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
-import CratedropMinigame from '../../operations/minigames/small/cratedrop';
+import COOP, { SERVER } from '../coop';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -32,6 +30,9 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+
+        SERVER.tick();
 
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).

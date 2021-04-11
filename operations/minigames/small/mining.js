@@ -6,9 +6,12 @@ import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 
 import COOP, { STATE, REACTIONS, SERVER } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
+import { baseTickDur } from "../../manifest";
 
 export default class MiningMinigame {
     
+    static INTERVAL = baseTickDur * 6;
+
     // Reaction interceptor to check if user is attempting to interact.
     static async onReaction(reaction, user) {
         // High chance of preventing any mining at all to deal with rate limiting.

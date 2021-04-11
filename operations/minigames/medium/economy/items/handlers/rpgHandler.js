@@ -41,7 +41,7 @@ export default class RPGHandler {
     }
 
 
-    static effect(target, msg, attacker) {
+    static async effect(target, msg, attacker) {
         // Calculate reward.
         const pointAvg = await COOP.ITEMS.perBeak('COOP_POINT');
         const reward = parseInt(pointAvg * .25);

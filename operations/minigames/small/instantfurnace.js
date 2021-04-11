@@ -1,5 +1,6 @@
 import COOP, { STATE, SERVER, USABLE } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
+import { baseTickDur } from "../../manifest";
 
 export const BAR_DATA = {
     GOLD_BAR: {
@@ -17,6 +18,8 @@ export const BAR_DATA = {
 };
 
 export default class InstantFurnaceMinigame {
+
+    static INTERVAL = baseTickDur * 7.5;
 
     // Burn metal ore into metal
     static async onReaction(reaction, user) {

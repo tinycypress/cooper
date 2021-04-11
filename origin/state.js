@@ -16,6 +16,13 @@ const STATE = {
         LAST_ENTRY_VOTE_TIME: null,
         LAST_ACHIEVEMENT_NOTIFICATION: null,
 
+        // Tracking last drop times etc for adjusting to community velocity
+        VELOCITY: {
+            CHESTPOP: 0, INSTANT_FURNACE: 0,
+            MINING: 0, WOODCUTTING: 0,
+            EGGHUNT: 0, CRATEDROP: 0
+        },
+
         // Server economy/game buffs:
         BUFFS: {},
 

@@ -4,15 +4,15 @@ import EventsHelper from "./eventsHelper";
 import EconomyNotifications from "./activity/information/economyNotifications";
 import MessageNotifications from "./activity/information/messageNotifications";
 
-import CratedropMinigame from "./minigames/small/cratedrop";
-import EggHuntMinigame from "./minigames/small/egghunt";
-import MiningMinigame from "./minigames/small/mining";
-import WoodcuttingMinigame from "./minigames/small/woodcutting";
-import InstantFurnaceMinigame from "./minigames/small/instantfurnace";
+import CrateDrop from "./minigames/small/cratedrop";
+import EggHunt from "./minigames/small/egghunt";
+import Mining from "./minigames/small/mining";
+import Woodcutting from "./minigames/small/woodcutting";
+import InstantFurnace from "./minigames/small/instantfurnace";
 import EasterMinigame from "./minigames/small/holidays/easter";
-import BuffsHelper from "./minigames/medium/conquest/buffsHelper";
-import ChestPopMinigame from "./minigames/small/chestpop";
+import ChestPop from "./minigames/small/chestpop";
 
+import BuffsHelper from "./minigames/medium/conquest/buffsHelper";
 import CooperMorality from "./minigames/small/cooperMorality";
 import TradingHelper from "./minigames/medium/economy/items/tradingHelper";
 import EconomyHelper from "./minigames/medium/economy/economyHelper";
@@ -20,15 +20,25 @@ import ElectionHelper from "./members/hierarchy/election/electionHelper";
 import AboutHelper from "./marketing/about/aboutHelper";
 
 
-import COOP from "../origin/coop";
-
-
+import COOP, { SERVER } from "../origin/coop";
 
 export const baseTickDur = 60 * 25 * 1000;
 
+// Interval basis for checking events that depend on community velocity value.
+export const VELOCITY_EVENTS = {
+  CHESTPOP: { handler: ChestPop.run, interval: ChestPop.INTERVAL },
+  INSTANT_FURNACE: { handler: InstantFurnace.run, interval: InstantFurnace.INTERVAL },
+  MINING: { handler: Mining.run, interval: Mining.INTERVAL },
+  WOODCUTTING: { handler: Woodcutting.run, interval: Woodcutting.INTERVAL },
+  EGGHUNT: { handler: EggHunt.run, interval: EggHunt.INTERVAL },
+  CRATEDROP: { handler: CrateDrop.run, interval: CrateDrop.INTERVAL },
+};
 
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
 export default function eventsManifest() {
+
+  // Core tick handler for more granularity over timing.
+  EventsHelper.runInterval(() => SERVER.tick(), 30000);
 
   // Check member of the week historical_points, see if needed... like election style
   EventsHelper.runInterval(() => COOP.POINTS.updateMOTW(), baseTickDur * 5);
@@ -83,15 +93,7 @@ export default function eventsManifest() {
 
 
 
-  // Events dependent upon server tick and community velocity rate adjusted.
-  EventsHelper.chanceRunInterval(() => WoodcuttingMinigame.run(), 55, baseTickDur * 5);
-  EventsHelper.chanceRunInterval(() => MiningMinigame.run(), 45, baseTickDur * 6);
-  EventsHelper.runInterval(() => CratedropMinigame.run(), baseTickDur * 5);
-  EventsHelper.chanceRunInterval(() => EggHuntMinigame.run(), 2.5, baseTickDur / 10);
-  EventsHelper.chanceRunInterval(() => InstantFurnaceMinigame.run(), 45, baseTickDur * 7.5);
 
-  // Bring in the new minigame.
-  EventsHelper.runInterval(() => ChestPopMinigame.dev(), (baseTickDur * 2) * 9);
 
   // If easter, double egg spawns too.
   

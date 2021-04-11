@@ -50,6 +50,8 @@ const likelihood = 40;
 
 export default class CratedropMinigame {
     
+    static INTERVAL = baseTickDur * 5;
+
     // Reaction interceptor to check if user is attempting to play Crate Drop
     static onReaction(reaction, user) {
         try {
@@ -257,34 +259,8 @@ export default class CratedropMinigame {
     }
     
     static async run() {
-        // Check next cratedrop time
-        const crateDropData = await EventsHelper.read('CRATE_DROP');
-        const lastOccurred = parseInt(crateDropData.last_occurred);
-        const currUnixSecs = Math.floor(+new Date() / 1000);
-        const dropDuration = baseTickDur * 2.25 / 1000;
-        const nextOccurring = Math.floor((+new Date() / 1000) + dropDuration);
-
-        try {
-            // If time passed, drop a random crate and reset event timer.
-            if (currUnixSecs > lastOccurred + dropDuration) {
-                await this.drop();
-                await EventsHelper.update('CRATE_DROP', nextOccurring);
-    
-            // Otherwise notify the server via feed of impending crate.
-            } else {
-                // Calculate time until next crate drop.
-                const remainingSecs = Math.max(0, (lastOccurred + dropDuration) - currUnixSecs);
-                let readableRemaining = EventsHelper.msToReadableHours(remainingSecs * 1000);
-                if (readableRemaining === 'now') readableRemaining = 'soon';
-                let countdownText = `Time remaining until crate drop: ${readableRemaining}!`;
-    
-                // TODO: Integrate shooting down chopper here
-    
-                await COOP.CHANNELS._postToChannelCode('ACTIONS', countdownText);
-            }
-        } catch(e) {
-            console.error(e);
-        }
+        // Stop crate drop being based on a fixed time, could do that with chopper minigame instead.
+        this.drop();
     }
 
 }

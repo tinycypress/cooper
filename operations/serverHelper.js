@@ -3,7 +3,14 @@ import SERVERS from '../origin/config/servers.json';
 import Database from '../origin/setup/database';
 import DatabaseHelper from './databaseHelper';
 
-import COOP from '../origin/coop';
+import COOP, { STATE } from '../origin/coop';
+import Statistics from './activity/information/statistics';
+import EggHuntMinigame from './minigames/small/egghunt';
+import WoodcuttingMinigame from './minigames/small/woodcutting';
+import MiningMinigame from './minigames/small/mining';
+import ChestPopMinigame from './minigames/small/chestpop';
+import InstantFurnaceMinigame from './minigames/small/instantfurnace';
+import { VELOCITY_EVENTS } from './manifest';
 
 export default class ServerHelper {
     static getByID(client, id) {
@@ -20,6 +27,33 @@ export default class ServerHelper {
         const numBots = 1;
         const userCount = this._coop().memberCount - numBots || 0;
         return userCount;
+    }
+
+
+    // TODO: Refactor this as the main method for event timing... VELOCITY.
+    static async tick() {
+        const velocity = Statistics.calcCommunityVelocity();
+
+        // Check each event to see if its late via velocity timings.
+        Object.keys(STATE.VELOCITY).map(eventType => {
+            // Seconds since last occurred.
+            const absentSecs = STATE.VELOCITY[eventType] =+ 30;
+
+            // Desired interval for event type.
+            const desiredInterval = VELOCITY_EVENTS[eventType].interval;
+
+            // Desired interval adjusted for community velocity.
+            const desiredVelInterval = desiredInterval / velocity;
+
+            // If late, cause the event to be sped up. :)
+            if (absentSecs > desiredVelInterval) {
+                STATE.VELOCITY[eventType] = 0;
+
+                // Trigger the event and reset the late timer!
+                VELOCITY_EVENTS[eventType]();
+            }
+        });
+        // STATE.VELOCITY
     }
 
 
