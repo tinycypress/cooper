@@ -5,7 +5,7 @@ import DatabaseHelper from './databaseHelper';
 
 import COOP from '../origin/coop';
 import { VELOCITY_EVENTS } from './manifest';
-import { SERVER } from '../origin/config';
+import { SERVERS } from '../origin/config';
 
 export default class ServerHelper {
 
@@ -13,7 +13,7 @@ export default class ServerHelper {
 
     static getByID(client, id) { return client.guilds.cache.get(id); }
 
-    static getByCode(client, code) { return this.getByID(client, SERVER[code].id); }
+    static getByCode(client, code) { return this.getByID(client, SERVERS[code].id); }
 
     static _count(numBots = 1) { return this._coop().memberCount - numBots || 0; }
 
