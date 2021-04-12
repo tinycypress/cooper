@@ -142,7 +142,7 @@ export default class ChannelHelper {
 
         // TODO: This may need more work if null
         const firstActive = actives.entries().next().value || null;
-        if (firstActive) selection = firstActive;
+        if (firstActive) selection = firstActive[0];
 
         return selection;
     }

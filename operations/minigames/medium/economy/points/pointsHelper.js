@@ -5,7 +5,7 @@ import Chicken from "../../../../chicken";
 
 
 // import { ROLES } from "../../../../../origin/config";
-import COOP, {STATE } from "../../../../../origin/coop";
+import COOP, {ITEMS, STATE } from "../../../../../origin/coop";
 
 
 
@@ -260,8 +260,9 @@ export default class PointsHelper {
             }
         }));
 
+        
         let leaderboardMsgText = '```\n\n ~ POINTS LEADERBOARD ~ \n\n' + 
-            rowUsers.map(user => `${user.rank + 1}. ${user.username} ${user.points}`).join('\n') +
+            rowUsers.map(user => `${user.rank + 1}. ${user.username} ${ITEMS.displayQty(user.points)}`).join('\n') +
             '```';
 
         return leaderboardMsgText
