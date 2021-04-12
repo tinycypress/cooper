@@ -21,6 +21,7 @@ import AboutHelper from "./marketing/about/aboutHelper";
 
 
 import COOP, { SERVER } from "../origin/coop";
+import TodoHelper from "./productivity/todos/todoHelper";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -40,38 +41,46 @@ export default function eventsManifest() {
   // Core tick handler for more granularity over timing.
   EventsHelper.runInterval(() => SERVER.tick(), 30000);
 
+  // New day events/calendar events.
+  EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
+
   // Check member of the week historical_points, see if needed... like election style
   EventsHelper.runInterval(() => COOP.POINTS.updateMOTW(), baseTickDur * 5);
-
-  // Server related house keeping items.
   EventsHelper.runInterval(() => AboutHelper.addAboutStats(), baseTickDur * 3.5);
+  EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 2);
+  EventsHelper.runInterval(() => EconomyNotifications.post(), baseTickDur * 1.75);
+  EventsHelper.runInterval(() => TradingHelper.updateChannel(), baseTickDur * 2);
+
 
   // Clean up user data, may have missed detection on a leave/kick/ban.
   EventsHelper.runInterval(() => COOP.USERS.cleanupUsers(), baseTickDur * 6);
-
   // Ensure all users registered in memory for functionality.
-  // I turned this off because it seems like it is never necessary, we do not allow guests games.
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
 
-  // Clean up temporary messages around every... quick lol.
 
-  // New day events/calendar events.
-  EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
 
   // Election related
   ElectionHelper.setupIntervals();
   
   // Above is unfinished
   EventsHelper.runInterval(() => SuggestionsHelper.check(), baseTickDur * 4);
-  EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 2);
-  EventsHelper.runInterval(() => EconomyNotifications.post(), baseTickDur * 1.75);
+
 
   // Sacrifice, moderation related.
   EventsHelper.runInterval(() => SacrificeHelper.random(), baseTickDur * 12);
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
 
+
+
+
+
+
+  // Productivity.
+  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur);
+
+
+
   // Update trades channel message
-  EventsHelper.runInterval(() => TradingHelper.updateChannel(), baseTickDur * 2);
 
   // TODO: Incomplete.
   EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 45, baseTickDur * 4);
@@ -99,8 +108,6 @@ export default function eventsManifest() {
   
   // Holiday related!
   EventsHelper.chanceRunInterval(() => EasterMinigame.run(), 33, baseTickDur / 3);
-
-
 
   // Update trades channel message
   EventsHelper.runInterval(() => TradingHelper.updateChannel(), baseTickDur * 2);
