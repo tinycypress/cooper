@@ -8,21 +8,14 @@ import Statistics from './activity/information/statistics';
 import { VELOCITY_EVENTS } from './manifest';
 
 export default class ServerHelper {
-    static getByID(client, id) {
-        return client.guilds.cache.get(id);
-    }
-    static getByCode(client, code) {
-        return this.getByID(client, SERVERS[code].id);
-    }
-    static _coop() {
-        return this.getByCode(COOP.STATE.CLIENT, 'PROD');
-    }
 
-    static _count() {
-        const numBots = 1;
-        const userCount = this._coop().memberCount - numBots || 0;
-        return userCount;
-    }
+    static _coop() { return this.getByCode(COOP.STATE.CLIENT, 'PROD'); }
+
+    static getByID(client, id) { return client.guilds.cache.get(id); }
+
+    static getByCode(client, code) { return this.getByID(client, SERVERS[code].id); }
+
+    static _count(numBots = 1) { return this._coop().memberCount - numBots || 0; }
 
 
     // TODO: Refactor this as the main method for event timing... VELOCITY.
@@ -41,8 +34,11 @@ export default class ServerHelper {
             const desiredVelInterval = desiredInterval / velocity;
 
             // If late, cause the event to be sped up. :)
-            if (absentSecs > desiredVelInterval) {
+            if (absentSecs >= desiredVelInterval) {
                 STATE.VELOCITY[eventType] = 0;
+
+                console.log('Attempting to run velocity-adjusted event.');
+                console.log(eventType, VELOCITY_EVENTS[eventType]);
 
                 // Trigger the event and reset the late timer!
                 VELOCITY_EVENTS[eventType].handler();
@@ -85,11 +81,11 @@ export default class ServerHelper {
             values: [link]
         };
         
+        // TODO: Create a databaseDelete method that uses below code.
 
-        const result = await Database.query(query);
-
-        if (result && result.rowCount === 1) return true;
-        else return false;
+        // Confirm one successful row delete.
+        const delRowCount = (await Database.query(query)).rowCount || 0;
+        return !!delRowCount;
     }
 
     // TODO: Add types and log that a resource wasn't gathered.
@@ -161,6 +157,7 @@ export default class ServerHelper {
                         const successfulDeletions = await chan.bulkDelete(deletionMessageIDs);
                                                 
                         // On bulkDelete success, remove from our database.
+                        // TODO: Investigate why item param is unused (Format/type of successfulDeletions - coerce it)
                         successfulDeletions.map((item, id) => {
                             // Format the msg link from server ID, channel ID and message ID.
                             const msgUrl = `${msgUrlBase}/${chan.id}/${id}`;
