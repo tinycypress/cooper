@@ -20,10 +20,7 @@ export default class ServerHelper {
 
     // TODO: Refactor this as the main method for event timing... VELOCITY.
     static async tick() {
-        console.log('Checking velocity.');
         const velocity = Statistics.calcCommunityVelocity();
-
-        console.log(velocity);
 
         // Check each event to see if its late via velocity timings.
         Object.keys(VELOCITY_EVENTS).map(eventType => {
@@ -31,20 +28,15 @@ export default class ServerHelper {
             const absentSecs = VELOCITY_EVENTS[eventType].since += 30;
 
             // Desired interval for event type.
-            const desiredInterval = VELOCITY_EVENTS[eventType].interval;
+            const desiredInterval = VELOCITY_EVENTS[eventType].interval / 1000;
 
             // Desired interval adjusted for community velocity.
             const desiredVelInterval = desiredInterval / velocity;
 
-            console.log('Run velocity-adjusted event.');
-            console.log(eventType, VELOCITY_EVENTS[eventType]);
-
             // If late, cause the event to be sped up. :)
             if (absentSecs >= desiredVelInterval) {
+                // Reset time "since" (just occurred).
                 VELOCITY_EVENTS[eventType].since = 0;
-
-                console.log('Attempting to run velocity-adjusted event.');
-                console.log(eventType, VELOCITY_EVENTS[eventType]);
 
                 // Trigger the event and reset the late timer!
                 VELOCITY_EVENTS[eventType].handler();
@@ -56,10 +48,7 @@ export default class ServerHelper {
     // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
     // Consider this a correction from Cooper/more recent data.
     static async addTempMessage(msg, deleteSecs) {
-        if (msg.channel.type === 'dm') {
-            console.log('not allowing temp message for dm atm', msg.content);
-            return false;
-        }
+        if (msg.channel.type === 'dm') return false;
 
         let lifetimeSecs = !isNaN(parseInt(deleteSecs)) ? parseInt(deleteSecs) : 1;
         let expiry = Math.round((Date.now() / 1000) + lifetimeSecs);
