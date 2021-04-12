@@ -148,12 +148,16 @@ export default class ChannelHelper {
     // Implement as part of community velocity reform.
     static _randomSomewhatActive() {
         // Only run this half the time, so we don't only drop in active channels.
-        if (STATE.CHANCE.bool({ likelihood: 50 }))
+        if (STATE.CHANCE.bool({ likelihood: 50 })) {
             // Try to select a random active text channel.
-            return MessageNotifications.getActiveChannels();
-        else 
-            // Default to basic random channel.
-            return this._randomText();
+            const actives = MessageNotifications.getActiveChannels();
+
+            // If there are any active channels return first of them! :D
+            if (actives.length > 0) return actives.first();
+        }
+
+        // Default to basic random channel.
+        return this._randomText();
     }
 
 
