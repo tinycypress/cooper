@@ -4,6 +4,7 @@ import COOP, { STATE, CHANNELS, ITEMS, MESSAGES, USERS } from '../../../origin/c
 
 
 import DropTable from '../medium/economy/items/droptable';
+import ItemsHelper from '../medium/economy/items/itemsHelper';
 import UsableItemHelper from '../medium/economy/items/usableItemHelper';
 import SkillsHelper from '../medium/skills/skillsHelper';
 
@@ -237,7 +238,9 @@ export default class EggHuntMinigame {
 
             if (STATE.CHANCE.bool({ likelihood: 83 })) {
                 // Store points and egg collection data in database.
-                const updated = await COOP.POINTS.addPointsByID(user.id, reward);
+                const updatedPoints = await COOP.POINTS.addPointsByID(user.id, reward);
+                const updated = ItemsHelper.displayQty(updatedPoints);
+
                 acknowledgementMsgText += ` (${updated})`;
                 
                 // Add/update egg item to user

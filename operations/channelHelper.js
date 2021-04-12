@@ -4,18 +4,15 @@ import COOP, { STATE, SERVER } from '../origin/coop';
 import { CHANNELS as CHANNELS_CONFIG } from '../origin/config';
 
 
-
 export const silentOpts = { allowedMentions: { users: [], roles: [] }};
 
 export default class ChannelHelper {
 
     static config = CHANNELS_CONFIG;
 
-
     static codeText(code) {
         return `<#${CHANNELS_CONFIG[code].id}>`;
     }
-
 
     // TODO: Need to reuse this a lot! Ping/link without pinging! <3 <3 
     static _send(code, msg, opts = silentOpts) {
@@ -138,12 +135,17 @@ export default class ChannelHelper {
     }
 
     static _randomOnlyActive() {
+        const selection = null;
+
         // Try to select a random active text channel.
-        return MessageNotifications.getActiveChannels();
+        const actives = MessageNotifications.getActiveChannels();
+
+        // TODO: This may need more work if null
+        const firstActive = actives.entries().next().value || null;
+        if (firstActive) selection = firstActive;
+
+        return selection;
     }
-
-
-
 
     // Implement as part of community velocity reform.
     static _randomSomewhatActive() {
@@ -153,7 +155,8 @@ export default class ChannelHelper {
             const actives = MessageNotifications.getActiveChannels();
 
             // If there are any active channels return first of them! :D
-            if (actives.length > 0) return actives.first();
+            if (actives.length > 0) 
+                return actives.entries().next().value
         }
 
         // Default to basic random channel.

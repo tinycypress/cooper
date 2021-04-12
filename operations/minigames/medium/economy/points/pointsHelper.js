@@ -16,8 +16,8 @@ export default class PointsHelper {
         return qty;
     }
 
-    static async addPointsByID(id, points) {
-        const addResult = await COOP.ITEMS.add(id, 'COOP_POINT', points);
+    static async addPointsByID(userID, points) {
+        const addResult = await COOP.ITEMS.add(userID, 'COOP_POINT', points);
         return addResult;
     }
 

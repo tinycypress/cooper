@@ -13,9 +13,7 @@ export default class MessageNotifications {
         channelIDs.sort((a, b) => actives[a].count - actives[b].count);
 
         // Could always return count and use that as a multipler? :)
-        const channels = channelIDs.map(id => COOP.CHANNELS._get(id));
-
-        return channels;
+        return channelIDs.map(id => COOP.CHANNELS._get(id));
     }
 
     // Get current activity of channel.
