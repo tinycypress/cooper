@@ -4,7 +4,7 @@ import { EGG_DATA } from "../../../../small/egghunt";
 import { usedOwnedUsableGuard } from "../../itemCmdGuards";
 
 import { EMOJIS } from "../../../../../../origin/config";
-import COOP, { STATE } from "../../../../../../origin/coop";
+import COOP, { ITEMS, STATE } from "../../../../../../origin/coop";
 
 
 // TODO: Make into "ReactionUsableItem" and add callback
@@ -48,7 +48,7 @@ export default class AverageEggHandler {
                     const updatedPoints = await COOP.POINTS.addPointsByID(targetID, damage);
 
                     // Update feedback string, did cause damage.
-                    damageInfoText = `: ${damage} points (${updatedPoints})`;
+                    damageInfoText = `: ${damage} points (${ITEMS.displayQty(updatedPoints)})`;
 
                     // Remove the egg based on popularity.
                     const popularity = ReactionHelper.countType(reaction.message, '💚');

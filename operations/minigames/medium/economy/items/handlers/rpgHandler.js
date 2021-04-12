@@ -1,7 +1,7 @@
 // import BuffsHelper, { BUFF_TYPES } from '../../../conquest/buffsHelper';
 import { usedOwnedUsableGuard } from '../../itemCmdGuards';
 
-import COOP, { MESSAGES } from '../../../../../../origin/coop';
+import COOP, { ITEMS, MESSAGES } from '../../../../../../origin/coop';
 
 
 
@@ -49,12 +49,15 @@ export default class RPGHandler {
         // Add the points to the user.
         await COOP.ITEMS.subtract(target.id, 'COOP_POINT', reward);
 
+
+        // TODO: Check if the user is using a shield.
+
         // Add feedback.
         const coopEmoji = COOP.MESSAGES._displayEmojiCode('COOP_POINT');    
         const rpgEmojiText = COOP.MESSAGES._displayEmojiCode('RPG');
 
         const targetName = target.id === attacker.id ? 'their self' : `<@${target.id}>`;
-        const damage = `${reward}x${coopEmoji} (25% of the average CP per beak (${pointAvg}))`;
+        const damage = `${reward}x${coopEmoji} (25% of the average CP per beak (${ITEMS.displayQty(pointAvg)}))`;
         
         const successText = MESSAGES.noWhiteSpace`**${rpgEmojiText.repeat(2)} <@${attacker.id}> used an ${rpgEmojiText} RPG on ${targetName}**, 
             blasting them for ${damage}, weakening their shield and potentially starting a chain reaction! =o`;
