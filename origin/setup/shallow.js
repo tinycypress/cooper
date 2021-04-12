@@ -4,10 +4,11 @@ import dotenv from 'dotenv';
 import Database from './database';
 
 import COOP, { SERVER } from '../coop';
+import KeyInfoPosted from '../../operations/activity/messages/keyinfoPosted';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
-// const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
+const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
 
 
 // v DEV IMPORT AREA v
@@ -31,6 +32,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+
+
+        // listenMessages(KeyInfoPosted.onMessage);
 
         // EventsHelper.runInterval(() => SERVER.tick(), 30000);
 
