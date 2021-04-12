@@ -164,12 +164,13 @@ export default class ChannelHelper {
             const actives = MessageNotifications.getActiveChannels();
 
             // If there are any active channels return first of them! :D
-            if (actives.size > 0) 
+            if (actives.size > 0) {
                 // TODO: Implement this
                 console.log(actives.entries());
                 this.selectWeightedActive([], []);
 
                 return actives.entries().next().value
+            }
         }
 
         // Default to basic random channel.
