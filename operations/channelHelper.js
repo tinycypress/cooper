@@ -164,11 +164,11 @@ export default class ChannelHelper {
             const actives = MessageNotifications.getActiveChannels();
 
             // If there are any active channels return first of them! :D
-            if (actives.length > 0) 
+            if (actives.size > 0) 
                 // TODO: Implement this
                 console.log(actives.entries());
                 this.selectWeightedActive([], []);
-                
+
                 return actives.entries().next().value
         }
 
@@ -212,7 +212,7 @@ export default class ChannelHelper {
         // TODO: Refactor into drop table, where it can be reused.
 
         // List of channels to not post to, maybe should reuse somewhere.
-        const filteredChannels = ['ENTRY', 'INTRO', 'ROLES', 'LEADERS', 'COOPERTESTS'];
+        const filteredChannels = ['ENTRY', 'INTRO', 'LEADERS'];
 
         // Prevent egg and crate drops in unverified channels.
         const filteredKeys = Object.keys(CHANNELS_CONFIG)
