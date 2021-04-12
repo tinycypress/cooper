@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE, SERVER } from '../../origin/coop';
+import COOP, { USABLE, SERVER, ITEMS } from '../../origin/coop';
 
 export default class ItemTotalCommand extends CoopCommand {
 
@@ -27,13 +27,14 @@ export default class ItemTotalCommand extends CoopCommand {
 		if (!USABLE.getUsableItems().includes(itemCode)) 
 			return 'Invalid item code. ' + itemCode;
 
-		const total = await COOP.ITEMS.count(itemCode);
+		const total = await ITEMS.count(itemCode);
+		const totalFmt = ITEMS.displayQty(total);
 
 		const beaks = COOP.USERS.count(SERVER._coop(), false)
 		const emoji = COOP.MESSAGES._displayEmojiCode(itemCode);
 		
 		return `**Economic circulation:**\n` +
-			`${total}x${emoji} | _${(total / beaks).toFixed(2)} per beak_ | (${itemCode})`;
+			`${totalFmt}x${emoji} | _${(total / beaks).toFixed(2)} per beak_ | (${itemCode})`;
 	}
 
 	async run(msg, { itemCode }) {
@@ -41,7 +42,7 @@ export default class ItemTotalCommand extends CoopCommand {
 
 
 		// TODO: Also incorporate this into the guard... either a truthy item code interpreted or false, fail.
-		const parsedItemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
+		const parsedItemCode = ITEMS.interpretItemCodeArg(itemCode);
 
 		// TODO: Convert into invalid item code guard and REUSE FFS!!
 		if (!USABLE.isUsable(parsedItemCode)) {

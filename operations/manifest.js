@@ -50,7 +50,7 @@ export const VELOCITY_EVENTS = {
   EGGHUNT: { 
     since: 0, 
     handler: () => EggHunt.run(), 
-    interval: baseTickDur / 10 
+    interval: baseTickDur / 2
   },
   CRATEDROP: { 
     since: 0, 

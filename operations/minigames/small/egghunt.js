@@ -273,6 +273,9 @@ export default class EggHuntMinigame {
         const dropChannel = CHANNELS._randomSomewhatActive();
         
         if (dropChannel) {
+
+            console.log(dropChannel);
+
             const randomDelayBaseMs = 30000;
             setTimeout(async () => {
                 try {
