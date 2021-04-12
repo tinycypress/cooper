@@ -3,7 +3,7 @@ import Statistics from './activity/information/statistics';
 import Database from '../origin/setup/database';
 import DatabaseHelper from './databaseHelper';
 
-import COOP, { STATE } from '../origin/coop';
+import COOP from '../origin/coop';
 import { VELOCITY_EVENTS } from './manifest';
 import { SERVER } from '../origin/config';
 
@@ -26,9 +26,9 @@ export default class ServerHelper {
         console.log(velocity);
 
         // Check each event to see if its late via velocity timings.
-        Object.keys(STATE.VELOCITY).map(eventType => {
+        Object.keys(VELOCITY_EVENTS).map(eventType => {
             // Seconds since last occurred.
-            const absentSecs = STATE.VELOCITY[eventType] += 30;
+            const absentSecs = VELOCITY_EVENTS[eventType].since += 30;
 
             // Desired interval for event type.
             const desiredInterval = VELOCITY_EVENTS[eventType].interval;
@@ -41,7 +41,7 @@ export default class ServerHelper {
 
             // If late, cause the event to be sped up. :)
             if (absentSecs >= desiredVelInterval) {
-                STATE.VELOCITY[eventType] = 0;
+                VELOCITY_EVENTS[eventType].since = 0;
 
                 console.log('Attempting to run velocity-adjusted event.');
                 console.log(eventType, VELOCITY_EVENTS[eventType]);

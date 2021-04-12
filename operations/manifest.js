@@ -27,12 +27,36 @@ export const baseTickDur = 60 * 25 * 1000;
 
 // Interval basis for checking events that depend on community velocity value.
 export const VELOCITY_EVENTS = {
-  CHESTPOP: { handler: ChestPop.run, interval: (baseTickDur * 2) * 9 },
-  INSTANT_FURNACE: { handler: InstantFurnace.run, interval: baseTickDur * 7.5 },
-  MINING: { handler: Mining.run, interval: baseTickDur * 6 },
-  WOODCUTTING: { handler: Woodcutting.run, interval: baseTickDur * 5 },
-  EGGHUNT: { handler: EggHunt.run, interval: baseTickDur / 10 },
-  CRATEDROP: { handler: CrateDrop.run, interval: baseTickDur * 5 },
+  CHESTPOP: { 
+    since: 0, 
+    handler: ChestPop.run, 
+    interval: (baseTickDur * 2) * 9 
+  },
+  INSTANT_FURNACE: { 
+    since: 0, 
+    handler: InstantFurnace.run, 
+    interval: baseTickDur * 7.5 
+  },
+  MINING: { 
+    since: 0, 
+    handler: Mining.run, 
+    interval: baseTickDur * 6 
+  },
+  WOODCUTTING: { 
+    since: 0, 
+    handler: Woodcutting.run, 
+    interval: baseTickDur * 5 
+  },
+  EGGHUNT: { 
+    since: 0, 
+    handler: EggHunt.run, 
+    interval: baseTickDur / 10 
+  },
+  CRATEDROP: { 
+    since: 0, 
+    handler: CrateDrop.run, 
+    interval: baseTickDur * 5 
+  },
 };
 
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
