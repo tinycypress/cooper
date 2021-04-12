@@ -53,7 +53,7 @@ export default class RPGHandler {
         const coopEmoji = COOP.MESSAGES._displayEmojiCode('COOP_POINT');    
         const rpgEmojiText = COOP.MESSAGES._displayEmojiCode('RPG');
 
-        const targetName = target.id === attacker.id ? 'their self' : `<@${target.id}`;
+        const targetName = target.id === attacker.id ? 'their self' : `<@${target.id}>`;
         const damage = `${reward}x${coopEmoji} (25% of the average CP per beak (${pointAvg}))`;
         
         const successText = MESSAGES.noWhiteSpace`**${rpgEmojiText.repeat(2)} <@${attacker.id}> used an ${rpgEmojiText} RPG on ${targetName}**, 
