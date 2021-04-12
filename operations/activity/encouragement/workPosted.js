@@ -1,10 +1,13 @@
 import CDNManager from "../../../origin/setup/cdn";
 
 import COOP from "../../../origin/coop";
+import { CHANNELS } from "../../../origin/config";
 
 export default async function workPostHandler(msg) {
     // Ignore Cooper.
     if (msg.author.bot) return false;
+    
+    if (msg.channel.id !== CHANNELS.SHOWWORK.id) return false;
     
     // Check if image.
     if (msg.attachments.size > 0) {

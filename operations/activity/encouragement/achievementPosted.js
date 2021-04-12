@@ -5,7 +5,9 @@ export default function achievementPostedHandler(msg) {
 
     // Ignore Cooper's messages.
     if (msg.author.bot) return false;
-    
+
+    if (msg.channel.id !== CHANNELS.ACHIEVEMENTS.id) return false;
+
     // Encourage with reaction.
     msg.react('🌟');
 

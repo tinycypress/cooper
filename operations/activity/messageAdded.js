@@ -15,19 +15,25 @@ import MiscMessageHandlers from "./messages/miscMessageHandlers";
 import SuggestionsHelper from "./suggestions/suggestionsHelper";
 import SubscriptionHelper from "../marketing/newsletter/subscriptionHelper";
 
-import { CHANNELS } from "../../origin/config";
+
+import KeyInfoPosted from "./messages/keyinfoPosted";
 
 
 export default async function messageAddedHandler(msg) {  
+    // Block Cooper from all he shouldn't be involved with.
+    // Try to optimise channel specific ones/guard orders.
 
     // Encourage posters in show work channel.
-    if (msg.channel.id === CHANNELS.SHOWWORK.id) workPostHandler(msg);
+    workPostHandler(msg);
 
     // Encourage achievement posters
-    if (msg.channel.id === CHANNELS.ACHIEVEMENTS.id) achievementPostedHandler(msg);
+    achievementPostedHandler(msg);
 
     // Encourage intro posts with a wave and coop emoji
-    if (msg.channel.id === CHANNELS.INTRO.id) introPostedHandler(msg);
+    introPostedHandler(msg);
+
+    // Detect it for leaders/commander.
+    KeyInfoPosted.onMessage(msg);
 
     // Check if suggestion needs handling.
     SuggestionsHelper.onMessage(msg);

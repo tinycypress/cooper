@@ -1,9 +1,10 @@
 import { USERS, MESSAGES, CHANNELS, TIME } from '../../../origin/coop';
-import { EMOJIS, ROLES } from '../../../origin/config';
+import { EMOJIS, ROLES, CHANNELS as CHANNEL_CONFIG } from '../../../origin/config';
 
 export default async (msg) => {
+    try {
+    if (msg.channel.id !== CHANNEL_CONFIG.INTRO.id) return false;
 
-  try {
     // Ignore Cooper's messages.
     if (msg.author.bot) return false;
 
