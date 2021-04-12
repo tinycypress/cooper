@@ -13,7 +13,7 @@ export default class ChannelHelper {
 
 
     static codeText(code) {
-        return `<#${CHANNELS_CONFIG[code].id}></#$>`;
+        return `<#${CHANNELS_CONFIG[code].id}>`;
     }
 
 
