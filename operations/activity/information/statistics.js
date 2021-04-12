@@ -38,8 +38,8 @@ export default class Statistics {
         // Calculate the number of active talkers adjusted for average.
         const activeMessagers = activeChannels.reduce((acc, channelID) => {
             const authors = STATE.MESSAGE_HISTORY[channelID].authors;
-            const numUsers = Object.keys(authors).length;
-            return acc += numUsers / numUsers;
+            const numAuthors = Object.keys(authors).length;
+            return acc += numAuthors / numUsers;
         }, 0);
 
         // TODO: Adjust / little bonus for more active messagers.
