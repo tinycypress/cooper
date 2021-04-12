@@ -32,7 +32,7 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
-        SERVER.tick();
+        // EventsHelper.runInterval(() => SERVER.tick(), 30000);
 
         // Community velocity
             // Calculate + persist + feedback the number, less often (unless fast).

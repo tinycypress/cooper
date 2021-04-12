@@ -45,7 +45,7 @@ export default class ServerHelper {
                 STATE.VELOCITY[eventType] = 0;
 
                 // Trigger the event and reset the late timer!
-                VELOCITY_EVENTS[eventType]();
+                VELOCITY_EVENTS[eventType].handler();
             }
         });
     }
