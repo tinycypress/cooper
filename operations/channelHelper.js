@@ -147,6 +147,15 @@ export default class ChannelHelper {
         return selection;
     }
 
+    static selectWeightedActive(channels, weights) {
+        // TODO: Implement this
+        console.log('selectWeightedActive');
+        console.log(channels, weights);
+        // http://chancejs.com/miscellaneous/weighted.html
+        // STATE.CHANCE.weighted
+        // chance.weighted(['a',%20'b'],%20[100,%201])
+    }
+
     // Implement as part of community velocity reform.
     static _randomSomewhatActive() {
         // Only run this half the time, so we don't only drop in active channels.
@@ -156,6 +165,10 @@ export default class ChannelHelper {
 
             // If there are any active channels return first of them! :D
             if (actives.length > 0) 
+                // TODO: Implement this
+                console.log(actives.entries());
+                this.selectWeightedActive([], []);
+                
                 return actives.entries().next().value
         }
 
