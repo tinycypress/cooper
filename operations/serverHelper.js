@@ -1,11 +1,11 @@
-import SERVERS from '../origin/config/servers.json';
+import Statistics from './activity/information/statistics';
 
 import Database from '../origin/setup/database';
 import DatabaseHelper from './databaseHelper';
 
 import COOP, { STATE } from '../origin/coop';
-import Statistics from './activity/information/statistics';
 import { VELOCITY_EVENTS } from './manifest';
+import { SERVER } from '../origin/config';
 
 export default class ServerHelper {
 
@@ -13,14 +13,17 @@ export default class ServerHelper {
 
     static getByID(client, id) { return client.guilds.cache.get(id); }
 
-    static getByCode(client, code) { return this.getByID(client, SERVERS[code].id); }
+    static getByCode(client, code) { return this.getByID(client, SERVER[code].id); }
 
     static _count(numBots = 1) { return this._coop().memberCount - numBots || 0; }
 
 
     // TODO: Refactor this as the main method for event timing... VELOCITY.
     static async tick() {
+        console.log('Checking velocity.');
         const velocity = Statistics.calcCommunityVelocity();
+
+        console.log(velocity);
 
         // Check each event to see if its late via velocity timings.
         Object.keys(STATE.VELOCITY).map(eventType => {
@@ -32,6 +35,9 @@ export default class ServerHelper {
 
             // Desired interval adjusted for community velocity.
             const desiredVelInterval = desiredInterval / velocity;
+
+            console.log('Run velocity-adjusted event.');
+            console.log(eventType, VELOCITY_EVENTS[eventType]);
 
             // If late, cause the event to be sped up. :)
             if (absentSecs >= desiredVelInterval) {
