@@ -1,7 +1,9 @@
+import Sugar from 'sugar';
+
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import MessagesHelper from '../../operations/activity/messages/messagesHelper';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP from '../../origin/coop';
+import COOP, { TIME } from '../../origin/coop';
 
 export default class TodoCommand extends CoopCommand {
 
@@ -40,22 +42,29 @@ export default class TodoCommand extends CoopCommand {
 	async run(msg, title, due, category) {
 		super.run(msg);
 
-
-		// TODO: Check if due time can be parsed
+		// TODO: Take human readable due time.
+		// https://sugarjs.com/dates/#/Parsing
+		// https://stackoverflow.com/questions/52230177/what-is-the-easiest-way-to-deserialize-human-readable-time-duration-in-java
+		const dueDate = new Sugar.Date(due);
 
 		// Use a confirmation collector for this due to possible misinterpretation.
+
+		// TODO: Invalid input time feedback
+		if (!dueDate.isValid)
+			return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> ${due} is invalid duration for a todo task.`);
 
 		// TODO: Add a TODO for this user.
 		const result = await TodoHelper.add(msg.author.id, {
 			title,
-			due,
+			due: Math.round(dueDate.now() / 1000),
 			category
 		});
-
+		
 		// Handle already exists error
 		if (result === 'ALREADY_EXISTS')
 			return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> you already have a todo entry with that title!`);
-
 		
+		// Feedback.
+		return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> your todo was created!`);
     }    
 }

@@ -30,7 +30,7 @@ export default class DueTodosCommand extends CoopCommand {
 
 
 
-		const todos = await TodoHelper.getUserTodosCategory(msg.author.id, category);
+		const todos = await TodoHelper.getUserTodos(msg.author.id, category);
 
 		// TODO: Acknowledge the category again for confirmation.
 		MessagesHelper.silentSelfDestruct(msg, 'Getting your due/late todos! Chill... it\'s your fault for being late anyway...');

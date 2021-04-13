@@ -32,7 +32,7 @@ export default class TodosCommand extends CoopCommand {
 		super.run(msg);
 
 
-		const todos = await TodoHelper.getUserTodosCategory(msg.author.id, category);
+		const todos = await TodoHelper.getUserTodos(msg.author.id, category);
 
 		// TODO: Acknowledge the category again for confirmation.
 		MessagesHelper.silentSelfDestruct(msg, 'Getting your todos! Chill.');

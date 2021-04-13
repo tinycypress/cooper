@@ -34,7 +34,7 @@ export default class DueWithinCommand extends CoopCommand {
 	async run(msg, withinTimeframe, category) {
 		super.run(msg);
 
-		const todos = await TodoHelper.getUserTodosCategory(msg.author.id, category);
+		const todos = await TodoHelper.getUserTodos(msg.author.id, category);
 
 		// TODO: Acknowledge the category again for confirmation.
 		MessagesHelper.silentSelfDestruct(msg, 'Getting your todos due within given timeframe!');
