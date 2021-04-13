@@ -65,6 +65,9 @@ export default function eventsManifest() {
   // Core tick handler for more granularity over timing.
   EventsHelper.runInterval(() => SERVER.tick(), 30000);
 
+  // Check Todo helper items late! PUNISH!
+  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);
+
   // New day events/calendar events.
   EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
 

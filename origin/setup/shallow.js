@@ -5,6 +5,8 @@ import Database from './database';
 
 import COOP, { SERVER } from '../coop';
 import KeyInfoPosted from '../../operations/activity/messages/keyinfoPosted';
+import TodoHelper from '../../operations/productivity/todos/todoHelper';
+import TimeHelper from '../../operations/timeHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -32,28 +34,18 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
-
-        // listenMessages(KeyInfoPosted.onMessage);
-
-        // EventsHelper.runInterval(() => SERVER.tick(), 30000);
-
-        // Community velocity
-            // Calculate + persist + feedback the number, less often (unless fast).
-            // Affect item drops and minigame speeds.
-            // Detect velocity highscore
-
-        // Fix Cooper reaction spam that he doesn't have an egg.
-
         // Structures
 
-        // Add some more silent hyperlinked mentions. :D
-        
-        // Fail properly and loud on database not queryable.
+        // TODOs
+        // 100dz integration TODOs
+        // Paypal in/out
 
-        // Attempt to include evil coop image
+       
+        const userTodos = await TodoHelper.getUserTodos('786671654721683517');
+        console.log(userTodos);
 
-        // !accuse command and court system, create a case channel.
+
+
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

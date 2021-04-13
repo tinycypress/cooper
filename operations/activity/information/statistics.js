@@ -21,7 +21,7 @@ export default class Statistics {
     }
 
     static calcCommunityVelocity() {
-        let velocity = 1;
+        let velocity = 0;
 
         // Calculate the number of current users to adjust ratios.
         const numUsers = ServerHelper._count();

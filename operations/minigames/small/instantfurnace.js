@@ -1,4 +1,4 @@
-import COOP, { STATE, SERVER, USABLE } from "../../../origin/coop";
+import COOP, { STATE, SERVER, USABLE, MESSAGES } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 
 export const BAR_DATA = {
@@ -86,13 +86,10 @@ export default class InstantFurnaceMinigame {
         try {
             // An instant furnace appears.
             const msg = await COOP.CHANNELS._postToChannelCode('TALK', '🌋');
+            COOP.MESSAGES.delayDelete(msg, 60000);
             
-            // TODO: Maybe should be self-destruct too?
-            // baseTickDur / 10
-
-            // Hurts the person next to it on spawn.
+            // TODO: Hurts the person next to it on spawn.
             // console.log(msg);
-
             
             // TODO: Animate flame out like egg collect.
             await SERVER.addTempMessage(msg, 60);

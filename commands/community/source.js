@@ -135,7 +135,7 @@ export default class SourceCommand extends CoopCommand {
 				const rawFileContent = await SourceCommand.getFileContent(filePath);
 	
 				// Add file path comment to the top of the code.
-				const fileContent = `// ${filePath}\n// ${gitBaseUrl}${filePath}\n\n`;
+				const fileContent = `${filePath}\n${gitBaseUrl}${filePath}\n\n`;
 	
 				// Guard invalid path.
 				if (!rawFileContent) 

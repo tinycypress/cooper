@@ -16,12 +16,18 @@ export default class DatabaseHelper {
 
 	static async singleQuery(query) {
 		const queryResult = await Database.query(query);
-		return DatabaseHelper.single(queryResult);
+		return this.single(queryResult);
 	}
 
 	static async manyQuery(query) {
 		const queryResult = await Database.query(query);
-		return DatabaseHelper.many(queryResult);
+		return this.many(queryResult);
+	}
+
+
+	static async singleUpsert(query) {
+		const queryResult = await Database.query(query);
+		return this.upsert(queryResult);
 	}
 
 }
