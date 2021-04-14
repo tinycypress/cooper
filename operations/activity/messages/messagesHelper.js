@@ -121,16 +121,22 @@ export default class MessagesHelper {
     }
 
     static delayReact(msg, emoji, delay = 666) {
-        if (typeof msg.react === 'function') 
-            setTimeout(() => { 
-                msg.react(emoji)
-                    .then()
-                    .catch(e => {
-                        // Ignore already deleted messages.
-                        if (e.message !== 'Unknown Message')
-                            console.error(e);
-                    });
-            }, delay);
+        return new Promise((resolve, reject) => {
+            if (typeof msg.react === 'function') 
+                setTimeout(() => { 
+                    msg.react(emoji)
+                        .then(react => resolve(react))
+                        .catch(e => {
+                            // Ignore already deleted messages.
+                            if (e.message !== 'Unknown Message') {
+                                console.error(e);
+                                reject(e);
+                            } else {
+                                resolve(true);
+                            }
+                        });
+                }, delay);
+        });
     }
 
     static delayDelete(msg, delay = 666) {

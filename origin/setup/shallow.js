@@ -4,7 +4,10 @@ import dotenv from 'dotenv';
 import Database from './database';
 
 import COOP, { CHANNELS, MESSAGES, SERVER, TIME, USERS } from '../coop';
-import Sugar from 'sugar';
+
+import EventsHelper from '../../operations/eventsHelper';
+
+import { status } from '../../operations/marketing/rewards/loyalty';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -36,7 +39,7 @@ const shallowBot = async () => {
         // Help command stub
 
 
-        
+        // EventsHelper.runInterval(status, 2000);
 
         // Structures
         // 100dz integration TODOs

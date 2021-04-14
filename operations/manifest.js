@@ -22,6 +22,7 @@ import AboutHelper from "./marketing/about/aboutHelper";
 
 import COOP, { SERVER } from "../origin/coop";
 import TodoHelper from "./productivity/todos/todoHelper";
+import statusLoyaltyReward from "./marketing/about/aboutHelper";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -84,6 +85,8 @@ export default function eventsManifest() {
   // Ensure all users registered in memory for functionality.
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
 
+  // Marketing
+  EventsHelper.runInterval(statusLoyaltyReward, baseTickDur * 5.25);
 
 
   // Election related
