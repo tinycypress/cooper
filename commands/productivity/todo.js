@@ -57,7 +57,8 @@ export default class TodoCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, you already have a todo entry with that title!`);
 		
 		// Feedback.
-		const deadline = TIME.humaniseSecs(dueSecs);
+		const secsNow = TIME._secs();
+		const deadline = TIME.humaniseSecs(Math.max(dueSecs - secsNow, 0));
 		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your todo was created!\n\n` +
 			title +
 			`\n\nDeadline: ${deadline}`);
