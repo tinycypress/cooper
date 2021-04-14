@@ -1,9 +1,6 @@
-import Sugar from 'sugar';
-
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import MessagesHelper from '../../operations/activity/messages/messagesHelper';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP, { TIME } from '../../origin/coop';
+import COOP, { MESSAGES, TIME } from '../../origin/coop';
 
 export default class TodoCommand extends CoopCommand {
 
@@ -44,21 +41,24 @@ export default class TodoCommand extends CoopCommand {
 
 		// Invalid input time feedback
 		if (isNaN(dueDate))
-			return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> ${due} is invalid duration for a todo task.`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> ${due} is invalid duration for a todo task.`);
+
+
+		// Calculate unix secs for due/deadline.
+		const dueSecs = Math.round(dueDate.getTime() / 1000);
 
 		// Add a TODO for this user.
 		const result = await TodoHelper.add(msg.author.id, {
-			title,
-			due: Math.round(dueDate.getTime() / 1000),
-			category
+			title, due: dueSecs, category
 		});
 		
 		// Handle already exists error
 		if (result === 'ALREADY_EXISTS')
-			return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> you already have a todo entry with that title!`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> you already have a todo entry with that title!`);
 		
 		// Feedback.
-		return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> your todo was created!\n\n` +
+		const deadline = TIME.humaniseSecs(dueSecs);
+		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> your todo was created!\n\n` +
 			title +
 			`\n\nDeadline: ${deadline}`);
     }    

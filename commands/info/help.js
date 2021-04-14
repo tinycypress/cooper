@@ -92,33 +92,42 @@ export default class HelpCommand extends CoopCommand {
 			// TODO: Implement properly.
 
 			if (!categoryOpt && !commandOpt) {
-				let helpString = `**Available Commands**: \nTo find out more provide a command group or command name. !help {?CMD|GROUP?}\n\n`;
-				this.commando.registry.groups.map(group => {
-					if (hiddenGroups.includes(group.id)) return false;
-					helpString += `**${group.name}:**\n`;
-
-					let count = 0;
-					const delimiter = group.commands.size > 1 ? ', ' : '.'; 
-					group.commands.map((cmd) => {
-						let finalSpacer = delimiter;
-
-						if (count === group.commands.size - 1) finalSpacer = '.';
-
-						if (hiddenGroups.includes(cmd.memberName)) return false;
-						helpString += `!${cmd.memberName}${finalSpacer}`;
-
-						count++;
-					});
-					helpString += '\n\n';
-				});
+				let helpString = `**Available Command Groups**: \nTo find out more about a command group type and send: !help <group_name>\n\n`;
+				const groupsText = this.commando.registry.groups.map(group => {
+					return hiddenGroups.includes(group.id) ? '' : group.name;
+				}).join(', ');
 	
-				textSplitter(helpString, 1500).map((helpSection, index) => {
-					setTimeout(() => msg.direct(helpSection), 1666 * index);
-				});
+				msg.direct(helpString + groupsText);
 			}
 
 			if (commandOpt) {
-				msg.direct('I should help you with the command... ' + commandOpt)
+				const commandHelpText = `**${commandOpt} specifics:**\n\n` +
+					'What can we say about this command? :D';
+
+				msg.direct(commandHelpText);
+
+				// let helpString = `**Available Command Groups**: \nTo find out more about a command group type and send: !help <group_name>\n\n`;
+				// const groupsText = this.commando.registry.groups.map(group => {
+				// 	return hiddenGroups.includes(group.id) ? '' : group.name;
+				// }).join(', ');
+	
+
+
+
+					// helpString += `**${group.name}\n`;
+					// let count = 0;
+					// const delimiter = group.commands.size > 1 ? ', ' : '.'; 
+					// group.commands.map((cmd) => {
+					// 	let finalSpacer = delimiter;
+
+					// 	if (count === group.commands.size - 1) finalSpacer = '.';
+
+					// 	if (hiddenGroups.includes(cmd.memberName)) return false;
+					// 	helpString += `!${cmd.memberName}${finalSpacer}`;
+
+					// 	count++;
+					// });
+					// helpString += '\n\n';
 				
 			} else if (categoryOpt) {
 				msg.direct('I should help you with the category of commands you specified... ' + categoryOpt)
