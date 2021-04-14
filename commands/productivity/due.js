@@ -14,7 +14,7 @@ export default class DueWithinCommand extends CoopCommand {
 			description: 'Information todo our fine community!',
 			details: `Details`,
 			examples: ['todo', 'todo example?'],
-			arguments: [
+			args: [
 				{
 					key: 'withinTimeframe',
 					prompt: 'Timeframe to check for due todos?',
