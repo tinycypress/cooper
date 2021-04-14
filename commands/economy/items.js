@@ -67,7 +67,7 @@ export default class ItemsCommand extends CoopCommand {
 
 			// Check a specific item instead.
 			const itemQty = await COOP.ITEMS.getUserItemQty(targetUser.id, itemInput);
-			const displayQty = this.displayQty(itemQty);
+			const displayQty = COOP.ITEMS.displayQty(itemQty);
 
 			// Send specific item count.
 			const emoji = COOP.MESSAGES.emojiText(EMOJIS[itemInput]);

@@ -3,10 +3,8 @@ import dotenv from 'dotenv';
 
 import Database from './database';
 
-import COOP, { SERVER } from '../coop';
-import KeyInfoPosted from '../../operations/activity/messages/keyinfoPosted';
-import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import TimeHelper from '../../operations/timeHelper';
+import COOP, { CHANNELS, MESSAGES, SERVER, TIME, USERS } from '../coop';
+import Sugar from 'sugar';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -34,18 +32,20 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Structures
+        
+        // Help command stub
 
-        // TODOs
+
+        
+
+        // Structures
         // 100dz integration TODOs
         // Paypal in/out
-
-       
-        const userTodos = await TodoHelper.getUserTodos('786671654721683517');
-        console.log(userTodos);
-
-
-
+                
+        
+        
+        // TDOs less spammy
+        // Fix items single check
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

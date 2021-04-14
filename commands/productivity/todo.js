@@ -42,21 +42,17 @@ export default class TodoCommand extends CoopCommand {
 	async run(msg, title, due, category) {
 		super.run(msg);
 
-		// TODO: Take human readable due time.
-		// https://sugarjs.com/dates/#/Parsing
-		// https://stackoverflow.com/questions/52230177/what-is-the-easiest-way-to-deserialize-human-readable-time-duration-in-java
-		const dueDate = new Sugar.Date(due);
+		// Take human readable due time.
+		const dueDate = TIME.parseHuman(due);
 
-		// Use a confirmation collector for this due to possible misinterpretation.
-
-		// TODO: Invalid input time feedback
-		if (!dueDate.isValid)
+		// Invalid input time feedback
+		if (isNaN(dueDate))
 			return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> ${due} is invalid duration for a todo task.`);
 
-		// TODO: Add a TODO for this user.
+		// Add a TODO for this user.
 		const result = await TodoHelper.add(msg.author.id, {
 			title,
-			due: Math.round(dueDate.now() / 1000),
+			due: Math.round(dueDate.getTime() / 1000),
 			category
 		});
 		

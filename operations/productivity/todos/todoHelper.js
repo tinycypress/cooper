@@ -13,16 +13,17 @@ export default class TodoHelper {
         const numTotal = todos.length || 0;
         const numDue = due.length || 0;
 
-        let dueText = MESSAGES.noWhiteSpace`📝 **Checking TODOs! ()**\n\n
-            Total: ${numTotal}\n
-            Due: ${numDue}\n
-            WIP:${0}\n\n
+        let dueText = `📝 **TODOs**\n\n` +
+            `Total: ${numTotal}\n` +
+            `Due: ${numDue}\n` +
+            `WIP:${0}\n\n` +
 
-            _Tip: Create a todo by ??? or use !help for more info!_
-        `;
+            `_Tip: Create a todo by ??? or use !help for more info!_`;
+
+
 
         // Thank you Stocker for contributing this code.
-        if (STATE.CHANCE.bool({ likelihood: 20 }))
+        if (STATE.CHANCE.bool({ likelihood: 10 }))
             CHANNELS._send('TALK', dueText);
     }
 

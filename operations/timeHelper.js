@@ -1,6 +1,13 @@
 import moment from 'moment';
+import Sugar from 'sugar';
 
 export default class TimeHelper {
+
+    // Take human readable due time.
+    static parseHuman(str) {
+		const date = Sugar.Date.create(str);
+        return date;
+    }
 
     static secsLongFmt(secs) {
         const secsMoment = moment.unix(secs);

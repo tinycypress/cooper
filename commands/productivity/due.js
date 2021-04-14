@@ -1,7 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import MessagesHelper from '../../operations/activity/messages/messagesHelper';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP from '../../origin/coop';
+import COOP, { MESSAGES, TIME } from '../../origin/coop';
 
 export default class DueWithinCommand extends CoopCommand {
 
@@ -19,7 +19,7 @@ export default class DueWithinCommand extends CoopCommand {
 					key: 'withinTimeframe',
 					prompt: 'Timeframe to check for due todos?',
 					type: 'string',
-					default: '6hrs'
+					default: 'tomorrow'
 				},
 				{
 					key: 'category',
@@ -34,11 +34,29 @@ export default class DueWithinCommand extends CoopCommand {
 	async run(msg, withinTimeframe, category) {
 		super.run(msg);
 
+
+		// Parse by human date input, see if any are due.
+		const timeframe = TIME.parseHuman(withinTimeframe);
+
+		// Guard against invalid time frames
+		if (isNaN(timeframe))
+			return MESSAGES.silentSelfDestruct(msg, 'Invalid timeframe for checking todos provided', 333, 10000);
+
+		// Load all todos of specified/default category.
 		const todos = await TodoHelper.getUserTodos(msg.author.id, category);
 
-		// TODO: Acknowledge the category again for confirmation.
-		MessagesHelper.silentSelfDestruct(msg, 'Getting your todos due within given timeframe!');
+		// TODO: Calculate which are overdue.
 
-		
+
+		// TODO: Tell them if they have none over due by HUMANISED TIME
+
+		const referenceReadable = TIME.humaniseSecs(Math.round(timeframe.getTime() / 1000))
+
+		// dev message
+		const feedbackText = `**<@${msg.author.id}>'s todos due (within ${referenceReadable})**` +
+			`...WIP?` +
+			`\n\n_Check yours by typing: !due <timeframe> <category>`;
+
+		MessagesHelper.silentSelfDestruct(msg, feedbackText);
     }    
 }

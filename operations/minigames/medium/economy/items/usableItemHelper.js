@@ -12,6 +12,7 @@ import ReactionHelper from '../../../../activity/messages/reactionHelper';
 
 import { EMOJIS, RAW_EMOJIS } from "../../../../../origin/config";
 import COOP, { STATE, CHICKEN as Chicken } from "../../../../../origin/coop";
+import ElectionHelper from "../../../../members/hierarchy/election/electionHelper";
 
 
 export default class UsableItemHelper {
@@ -138,6 +139,10 @@ export default class UsableItemHelper {
 
             // Add recalculated item ownership to user.
             const addEvent = await COOP.ITEMS.add(user.id, itemCode, 1);
+
+			// Intercept the giving of election items.
+			if (itemCode === 'LEADERS_SWORD' || itemCode === 'ELECTION_CROWN')
+				ElectionHelper.ensureItemSeriousness();
 
             // TODO: ADD TO STATISTICS!
 

@@ -4,7 +4,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import MessagesHelper from '../../operations/activity/messages/messagesHelper';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP from '../../origin/coop';
+import COOP, { MESSAGES, TIME } from '../../origin/coop';
 
 export default class TodosCommand extends CoopCommand {
 
@@ -23,18 +23,43 @@ export default class TodosCommand extends CoopCommand {
 					prompt: 'TODO category? (GENERAL)',
 					type: 'string',
 					default: 'GENERAL'
-				}
+				},
+				{
+					key: 'targetUser',
+					prompt: 'Whose items are you trying to check?',
+					type: 'user',
+					default: ''
+				},
 			]
 		});
 	}
 
-	async run(msg, category) {
+	async run(msg, { category, targetUser }) {
 		super.run(msg);
 
+		// Allow them to shorthand it with a dot.
+		if (category === '.') category = 'GENERAL';
 
-		const todos = await TodoHelper.getUserTodos(msg.author.id, category);
+		// Allow shorthand and blank options on target user.
+		if (!targetUser) {
+			const firstMention = msg.mentions.users.first();
+			if (firstMention) targetUser = firstMention
+			else targetUser = msg.author;
+		}
 
-		// TODO: Acknowledge the category again for confirmation.
-		MessagesHelper.silentSelfDestruct(msg, 'Getting your todos! Chill.');
+
+		const todos = await TodoHelper.getUserTodos(targetUser.id, category);
+
+        const secsNow = TIME._secs();
+        const dueReadable = due => TIME.humaniseSecs(due - secsNow);
+
+        const userTodosText = `**${targetUser}'s todos:**\n\n` +
+            todos.map(
+                // TODO: Bold/underline the due date if overdue...
+                todo => `#${todo.id}. ${todo.title} - ${dueReadable(todo.due)}`
+            ).join('\n') +
+            `\n\n_Type and send "!todos" to check yours._`;
+
+		MESSAGES.silentSelfDestruct(msg, userTodosText);
     }    
 }
