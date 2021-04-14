@@ -21,19 +21,16 @@ export default class TodoCommand extends CoopCommand {
 					key: 'title',
 					prompt: 'TODO title?',
 					type: 'string',
-					default: ''
 				},
 				{
 					key: 'due',
 					prompt: 'TODO deadline? Ex. 1d, 5h, 10secs',
 					type: 'string',
-					default: ''
 				},
 				{
 					key: 'category',
-					prompt: 'TODO category? (GENERAL)',
-					type: 'string',
-					default: 'GENERAL'
+					prompt: 'TODO category? (all)',
+					type: 'string'
 				},
 			]
 		});
@@ -61,6 +58,8 @@ export default class TodoCommand extends CoopCommand {
 			return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> you already have a todo entry with that title!`);
 		
 		// Feedback.
-		return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> your todo was created!`);
+		return MessagesHelper.silentSelfDestruct(msg, `<@${msg.author.id}> your todo was created!\n\n` +
+			title +
+			`\n\nDeadline: ${deadline}`);
     }    
 }

@@ -20,9 +20,9 @@ export default class TodosCommand extends CoopCommand {
 			arguments: [
 				{
 					key: 'category',
-					prompt: 'TODO category? (GENERAL)',
+					prompt: 'TODO category? (all)',
 					type: 'string',
-					default: 'GENERAL'
+					default: 'all'
 				},
 				{
 					key: 'targetUser',
@@ -38,7 +38,7 @@ export default class TodosCommand extends CoopCommand {
 		super.run(msg);
 
 		// Allow them to shorthand it with a dot.
-		if (category === '.') category = 'GENERAL';
+		if (category === '.') category = 'all';
 
 		// Allow shorthand and blank options on target user.
 		if (!targetUser) {

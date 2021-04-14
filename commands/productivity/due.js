@@ -23,9 +23,9 @@ export default class DueWithinCommand extends CoopCommand {
 				},
 				{
 					key: 'category',
-					prompt: 'TODO category? (GENERAL)',
+					prompt: 'TODO category? (all)',
 					type: 'string',
-					default: 'GENERAL'
+					default: 'all'
 				},
 			]
 		});

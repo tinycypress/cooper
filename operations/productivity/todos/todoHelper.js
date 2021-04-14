@@ -31,10 +31,12 @@ export default class TodoHelper {
         return [];
     }
 
-    static getUserTodos(userID, category = 'GENERAL') {
+    static getUserTodos(userID, category = 'all') {
+        // TODO: If category is all, just return all... this will cause some missing.
+
         return DatabaseHelper.manyQuery({
-            name: `get-user-todos`,
-            text: `SELECT * FROM todos WHERE user_id = $1 AND category = $2`,
+            name: category === 'all' ? 'get-user-todos' : 'get-user-todos-category',
+            text: `SELECT * FROM todos WHERE user_id = $1 ${category === 'all' ? '' : 'AND category = $2'}`,
             values: [userID, category]
         });
     }
