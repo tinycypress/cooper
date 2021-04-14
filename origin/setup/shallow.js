@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 import Database from './database';
 
-import COOP, { CHANNELS, MESSAGES, SERVER, TIME, USERS } from '../coop';
+import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
 
 import EventsHelper from '../../operations/eventsHelper';
 
@@ -37,7 +37,6 @@ const shallowBot = async () => {
 
         
         // Help command stub
-
 
         // EventsHelper.runInterval(status, 2000);
 

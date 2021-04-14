@@ -36,7 +36,7 @@ export default class TutorialCommand extends CoopCommand {
 		super.run(msg);
 		
 		// Step 4: Listen for reaction on start tutorial message.
-		confirmationPrompt(`${msg.author.username}, *message*`).bind(msg)(
+		confirmationPrompt.bind(msg)(`${msg.author.username}, *message*`,
 			confirmationPrompt(`${msg.author.username}, *message two*`,
 			confirmationPrompt(`${msg.author.username}, *message three*`,
 			confirmationPrompt(`${msg.author.username}, *message four*`,
