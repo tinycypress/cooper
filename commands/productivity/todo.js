@@ -13,7 +13,7 @@ export default class TodoCommand extends CoopCommand {
 			description: 'Information todo our fine community!',
 			details: `Details`,
 			examples: ['todo', 'todo example?'],
-			arguments: [
+			args: [
 				{
 					key: 'title',
 					prompt: 'TODO title?',

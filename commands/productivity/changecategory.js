@@ -16,7 +16,7 @@ export default class ChangeTodoCategoryCommand extends CoopCommand {
 			description: 'Information changecategory our fine community!',
 			details: `Details`,
 			examples: ['changecategory', 'changecategory example?'],
-			arguments: [
+			args: [
 				{
 					key: 'id',
 					prompt: 'Todo #id to change category for?',

@@ -17,7 +17,7 @@ export default class TodosCommand extends CoopCommand {
 			description: 'Information todo our fine community!',
 			details: `Details`,
 			examples: ['todo', 'todo example?'],
-			arguments: [
+			args: [
 				{
 					key: 'category',
 					prompt: 'TODO category? (all)',
