@@ -32,8 +32,7 @@ export default class TodoHelper {
     }
 
     static getUserTodos(userID, category = 'all') {
-        // TODO: If category is all, just return all... this will cause some missing.
-
+        // If category is all, just return all... this will cause some missing.
         return DatabaseHelper.manyQuery({
             name: category === 'all' ? 'get-user-todos' : 'get-user-todos-category',
             text: `SELECT * FROM todos WHERE user_id = $1 ${category === 'all' ? '' : 'AND category = $2'}`,
