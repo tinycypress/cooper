@@ -37,7 +37,7 @@ export default class TodoHelper {
         return DatabaseHelper.manyQuery({
             name: category === 'all' ? 'get-user-todos' : 'get-user-todos-category',
             text: `SELECT * FROM todos WHERE user_id = $1 ${category === 'all' ? '' : 'AND category = $2'}`,
-            values: [userID, category]
+            values: category === 'all' ? [userID] : [userID, category]
         });
     }
 
