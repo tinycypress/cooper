@@ -50,6 +50,13 @@ export default class TodosCommand extends CoopCommand {
 
 		const todos = await TodoHelper.getUserTodos(targetUser.id, category);
 
+		// Guard against having no todos.
+		if (todos.length === 0) {
+			const noTodosText = `<@${targetUser.id}>, you don't have any todos. Use !todo to add one.`;
+			return MESSAGES.silentSelfDestruct(msg, noTodosText);
+		}
+
+
         const secsNow = TIME._secs();
         const dueReadable = due => TIME.humaniseSecs(due - secsNow);
 
