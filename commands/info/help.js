@@ -1,21 +1,6 @@
 import CoopCommand from "../../operations/activity/messages/coopCommand";
 
 
-const textSplitter = (str, l) => {
-    const strs = [];
-    while(str.length > l){
-        let pos = str.substring(0, l).lastIndexOf(' ');
-        pos = pos <= 0 ? l : pos;
-		strs.push(str.substring(0, pos));
-		
-		let i = str.indexOf(' ', pos)+1;
-        if(i < pos || i > pos+l) i = pos;
-        str = str.substring(i);
-    }
-    strs.push(str);
-    return strs;
-}
-
 export default class HelpCommand extends CoopCommand {
 
 	commando = null

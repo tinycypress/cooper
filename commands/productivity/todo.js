@@ -41,7 +41,7 @@ export default class TodoCommand extends CoopCommand {
 
 		// Invalid input time feedback
 		if (isNaN(dueDate))
-			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> ${due} is invalid duration for a todo task.`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is invalid duration for a todo task.`);
 
 
 		// Calculate unix secs for due/deadline.
@@ -54,11 +54,11 @@ export default class TodoCommand extends CoopCommand {
 		
 		// Handle already exists error
 		if (result === 'ALREADY_EXISTS')
-			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> you already have a todo entry with that title!`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, you already have a todo entry with that title!`);
 		
 		// Feedback.
 		const deadline = TIME.humaniseSecs(dueSecs);
-		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> your todo was created!\n\n` +
+		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your todo was created!\n\n` +
 			title +
 			`\n\nDeadline: ${deadline}`);
     }    
