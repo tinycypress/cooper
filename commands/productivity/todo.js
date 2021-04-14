@@ -33,7 +33,7 @@ export default class TodoCommand extends CoopCommand {
 		});
 	}
 
-	async run(msg, title, due, category) {
+	async run(msg, { title, due, category }) {
 		super.run(msg);
 
 		// Take human readable due time.
