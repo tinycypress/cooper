@@ -61,5 +61,5 @@ export default class TodoCommand extends CoopCommand {
 		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your todo was created!\n\n` +
 			title +
 			`\n\nDeadline: ${deadline}`);
-    }    
+    }
 }

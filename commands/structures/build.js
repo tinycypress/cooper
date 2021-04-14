@@ -27,9 +27,10 @@ export default class BuildCommand extends CoopCommand {
 		const iron = MESSAGES._displayEmojiCode('IRON_BAR');
 
 		MESSAGES.silentSelfDestruct(msg, 
-			`**Who will be first to build their base? :D**` +
-			`\n\nRequirements:` +
-			`Crafting level 15` +
+			`**Who will be first to build their base? :D\n\n**` +
+
+			`__Requirements__:\n` +
+			`Crafting level 15\n` +
 			`200 x ${cp} COOP_POINT\n` +
 			`125 x ${wood} WOOD\n` +
 			`50 x ${steel} STEEL_BAR\n` +
