@@ -26,6 +26,7 @@ export default () => {
             ['misc', 'Miscellaneous'],
             ['points', 'Points'],
             ['gamble', 'Gamble'],
+            ['structures', 'Structures'],
             ['mod', 'Moderation'],
             ['conquest', 'Conquest']
         ])
