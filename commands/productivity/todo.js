@@ -21,7 +21,7 @@ export default class TodoCommand extends CoopCommand {
 				},
 				{
 					key: 'due',
-					prompt: 'TODO deadline? Ex. 1d, 5h, 10secs',
+					prompt: 'TODO deadline future time? Ex. next Tuesday, 3pm Wednesday, in 30 minutes, in half a year... etc',
 					type: 'string',
 				},
 				{

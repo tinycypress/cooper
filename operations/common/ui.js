@@ -12,12 +12,16 @@ export const firstConfirmPrompt = async function(msgOrChannelRef, text, confirmE
 	MESSAGES.delayReact(promptMsg, confirmEmoji, 222);
 
 	const promptReactions = await promptMsg.awaitReactions(
-		proceedfeedbackReactFilter, 
-		{ max: 1, time: 30000 }
+		proceedfeedbackReactFilter, { max: 1, time: 30000 }
 	);
 	const firstReaction = promptReactions.first();
-	if (firstReaction) return firstReaction;
-    else return false;
+	if (firstReaction) {
+		// Return first non Cooper user who reacted/accepted.
+		const firstUser = firstReaction.users.cache.reduce((acc, user) => {
+			if (!USERS.isCooper(user.id)) return acc = user;
+		}, null);
+		return firstUser;
+	} else return false;
 }
 
 

@@ -1,6 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { authorConfirmationPrompt, firstConfirmPrompt } from '../../operations/common/ui';
-import COOP, { MESSAGES, STATE } from '../../origin/coop';
+import { doesOwnDidUseGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
+import COOP, { ITEMS, MESSAGES, STATE } from '../../origin/coop';
 
 export default class FlipCommand extends CoopCommand {
 
@@ -26,40 +27,77 @@ export default class FlipCommand extends CoopCommand {
 	async run(msg, { amount }) {
 		super.run(msg);
 
+		const interactionMessages = [];
+
 		const userID = msg.author.id;
+
+		// TODO: Check valid amount
+		// amount = parseFloat(amount);
+		// if (isNaN(amount)) 
+
+		// Check if they have a gold coin
+		// if (!await doesOwnDidUseGuard(msg.author, 'GOLD_COIN', amount, msg))
+			// MESSAGES.silentSelfDestruct(msg, 'Does not enough gold coin but allowed for testing.')
+			// return null;
+
 
 		// Confirm game start and amount
 		const goldCoin = MESSAGES._displayEmojiCode('GOLD_COIN');
-		const confirmMsg = await authorConfirmationPrompt(
-			msg, 
-			`<@${userID}>, you want to flip ${amount}x${goldCoin}?`,
-			userID
-		);
 
 		// Check that the author of the command confirmed it.
-		if (confirmMsg) {
-			const joiner = await firstConfirmPrompt(msg, 'React to join this game!');
-			if (joiner) {
-				// MESSAGES.silentSelfDestruct(conf)
-				msg.say('Someone joined coinflip! Still work in progress, please try again tomorrow.');
-				console.log(joiner);
-			}
-		}
+		const confirmText = `<@${userID}>, you want to flip ${amount}x${goldCoin}?`;
+		const confirmMsg = await authorConfirmationPrompt(msg, confirmText, userID);
+		if (!confirmMsg) return null;
 
-		// TODO: Take the gambling fee.
+		// Add to messages for faster cancel/cleanup.
+		interactionMessages.push(confirmMsg);
 
-		// TODO: Challenge flip command may be needed
+		// Try to read the first non-Cooper user from the confirmation prompt.
+		const firstReactor = await firstConfirmPrompt(msg, 'React to join this game!');
+		if (!firstReactor) return null;
+
+		// Check if reactor has coin qty, otherwise fail and refund game creator.
+		// if (!await doesOwnDidUseGuard(firstReactor, GOLD_COIN, amount, msg)) {
+			// Refund game creator
+			// await ITEMS.add(userID, GOLD_COIN, amount)
+
+			// MESSAGES.silentSelfDestruct(msg, 'Does not enough gold coin but allowed for testing.')
+
+			// Cancel and clean up.
+			// return null;
+		// } 
+
+		// Choose who gets to pick heads or tails
+		const chooser = STATE.CHANCE.coin() === 'tails' ? msg.author : firstReactor;
+		const playText = `<@${firstReactor.id}> joined <@${userID}>'s coinflip! <@${chooser.id}> gets to choose, say h/t/heads/tails to play!`;
+		const playMsg = await MESSAGES.silentSelfDestruct(msg, playText);
+
+		// TODO: Take the gambling fee from both users.
+
+		// Await messages from chooser "h" "heads" or "t" "tails"
+		const coinOpts = ['h', 't', 'heads', 'tails', 'head', 'tail']
+		const coinflipMsgFilter = m => 
+			m.author.id === chooser.id && 
+			coinOpts.includes(m.content.toLowerCase);
+
+		// Collect the choice of the selected chooser.
+		const choiceCollected = await playMsg.channel.awaitMessages(
+			coinflipMsgFilter, { max: 1, time: 30000 }
+		);
+
+		console.log(choiceCollected);
+
 		// Ask for heads or tails.
 
-		// Randomly generate result.
-		// const result = STATE.CHANCE.coin();
-
-
-		// Apply reward or subtraction.
-
+		// Give reward
+		const rewardAmount = 2 * amount;
 
 		// Provide feedback with silent ping.
-		// COOP.MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> is testing flip. ${result}`);
+		const result = STATE.CHANCE.coin();
+		const resultText = `The coin lands on ${result}, you chose ???, x wins ${rewardAmount}x${goldCoin}`;
+		
+		
+		MESSAGES.silentSelfDestruct(msg, resultText);
     }
 }
     
