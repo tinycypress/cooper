@@ -38,7 +38,7 @@ export default class FlipCommand extends CoopCommand {
 
 		// Check that the author of the command confirmed it.
 		if (confirmMsg) {
-			const joiner = await firstConfirmPrompt(confirmMsg, 'React to join this game!');
+			const joiner = await firstConfirmPrompt(msg, 'React to join this game!');
 			if (joiner) {
 				// MESSAGES.silentSelfDestruct(conf)
 				msg.say('Someone joined coinflip! Still work in progress, please try again tomorrow.');
