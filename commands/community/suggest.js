@@ -25,8 +25,8 @@ export default class SuggestCommand extends CoopCommand {
 
         try {
 			// Post in suggestions.
-			const pollAcknowledgement = await COOP.CHANNELS._postToChannelCode('SUGGESTIONS', 
-				msg.content.replace('!suggest', ''));
+			const cleanedContent = msg.content.replace('!suggestion', '').replace('!suggest', '');
+			const pollAcknowledgement = await COOP.CHANNELS._postToChannelCode('SUGGESTIONS', cleanedContent);
 
 			// Add reactions for people to use.
 			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
