@@ -1,4 +1,4 @@
-import { CHANNELS, MESSAGES, STATE } from "../../../origin/coop";
+import { CHANNELS, STATE } from "../../../origin/coop";
 import Database from "../../../origin/setup/database";
 import DatabaseHelper from "../../databaseHelper";
 
@@ -10,25 +10,23 @@ export default class TodoHelper {
         const currentSecs = Date.now() / 1000;
         const due = todos.filter(todo => todo.deadline <= currentSecs);
 
-        const numTotal = todos.length || 0;
-        const numDue = due.length || 0;
-
         let dueText = `📝 **TODOs**\n\n` +
-            `Total: ${numTotal}\n` +
-            `Due: ${numDue}\n` +
-            `WIP:${0}\n\n` +
+            `Due Now: ${due.length}\n` +
+            `Ongoing: ${todos.length - due.length}\n\n` +
+            `Total: ${todos.length}\n` +
 
-            `_Tip: Create a todo by ??? or use !help for more info!_`;
-
-
+            `_Tip: Type and send !todo to create your todo task!_`;
 
         // Thank you Stocker for contributing this code.
         if (STATE.CHANCE.bool({ likelihood: 10 }))
             CHANNELS._send('TALK', dueText);
     }
 
-    static async getAll() {
-        return [];
+    static getAll() {
+        return DatabaseHelper.manyQuery({
+            name: 'get-all-todos',
+            text: `SELECT * FROM todos`
+        });
     }
 
     static getUserTodos(userID, category = 'all') {

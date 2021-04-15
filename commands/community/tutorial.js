@@ -12,9 +12,12 @@ const confirmationPrompt = async function(text, callback) {
 	const promptMsg = this.say(text);
 	MESSAGES.delayReact(promptMsg, '👍', 222);
 
-	const promptReactions = await promptMsg.awaitReactions(proceedfeedbackReactFilter, { max: 1, time: 30000 })
+	const promptReactions = await promptMsg.awaitReactions(
+		proceedfeedbackReactFilter, 
+		{ max: 1, time: 30000 }
+	);
 	const firstReaction = promptReactions.first().emoji.name;
-	if (firstReaction == '👍') callback.bind(promptMsg)();
+	if (firstReaction === '👍') callback.bind(promptMsg)();
 }
 
 export default class TutorialCommand extends CoopCommand {

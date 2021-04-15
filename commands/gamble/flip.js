@@ -8,15 +8,25 @@ export default class FlipCommand extends CoopCommand {
 			name: 'flip',
 			group: 'gamble',
 			memberName: 'flip',
-			aliases: [],
 			description: 'Information flip our fine community!',
 			details: `Details`,
 			examples: ['flip example?'],
+			args: [
+				{
+					key: 'amount',
+					prompt: 'How much gold coin you wanna gamble? Beak careful.',
+					type: 'float',
+					default: 0.1
+				}
+			]
 		});
 	}
 
 	async run(msg) {
 		super.run(msg);
+
+
+		// 
 
 
 		// TODO: Take the gambling fee.
@@ -25,14 +35,14 @@ export default class FlipCommand extends CoopCommand {
 		// Ask for heads or tails.
 
 		// Randomly generate result.
-		const result = STATE.CHANCE.coin();
+		// const result = STATE.CHANCE.coin();
 
 
 		// Apply reward or subtraction.
 
 
 		// Provide feedback with silent ping.
-		COOP.MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> is testing flip. ${result}`);
+		// COOP.MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}> is testing flip. ${result}`);
     }
 }
     
