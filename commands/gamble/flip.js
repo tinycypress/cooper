@@ -39,10 +39,6 @@ export default class FlipCommand extends CoopCommand {
 		if (isNaN(amount))
 			return MESSAGES.silentSelfDestruct(msg, `Coin flip betting amount value was invalid. (${amountInput})`);
 
-		// Check if they have a gold coin
-		if (!await doesOwnDidUseGuard(msg.author, 'GOLD_COIN', amount, msg))
-			return null;
-
 		// Confirm game start and amount
 		const goldCoin = MESSAGES._displayEmojiCode('GOLD_COIN');
 
@@ -50,6 +46,10 @@ export default class FlipCommand extends CoopCommand {
 		const confirmText = `<@${userID}>, you want to flip ${amount}x${goldCoin}?`;
 		const confirmMsg = await authorConfirmationPrompt(msg, confirmText, userID);
 		if (!confirmMsg) return null;
+
+		// Check if they have a gold coin
+		if (!await doesOwnDidUseGuard(msg.author, 'GOLD_COIN', amount, msg))
+			return null;
 
 		// Add to messages for faster cancel/cleanup.
 		interactionMessages.push(confirmMsg);
