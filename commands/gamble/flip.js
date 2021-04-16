@@ -57,7 +57,11 @@ export default class FlipCommand extends CoopCommand {
 		// Try to read the first non-Cooper user from the confirmation prompt.
 		const joinText = `React to join a flip for ${amount}x${goldCoin}!`;
 		const firstReactor = await firstConfirmPrompt(msg, joinText, msg.author.id);
-		if (!firstReactor) return null;
+		if (!firstReactor) {		
+			const refundTotal = await ITEMS.add(msg.author.id, 'GOLD_COIN', amount);
+			const refundText = `Nobody joined your coinflip :'(. Refunded ${amount}x${goldCoin} you now have ${refundTotal}x${goldCoin}.`;
+			return MESSAGES.silentSelfDestruct(msg, refundText);
+		}
 
 		// Check if reactor has coin qty, otherwise fail and refund game creator.
 		if (!await doesOwnDidUseGuard(firstReactor, 'GOLD_COIN', amount, msg)) {
