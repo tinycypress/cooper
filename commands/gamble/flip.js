@@ -62,15 +62,14 @@ export default class FlipCommand extends CoopCommand {
 		// Check if reactor has coin qty, otherwise fail and refund game creator.
 		if (!await doesOwnDidUseGuard(firstReactor, 'GOLD_COIN', amount, msg)) {
 			// Refund game creator
-			await ITEMS.add(userID, 'GOLD_COIN', amount)
-
-			// Give refund/failure message.
-			MESSAGES.silentSelfDestruct(msg, `Game joiner couldn't afford, <@${userID}> refunded ${amount}x${goldCoin}.`);
+			await ITEMS.add(userID, 'GOLD_COIN', amount);
 
 			// Clean up the other messages?
 
 			// Cancel and clean up.
-			return null;
+			// Give refund/failure message.
+
+			return MESSAGES.silentSelfDestruct(msg, `Game joiner couldn't afford, <@${userID}> refunded ${amount}x${goldCoin}.`);
 		} 
 
 		// Choose who gets to pick heads or tails
@@ -126,7 +125,7 @@ export default class FlipCommand extends CoopCommand {
 
 		// Provide feedback with silent ping.
 		const choiceText = `${goldCoin} coin lands on ${winningRoll}, <@${chooser.id}> chose ${sideChoice}`;
-		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin} and now was ${newTotal}x${goldCoin}, <@${loser.id}> loser.`;
+		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin} and now has ${newTotal}x${goldCoin}, <@${loser.id}> loser.`;
 		MESSAGES.silentSelfDestruct(msg, resultText);
     }
 }
