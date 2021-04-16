@@ -1,7 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { authorConfirmationPrompt, firstConfirmPrompt } from '../../operations/common/ui';
 import { doesOwnDidUseGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
-import COOP, { ITEMS, MESSAGES, STATE } from '../../origin/coop';
+import { ITEMS, MESSAGES, STATE } from '../../origin/coop';
 
 export default class FlipCommand extends CoopCommand {
 
@@ -31,15 +31,17 @@ export default class FlipCommand extends CoopCommand {
 
 		const userID = msg.author.id;
 
-		// TODO: Check valid amount
-		// amount = parseFloat(amount);
-		// if (isNaN(amount)) 
+		// Check valid amount
+		const amountInput = amount;
+		amount = parseFloat(amount);
+
+		// Check input amount is valid or cancel and return error feedback.
+		if (isNaN(amount))
+			return MESSAGES.silentSelfDestruct(msg, `Coin flip betting amount value was invalid. (${amountInput})`);
 
 		// Check if they have a gold coin
-		// if (!await doesOwnDidUseGuard(msg.author, 'GOLD_COIN', amount, msg))
-			// MESSAGES.silentSelfDestruct(msg, 'Does not enough gold coin but allowed for testing.')
-			// return null;
-
+		if (!await doesOwnDidUseGuard(msg.author, 'GOLD_COIN', amount, msg))
+			return null;
 
 		// Confirm game start and amount
 		const goldCoin = MESSAGES._displayEmojiCode('GOLD_COIN');
@@ -53,19 +55,22 @@ export default class FlipCommand extends CoopCommand {
 		interactionMessages.push(confirmMsg);
 
 		// Try to read the first non-Cooper user from the confirmation prompt.
-		const firstReactor = await firstConfirmPrompt(msg, 'React to join this game!');
+		const firstReactor = await firstConfirmPrompt(msg, `React to join a flip for ${amount}x${goldCoin}!`);
 		if (!firstReactor) return null;
 
 		// Check if reactor has coin qty, otherwise fail and refund game creator.
-		// if (!await doesOwnDidUseGuard(firstReactor, GOLD_COIN, amount, msg)) {
+		if (!await doesOwnDidUseGuard(firstReactor, GOLD_COIN, amount, msg)) {
 			// Refund game creator
-			// await ITEMS.add(userID, GOLD_COIN, amount)
+			await ITEMS.add(userID, GOLD_COIN, amount)
 
-			// MESSAGES.silentSelfDestruct(msg, 'Does not enough gold coin but allowed for testing.')
+			// Give refund/failure message.
+			MESSAGES.silentSelfDestruct(msg, `Game joiner couldn't afford, <@${userID}> refunded ${amount}x${goldCoin}.`);
+
+			// Clean up the other messages?
 
 			// Cancel and clean up.
-			// return null;
-		// } 
+			return null;
+		} 
 
 		// Choose who gets to pick heads or tails
 		const chooserRoll = STATE.CHANCE.coin();
@@ -79,7 +84,7 @@ export default class FlipCommand extends CoopCommand {
 		const playMsg = await MESSAGES.silentSelfDestruct(msg, playText);
 
 		// Await messages from chooser "h" "heads" or "t" "tails"
-		const headsAliases = ['t', 'head', 'heads', 'hea', 'he', 'headss', 'headz'];
+		const headsAliases = ['h', 'head', 'heads', 'hea', 'he', 'headss', 'headz'];
 		const tailsAliases = ['t', 'tail', 'tails', 'tai', 'ta', 'tailss', 'tailz'];
 		const coinOpts = [...headsAliases, ...tailsAliases];
 		const coinflipMsgFilter = m => {
@@ -103,21 +108,24 @@ export default class FlipCommand extends CoopCommand {
 
 		// Refund if invalid input/timeout.
 		if (choiceCollected.size === 0 || !sideChoice) {
-			const failErrorText = `Coinflip failed/expired, both players refunded.`;
+			const failErrorText = `Coinflip failed/expired, <@${chooser.id}> and <@${nonchooser.id}> were refunded ${goldCoin}x${amount}.`;
+			await ITEMS.add(chooser.id, 'GOLD_COIN', amount);
+			await ITEMS.add(nonchooser.id, 'GOLD_COIN', amount);
 			return MESSAGES.silentSelfDestruct(msg, failErrorText);
 		}
-
-		// Give reward
-		const rewardAmount = 2 * amount;
 
 		// Calculate winner, and loser.
 		const winningRoll = STATE.CHANCE.coin()
 		const winner = sideChoice === winningRoll ? chooser : nonchooser;
 		const loser = sideChoice === winningRoll ? nonchooser : chooser;
 
+		// Calculate and give reward.
+		const rewardAmount = 2 * amount;
+		const newTotal = await ITEMS.add(winner.id, 'GOLD_COIN', rewardAmount);
+
 		// Provide feedback with silent ping.
 		const choiceText = `${goldCoin} coin lands on ${winningRoll}, <@${chooser.id}> chose ${sideChoice}`;
-		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin}, <@${loser.id}> loser. <@${nonchooser.id}> did not chose.`;
+		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin} and now was ${newTotal}x${goldCoin}, <@${loser.id}> loser.`;
 		MESSAGES.silentSelfDestruct(msg, resultText);
     }
 }
