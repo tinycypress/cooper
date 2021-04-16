@@ -55,7 +55,7 @@ export default class FlipCommand extends CoopCommand {
 		interactionMessages.push(confirmMsg);
 
 		// Try to read the first non-Cooper user from the confirmation prompt.
-		const firstReactor = await firstConfirmPrompt(msg, `React to join a flip for ${amount}x${goldCoin}!`);
+		const firstReactor = await firstConfirmPrompt(msg, `React to join a flip for ${amount}x${goldCoin}!`, msg.author.id);
 		if (!firstReactor) return null;
 
 		// Check if reactor has coin qty, otherwise fail and refund game creator.
