@@ -116,7 +116,7 @@ export default class FlipCommand extends CoopCommand {
 		// Calculate winner, and loser.
 		const winningRoll = STATE.CHANCE.coin()
 		const winner = sideChoice === winningRoll ? chooser : nonchooser;
-		const loser = winner.id === chooser.id ? nonchooser : chooser;
+		const loser = sideChoice === winningRoll ? nonchooser : chooser;
 
 		// Provide feedback with silent ping.
 		const choiceText = `${goldCoin} coin lands on ${winningRoll}, you chose ${sideChoice}`;
