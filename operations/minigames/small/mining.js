@@ -6,6 +6,7 @@ import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 
 import COOP, { STATE, REACTIONS, SERVER } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
+import Statistics from "../../activity/information/statistics";
 
 export default class MiningMinigame {
     
@@ -122,15 +123,17 @@ export default class MiningMinigame {
     }
 
     static async run() {
-        let magnitude = STATE.CHANCE.natural({ min: 1, max: 3 });
+        const base = Math.max(1, Statistics.calcCommunityVelocity());
+
+        let magnitude = STATE.CHANCE.natural({ min: base, max: base * 3 });
 
         // TODO: Adjust points and diamond rewards if more rocks
         // Add rare chances of a lot of rocks
         if (STATE.CHANCE.bool({ likelihood: .8 }))
-            magnitude = STATE.CHANCE.natural({ min: 5, max: 20 });
+            magnitude = STATE.CHANCE.natural({ min: base * 5, max: base * 20 });
 
         if (STATE.CHANCE.bool({ likelihood: .05 }))
-            magnitude = STATE.CHANCE.natural({ min: 7, max: 35 });
+            magnitude = STATE.CHANCE.natural({ min: base * 7, max: base * 35 });
 
         const rockMsg = await COOP.CHANNELS._randomText().send(EMOJIS.ROCK.repeat(magnitude));
         

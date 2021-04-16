@@ -4,6 +4,7 @@ import SkillsHelper from "../medium/skills/skillsHelper";
 
 import COOP, { STATE, REACTIONS, SERVER, USABLE } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
+import Statistics from "../../activity/information/statistics";
 
 export default class WoodcuttingMinigame {
 
@@ -124,7 +125,16 @@ export default class WoodcuttingMinigame {
     }
 
     static async run() {
-        const magnitude = STATE.CHANCE.natural({ min: 1, max: 5 });
+        const base = Math.max(1, Statistics.calcCommunityVelocity());
+
+        let magnitude = STATE.CHANCE.natural({ min: base, max: base * 5 });
+
+        if (STATE.CHANCE.bool({ likelihood: .8 }))
+            magnitude = STATE.CHANCE.natural({ min: base * 5, max: base * 20 });
+
+        if (STATE.CHANCE.bool({ likelihood: .05 }))
+            magnitude = STATE.CHANCE.natural({ min: base * 7, max: base * 35 });
+
         const woodMsg = await COOP.CHANNELS._randomText().send(EMOJIS.WOOD.repeat(magnitude));
 
         // TODO: Count as ungathered wood in activity messages.
