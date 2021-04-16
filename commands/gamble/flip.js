@@ -113,14 +113,13 @@ export default class FlipCommand extends CoopCommand {
 		// Give reward
 		const rewardAmount = 2 * amount;
 
-		// Calculate chooser, winner, and loser.
-		
-		const winner = sideChoice === STATE.CHANCE.coin() ? chooser : nonchooser;
-		const loser = winner.id === msg.author.id ? msg.author : firstReactor;
+		// Calculate winner, and loser.
+		const winningRoll = STATE.CHANCE.coin()
+		const winner = sideChoice === winningRoll ? chooser : nonchooser;
+		const loser = winner.id === chooser.id ? nonchooser : chooser;
 
 		// Provide feedback with silent ping.
-		const result = STATE.CHANCE.coin();
-		const choiceText = `${goldCoin} coin lands on ${result}, you chose ${sideChoice}`;
+		const choiceText = `${goldCoin} coin lands on ${winningRoll}, you chose ${sideChoice}`;
 		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin}, <@${loser.id}> loser.`;
 		MESSAGES.silentSelfDestruct(msg, resultText);
     }
