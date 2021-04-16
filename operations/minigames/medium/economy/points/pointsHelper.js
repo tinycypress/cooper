@@ -159,7 +159,7 @@ export default class PointsHelper {
                 updateText = `**MOTW check ran and <@${highestChange.user}> wins again!**\n\n`
             } else {
                 // Give the winner the role.
-                COOP.ROLES._add(highestChange.user, 'MEMBEROFWEEK');
+                COOP.ROLES._add(highestChange.user.id, 'MEMBEROFWEEK');
     
                 // Took it from previous winner.
                 if (prevWinner) {

@@ -72,8 +72,6 @@ export default class FlipCommand extends CoopCommand {
 		const playText = `<@${firstReactor.id}> joined <@${userID}>'s coinflip! <@${chooser.id}> gets to choose, say h/t/heads/tails to play!`;
 		const playMsg = await MESSAGES.silentSelfDestruct(msg, playText);
 
-		// TODO: Take the gambling fee from both users.
-
 		// Await messages from chooser "h" "heads" or "t" "tails"
 		const coinOpts = ['h', 't', 'heads', 'tails', 'head', 'tail']
 		const coinflipMsgFilter = m => 
@@ -86,6 +84,8 @@ export default class FlipCommand extends CoopCommand {
 		);
 
 		console.log(choiceCollected);
+
+		choiceCollected.map(choice => console.log(choice));
 
 		// Ask for heads or tails.
 

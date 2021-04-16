@@ -22,7 +22,7 @@ export default class PirateCommand extends CoopCommand {
 		// Trim query and encode
 		const searchStr = encodeURIComponent(
 			msg.content
-				.replaceAll(' ', '-')
+				.replace(/ /g, '-')
 				.replace('!pirate ', '')
 				.replace('!prt ', '')
 		);
