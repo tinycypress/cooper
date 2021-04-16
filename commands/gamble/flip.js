@@ -73,42 +73,46 @@ export default class FlipCommand extends CoopCommand {
 		const playMsg = await MESSAGES.silentSelfDestruct(msg, playText);
 
 		// Await messages from chooser "h" "heads" or "t" "tails"
-		const coinOpts = ['h', 't', 'heads', 'tails', 'head', 'tail']
+		const headsAliases = ['t', 'head', 'heads', 'hea', 'he', 'headss', 'headz'];
+		const tailsAliases = ['t', 'tail', 'tails', 'tai', 'ta', 'tailss', 'tailz'];
+		const coinOpts = [...headsAliases, ...tailsAliases];
 		const coinflipMsgFilter = m => {
 			const isChooser = m.author.id === chooser.id;
 			const isValid = coinOpts.includes(m.content.toLowerCase());
-
-			console.log(m.content, m.author.id, chooser.id);
-
 			return isValid && isChooser;
 		}
 
 		// Collect the choice of the selected chooser.
+		let sideChoice = null;
 		const choiceCollected = await playMsg.channel.awaitMessages(
 			coinflipMsgFilter, { max: 1, time: 30000 }
 		);
 
-		
-		console.log(choiceCollected);
-		
-		choiceCollected.map(choice => console.log(choice));
-		
-		console.log(choiceCollected.size, choiceCollected.length);
+		// Parse the side/landing choice:
+		choiceCollected.map(choiceMsg => {
+			const choiceMsgText = choiceMsg.content.toLowerCase();
+			if (headsAliases.includes(choiceMsgText)) sideChoice = 'heads';
+			if (tailsAliases.includes(choiceMsgText)) sideChoice = 'tails';
+		});
 
-		// Ask for heads or tails.
-
-
-		// TODO: If timeout, reward both.
-		
+		// Refund if invalid input/timeout.
+		if (choiceCollected.size === 0 || !sideChoice) {
+			const failErrorText = `Coinflip failed/expired, both players refunded.`;
+			return MESSAGES.silentSelfDestruct(msg, failErrorText);
+		}
 
 		// Give reward
 		const rewardAmount = 2 * amount;
 
+		// Calculate chooser, winner, and loser.
+		const nonchooser = chooser.id === msg.author.id ? msg.author : firstReactor;
+		const winner = sideChoice === STATE.CHANCE.coin() ? chooser : nonchooser;
+		const loser = winner.id === msg.author.id ? msg.author : firstReactor;
+
 		// Provide feedback with silent ping.
 		const result = STATE.CHANCE.coin();
-		const resultText = `The coin lands on ${result}, you chose ???, x wins ${rewardAmount}x${goldCoin}`;
-		
-		
+		const choiceText = `${goldCoin} coin lands on ${result}, you chose ${sideChoice}`;
+		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin}, <@${loser.id}> loser.`;
 		MESSAGES.silentSelfDestruct(msg, resultText);
     }
 }

@@ -12,10 +12,10 @@ export default class TodoHelper {
 
         let dueText = `📝 **TODOs**\n\n` +
             `Due Now: ${due.length}\n` +
-            `Ongoing: ${todos.length - due.length}\n\n` +
+            `Ongoing: ${todos.length - due.length}\n` +
             `Total: ${todos.length}\n` +
 
-            `_Tip: Type and send !todo to create your todo task!_`;
+            `\n_Tip: Type and send !todo to create your todo task!_`;
 
         // Thank you Stocker for contributing this code.
         if (STATE.CHANCE.bool({ likelihood: 10 }))
