@@ -121,6 +121,9 @@ export default class FlipCommand extends CoopCommand {
 
 		// Calculate and give reward.
 		const rewardAmount = 2 * amount;
+
+		console.log('flip rewards', amount, rewardAmount);
+
 		const newTotal = await ITEMS.add(winner.id, 'GOLD_COIN', rewardAmount);
 
 		// Provide feedback with silent ping.
