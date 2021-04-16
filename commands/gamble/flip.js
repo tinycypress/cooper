@@ -68,9 +68,13 @@ export default class FlipCommand extends CoopCommand {
 		// } 
 
 		// Choose who gets to pick heads or tails
-		const chooser = STATE.CHANCE.coin() === 'tails' ? msg.author : firstReactor;
-		const nonchooser = chooser.id === firstReactor.id ? firstReactor : msg.author;
+		const chooserRoll = STATE.CHANCE.coin();
+		let chooser = msg.author;
+		let nonchooser = firstReactor;
+		if (chooserRoll === 'tails')
+			(chooser = firstReactor, nonchooser = msg.author);
 
+		// Acknowledge the join and start the game!
 		const playText = `<@${firstReactor.id}> joined <@${userID}>'s coinflip! <@${chooser.id}> gets to choose, say h/t/heads/tails to play!`;
 		const playMsg = await MESSAGES.silentSelfDestruct(msg, playText);
 
@@ -81,9 +85,6 @@ export default class FlipCommand extends CoopCommand {
 		const coinflipMsgFilter = m => {
 			const isChooser = m.author.id === chooser.id;
 			const isValid = coinOpts.includes(m.content.toLowerCase());
-
-			console.log(isChooser, isValid, m.content.toLowerCase())
-
 			return isValid && isChooser;
 		}
 
@@ -93,15 +94,11 @@ export default class FlipCommand extends CoopCommand {
 			coinflipMsgFilter, { max: 1, time: 30000 }
 		);
 
-		console.log(choiceCollected, choiceCollected.size);
-
 		// Parse the side/landing choice:
 		choiceCollected.map(choiceMsg => {
 			const choiceMsgText = choiceMsg.content.toLowerCase();
-			console.log('choice: ' + choiceMsgText);
 			if (headsAliases.includes(choiceMsgText)) sideChoice = 'heads';
 			if (tailsAliases.includes(choiceMsgText)) sideChoice = 'tails';
-			console.log(sideChoice);
 		});
 
 		// Refund if invalid input/timeout.
@@ -119,8 +116,8 @@ export default class FlipCommand extends CoopCommand {
 		const loser = sideChoice === winningRoll ? nonchooser : chooser;
 
 		// Provide feedback with silent ping.
-		const choiceText = `${goldCoin} coin lands on ${winningRoll}, you chose ${sideChoice}`;
-		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin}, <@${loser.id}> loser.`;
+		const choiceText = `${goldCoin} coin lands on ${winningRoll}, <@${chooser.id}> chose ${sideChoice}`;
+		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin}, <@${loser.id}> loser. <@${nonchooser.id}> did not chose.`;
 		MESSAGES.silentSelfDestruct(msg, resultText);
     }
 }

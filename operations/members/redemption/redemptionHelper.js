@@ -68,10 +68,19 @@ export default class RedemptionHelper {
             // Handle user approved.
             if (forVotes >= reqForVotes) {
                 // Add to database
-                COOP.USERS.addToDatabase(targetMember.user.id, targetMember.joinedDate);
+                await COOP.USERS.addToDatabase(targetMember.user.id, targetMember.joinedDate);
+
+                // Inform the user.
+                try {
+                    // TODO: Improve welcome text message to be more informative.
+                    targetMember.send('Thank you for joining, we value your presence! You were voted into The Coop and now have **full access**!');
+                } catch(e) {
+                    console.log('Failed to inform user via DM of their removal.', targetUser);
+                    console.error(e);
+                }
 
                 // Give intro roles
-                COOP.ROLES._addManyToMember(targetMember, STARTING_ROLES);
+                await COOP.ROLES._addManyToMember(targetMember, STARTING_ROLES);
                 
                 // Inform community.
                 COOP.CHANNELS._codes(['ENTRY', 'TALK'], 
@@ -80,19 +89,24 @@ export default class RedemptionHelper {
                     `${againstVotes ? `\n\n${EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
                 );
 
-                // TODO: Improve welcome text message to be more informative.
-                targetMember.send('You were voted into The Coop and now have full access!');
+               
 
             // Handle user rejected.
             } else if (againstVotes >= reqAgainstVotes) {
                 // Inform community.
                 COOP.CHANNELS._codes(['ENTRY', 'TALK'], `${targetUser.username} was voted out, removed and banned.`);
 
+                // Inform the user.
+                try {
+                    targetMember.send('You were voted out of The Coop.');
+                } catch(e) {
+                    console.log('Failed to inform user via DM of their removal.', targetUser);
+                    console.error(e);
+                }
+
                 // TODO: List current leaders/command for contact in order to appeal.
                 await targetMember.ban();
 
-                // Inform the user.
-                targetMember.send('You were voted out of The Coop.');
 
             } else {
                 // TODO: This way of preventing certain kinds of feedback spam should be refactored and reused everywhere.
