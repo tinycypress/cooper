@@ -69,6 +69,8 @@ export default class FlipCommand extends CoopCommand {
 
 		// Choose who gets to pick heads or tails
 		const chooser = STATE.CHANCE.coin() === 'tails' ? msg.author : firstReactor;
+		const nonchooser = chooser.id === firstReactor.id ? firstReactor : msg.author;
+
 		const playText = `<@${firstReactor.id}> joined <@${userID}>'s coinflip! <@${chooser.id}> gets to choose, say h/t/heads/tails to play!`;
 		const playMsg = await MESSAGES.silentSelfDestruct(msg, playText);
 
@@ -112,7 +114,7 @@ export default class FlipCommand extends CoopCommand {
 		const rewardAmount = 2 * amount;
 
 		// Calculate chooser, winner, and loser.
-		const nonchooser = chooser.id === msg.author.id ? msg.author : firstReactor;
+		
 		const winner = sideChoice === STATE.CHANCE.coin() ? chooser : nonchooser;
 		const loser = winner.id === msg.author.id ? msg.author : firstReactor;
 
