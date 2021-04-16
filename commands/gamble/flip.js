@@ -79,6 +79,9 @@ export default class FlipCommand extends CoopCommand {
 		const coinflipMsgFilter = m => {
 			const isChooser = m.author.id === chooser.id;
 			const isValid = coinOpts.includes(m.content.toLowerCase());
+
+			console.log(isChooser, isValid, m.content.toLowerCase())
+
 			return isValid && isChooser;
 		}
 
@@ -88,11 +91,15 @@ export default class FlipCommand extends CoopCommand {
 			coinflipMsgFilter, { max: 1, time: 30000 }
 		);
 
+		console.log(choiceCollected, choiceCollected.size);
+
 		// Parse the side/landing choice:
 		choiceCollected.map(choiceMsg => {
 			const choiceMsgText = choiceMsg.content.toLowerCase();
+			console.log('choice: ' + choiceMsgText);
 			if (headsAliases.includes(choiceMsgText)) sideChoice = 'heads';
 			if (tailsAliases.includes(choiceMsgText)) sideChoice = 'tails';
+			console.log(sideChoice);
 		});
 
 		// Refund if invalid input/timeout.
