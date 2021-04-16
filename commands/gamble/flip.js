@@ -60,9 +60,9 @@ export default class FlipCommand extends CoopCommand {
 		if (!firstReactor) return null;
 
 		// Check if reactor has coin qty, otherwise fail and refund game creator.
-		if (!await doesOwnDidUseGuard(firstReactor, GOLD_COIN, amount, msg)) {
+		if (!await doesOwnDidUseGuard(firstReactor, 'GOLD_COIN', amount, msg)) {
 			// Refund game creator
-			await ITEMS.add(userID, GOLD_COIN, amount)
+			await ITEMS.add(userID, 'GOLD_COIN', amount)
 
 			// Give refund/failure message.
 			MESSAGES.silentSelfDestruct(msg, `Game joiner couldn't afford, <@${userID}> refunded ${amount}x${goldCoin}.`);
