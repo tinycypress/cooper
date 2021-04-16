@@ -129,10 +129,10 @@ export default class MiningMinigame {
 
         // TODO: Adjust points and diamond rewards if more rocks
         // Add rare chances of a lot of rocks
-        if (STATE.CHANCE.bool({ likelihood: .8 }))
+        if (STATE.CHANCE.bool({ likelihood: 5 }))
             magnitude = STATE.CHANCE.natural({ min: base * 5, max: base * 20 });
 
-        if (STATE.CHANCE.bool({ likelihood: .05 }))
+        if (STATE.CHANCE.bool({ likelihood: 1 }))
             magnitude = STATE.CHANCE.natural({ min: base * 7, max: base * 35 });
 
         const rockMsg = await COOP.CHANNELS._randomText().send(EMOJIS.ROCK.repeat(magnitude));

@@ -129,10 +129,10 @@ export default class WoodcuttingMinigame {
 
         let magnitude = STATE.CHANCE.natural({ min: base, max: base * 5 });
 
-        if (STATE.CHANCE.bool({ likelihood: .8 }))
+        if (STATE.CHANCE.bool({ likelihood: 5 }))
             magnitude = STATE.CHANCE.natural({ min: base * 5, max: base * 20 });
 
-        if (STATE.CHANCE.bool({ likelihood: .05 }))
+        if (STATE.CHANCE.bool({ likelihood: 1 }))
             magnitude = STATE.CHANCE.natural({ min: base * 7, max: base * 35 });
 
         const woodMsg = await COOP.CHANNELS._randomText().send(EMOJIS.WOOD.repeat(magnitude));
