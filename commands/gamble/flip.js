@@ -74,20 +74,32 @@ export default class FlipCommand extends CoopCommand {
 
 		// Await messages from chooser "h" "heads" or "t" "tails"
 		const coinOpts = ['h', 't', 'heads', 'tails', 'head', 'tail']
-		const coinflipMsgFilter = m => 
-			m.author.id === chooser.id && 
-			coinOpts.includes(m.content.toLowerCase);
+		const coinflipMsgFilter = m => {
+			const isChooser = m.author.id === chooser.id;
+			const isValid = coinOpts.includes(m.content.toLowerCase());
+
+			console.log(m.content, m.author.id, chooser.id);
+
+			return isValid && isChooser;
+		}
 
 		// Collect the choice of the selected chooser.
 		const choiceCollected = await playMsg.channel.awaitMessages(
 			coinflipMsgFilter, { max: 1, time: 30000 }
 		);
 
+		
 		console.log(choiceCollected);
-
+		
 		choiceCollected.map(choice => console.log(choice));
+		
+		console.log(choiceCollected.size, choiceCollected.length);
 
 		// Ask for heads or tails.
+
+
+		// TODO: If timeout, reward both.
+		
 
 		// Give reward
 		const rewardAmount = 2 * amount;

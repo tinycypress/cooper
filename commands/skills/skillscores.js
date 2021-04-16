@@ -57,6 +57,13 @@ export default class SkillScoresCommand extends CoopCommand {
 			} else {
 				const skillLeaderboard = await SkillsHelper.getSkillXPLeaderboard(skill);
 
+				// Sort the skill leaderboard
+				skillLeaderboard.sort((a, b) => {
+					const aXP = a[skill] || 0;
+					const bXP = b[skill] || 0;
+					return aXP < bXP ? 1 : -1
+				});
+
 				const skillLeaderboardText = `**Top ${15 + position} ${skill} XP skillers**\n\n` + 
 					skillLeaderboard.map((skillRow, index) => {
 						const { user } = COOP.USERS._get(skillRow.player_id);
