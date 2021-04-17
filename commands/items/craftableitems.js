@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP from '../../origin/coop';
-import CraftingHelper from '../../operations/minigames/medium/skills/crafting/craftingHelper.js'
+import CraftingHelper from '../../operations/minigames/medium/skills/crafting/craftingHelper';
 
 export default class CraftableItemsCommand extends CoopCommand {
 
@@ -9,7 +9,7 @@ export default class CraftableItemsCommand extends CoopCommand {
 			name: 'craftableitems',
 			group: 'items',
 			memberName: 'craftableitems',
-			aliases: [],
+			aliases: ['craftables', 'craftitems'],
 			description: 'Check craftable items',
 			details: `details`,
 			examples: ['craftableitems']
@@ -18,18 +18,17 @@ export default class CraftableItemsCommand extends CoopCommand {
 
 	async run(msg) {
 		super.run(msg);
-        // Store user craftables in array to display them later.
-        let userCraftables = [];
-        // Loop though array of craftables and check if user can craft them.
-        let craftables = Object.keys(CraftingHelper.CRAFTABLES);
-        craftables.map((craftable) => {
-           if(canFulfilIngredients(msg.author.id, craftable, 1)) {
-               userCraftables.push(craftable);
-           }
-        });
-
-        const msgText = `Your craftable items are: ${userCraftables.join(', ')}`;
-        COOP.MESSAGES.selfDestruct(msg, msgText);
+        // Get array of usercraftable items.
+        try {
+            let userCraftables = await CraftingHelper.userCraftables(msg.author.id);
+            // Say that user doesn't have any items to craft if the usercraftable array is empty.
+            const msgText = userCraftables.length ? `Your craftable items are: ${userCraftables.join(', ')}` : 'There are no items that you can craft';
+            COOP.MESSAGES.selfDestruct(msg, msgText);
+        } catch(e) {
+            console.log('An error ocurred while getting usercraftable items');
+            console.error(e);
+        }
     }
+
     
 }
