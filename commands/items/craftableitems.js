@@ -9,7 +9,7 @@ export default class CraftableItemsCommand extends CoopCommand {
 			name: 'craftableitems',
 			group: 'items',
 			memberName: 'craftableitems',
-			aliases: ['craftables', 'craftitems'],
+			aliases: ['craftables', 'craftitems', 'cancraft'],
 			description: 'Check craftable items',
 			details: `details`,
 			examples: ['craftableitems']

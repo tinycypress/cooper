@@ -37,6 +37,7 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        
         // Help command stub
 
         // EventsHelper.runInterval(status, 2000);
