@@ -49,7 +49,7 @@ export default class TodoHelper {
     static remove(todoID) {
         return DatabaseHelper.singleQuery({
             name: `remove-todo`,
-            text: `SELECT * FROM todos WHERE id = $1`,
+            text: `DELETE FROM todos WHERE id = $1`,
             values: [todoID]
         });   
     }
