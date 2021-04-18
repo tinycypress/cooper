@@ -98,28 +98,31 @@ export default class HelpCommand extends CoopCommand {
 				.filter(group => !hiddenGroups.includes(group.id))
 
 			const fmtVisibleGroupsNames = visibleGroups
-				.map(({ name }, i) => i === 0 ? MESSAGES.titleCase(name) : name.toLowerCase())
 				// Add new line every 4
 				.reduce((acc, name, i) => {
-					if (i === visibleGroups.length - 1) acc.push(name + '.');
-					else acc.push(name + ', ');
+					if (i === 0) {
+						acc.push(MESSAGES.titleCase(name) + ', ');
+					} else {
+						if (i === visibleGroups.length - 1) acc.push(name + '.');
+						else acc.push(name + ', ');
+					}
+					
 					if (i > 0 && i % 4 === 0) acc.push('\n');	
 					return acc;
 				}, []);
 
-			console.log('commandName', commandName);
 			console.log('command', command);
 			console.log('categoryName', categoryName);
 			console.log('msgContent', msgContent);
 
-			if (!categoryName && !commandName)
+			if (!categoryName && !command)
 				return msg.direct(`**Available Command Groups**:\n` +
 				`We have the following __groups__ of commands, you can easily check the contents of each below group and view command specifics via !help <command or group name>.\n\n` +
 				fmtVisibleGroupsNames.join('') + 
 				`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`);
 
-			if (commandName) {
-				return msg.direct(`**${commandName} specifics:**\n\n` +
+			if (command) {
+				return msg.direct(`**${MESSAGES.titleCase(command.name)} specifics:**\n\n` +
 					`Name: ${command.name}` +
 					`Group: ${command.groupID}` +
 					`Description: ${command.description}`);
