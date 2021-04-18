@@ -13,23 +13,23 @@ export default () => {
     // Register command groups.
     client.registry
         .registerGroups([ 
-            ['info', 'description'],
-            ['community', 'description'],
-            ['election', 'description'],
-            ['sacrifice', 'description'],
-            ['util', 'description'],
-            ['messages', 'description'],
-            ['items', 'description'],
-            ['economy', 'description'],
-            ['productivity', 'description'],
-            ['skills', 'description'],
-            ['misc', 'description'],
-            ['points', 'description'],
-            ['gamble', 'description'],
-            ['structures', 'description'],
-            ['mod', 'description'],
-            ['conquest', 'description']
-        ])
+            ['info', 'Information'],
+            ['community', 'Community'],
+            ['election', 'Election'],
+            ['sacrifice', 'Sacrifice'],
+            ['util', 'Utility'],
+            ['messages', 'Message'],
+            ['items', 'Item'],
+            ['economy', 'Economy'],
+            ['productivity', 'Productivity'],
+            ['skills', 'Skills'],
+            ['misc', 'Miscellaneous'],
+            ['points', 'Points'],
+            ['gamble', 'Gamble'],
+            ['structures', 'Structures'],
+            ['mod', 'Moderation'],
+            ['conquest', 'Conquest']
+        ]);
         
         // Register default types for args usage.
         .registerDefaultTypes()

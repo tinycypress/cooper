@@ -43,6 +43,8 @@ export default class TodoCommand extends CoopCommand {
 		if (isNaN(dueDate))
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is invalid duration for a todo task.`);
 
+		// TODO: Integrate complexity system!! Get people to rank how hard their tasks are.
+
 
 		// Calculate unix secs for due/deadline.
 		const dueSecs = Math.round(dueDate.getTime() / 1000);
