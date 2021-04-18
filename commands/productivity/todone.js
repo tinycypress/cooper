@@ -41,7 +41,7 @@ export default class TodoCommand extends CoopCommand {
 		const inputTodo = todoID;
 
 		// Invalid input time feedback
-		todoID = parseInt(due);
+		todoID = parseInt(todoID);
 		if (isNaN(todoID))
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, #${inputTodo} is an invalid todo #ID.`);
 
