@@ -110,11 +110,15 @@ export default class HelpCommand extends CoopCommand {
                 const category = this.commando.registry.groups.get(categoryName);
                 const commandsInCategory = category.commands.map(cmd => cmd.memberName);
 
+				// Default to empty text.
 				let categoryHelpText = `${categoryName} category doesn\'t have any commands`;
 
-				const categoryHelpText = `**${categoryName} specifics:**\n\n` +
-				`Description: ${category.name}\n` +
-                `List of commands: ${commandsInCategory.join(', ')}\n`;
+				if (!commandsInCategory.length) {
+					categoryHelpText = `**${categoryName} specifics:**\n\n` +
+						`Description: ${category.name}\n` +
+						`List of commands: ${commandsInCategory.join(', ')}\n`;
+				}
+
 
                 msg.direct(categoryHelpText)
 			}
