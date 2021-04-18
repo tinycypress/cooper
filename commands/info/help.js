@@ -45,16 +45,6 @@ export default class HelpCommand extends CoopCommand {
 			.filter(group => !hiddenGroups.includes(group.id))
 			.map(group => group.id.toLowerCase());
 
-		const commandNames = [];
-		// Store command names to detect matches and provide helpful/detailed feedback.
-		const commandsArray = [];
-		this.commando.registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
-			.map(cmd => {
-				commandNames.push(cmd.memberName.toLowerCase());
-
-				commandsArray.push(cmd);
-			});
-
 		// Check if msgContent matches a category name and check that the msgContent is not only a part of the category name.
 		let categoryName = null;
 		const categoryNamesRegex = new RegExp(categoryNames.join('|'), 'g');
@@ -64,13 +54,26 @@ export default class HelpCommand extends CoopCommand {
         }
 
 
+		const commandNames = [];
+		// Store command names to detect matches and provide helpful/detailed feedback.
+		const commandsArray = [];
+		this.commando.registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
+			.map(cmd => {
+				commandNames.push(cmd.memberName.toLowerCase());
+				commandsArray.push(cmd);
+			});
+
+
 		// Check if msgContent matches a command name and check that the command name doesn't only contain the message
 		let commandName = null;
 		let command = null;
 
 		const aliasAndCmdNamesJoined = commandsArray.map(cmd => {
 			return [cmd.aliases.join('|'), cmd.memberName].join('|');
-		}); 
+		});
+
+		console.log(aliasAndCmdNamesJoined);
+
 		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined.join('|'), 'g');
         const commandMatch = commandNamesRegex.exec(msgContent);
         if (commandMatch) {
@@ -90,12 +93,13 @@ export default class HelpCommand extends CoopCommand {
 			const visibleGroups = this.commando.registry.groups
 				.filter(group => !hiddenGroups.includes(group.id))
 
-			const visibleGroupsNames = visibleGroups
+			const fmtVisibleGroupsNames = visibleGroups
 				.map(({ name }, i) => i === 0 ? MESSAGES.titleCase(name) : name.toLowerCase())
 				// Add new line every 4
 				.reduce((acc, name, i) => {
-					acc.push(name);
-					if (i % 4) acc.push('\n');
+					if (i === visibleGroups.length - 1) acc.push(name + '.');
+					else acc.push(name + ',');
+					if (i % 4 === 0) acc.push('\n');
 					return acc;
 				}, []);
 
@@ -105,7 +109,7 @@ export default class HelpCommand extends CoopCommand {
 				const groupsText = `**Available Command Groups**:\n` +
 					`We have the following __groups__ of commands, you can easily check the contents of each below group and view command specifics via !help <command or group name>.\n\n` +
 
-					visibleGroupsNames.join(', ') + 
+					fmtVisibleGroupsNames.join('') + 
 				
 					`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`;
 	
@@ -141,7 +145,7 @@ export default class HelpCommand extends CoopCommand {
         } catch(e) {
 			console.log('Help error.')
 			console.error(e);
-           msg.reply('Unable to send you the help DM. You probably have DMs disabled.');
+			msg.reply('Unable to send you the help DM. You probably have DMs disabled.');
         }
     }
     
