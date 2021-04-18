@@ -71,7 +71,7 @@ export default class HelpCommand extends CoopCommand {
 			return [...cmd.aliases, cmd.memberName].join('|');
 		}).join('|');
 
-		const commandNamesRegex = new RegExp(`(?:${aliasAndCmdNamesJoined})`, 'g');
+		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent)[0] || null;
 
         if (commandMatch) {
@@ -84,7 +84,7 @@ export default class HelpCommand extends CoopCommand {
 
 
         try {
-			// TODO: Fix the conflict between duplicates?
+			// TODO: Fix the conflict between duplicates
 			const visibleGroups = this.commando.registry.groups
 				.filter(group => !hiddenGroups.includes(group.id))
 
@@ -108,13 +108,6 @@ export default class HelpCommand extends CoopCommand {
 				fmtVisibleGroupsNames.join('') + 
 				`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`);
 
-			if (command) {
-				return msg.direct(`**${MESSAGES.titleCase(command.name)} specifics:**\n\n` +
-					`Name: ${command.name}\n` +
-					`Group: ${command.groupID}\n` +
-					`Description: ${command.description}`);
-			}
-			
 			if (categoryName) {
                 const category = this.commando.registry.groups.get(categoryName);
                 const commandsInCategory = category.commands.map(cmd => cmd.memberName);
@@ -129,6 +122,13 @@ export default class HelpCommand extends CoopCommand {
 				}
 
                 return msg.direct(categoryHelpText)
+			}
+
+			if (command) {
+				return msg.direct(`**${MESSAGES.titleCase(command.name)} specifics:**\n\n` +
+					`Name: ${command.name}\n` +
+					`Group: ${command.groupID}\n` +
+					`Description: ${command.description}`);
 			}
 
         } catch(e) {
