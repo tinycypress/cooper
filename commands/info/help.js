@@ -23,7 +23,9 @@ export default class HelpCommand extends CoopCommand {
 		super.run(msg);
 
 		// TODO: ADD STATISTICS + SATISFACTION FEEDBACK FOR HELP
-
+		// TODO: MAKE IT WORK FOR ALIASES TOO
+		
+		const message = msg.content.replace('!help ', '');
 		// Improve hidden to filter by roles
 		const hiddenCommands = [
 			'nuke',
@@ -50,19 +52,18 @@ export default class HelpCommand extends CoopCommand {
 		// Check if message matches a category name and check that the message is not only a part of the category name.
 		let categoryName = null;
 		const categoryNamesRegex = new RegExp(categoryNames.join('|'), 'g');
-        const categoryMatches = categoryNamesRegex.exec(msg.content);
+        const categoryMatches = categoryNamesRegex.exec(message);
         if(categoryMatches) {
-			categoryName =  categoryMatches.filter(categoryName => categoryName === msg.content).toString();
+			categoryName =  categoryMatches.filter(categoryName => categoryName === message).toString();
         }
 		// Check if message matches a command name and check that the command name doesn't only contain the message
 		let commandName = null
 		const commandNamesRegex = new RegExp(commandNames.join('|'), 'g');
-        const commandMatch = commandNamesRegex.exec(msg.content);
+        const commandMatch = commandNamesRegex.exec(message);
         if(commandMatch) {
-			commandName =  commandMatch.filter(commandName => commandName === msg.content).toString();
+			commandName =  commandMatch.filter(commandName => commandName === message).toString();
         }
 
-		// console.log('commandMatches', commandMatches);
 
         try {
 			// TODO: Implement properly.
@@ -76,7 +77,7 @@ export default class HelpCommand extends CoopCommand {
 					}).join(', ') + 
 					`.\n\n_To find out more about a command group type and send: !help <group_name>_`;
 	
-				console.log(groupsText);
+				msg.direct(groupsText);
 			}
 
 			if (commandName) {
@@ -89,7 +90,7 @@ export default class HelpCommand extends CoopCommand {
 				description: ${command.description}
 				`
 
-				console.log(commandHelpText);
+				msg.direct(commandHelpText);
 				
 			} else if (categoryName) {
                 let category = this.commando.registry.groups.get(categoryName);
@@ -99,14 +100,15 @@ export default class HelpCommand extends CoopCommand {
 				`
 				**${categoryName} specifics:**\n\n
                 list of commands: ${commandsInCategory.length ?  commandsInCategory.join(', ') : 'this category doesn\'t have any commands'}
+				Description: ${category.name}
                 `
-                console.log(categoryHelpText)
+                msg.direct(categoryHelpText)
 			}
 
         } catch(e) {
 			console.log('Help error.')
 			console.error(e);
-           console.log('Unable to send you the help DM. You probably have DMs disabled.');
+           msg.reply('Unable to send you the help DM. You probably have DMs disabled.');
         }
     }
     

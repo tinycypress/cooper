@@ -38,8 +38,8 @@ const shallowBot = async () => {
         
         //big test
         
-		// TODO: ADD STATISTICS + SATISFACTION FEEDBACK FOR HELP
-		let message = 'flip'
+		let initialMessage = '!help flip'
+		const message = initialMessage.replace('!help ', '');
 		// Improve hidden to filter by roles
 		const hiddenCommands = [
 			'nuke',
@@ -61,7 +61,7 @@ const shallowBot = async () => {
 		// Store command names to detect matches and provide helpful/detailed feedback.
 		const commandNames = [];
 		client().registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
-		.map(cmd => commandNames.push(cmd.memberName.toLowerCase()));
+			.map(cmd => commandNames.push(cmd.memberName.toLowerCase()));
 
 		// Check if message matches a category name and check that the message is not only a part of the category name.
 		let categoryName = null;
@@ -78,7 +78,6 @@ const shallowBot = async () => {
 			commandName =  commandMatch.filter(commandName => commandName === message).toString();
         }
 
-		// console.log('commandMatches', commandMatches);
 
         try {
 			// TODO: Implement properly.
@@ -115,6 +114,7 @@ const shallowBot = async () => {
 				`
 				**${categoryName} specifics:**\n\n
                 list of commands: ${commandsInCategory.length ?  commandsInCategory.join(', ') : 'this category doesn\'t have any commands'}
+				Description: ${category.name}
                 `
                 console.log(categoryHelpText)
 			}
@@ -124,7 +124,6 @@ const shallowBot = async () => {
 			console.error(e);
            console.log('Unable to send you the help DM. You probably have DMs disabled.');
         }
-		console.log(client().registry.groups.get('conquest'))
         // Help command stub
 
         // EventsHelper.runInterval(status, 2000);
