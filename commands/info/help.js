@@ -66,7 +66,6 @@ export default class HelpCommand extends CoopCommand {
 
 
 		// Check if msgContent matches a command name and check that the command name doesn't only contain the message
-		let commandName = null;
 		let command = null;
 
 		const aliasAndCmdNamesJoined = commandsArray.map(cmd => {
@@ -76,24 +75,17 @@ export default class HelpCommand extends CoopCommand {
 		const commandNamesRegex = new RegExp(`(?:${aliasAndCmdNamesJoined})`, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent)[0] || null;
 
-		console.log(commandMatch);
-
         if (commandMatch) {
-			// commandName = commandMatch.filter(commandName => commandName === msgContent).toString();
-
 			// Try to find the command amongst aliases too.
 			this.commando.registry.commands.map(cmd => {
 				if (commandMatch === cmd.commandName) command = cmd;
 				if (cmd.aliases.includes(commandMatch)) command = cmd;
-
-				console.log(cmd.aliases.includes(commandMatch));
 			});
         }
 
 
         try {
 			// TODO: Fix the conflict between duplicates?
-
 			const visibleGroups = this.commando.registry.groups
 				.filter(group => !hiddenGroups.includes(group.id))
 
@@ -106,14 +98,10 @@ export default class HelpCommand extends CoopCommand {
 						if (i === visibleGroups.length - 1) acc.push(name + '.');
 						else acc.push(name + ', ');
 					}
-					
+
 					if (i > 0 && i % 4 === 0) acc.push('\n');	
 					return acc;
 				}, []);
-
-			console.log('command', command);
-			console.log('categoryName', categoryName);
-			console.log('msgContent', msgContent);
 
 			if (!categoryName && !command)
 				return msg.direct(`**Available Command Groups**:\n` +
@@ -123,8 +111,8 @@ export default class HelpCommand extends CoopCommand {
 
 			if (command) {
 				return msg.direct(`**${MESSAGES.titleCase(command.name)} specifics:**\n\n` +
-					`Name: ${command.name}` +
-					`Group: ${command.groupID}` +
+					`Name: ${command.name}\n` +
+					`Group: ${command.groupID}\n` +
 					`Description: ${command.description}`);
 			}
 			
@@ -136,7 +124,7 @@ export default class HelpCommand extends CoopCommand {
 				let categoryHelpText = `${categoryName} category doesn\'t have any commands`;
 
 				if (!commandsInCategory.length) {
-					categoryHelpText = `**${categoryName} specifics:**\n\n` +
+					categoryHelpText = `**!${categoryName} category's specifics:**\n\n` +
 						`Description: ${category.name}\n` +
 						`List of commands: ${commandsInCategory.join(', ')}\n`;
 				}
