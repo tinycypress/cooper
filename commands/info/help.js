@@ -119,7 +119,7 @@ export default class HelpCommand extends CoopCommand {
 				let categoryHelpText = `${categoryName} category doesn\'t have any commands`;
 
 				if (commandsInCategory.length > 0) {
-					categoryHelpText = `**!${categoryName} category's specifics:**\n\n` +
+					categoryHelpText = `**${categoryName} category's specifics:**\n\n` +
 						`Description: ${category.name}\n` +
 						`List of commands: ${commandsInCategory.join(', ')}\n`;
 				}
