@@ -75,6 +75,9 @@ export default class HelpCommand extends CoopCommand {
 
 		const commandNamesRegex = new RegExp(`(?:${aliasAndCmdNamesJoined})`, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent);
+
+		console.log(commandMatch);
+
         if (commandMatch) {
 			commandName = commandMatch.filter(commandName => commandName === msgContent).toString();
 
@@ -82,6 +85,8 @@ export default class HelpCommand extends CoopCommand {
 			this.commando.registry.commands.map(cmd => {
 				if (commandMatch === cmd.commandName) command = cmd;
 				if (cmd.aliases.includes(commandMatch)) command = cmd;
+
+				console.log(cmd.aliases.includes(commandMatch));
 			});
         }
 
