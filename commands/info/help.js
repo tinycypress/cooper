@@ -11,7 +11,7 @@ export default class HelpCommand extends CoopCommand {
 			name: 'help',
 			group: 'info',
 			memberName: 'help',
-			aliases: [],
+			aliases: ['h'],
 			description: 'Help will always be granted at The Coop to those who ask for it.',
 			details: `Details`,
 			examples: ['help', 'help prefix'],

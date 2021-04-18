@@ -9,7 +9,8 @@ import registerLogging from './origin/setup/logging';
 import eventsManifest from './operations/manifest';
 
 // Singleton state accessor
-import STATE from './origin/state';
+import { ITEMS, MESSAGES, STATE } from './origin/coop';
+import UsableItemHelper from './operations/minigames/medium/economy/items/usableItemHelper';
 
 
 // Run the production bot.
@@ -40,5 +41,8 @@ export default async function bootstrap() {
     await CDNManager.start();
 
     // Set activity.
-    botClient.user.setActivity('🍖🍖 SPAM REFORM 2025 🍖🍖', { type: 'WATCHING' });
+    const items = UsableItemHelper.getUsableItems();
+    const randomItem = STATE.CHANCE.pickone(items);
+    const itemEmoji = MESSAGES._displayEmojiCode(randomItem);
+    botClient.user.setActivity(`${itemEmoji} !help `, { type: 'WATCHING' });
 }
