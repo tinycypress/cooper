@@ -233,8 +233,6 @@ export default class ChannelHelper {
         return result;
     }
 
-
-
     static checkIsByCode(id, code) {
         const channel = CHANNELS_CONFIG[code];
 
@@ -243,5 +241,6 @@ export default class ChannelHelper {
         return result;
     }
 
+    static textRef(code) { return `<#${CHANNELS_CONFIG[code].id}>`; }
 
 }
