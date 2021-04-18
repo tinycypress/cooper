@@ -73,7 +73,7 @@ export default class TodoCommand extends CoopCommand {
 		
 		// TODO: Add stars to success message and some kind of reaction event for stars now..? Validate DONE
 		const successTodoText = `<@${msg.author.id}>, marked todo #${todoID} as done! Posted to ${CHANNELS.textRef('SUCCESS')}:\n\n` +
-			todo.title;
+			`"${todo.title}"`;
 
 		CHANNELS.silentPropagate(msg, successTodoText, 'SUCCESS');
     }

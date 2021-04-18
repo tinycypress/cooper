@@ -41,8 +41,8 @@ export default async function bootstrap() {
     await CDNManager.start();
 
     // Set activity.
-    const items = UsableItemHelper.getUsableItems();
-    const randomItem = STATE.CHANCE.pickone(items);
-    const itemEmoji = MESSAGES._displayEmojiCode(randomItem);
-    botClient.user.setActivity(`${itemEmoji} !help `, { type: 'WATCHING' });
+    // const items = UsableItemHelper.getUsableItems();
+    // const randomItem = STATE.CHANCE.pickone(items);
+    // const itemEmoji = MESSAGES._displayEmojiCode(randomItem);
+    botClient.user.setActivity(`!help `, { type: 'WATCHING' });
 }
