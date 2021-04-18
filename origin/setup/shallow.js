@@ -8,6 +8,8 @@ import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
 import EventsHelper from '../../operations/eventsHelper';
 
 import { status } from '../../operations/marketing/rewards/loyalty';
+import CraftingHelper from '../../operations/minigames/medium/skills/crafting/craftingHelper';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -35,7 +37,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        
         // Help command stub
 
         // EventsHelper.runInterval(status, 2000);

@@ -121,4 +121,21 @@ export default class CraftingHelper {
         }
     }
 
+    static async userCraftables(userID) {
+        let userCraftables = [];
+            // Loop though array of craftables and check if user can craft them.
+            let craftables = Object.keys(CraftingHelper.CRAFTABLES);
+            for(let i = 0; i < craftables.length; i++) {
+                let craftable = craftables[i]
+                // Check if user has enough ingredients and a high enough level.
+                const hasIngredients = await CraftingHelper.canFulfilIngredients(userID, craftable, 1);
+                const crafterLevel = await SkillsHelper.getLevel('crafting',userID);
+                const reqLevel = CraftingHelper.CRAFTABLES[craftable].levelReq;
+                if(hasIngredients && crafterLevel >= reqLevel) {
+                   userCraftables.push(craftable);
+                }
+            }
+            return userCraftables;
+    }
+
 }
