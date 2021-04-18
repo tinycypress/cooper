@@ -73,8 +73,6 @@ export default class HelpCommand extends CoopCommand {
 			return [...cmd.aliases, cmd.memberName].join('|');
 		}).join('|');
 
-		console.log(aliasAndCmdNamesJoined);
-
 		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent);
         if (commandMatch) {
@@ -104,29 +102,24 @@ export default class HelpCommand extends CoopCommand {
 					return acc;
 				}, []);
 
-			console.log(categoryName, commandName, msgContent);
+			console.log('commandName', commandName);
+			console.log('categoryName', categoryName);
+			console.log('msgContent', msgContent);
 
-			if (!categoryName && !commandName) {
-				const groupsText = `**Available Command Groups**:\n` +
-					`We have the following __groups__ of commands, you can easily check the contents of each below group and view command specifics via !help <command or group name>.\n\n` +
-
-					fmtVisibleGroupsNames.join('') + 
-				
-					`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`;
-	
-				msg.direct(groupsText);
-			}
+			if (!categoryName && !commandName)
+				return msg.direct(`**Available Command Groups**:\n` +
+				`We have the following __groups__ of commands, you can easily check the contents of each below group and view command specifics via !help <command or group name>.\n\n` +
+				fmtVisibleGroupsNames.join('') + 
+				`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`);
 
 			if (commandName) {
-				const commandHelpText = 
-					`**${commandName} specifics:**\n\n` +
+				return msg.direct(`**${commandName} specifics:**\n\n` +
 					`Name: ${command.name}` +
 					`Group: ${command.groupID}` +
-					`Description: ${command.description}`;
-
-				msg.direct(commandHelpText);
-				
-			} else if (categoryName) {
+					`Description: ${command.description}`);
+			}
+			
+			if (categoryName) {
                 const category = this.commando.registry.groups.get(categoryName);
                 const commandsInCategory = category.commands.map(cmd => cmd.memberName);
 
@@ -139,8 +132,7 @@ export default class HelpCommand extends CoopCommand {
 						`List of commands: ${commandsInCategory.join(', ')}\n`;
 				}
 
-
-                msg.direct(categoryHelpText)
+                return msg.direct(categoryHelpText)
 			}
 
         } catch(e) {
