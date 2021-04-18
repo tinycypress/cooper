@@ -29,7 +29,7 @@ export default () => {
             ['structures', 'Structures'],
             ['mod', 'Moderation'],
             ['conquest', 'Conquest']
-        ])
+        ]);
         
         // Register default types for args usage.
         .registerDefaultTypes()
