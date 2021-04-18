@@ -10,7 +10,7 @@ export default class AllCraftablesCommand extends CoopCommand {
 			group: 'items',
 			memberName: 'allcraftables',
 			aliases: ['allcraftableitems'],
-			description: 'Check craftable items',
+			description: 'Displays a list list of all the items that can be crafted',
 			details: `details`,
 			examples: ['allcraftables']
 		});
