@@ -73,7 +73,7 @@ export default class HelpCommand extends CoopCommand {
 			return [...cmd.aliases, cmd.memberName].join('|');
 		}).join('|');
 
-		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined, 'g');
+		const commandNamesRegex = new RegExp(`(?:${aliasAndCmdNamesJoined})`, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent);
         if (commandMatch) {
 			commandName = commandMatch.filter(commandName => commandName === msgContent).toString();
@@ -103,6 +103,7 @@ export default class HelpCommand extends CoopCommand {
 				}, []);
 
 			console.log('commandName', commandName);
+			console.log('command', command);
 			console.log('categoryName', categoryName);
 			console.log('msgContent', msgContent);
 
