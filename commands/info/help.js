@@ -76,7 +76,7 @@ export default class HelpCommand extends CoopCommand {
 			commandName = commandMatch.filter(commandName => commandName === msgContent).toString();
 
 			// Try to find the command amongst aliases too.
-			commands.map(cmd => {
+			this.commando.registry.commands.map(cmd => {
 				if (commandMatch === cmd.commandName) command = cmd;
 				if (cmd.aliases.includes(commandMatch)) command = cmd;
 			});
