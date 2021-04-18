@@ -60,6 +60,7 @@ export default class HelpCommand extends CoopCommand {
 		this.commando.registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
 			.map(cmd => {
 				commandNames.push(cmd.memberName.toLowerCase());
+				commandNames.push(...cmd.aliases);
 				commandsArray.push(cmd);
 			});
 
@@ -69,12 +70,12 @@ export default class HelpCommand extends CoopCommand {
 		let command = null;
 
 		const aliasAndCmdNamesJoined = commandsArray.map(cmd => {
-			return [cmd.aliases.join('|'), cmd.memberName].join('|');
-		});
+			return [...cmd.aliases, cmd.memberName].join('|');
+		}).join('|');
 
 		console.log(aliasAndCmdNamesJoined);
 
-		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined.join('|'), 'g');
+		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent);
         if (commandMatch) {
 			commandName = commandMatch.filter(commandName => commandName === msgContent).toString();
@@ -98,8 +99,8 @@ export default class HelpCommand extends CoopCommand {
 				// Add new line every 4
 				.reduce((acc, name, i) => {
 					if (i === visibleGroups.length - 1) acc.push(name + '.');
-					else acc.push(name + ',');
-					if (i % 4 === 0) acc.push('\n');
+					else acc.push(name + ', ');
+					if (i > 0 && i % 4 === 0) acc.push('\n');	
 					return acc;
 				}, []);
 
