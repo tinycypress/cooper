@@ -25,7 +25,7 @@ export default class HelpCommand extends CoopCommand {
 		// TODO: ADD STATISTICS + SATISFACTION FEEDBACK FOR HELP
 		// TODO: MAKE IT WORK FOR ALIASES TOO
 		
-		const message = msg.content.replace('!help ', '');
+		const msgContent = msg.content.replace('!help ', '');
 		// Improve hidden to filter by roles
 		const hiddenCommands = [
 			'nuke',
@@ -44,64 +44,78 @@ export default class HelpCommand extends CoopCommand {
 			.filter(group => !hiddenGroups.includes(group.id))
 			.map(group => group.id.toLowerCase());
 
-		// Store command names to detect matches and provide helpful/detailed feedback.
 		const commandNames = [];
+		// Store command names to detect matches and provide helpful/detailed feedback.
+		const commandsArray = [];
 		this.commando.registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
-			.map(cmd => commandNames.push(cmd.memberName.toLowerCase()));
+			.map(cmd => {
+				commandNames.push(cmd.memberName.toLowerCase());
 
-		// Check if message matches a category name and check that the message is not only a part of the category name.
+				commandsArray.push(cmd);
+			});
+
+		// Check if msgContent matches a category name and check that the msgContent is not only a part of the category name.
 		let categoryName = null;
 		const categoryNamesRegex = new RegExp(categoryNames.join('|'), 'g');
-        const categoryMatches = categoryNamesRegex.exec(message);
+        const categoryMatches = categoryNamesRegex.exec(msgContent);
         if(categoryMatches) {
-			categoryName =  categoryMatches.filter(categoryName => categoryName === message).toString();
+			categoryName =  categoryMatches.filter(categoryName => categoryName === msgContent).toString();
         }
-		// Check if message matches a command name and check that the command name doesn't only contain the message
-		let commandName = null
-		const commandNamesRegex = new RegExp(commandNames.join('|'), 'g');
+
+
+		// Check if msgContent matches a command name and check that the command name doesn't only contain the message
+		let commandName = null;
+		let command = null;
+
+		const aliasAndCmdNamesJoined = commandsArray.map(cmd => {
+			return [cmd.aliases.join('|'), cmd.memberName].join('|');
+		}); 
+		const commandNamesRegex = new RegExp(aliasAndCmdNamesJoined.join('|'), 'g');
         const commandMatch = commandNamesRegex.exec(message);
-        if(commandMatch) {
-			commandName =  commandMatch.filter(commandName => commandName === message).toString();
+        if (commandMatch) {
+			commandName = commandMatch.filter(commandName => commandName === message).toString();
+
+			// Try to find the command amongst aliases too.
+			commands.map(cmd => {
+				if (commandMatch === cmd.commandName) command = cmd;
+				if (cmd.aliases.includes(commandMatch)) command = cmd;
+			});
         }
 
 
         try {
-			// TODO: Implement properly.
+			// TODO: Fix the conflict between duplicates?
 
 			if (!categoryName && !commandName) {
 				const groupsText = `**Available Command Groups**:\n\n` +
 					this.commando.registry.groups
 					.filter(group => !hiddenGroups.includes(group.id))
-					.map((group, index) => {
-						return index === 0 ? group.name : group.name.toLowerCase();
-					}).join(', ') + 
+					.map((group, index) => index === 0 ? group.name : group.name.toLowerCase())
+						.join(', ') + 
 					`.\n\n_To find out more about a command group type and send: !help <group_name>_`;
 	
 				msg.direct(groupsText);
 			}
 
 			if (commandName) {
-				let command = this.commando.registry.commands.get(commandName);
 				const commandHelpText = 
-				`
-				**${commandName} specifics:**\n\n
-				name: ${command.name}
-				group: ${command.groupID}
-				description: ${command.description}
-				`
+					`**${commandName} specifics:**\n\n` +
+					`Name: ${command.name}` +
+					`Group: ${command.groupID}` +
+					`Description: ${command.description}`;
 
 				msg.direct(commandHelpText);
 				
 			} else if (categoryName) {
-                let category = this.commando.registry.groups.get(categoryName);
-                let commandsInCategory = [];
-                category.commands.forEach(command => commandsInCategory.push(command.memberName));
-				const categoryHelpText = 
-				`
-				**${categoryName} specifics:**\n\n
-                list of commands: ${commandsInCategory.length ?  commandsInCategory.join(', ') : 'this category doesn\'t have any commands'}
-				Description: ${category.name}
-                `
+                const category = this.commando.registry.groups.get(categoryName);
+                const commandsInCategory = category.commands.map(cmd => cmd.memberName);
+
+				let categoryHelpText = `${categoryName} category doesn\'t have any commands`;
+
+				const categoryHelpText = `**${categoryName} specifics:**\n\n` +
+				`Description: ${category.name}\n` +
+                `List of commands: ${commandsInCategory.join(', ')}\n`;
+
                 msg.direct(categoryHelpText)
 			}
 
