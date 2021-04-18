@@ -1,6 +1,6 @@
 import SkillsHelper from "../skillsHelper";
 import COOP from "../../../../../origin/coop";
-
+import EMOJIS from '../../../../../origin/config/emojis.json'
 export default class CraftingHelper {
 
     static CRAFTABLES = {
@@ -132,10 +132,16 @@ export default class CraftingHelper {
                 const crafterLevel = await SkillsHelper.getLevel('crafting',userID);
                 const reqLevel = CraftingHelper.CRAFTABLES[craftable].levelReq;
                 if(hasIngredients && crafterLevel >= reqLevel) {
-                   userCraftables.push(craftable);
+                   userCraftables.push(`${EMOJIS[craftable]} (${craftable})`);
                 }
             }
             return userCraftables;
+    }
+
+    static async allCraftables() {
+        let craftables =  Object.keys(CraftingHelper.CRAFTABLES);
+        // Convert craftables into emojis.
+        return craftables.map((craftable) => `${EMOJIS[craftable]} (${craftable})`);
     }
 
 }

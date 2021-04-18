@@ -23,7 +23,9 @@ export default class HelpCommand extends CoopCommand {
 		super.run(msg);
 
 		// TODO: ADD STATISTICS + SATISFACTION FEEDBACK FOR HELP
+		// TODO: MAKE IT WORK FOR ALIASES TOO
 		
+		const message = msg.content.replace('!help ', '');
 		// Improve hidden to filter by roles
 		const hiddenCommands = [
 			'nuke',
@@ -44,29 +46,29 @@ export default class HelpCommand extends CoopCommand {
 
 		// Store command names to detect matches and provide helpful/detailed feedback.
 		const commandNames = [];
-		this.commando.registry.groups.map(group => group.commands
-			.filter(cmd => !hiddenCommands.includes(cmd.memberName))
-			.map(cmd => commandNames.push(cmd.memberName.toLowerCase()))
-		);
+		this.commando.registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
+			.map(cmd => commandNames.push(cmd.memberName.toLowerCase()));
 
-		// Check the message for matching category.
-		let categoryOpt = null;
-		const categoryNamesRegex = new RegExp(categoryNames.join('|'));
-		const categoryMatches = categoryNamesRegex.exec(msg.content);
-		if (categoryMatches) categoryOpt = categoryMatches[0];
+		// Check if message matches a category name and check that the message is not only a part of the category name.
+		let categoryName = null;
+		const categoryNamesRegex = new RegExp(categoryNames.join('|'), 'g');
+        const categoryMatches = categoryNamesRegex.exec(message);
+        if(categoryMatches) {
+			categoryName =  categoryMatches.filter(categoryName => categoryName === message).toString();
+        }
+		// Check if message matches a command name and check that the command name doesn't only contain the message
+		let commandName = null
+		const commandNamesRegex = new RegExp(commandNames.join('|'), 'g');
+        const commandMatch = commandNamesRegex.exec(message);
+        if(commandMatch) {
+			commandName =  commandMatch.filter(commandName => commandName === message).toString();
+        }
 
-		// Check the message for matching command.
-		let commandOpt = null
-		const commandNamesRegex = new RegExp(commandNames.join('|'));
-		const commandMatches = commandNamesRegex.exec(msg.content);
-		if (commandMatches) commandOpt = commandMatches[0];
-
-		// console.log('commandMatches', commandMatches);
 
         try {
 			// TODO: Implement properly.
 
-			if (!categoryOpt && !commandOpt) {
+			if (!categoryName && !commandName) {
 				const groupsText = `**Available Command Groups**:\n\n` +
 					this.commando.registry.groups
 					.filter(group => !hiddenGroups.includes(group.id))
@@ -78,20 +80,35 @@ export default class HelpCommand extends CoopCommand {
 				msg.direct(groupsText);
 			}
 
-			if (commandOpt) {
-				const commandHelpText = `**${commandOpt} specifics:**\n\n` +
-					'What can we say about this command? :D';
+			if (commandName) {
+				let command = this.commando.registry.commands.get(commandName);
+				const commandHelpText = 
+				`
+				**${commandName} specifics:**\n\n
+				name: ${command.name}
+				group: ${command.groupID}
+				description: ${command.description}
+				`
 
 				msg.direct(commandHelpText);
 				
-			} else if (categoryOpt) {
-				msg.direct('I should help you with the category of commands you specified... ' + categoryOpt)
+			} else if (categoryName) {
+                let category = this.commando.registry.groups.get(categoryName);
+                let commandsInCategory = [];
+                category.commands.forEach(command => commandsInCategory.push(command.memberName));
+				const categoryHelpText = 
+				`
+				**${categoryName} specifics:**\n\n
+                list of commands: ${commandsInCategory.length ?  commandsInCategory.join(', ') : 'this category doesn\'t have any commands'}
+				Description: ${category.name}
+                `
+                msg.direct(categoryHelpText)
 			}
 
         } catch(e) {
 			console.log('Help error.')
 			console.error(e);
-            msg.reply('Unable to send you the help DM. You probably have DMs disabled.');
+           msg.reply('Unable to send you the help DM. You probably have DMs disabled.');
         }
     }
     
