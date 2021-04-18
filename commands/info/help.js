@@ -59,8 +59,8 @@ export default class HelpCommand extends CoopCommand {
 		let categoryName = null;
 		const categoryNamesRegex = new RegExp(categoryNames.join('|'), 'g');
         const categoryMatches = categoryNamesRegex.exec(msgContent);
-        if(categoryMatches) {
-			categoryName =  categoryMatches.filter(categoryName => categoryName === msgContent).toString();
+        if (categoryMatches) {
+			categoryName = categoryMatches.filter(categoryName => categoryName === msgContent).toString();
         }
 
 
@@ -90,7 +90,6 @@ export default class HelpCommand extends CoopCommand {
 			const visibleGroups = this.commando.registry.groups
 				.filter(group => !hiddenGroups.includes(group.id))
 
-
 			const visibleGroupsNames = visibleGroups
 				.map(({ name }, i) => i === 0 ? MESSAGES.titleCase(name) : name.toLowerCase())
 				// Add new line every 4
@@ -100,15 +99,7 @@ export default class HelpCommand extends CoopCommand {
 					return acc;
 				}, []);
 
-
-			// for (let i = 0, a = []; i < arr.length; i++) {
-			// 	a.push(arr[i]);
-			// 	if ((i + 1 + starting) % frequency === 0) {
-			// 	  a.push(item);
-			// 	  i++;
-			// 	  if(arr[i]) a.push(arr[i]);
-			// 	}
-			//   }
+			console.log(categoryName, commandName, msgContent);
 
 			if (!categoryName && !commandName) {
 				const groupsText = `**Available Command Groups**:\n` +
