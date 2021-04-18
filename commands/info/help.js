@@ -1,4 +1,5 @@
 import CoopCommand from "../../operations/activity/messages/coopCommand";
+import { MESSAGES } from "../../origin/coop";
 
 
 export default class HelpCommand extends CoopCommand {
@@ -86,13 +87,36 @@ export default class HelpCommand extends CoopCommand {
         try {
 			// TODO: Fix the conflict between duplicates?
 
+			const visibleGroups = this.commando.registry.groups
+				.filter(group => !hiddenGroups.includes(group.id))
+
+
+			const visibleGroupsNames = visibleGroups
+				.map(({ name }, i) => i === 0 ? MESSAGES.titleCase(name) : name.toLowerCase())
+				// Add new line every 4
+				.reduce((acc, name, i) => {
+					acc.push(name);
+					if (i % 4) acc.push('\n');
+					return acc;
+				}, []);
+
+
+			// for (let i = 0, a = []; i < arr.length; i++) {
+			// 	a.push(arr[i]);
+			// 	if ((i + 1 + starting) % frequency === 0) {
+			// 	  a.push(item);
+			// 	  i++;
+			// 	  if(arr[i]) a.push(arr[i]);
+			// 	}
+			//   }
+
 			if (!categoryName && !commandName) {
-				const groupsText = `**Available Command Groups**:\n\n` +
-					this.commando.registry.groups
-					.filter(group => !hiddenGroups.includes(group.id))
-					.map((group, index) => index === 0 ? group.name : group.name.toLowerCase())
-						.join(', ') + 
-					`.\n\n_To find out more about a command group type and send: !help <group_name>_`;
+				const groupsText = `**Available Command Groups**:\n` +
+					`We have the following __groups__ of commands, you can easily check the contents of each below group and view command specifics via !help <command or group name>.\n\n` +
+
+					visibleGroupsNames.join(', ') + 
+				
+					`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`;
 	
 				msg.direct(groupsText);
 			}
