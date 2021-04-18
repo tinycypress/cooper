@@ -11,8 +11,7 @@ export default () => {
     const client = new Client({ owner: '799692429442809937' });
 
     // Register command groups.
-    client.registry
-        .registerGroups([ 
+    client.registry.registerGroups([ 
             ['info', 'Information'],
             ['community', 'Community'],
             ['election', 'Election'],
