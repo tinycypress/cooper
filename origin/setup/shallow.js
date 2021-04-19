@@ -36,106 +36,14 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
-        //big test
-        
-		let initialMessage = '!help flip'
-		const message = initialMessage.replace('!help ', '');
-		// Improve hidden to filter by roles
-		const hiddenCommands = [
-			'nuke',
-
-			// Added to prevent infinite loop on !help (help) text search.
-			'help'
-		];
+		// Track deficit
+		// Track coin price
+		// Track coin value
 		
-		const hiddenGroups = [
-			'mod',
-			'misc'
-		];
-
-		// Store group names to detect matches and provide helpful/detailed feedback.
-		const categoryNames = client().registry.groups
-			.filter(group => !hiddenGroups.includes(group.id))
-			.map(group => group.id.toLowerCase());
-
-		// Store command names to detect matches and provide helpful/detailed feedback.
-		const commandNames = [];
-		client().registry.commands.filter(cmd => !hiddenCommands.includes(cmd.memberName))
-			.map(cmd => commandNames.push(cmd.memberName.toLowerCase()));
-
-		// Check if message matches a category name and check that the message is not only a part of the category name.
-		let categoryName = null;
-		const categoryNamesRegex = new RegExp(categoryNames.join('|'), 'g');
-        const categoryMatches = categoryNamesRegex.exec(message);
-        if(categoryMatches) {
-			categoryName =  categoryMatches.filter(categoryName => categoryName === message).toString();
-        }
-		// Check if message matches a command name and check that the command name doesn't only contain the message
-		let commandName = null
-		const commandNamesRegex = new RegExp(commandNames.join('|'), 'g');
-        const commandMatch = commandNamesRegex.exec(message);
-        if(commandMatch) {
-			commandName =  commandMatch.filter(commandName => commandName === message).toString();
-        }
-
-
-        try {
-			// TODO: Implement properly.
-
-			if (!categoryName && !commandName) {
-				const groupsText = `**Available Command Groups**:\n\n` +
-					client().registry.groups
-					.filter(group => !hiddenGroups.includes(group.id))
-					.map((group, index) => {
-						return index === 0 ? group.name : group.name.toLowerCase();
-					}).join(', ') + 
-					`.\n\n_To find out more about a command group type and send: !help <group_name>_`;
-	
-				console.log(groupsText);
-			}
-
-			if (commandName) {
-				let command = client().registry.commands.get(commandName);
-				const commandHelpText = 
-				`
-				**${commandName} specifics:**\n\n
-				name: ${command.name}
-				group: ${command.groupID}
-				description: ${command.description}
-				`
-
-				console.log(commandHelpText);
-				
-			} else if (categoryName) {
-                let category = client().registry.groups.get(categoryName);
-                let commandsInCategory = [];
-                category.commands.forEach(command => commandsInCategory.push(command.memberName));
-				const categoryHelpText = 
-				`
-				**${categoryName} specifics:**\n\n
-                list of commands: ${commandsInCategory.length ?  commandsInCategory.join(', ') : 'this category doesn\'t have any commands'}
-				Description: ${category.name}
-                `
-                console.log(categoryHelpText)
-			}
-
-        } catch(e) {
-			console.log('Help error.')
-			console.error(e);
-           console.log('Unable to send you the help DM. You probably have DMs disabled.');
-        }
-        // Help command stub
-
-        // EventsHelper.runInterval(status, 2000);
 
         // Structures
         // 100dz integration TODOs
         // Paypal in/out
-                
-        
-        
-        // TDOs less spammy
-        // Fix items single check
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
