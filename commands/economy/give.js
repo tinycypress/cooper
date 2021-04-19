@@ -20,15 +20,15 @@ export default class GiveCommand extends CoopCommand {
 			examples: ['give', '!give laxative'],
 			args: [
 				{
-					key: 'itemCode',
-					prompt: 'What is the code of the item you wish to give? Use !items if not sure',
-					type: 'string',
-					default: ''
-				},
-				{
 					key: 'target',
 					prompt: 'Who do you wish to give the item to? @ them.',
 					type: 'user',
+					default: ''
+				},
+				{
+					key: 'itemCode',
+					prompt: 'What is the code of the item you wish to give? Use !items if not sure',
+					type: 'string',
 					default: ''
 				},
 				{

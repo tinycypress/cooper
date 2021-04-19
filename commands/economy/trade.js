@@ -2,6 +2,7 @@ import TradingHelper from '../../operations/minigames/medium/economy/items/tradi
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP, { USABLE } from '../../origin/coop';
+import { validItemQtyArgFloatGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 
 // TODO: Move to Reactions/Message helper.
@@ -75,7 +76,6 @@ export default class TradeCommand extends CoopCommand {
 				!validItemQtyArgFloatGuard(msg, msg.author, receiveQty)
 			)
 				return null;
-
 
 			// Check if user can fulfil the trade.
 			const canUserFulfil = await COOP.ITEMS.hasQty(tradeeID, offerItemCode, offerQty);
