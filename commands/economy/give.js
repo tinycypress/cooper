@@ -1,6 +1,6 @@
 import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
-import { usableItemCodeGuard, useManyGuard, validUserArgGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
+import { usableItemCodeGuard, useManyGuard, validItemQtyArgFloatGuard, validUserArgGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP from '../../origin/coop';
@@ -34,7 +34,7 @@ export default class GiveCommand extends CoopCommand {
 				{
 					key: 'qty',
 					prompt: 'How many of this item do you want to give?',
-					type: 'integer',
+					type: 'float',
 					default: 1
 				},
 			],
@@ -61,7 +61,12 @@ export default class GiveCommand extends CoopCommand {
 
 			// If a bad number gets given as qty, defalt it to 1.
 			// TODO, this may block float/decimal gifts.
-			if (isNaN(parseInt(qty))) qty = 1;
+			// if (isNaN(parseInt(qty))) qty = 1;
+
+			if (!validItemQtyArgFloatGuard(msg, msg.author, qty))
+				return null;
+
+
 
 			// Configure item manifest for this item command.
 			const itemManifest = {

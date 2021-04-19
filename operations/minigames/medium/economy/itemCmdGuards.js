@@ -220,6 +220,31 @@ export function validUserArgGuard(msgRef, target, username) {
 }
 
 
+
+export function validItemQtyArgFloatGuard(msgRef, user, qty) {
+    // Parse into a presumably valid float.
+    const floatQty = parseFloat(qty);
+
+    // Check if above 0
+    if (isNaN(floatQty)) {
+        const invalidErrorText = `<@${user.id}>, the given quantity is invalid ${qty}.`;
+        MESSAGES.silentSelfDestruct(msgRef, invalidErrorText, 0, 5000);
+        return false;
+    }
+    
+    // Check if item qty argument given as command arg input is valid.
+    if (floatQty <= 0) {
+        const belowZeroText = `<@${user.id}>, quantity input must be above 0.`;
+        MESSAGES.silentSelfDestruct(msgRef, belowZeroText, 0, 5000);
+        return false;
+    }
+
+    // Indicate guard passed.
+    return true;
+}
+
+
+
 export const itemQtyArg = {
     key: 'qty',
     prompt: 'Please enter item quantity.',
