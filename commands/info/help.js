@@ -75,13 +75,15 @@ export default class HelpCommand extends CoopCommand {
 		const commandRegexResult = commandNamesRegex.exec(msgContent);
         let commandMatch = null;
 
+
+		// TODO: Fix command regex for !help
 		console.log(commandRegexResult);
 		
 		if (commandRegexResult) {
-			commandMatch = commandRegexResult[0];
-
+			console.log(commandRegexResult);
 			console.log(commandMatch);
 
+			commandMatch = commandRegexResult[0];
 			if (commandMatch) {
 				// Try to find the command amongst aliases too.
 				this.commando.registry.commands.map(cmd => {
@@ -89,6 +91,8 @@ export default class HelpCommand extends CoopCommand {
 					if (cmd.aliases.includes(commandMatch)) command = cmd;
 				});
 			}
+
+			console.log(command);
 		}
 
 
@@ -115,13 +119,11 @@ export default class HelpCommand extends CoopCommand {
 				return acc;
 			}, []);
 
-			console.log(fmtVisibleGroupsNames);
-
 			if (!categoryName && !command)
 				return msg.direct(`**Available Command Groups**:\n` +
 				`We have the following __groups__ of commands, you can easily check the contents of each below group and view command specifics via !help <command or group name>.\n\n` +
 				fmtVisibleGroupsNames.join('') + 
-				`.\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`);
+				`\n\n_To find out more about a command group,\n type and send: !help <group or command name>_.`);
 
 			if (categoryName) {
                 const category = this.commando.registry.groups.get(categoryName);

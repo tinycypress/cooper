@@ -3,7 +3,7 @@ import ElectionHelper from '../../operations/members/hierarchy/election/election
 import { usableItemCodeGuard, useManyGuard, validItemQtyArgFloatGuard, validUserArgGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP from '../../origin/coop';
+import COOP, { MESSAGES } from '../../origin/coop';
 
 
 
@@ -96,8 +96,9 @@ export default class GiveCommand extends CoopCommand {
 
 			// Send feedback message.
 			// TODO: State how many both have now after gift.
-			const addText = `${msg.author.username} gave ${target.username} ${itemCode}x${qty}.`;
-			COOP.CHANNELS.propagate(msg, addText, 'FEED');
+			const itemEmoji = MESSAGES._displayEmojiCode(itemCode);
+			const addText = `<@${msg.author.id}> gave <@${target.id}> ${itemEmoji} ${itemCode}x${qty}.`;
+			COOP.CHANNELS.silentPropagate(msg, addText, 'FEED');
 
 		} catch(e) {
 			console.log('Failed to give item.');
