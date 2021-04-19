@@ -72,10 +72,16 @@ export default class HelpCommand extends CoopCommand {
 		}).join('|');
 
 		const commandNamesRegex = new RegExp(`^(${aliasAndCmdNamesJoined})$`, 'g');
-        const commandMatch = commandNamesRegex.exec(msgContent)[0] || null;
+		const commandRegexResult = commandNamesRegex.exec(msgContent);
+        let commandMatch = null;
 
-		console.log(commandMatch);
-		console.log(commandNamesRegex.exec(msgContent));
+		if (commandRegexResult) {
+			commandMatch = commandRegexResult[0];
+
+			console.log(commandMatch);
+			console.log(commandRegexResult);
+		}
+
 
         if (commandMatch) {
 			// Try to find the command amongst aliases too.
