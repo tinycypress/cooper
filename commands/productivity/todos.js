@@ -58,7 +58,10 @@ export default class TodosCommand extends CoopCommand {
 
 
         const secsNow = TIME._secs();
-        const dueReadable = due => TIME.humaniseSecs(due - secsNow);
+        const dueReadable = due => {
+			console.log(TIME.humaniseSecs(due - secsNow), due, secsNow);
+			return TIME.humaniseSecs(due - secsNow);
+		}
 
         const userTodosText = `**${targetUser}'s todos:**\n\n` +
             todos.map(

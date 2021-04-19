@@ -14,7 +14,15 @@ export default class BuildCommand extends CoopCommand {
 			aliases: ['b'],
 			description: 'Build a base/structure.',
 			details: ``,
-			examples: ['build', 'build example']
+			examples: ['build', 'build example'],
+			args: [
+				{
+					key: 'structureCode',
+					type: 'string',
+					prompt: 'Which structure code to build?',
+					default: ''
+				}
+			]
 		});
 	}
 
@@ -36,6 +44,9 @@ export default class BuildCommand extends CoopCommand {
 			`50 x ${steel} STEEL_BAR\n` +
 			`25 x ${iron} IRON_BAR`
 		);
+
+
+		// Start building the server.
 
 		
     }
