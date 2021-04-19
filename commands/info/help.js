@@ -98,15 +98,18 @@ export default class HelpCommand extends CoopCommand {
 				.filter(group => !hiddenGroups.includes(group.id))
 
 			// Add new line every 4
-			const fmtVisibleGroupsNames = visibleGroups.reduce((acc, { name }, i) => {
+			const fmtVisibleGroupsNames = visibleGroups.reduce((acc, group, i) => {
 					if (i === 0) {
-						acc.push(MESSAGES.titleCase(name) + ', ');
+						console.log(group);
+						acc.push(MESSAGES.titleCase(group.name) + ', ');
 					} else {
-						if (i === visibleGroups.length - 1) acc.push(name + '.');
-						else acc.push(name + ', ');
+						if (i === visibleGroups.length - 1) acc.push(group.name + '.');
+						else acc.push(group.name + ', ');
 					}
 
-					if (i > 0 && i % 4 === 0) acc.push('\n');	
+					// Add a spacing every 4 items.
+					if (i > 0 && !(i % 4)) acc.push('\n');	
+
 					return acc;
 				}, []);
 
