@@ -97,9 +97,8 @@ export default class HelpCommand extends CoopCommand {
 			const visibleGroups = this.commando.registry.groups
 				.filter(group => !hiddenGroups.includes(group.id))
 
-			const fmtVisibleGroupsNames = visibleGroups
-				// Add new line every 4
-				.reduce((acc, name, i) => {
+			// Add new line every 4
+			const fmtVisibleGroupsNames = visibleGroups.reduce((acc, { name }, i) => {
 					if (i === 0) {
 						acc.push(MESSAGES.titleCase(name) + ', ');
 					} else {
@@ -119,10 +118,8 @@ export default class HelpCommand extends CoopCommand {
 
 			if (categoryName) {
                 const category = this.commando.registry.groups.get(categoryName);
-                const commandsInCategory = category.commands.map(cmd => 
-					// Capitalise first and format list properly.
-					MESSAGE.titleCase(cmd.name)
-				);
+				// Capitalise first and format list properly.
+                const commandsInCategory = category.commands.map(cmd => MESSAGES.titleCase(cmd.name));
 
 				// Default to empty text.
 				let categoryHelpText = `${MESSAGES.titleCase(categoryName)} (category) doesn\'t have any commands.`;
