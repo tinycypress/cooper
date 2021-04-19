@@ -70,11 +70,11 @@ export default class TradeCommand extends CoopCommand {
 			
 
 			// Guard against bad/negative amounts for both qtys
-			if (!validItemQtyArgFloatGuard(msg, msg.author, offerQty))
+			if (
+				!validItemQtyArgFloatGuard(msg, msg.author, offerQty) || 
+				!validItemQtyArgFloatGuard(msg, msg.author, receiveQty)
+			)
 				return null;
-			if (!validItemQtyArgFloatGuard(msg, msg.author, receiveQty))
-				return null;
-
 
 
 			// Check if user can fulfil the trade.
