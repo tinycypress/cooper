@@ -13,7 +13,7 @@ export default class KeyInfoPosted {
         if (!ROLES._has(member, 'LEADER') && !ROLES._has(member, 'COMMANDER'))
             return false;
 
-        const keyInfoText = `**${CHAN.codeText('KEY_INFO')} update posted!**`;
+        const keyInfoText = `**${CHAN.textRef('KEY_INFO')} update posted!**`;
         CHAN._codes(['TALK', 'FEED'], keyInfoText);        
     }
 

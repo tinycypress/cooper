@@ -9,7 +9,7 @@ export default async (msg) => {
     if (msg.author.bot) return false;
 
     // Access the full featured member object for the user.
-    const memberSubject = USERS.getMemberByID(msg.guild, msg.author.id);
+    const memberSubject = USERS._getMemberByID(msg.author.id);
 
     // Check they haven't already posted an intro
     const userIntroData = await USERS.getIntro(memberSubject) || {};
@@ -33,7 +33,7 @@ export default async (msg) => {
       const username = memberSubject.user.username;
 
       // Post message in feed
-      const introText = `${username} posted an introduction in <#${CHANNELS.INTRO}> ! 👋`;
+      const introText = `${username} posted an introduction in ${CHANNELS.textRef('INTRO')}! 👋`;
       await CHANNELS._codes(['TALK', 'ENTRY', 'FEED'], introText);
 
       // Send embed to approval channel for redeeming non-members via introduction.
@@ -41,7 +41,7 @@ export default async (msg) => {
         await CHANNELS._postToChannelCode('ENTRY', MESSAGES.embed({
           url: MESSAGES.link(msg),
           title: `${username}, is being considered for approval.`,
-          description: `Vote for/against ${username} using reaction emojis on their <#${CHANNELS.INTRO}> post.`,
+          description: `Vote for/against ${username} using reaction emojis on their ${CHANNELS.textRef('INTRO')} post.`,
           thumbnail: USERS.avatar(memberSubject.user)
         }));
       }

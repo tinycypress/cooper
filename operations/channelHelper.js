@@ -10,9 +10,7 @@ export default class ChannelHelper {
 
     static config = CHANNELS_CONFIG;
 
-    static codeText(code) {
-        return `<#${CHANNELS_CONFIG[code].id}>`;
-    }
+    static textRef(code) { return `<#${CHANNELS_CONFIG[code].id}>`; }
 
     // TODO: Need to reuse this a lot! Ping/link without pinging! <3 <3 
     static _send(code, msg, opts = silentOpts) {
@@ -246,6 +244,6 @@ export default class ChannelHelper {
         return result;
     }
 
-    static textRef(code) { return `<#${CHANNELS_CONFIG[code].id}>`; }
+ 
 
 }

@@ -150,8 +150,8 @@ export default class ElectionHelper {
 
             // Inform all members so they can fairly stand.
             const feedMsg = await COOP.CHANNELS._postToFeed(
-                `@everyone, our latest ${COOP.CHANNELS.codeText('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
-                `For further information on our elections refer to our forth amendment in ${COOP.CHANNELS.codeText('CONSTITUTION')}\n\n` +
+                `@everyone, our latest ${COOP.CHANNELS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
+                `For further information on our elections refer to our forth amendment in ${COOP.CHANNELS.textRef('CONSTITUTION')}\n\n` +
                 `To stand for election, send in any channel this message: \n\n !stand ((and your campaign message here, brackets - () - not needed)) \n\n` +
                 `Time remaining: ${readableElecLeft}.`
             );

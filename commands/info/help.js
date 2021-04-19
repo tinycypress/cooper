@@ -75,11 +75,12 @@ export default class HelpCommand extends CoopCommand {
 		const commandRegexResult = commandNamesRegex.exec(msgContent);
         let commandMatch = null;
 
+		console.log(commandRegexResult);
+		
 		if (commandRegexResult) {
 			commandMatch = commandRegexResult[0];
 
 			console.log(commandMatch);
-			console.log(commandRegexResult);
 
 			if (commandMatch) {
 				// Try to find the command amongst aliases too.
@@ -108,7 +109,7 @@ export default class HelpCommand extends CoopCommand {
 					}
 
 					// Add a spacing every 4 items.
-					if (i > 0 && !(i % 4)) acc.push('\n');	
+					acc.push('\n');	
 
 					return acc;
 				}, []);
