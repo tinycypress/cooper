@@ -59,14 +59,9 @@ export default class GiveCommand extends CoopCommand {
 			if (!target && msg.mentions.users.first()) 
 				target = msg.mentions.users.first();
 
-			// If a bad number gets given as qty, defalt it to 1.
-			// TODO, this may block float/decimal gifts.
-			// if (isNaN(parseInt(qty))) qty = 1;
-
+			// Guard against bad qty input/haxxors. lol.
 			if (!validItemQtyArgFloatGuard(msg, msg.author, qty))
 				return null;
-
-
 
 			// Configure item manifest for this item command.
 			const itemManifest = {

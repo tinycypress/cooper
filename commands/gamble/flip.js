@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { authorConfirmationPrompt, firstConfirmPrompt } from '../../operations/common/ui';
-import { doesOwnDidUseGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
+import { doesOwnDidUseGuard, validItemQtyArgFloatGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 import { ITEMS, MESSAGES, STATE } from '../../origin/coop';
 
 export default class FlipCommand extends CoopCommand {
@@ -34,6 +34,10 @@ export default class FlipCommand extends CoopCommand {
 		// Check valid amount
 		const amountInput = amount;
 		amount = parseFloat(amount);
+
+		// Guard against bad/negative amounts.
+		if (!validItemQtyArgFloatGuard(msg, msg.author, amount))
+			return null;
 
 		// Check input amount is valid or cancel and return error feedback.
 		if (isNaN(amount))

@@ -40,13 +40,13 @@ export default class TradeCommand extends CoopCommand {
 				{
 					key: 'offerQty',
 					prompt: 'Number quantity you are offering?',
-					type: 'integer',
+					type: 'float',
 					default: 1
 				},
 				{
 					key: 'receiveQty',
 					prompt: 'Number quantity you expect in return?',
-					type: 'integer',
+					type: 'float',
 					default: 1
 				},
 			],
@@ -68,6 +68,15 @@ export default class TradeCommand extends CoopCommand {
 			if (!offerItemCode || !receiveItemCode) return COOP.MESSAGES.selfDestruct(msg, 
 				`Invalid item codes for trade, ${offerItemCode} ${receiveItemCode}`, 0, 7500);
 			
+
+			// Guard against bad/negative amounts for both qtys
+			if (!validItemQtyArgFloatGuard(msg, msg.author, offerQty))
+				return null;
+			if (!validItemQtyArgFloatGuard(msg, msg.author, receiveQty))
+				return null;
+
+
+
 			// Check if user can fulfil the trade.
 			const canUserFulfil = await COOP.ITEMS.hasQty(tradeeID, offerItemCode, offerQty);
 			// TODO: Provide a more useful error message here with qty details.
