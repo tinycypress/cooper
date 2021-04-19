@@ -80,16 +80,16 @@ export default class HelpCommand extends CoopCommand {
 
 			console.log(commandMatch);
 			console.log(commandRegexResult);
+
+			if (commandMatch) {
+				// Try to find the command amongst aliases too.
+				this.commando.registry.commands.map(cmd => {
+					if (commandMatch === cmd.commandName) command = cmd;
+					if (cmd.aliases.includes(commandMatch)) command = cmd;
+				});
+			}
 		}
 
-
-        if (commandMatch) {
-			// Try to find the command amongst aliases too.
-			this.commando.registry.commands.map(cmd => {
-				if (commandMatch === cmd.commandName) command = cmd;
-				if (cmd.aliases.includes(commandMatch)) command = cmd;
-			});
-        }
 
 
         try {
@@ -109,6 +109,8 @@ export default class HelpCommand extends CoopCommand {
 					if (i > 0 && i % 4 === 0) acc.push('\n');	
 					return acc;
 				}, []);
+
+			console.log(fmtVisibleGroupsNames);
 
 			if (!categoryName && !command)
 				return msg.direct(`**Available Command Groups**:\n` +
