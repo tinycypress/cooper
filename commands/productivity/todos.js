@@ -59,7 +59,7 @@ export default class TodosCommand extends CoopCommand {
 
         const secsNow = TIME._secs();
         const dueReadable = due => {
-			console.log(TIME.humaniseSecs(due - secsNow), due, secsNow);
+			if (due < secsNow) return '__**OVERDUE**__';
 			return TIME.humaniseSecs(due - secsNow);
 		}
 
