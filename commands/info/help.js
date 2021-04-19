@@ -81,17 +81,18 @@ export default class HelpCommand extends CoopCommand {
 		
 		if (commandRegexResult) {
 			console.log(commandRegexResult);
-			console.log(commandMatch);
+			
 
 			commandMatch = commandRegexResult[0];
 			if (commandMatch) {
 				// Try to find the command amongst aliases too.
 				this.commando.registry.commands.map(cmd => {
-					if (commandMatch === cmd.commandName) command = cmd;
+					if (commandMatch === cmd.memberName) command = cmd;
 					if (cmd.aliases.includes(commandMatch)) command = cmd;
 				});
 			}
 
+			console.log(commandMatch);
 			console.log(command);
 		}
 
