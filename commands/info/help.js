@@ -71,8 +71,10 @@ export default class HelpCommand extends CoopCommand {
 			return [...cmd.aliases, cmd.memberName].join('|');
 		}).join('|');
 
-		const commandNamesRegex = new RegExp(`^${aliasAndCmdNamesJoined}$`, 'g');
+		const commandNamesRegex = new RegExp(`^(${aliasAndCmdNamesJoined})$`, 'g');
         const commandMatch = commandNamesRegex.exec(msgContent)[0] || null;
+
+		console.log(commandMatch);
 
         if (commandMatch) {
 			// Try to find the command amongst aliases too.
@@ -116,7 +118,7 @@ export default class HelpCommand extends CoopCommand {
 				);
 
 				// Default to empty text.
-				let categoryHelpText = `${categoryName} category doesn\'t have any commands`;
+				let categoryHelpText = `${MESSAGES.titleCase(categoryName)} (category) doesn\'t have any commands.`;
 
 				if (commandsInCategory.length > 0) {
 					categoryHelpText = `**${categoryName} category's specifics:**\n\n` +

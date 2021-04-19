@@ -7,7 +7,7 @@ export default class CraftableItemsCommand extends CoopCommand {
 	constructor(client) {
 		super(client, {
 			name: 'craftableitems',
-			group: 'items',
+			group: 'ownership',
 			memberName: 'craftableitems',
 			aliases: ['craftables', 'craftitems', 'cancraft'],
 			description: 'Displays a list of all the items the user can craft',

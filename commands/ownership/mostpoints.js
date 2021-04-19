@@ -7,7 +7,7 @@ export default class MostPointsCommand extends CoopCommand {
 	constructor(client) {
 		super(client, {
 			name: 'mostpoints',
-			group: 'items',
+			group: 'ownership',
 			memberName: 'mostpoints',
 			aliases: [],
 			description: 'Check the user with the most points',

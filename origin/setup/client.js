@@ -18,7 +18,7 @@ export default () => {
             ['sacrifice', 'Sacrifice'],
             ['util', 'Utility'],
             ['messages', 'Message'],
-            ['items', 'Item'],
+            ['ownership', 'Item ownership related commands'],
             ['economy', 'Economy'],
             ['productivity', 'Productivity'],
             ['skills', 'Skills'],
