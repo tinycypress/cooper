@@ -75,6 +75,7 @@ export default class HelpCommand extends CoopCommand {
         const commandMatch = commandNamesRegex.exec(msgContent)[0] || null;
 
 		console.log(commandMatch);
+		console.log(commandNamesRegex.exec(msgContent));
 
         if (commandMatch) {
 			// Try to find the command amongst aliases too.
@@ -114,14 +115,14 @@ export default class HelpCommand extends CoopCommand {
                 const category = this.commando.registry.groups.get(categoryName);
                 const commandsInCategory = category.commands.map(cmd => 
 					// Capitalise first and format list properly.
-					cmd.memberName
+					MESSAGE.titleCase(cmd.name)
 				);
 
 				// Default to empty text.
 				let categoryHelpText = `${MESSAGES.titleCase(categoryName)} (category) doesn\'t have any commands.`;
 
 				if (commandsInCategory.length > 0) {
-					categoryHelpText = `**${categoryName} category's specifics:**\n\n` +
+					categoryHelpText = `**${MESSAGES.titleCase(categoryName)} (category)'s specifics:**\n\n` +
 						`Description: ${category.name}\n` +
 						`List of commands: ${commandsInCategory.join(', ')}\n`;
 				}
