@@ -1,25 +1,26 @@
-import { CHANNELS, STATE } from "../../../origin/coop";
+import { CHANNELS, MESSAGES, SERVER, STATE } from "../../../origin/coop";
 import Database from "../../../origin/setup/database";
 import DatabaseHelper from "../../databaseHelper";
 
 export default class TodoHelper {
 
     // Fine for being due, point for succeeding.
-    static async checkDue() {
-        const todos = await this.getAll();
-        const currentSecs = Date.now() / 1000;
-        const due = todos.filter(todo => todo.deadline <= currentSecs);
-
-        let dueText = `📝 **TODOs**\n\n` +
-            `Due Now: ${due.length}\n` +
-            `Ongoing: ${todos.length - due.length}\n` +
-            `Total: ${todos.length}\n` +
-
-            `\n_Tip: Type and send !todo to create your todo task!_`;
-
+    static async checkDue() {       
         // Thank you Stocker for contributing this code.
-        if (STATE.CHANCE.bool({ likelihood: 10 }))
-            CHANNELS._send('TALK', dueText);
+        if (STATE.CHANCE.bool({ likelihood: 10 })) {
+            const todos = await this.getAll();
+            const currentSecs = Date.now() / 1000;
+            const due = todos.filter(todo => todo.deadline <= currentSecs);
+    
+            let dueText = `📝 **TODOs**\n\n` +
+                `Due Now: ${due.length}\n` +
+                `Ongoing: ${todos.length - due.length}\n` +
+                `Total: ${todos.length}\n` +
+    
+                `\n_Tip: Type and send !todo to create your todo task!_`;
+
+            CHANNELS._tempSend('TALK', dueText, 333, 60000);
+        }
     }
 
     static getAll() {

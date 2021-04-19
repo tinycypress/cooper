@@ -87,6 +87,11 @@ export default class ChannelHelper {
         return this._send(recordChan, text);
     }
 
+    static _tempSend(code, content, delayMs = 666, fuseMs = 30000) { 
+        const channel = this._getCode(code);
+        return COOP.MESSAGES.silentSelfDestruct(channel, content, delayMs, fuseMs);
+    }
+
     static codeShoutReact(msgRef, text, recordChan, emoji) {
         if (!this.checkIsByCode(msgRef.channel.id, recordChan))
             COOP.MESSAGES.silentSelfDestruct(msgRef, text, 0, 10000)
