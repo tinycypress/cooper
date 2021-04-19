@@ -101,6 +101,7 @@ export default class HelpCommand extends CoopCommand {
 			// Add new line every 4
 			const fmtVisibleGroupsNames = visibleGroups.reduce((acc, group, i) => {
 					if (i === 0) {
+						console.log(group);
 						acc.push(MESSAGES.titleCase(group.id) + ', ');
 					} else {
 						if (i === visibleGroups.length - 2) acc.push(group.id + '.');
