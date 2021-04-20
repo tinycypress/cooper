@@ -74,9 +74,11 @@ export default class DropTable {
             const calcDrop = this.getRandomWithQty();
 
             // Prevent duplication of drop item codes.
-            const existingIndex = drops.findIndex(d => d.item === calcDrop.item);
-            if (existingIndex) drops[existingIndex].qty += calcDrop.qty;
-            else {
+            if (givenItemCodes.includes(calcDrop.item)) {
+                const existingIndex = drops.findIndex(d => d.item === calcDrop.item);
+                drops[existingIndex].qty += calcDrop.qty;
+                
+            } else {
                 givenItemCodes.push(calcDrop.item)
                 drops.push(calcDrop);
             }

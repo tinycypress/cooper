@@ -47,12 +47,14 @@ export default class TodoHelper {
         });
     }
 
-    static remove(todoID) {
-        return DatabaseHelper.singleQuery({
+    static async remove(todoID) {
+        const result = await Database.query({
             name: `remove-todo`,
             text: `DELETE FROM todos WHERE id = $1`,
             values: [todoID]
-        });   
+        });
+        const successDelete = result.rowCount === 1;
+        return successDelete;
     }
 
     static async add(userID, todo) {

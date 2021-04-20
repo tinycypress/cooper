@@ -32,11 +32,6 @@ export default class TodoCommand extends CoopCommand {
 	async run(msg, { todoID }) {
 		super.run(msg);
 
-		// #42. Gay tuesday - a day
-		// #43. Fix todos - 2 days
-		// #46. test - 4 days
-		// #48. Please sefy - a year
-
 		// Take human readable due time.
 		const inputTodo = todoID;
 
@@ -52,16 +47,17 @@ export default class TodoCommand extends CoopCommand {
 		if (todo.user_id !== msg.author.id)
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, todo #${todoID} is not yours to modify.`);
 
-		// Calculate unix secs for due/deadline.
-		// const dueSecs = Math.round(todoID.getTime() / 1000);
-
+			
 		// Remove a TODO for this user.
 		const result = await TodoHelper.remove(todoID);
-		
+				
 		// Handle already exists error
 		if (!result)
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, failed to mark todo #${todoID} as done!`);
-		
+			
+		// Calculate unix secs for due/deadline.
+
+		// const dueSecs = Math.round(todoID.getTime() / 1000);
 		// Feedback.
 		// const secsNow = TIME._secs();
 		// const deadline = TIME.humaniseSecs(Math.max(dueSecs - secsNow, 0));
