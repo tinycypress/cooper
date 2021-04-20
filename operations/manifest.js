@@ -100,17 +100,14 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => SacrificeHelper.random(), baseTickDur * 12);
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
 
-
-
-
-
-
   // Productivity.
   EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur);
 
 
 
-  // Update trades channel message
+  // TODO:
+  // Spam talk with low probability, low lifespan messages:
+  // Skill scores, item circulation, leaderboard, tip, latest trades
 
   // TODO: Incomplete.
   EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 45, baseTickDur * 4);

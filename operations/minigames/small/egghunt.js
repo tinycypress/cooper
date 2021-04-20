@@ -298,8 +298,7 @@ export default class EggHuntMinigame {
                     MESSAGES.delayDelete(eggMsg, eggLifespan * 1000);
 
                     // If an annotation for the egg drop was provided, use it.
-                    if (dropText) 
-                        CHANNELS._postToChannelCode('ACTIONS', dropText);
+                    if (dropText) CHANNELS._tempSend('TALK', dropText, 0, 60000);
 
                 } catch(e) {
                     console.error(e);
@@ -342,7 +341,7 @@ export default class EggHuntMinigame {
                 this.drop('RARE_EGG', 'Funknes! Rare egg on the loose!');
 
                 if (STATE.CHANCE.bool({ likelihood: 4.5 })) {
-                    CHANNELS._postToChannelCode('ACTIONS', 'A legendary egg was dropped! Find and grab it before others can!');
+                    CHANNELS._postToChannelCode('TALK', 'A legendary egg was dropped! Find and grab it before others can!');
                     this.drop('LEGENDARY_EGG');
                 }
             }
@@ -364,13 +363,13 @@ export default class EggHuntMinigame {
             // Even rare chance of mass release.
             if (STATE.CHANCE.bool({ likelihood: 1.5 })) {
                 bonusEggsNum = STATE.CHANCE.natural({ min: 10, max: 45 });
-                CHANNELS._postToChannelCode('ACTIONS', 'Bonus eggs rolling!');
+                CHANNELS._postToChannelCode('TALK', 'Bonus eggs rolling!');
             }
             
             // Even rare(er) chance of mass(er) release.
             if (STATE.CHANCE.bool({ likelihood: .075 })) {
                 bonusEggsNum = STATE.CHANCE.natural({ min: 20, max: 70 });
-                CHANNELS._postToChannelCode('ACTIONS', 'Bonus eggs hurtling!');
+                CHANNELS._postToChannelCode('TALK', 'Bonus eggs hurtling!');
             }
 
             // Drop the bonus average eggs.
