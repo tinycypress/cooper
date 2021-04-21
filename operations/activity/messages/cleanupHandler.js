@@ -1,33 +1,16 @@
+import { MESSAGES } from "../../../origin/coop";
+
+export const emoji = '✝️';
+
+// Allow people to delete messages but not key messages, lmao.
 export default class CleanupHandler {
 
-    static async onReaction() {
-        // if (msg.channel.type !== "dm") return false;
-        // if (COOP.USERS.isCooperMsg(msg)) return false;
-        // if (msg.command !== null) return false;
+    static async onReaction(reaction, user) {
+        if (reaction.emoji.name !== emoji) return false;
+        
+        const countVotes = 0;
 
-        // console.log('TRYING TO CLEAN UP COOPER MESSAGE!!!!');
-
-        // Check if the reactor is leader/commander
-        // If so, delete the message, trash icon?
-
-        // const annotatedMsgText = `DM message from ${msg.author.username}: ${msg.content}`;
-        // COOP.CHANNELS._postToChannelCode('LEADERS', annotatedMsgText);
-
-        // setTimeout(async () => {
-        //     const replyableMsg = await COOP.CHANNELS._postToChannelCode('COOPERTESTS', annotatedMsgText);
-        //     replyableMsg.channel.awaitMessages(
-        //         () => true,
-        //         { max: 1, time: 30000, errors: ['time'] }
-        //     )
-        //     .then(responses => {
-        //         responses.map(resp => {
-        //             COOP.USERS._dm(msg.author.id, resp.content);
-        //         });
-        //     })
-        //     .catch(console.error);
-
-        // }, 1333);
-
+        MESSAGES.selfDestruct(reaction.message, 'Trying to clean up message.');
     }
 
 }

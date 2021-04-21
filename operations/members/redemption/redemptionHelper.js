@@ -1,7 +1,7 @@
 import VotingHelper from "../../activity/redemption/votingHelper";
 
 import COOP, { SERVER, STATE } from "../../../origin/coop";
-import { EMOJIS, ROLES, CHANNELS } from '../../../origin/config';
+import { RAW_EMOJIS, ROLES, CHANNELS } from '../../../origin/config';
 
 
 export const STARTING_ROLES = [
@@ -13,7 +13,7 @@ export default class RedemptionHelper {
 
     static async onReaction(reaction, user) {
         const emoji = reaction.emoji.name;
-        const isVoteEmoji = [EMOJIS.VOTE_FOR, EMOJIS.VOTE_AGAINST].indexOf(emoji) > -1;
+        const isVoteEmoji = [RAW_EMOJIS.VOTE_FOR, RAW_EMOJIS.VOTE_AGAINST].indexOf(emoji) > -1;
         const channelID = reaction.message.channel.id;
 
         if (user.bot) return false;
@@ -54,15 +54,15 @@ export default class RedemptionHelper {
             
             // Get existing reactions on message.
             reaction.message.reactions.cache.map(reactionType => {
-                if (reactionType.emoji.name === EMOJIS.VOTE_FOR) forVotes = Math.max(0, reactionType.count - 1);
-                if (reactionType.emoji.name === EMOJIS.VOTE_AGAINST) againstVotes = Math.max(0, reactionType.count - 1);
+                if (reactionType.emoji.name === RAW_EMOJIS.VOTE_FOR) forVotes = Math.max(0, reactionType.count - 1);
+                if (reactionType.emoji.name === RAW_EMOJIS.VOTE_AGAINST) againstVotes = Math.max(0, reactionType.count - 1);
             });
             
             const votingStatusTitle = `<@${targetUser.id}>'s entry was voted upon!`;
             const votingStatusText = votingStatusTitle +
                 `\nStill required: ` +
-                `Entry ${EMOJIS.VOTE_FOR}: ${Math.max(0, reqForVotes - forVotes)} | ` +
-                `Removal ${EMOJIS.VOTE_AGAINST}: ${Math.max(0, reqAgainstVotes - againstVotes)}`;
+                `Entry ${RAW_EMOJIS.VOTE_FOR}: ${Math.max(0, reqForVotes - forVotes)} | ` +
+                `Removal ${RAW_EMOJIS.VOTE_AGAINST}: ${Math.max(0, reqAgainstVotes - againstVotes)}`;
             
 
             
@@ -86,8 +86,8 @@ export default class RedemptionHelper {
                 // Inform community.
                 COOP.CHANNELS._codes(['ENTRY', 'TALK'], 
                     `${targetUser.username} approved based on votes!` +
-                    `${forVotes ? `\n\n${EMOJIS.VOTE_FOR.repeat(forVotes)}` : ''}` +
-                    `${againstVotes ? `\n\n${EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
+                    `${forVotes ? `\n\n${RAW_EMOJIS.VOTE_FOR.repeat(forVotes)}` : ''}` +
+                    `${againstVotes ? `\n\n${RAW_EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
                 );
 
                

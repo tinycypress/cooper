@@ -1,4 +1,7 @@
 {
+    "VOTE_FOR": "🕊️",
+    "VOTE_AGAINST": "⚔️",
+
     "PICK_AXE": "⛏️",
     "AXE": "🪓",
     "DROPPED": "⤵️",
@@ -6,7 +9,5 @@
     "BOMB": "💣",
     "SHIELD": "🛡️",
     "EMPTY_GIFTBOX": "🎁",
-
-    
     "WOOD": "🪵"
 }

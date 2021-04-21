@@ -31,3 +31,11 @@ export default class AllCraftablesCommand extends CoopCommand {
 
     
 }
+
+
+
+
+
+
+
+

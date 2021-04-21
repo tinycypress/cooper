@@ -1,5 +1,5 @@
 import { USERS, MESSAGES, CHANNELS, TIME } from '../../../origin/coop';
-import { EMOJIS, ROLES, CHANNELS as CHANNEL_CONFIG } from '../../../origin/config';
+import { RAW_EMOJIS, ROLES, CHANNELS as CHANNEL_CONFIG } from '../../../origin/config';
 
 export default async (msg) => {
     try {
@@ -48,8 +48,8 @@ export default async (msg) => {
 
       // Add helpful emoji reaction suggestions to the message.
       MESSAGES.delayReact(msg, '👋', 333);
-      MESSAGES.delayReact(msg, EMOJIS.VOTE_FOR, 666);
-      MESSAGES.delayReact(msg, EMOJIS.VOTE_AGAINST, 999);
+      MESSAGES.delayReact(msg, RAW_EMOJIS.VOTE_FOR, 666);
+      MESSAGES.delayReact(msg, RAW_EMOJIS.VOTE_AGAINST, 999);
     }
 
   } catch(e) {

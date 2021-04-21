@@ -1,9 +1,6 @@
 {
     "COOP": ":coop:725006245999935610",
 
-    "VOTE_FOR": "🕊️",
-    "VOTE_AGAINST": "⚔️",
-
     "POLL_FOR": "🟢",
     "POLL_AGAINST": "🔴",
     "DAGGER": "🗡",
@@ -13,9 +10,10 @@
 
     "BASKET": "🧺",
 
-
     "ELECTION_CROWN": "👑",
-    "LEADERS_SWORD": ":knife:",
+    "SACRIFICE_SHIELD": "🛡️",
+
+    "LEADERS_SWORD": ":leaders_sword:834539190800220231",
 
     "KINGS_EGG": ":kings_egg:832022217009135656",
     "LEGENDARY_EGG": ":legendary_egg:764511545991626783",
@@ -33,7 +31,6 @@
     "AVERAGE_CRATE_OPEN": ":average_crate_open:766749241698942997",
 
 
-    "SACRIFICE_SHIELD": "🛡️",
 
     "METAL_ORE": ":metal_ore:815396958012964874",
     "LAXATIVE": ":chocolate_bar:",
