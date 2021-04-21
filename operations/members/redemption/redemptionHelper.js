@@ -46,10 +46,11 @@ export default class RedemptionHelper {
             const reqForVotes = VotingHelper.getNumRequired(.025);
             const reqAgainstVotes = VotingHelper.getNumRequired(.015);
             
+            // Refactor into a reaction guard! :D
+
             // Remove invalid reactions.
-            if (!COOP.USERS.hasRoleID(voterMember, ROLES.MEMBER.id)) {
+            if (!COOP.USERS.hasRoleID(voterMember, ROLES.MEMBER.id))
                 return await reaction.users.remove(user.id)
-            }
             
             // Get existing reactions on message.
             reaction.message.reactions.cache.map(reactionType => {

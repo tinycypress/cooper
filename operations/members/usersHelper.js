@@ -240,8 +240,8 @@ export default class UsersHelper {
             .filter(member => !includedIDs.includes(member.user.id)));
 
         // Attempt to recognise each unrecognised user.
-        allWithout.forEach(async (member, index) => {
-            console.log('this should be an index val', index);
+        allWithout.forEach(async (memberSet, index) => {
+            const member = memberSet[1];
             
             try {
                 // Insert and respond to successful/failed insertion.
