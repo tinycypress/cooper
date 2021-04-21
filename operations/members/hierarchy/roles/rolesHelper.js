@@ -46,9 +46,6 @@ export default class RolesHelper {
                 const roleID = roleConfig.id || null;
                 if (!roleID) {
                     const role = this.getRoleByID(guild, roleID);
-                    console.log(role);
-
-                    // Push roles
                     if (role) roles.push(role);
                 }
             }
