@@ -335,13 +335,13 @@ export default class EggHuntMinigame {
         if (STATE.CHANCE.bool({ likelihood: 40 }))
             this.drop('AVERAGE_EGG', 'Whoops! I dropped an egg, but where...?');
 
-        if (STATE.CHANCE.bool({ likelihood: 15 }))
+        if (STATE.CHANCE.bool({ likelihood: 25 }))
             this.drop('TOXIC_EGG', 'I dropped an egg, but where...? Tsk.');
 
-        if (STATE.CHANCE.bool({ likelihood: 7.5 }))
+        if (STATE.CHANCE.bool({ likelihood: 5 }))
             this.drop('RARE_EGG', 'Funknes! Rare egg on the loose!');
 
-        if (STATE.CHANCE.bool({ likelihood: 4.5 })) {
+        if (STATE.CHANCE.bool({ likelihood: .15 })) {
             CHANNELS._postToChannelCode('TALK', 'A legendary egg was dropped! Find and grab it before others can!');
             this.drop('LEGENDARY_EGG');
         }
