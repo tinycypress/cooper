@@ -100,10 +100,6 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => SacrificeHelper.random(), baseTickDur * 12);
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
 
-  // Productivity.
-  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur);
-
-
 
   // TODO:
   // Spam talk with low probability, low lifespan messages:
