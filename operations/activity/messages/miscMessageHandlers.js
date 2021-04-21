@@ -16,8 +16,20 @@ export default class MiscMessageHandlers {
         // If message added by Ktrn that is only emojis, react to it.
         // TODO: Does not respond to messages contain EXTERNAL server emojis due to isOnlyEmojisOrIDs shortcoming.
         if (msg.author.id === '652820176726917130' && COOP.MESSAGES.isOnlyEmojisOrIDs(msg.content)) {
-            setTimeout(() => { msg.react('🐇'); }, 666);
-            setTimeout(() => { msg.react('🐰'); }, 666);
+            if (STATE.CHANCE.bool({ likelihood: 25 }))
+                setTimeout(() => { msg.react('🐇'); }, 666);
+            
+            if (STATE.CHANCE.bool({ likelihood: 25 }))
+                setTimeout(() => { msg.react('🐰'); }, 666);
+        }
+
+
+        if (msg.author.id === '237600741471027201') {
+            if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react(':owl:');
+        }
+
+        if (msg.author.id === '625419764411662366') {
+            if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react('☁️');
         }
 
         // Bruh-roulette.
