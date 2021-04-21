@@ -6,7 +6,7 @@ export const cleanEmoji = '❎';
 // Allow people to delete messages but not key messages, lmao.
 export default class CleanupHandler {
 
-    static async onReaction({ emoji, message: msg }, user) {
+    static async onReaction({ emoji, message: msg, remove }, user) {
         if (emoji.name !== cleanEmoji) return false;
         if (USERS.isCooper(user.id)) return false;
 
@@ -19,17 +19,15 @@ export default class CleanupHandler {
 
         // Protect key messages and other from attempts to sabotage.
         const linkDel = MESSAGES.link(msg);
-        const matchFn = keyMsgKey => {
-            console.log(KEY_MESSAGES[keyMsgKey], linkDel, KEY_MESSAGES[keyMsgKey] === linkDel);
-            return KEY_MESSAGES[keyMsgKey] === linkDel;
-        }
+        const matchFn = keyMsgKey => KEY_MESSAGES[keyMsgKey] === linkDel;
         const matches = Object.keys(KEY_MESSAGES).filter(matchFn);
-
-        console.log(matches);
-
         const protectKeyText = `${cleanEmoji} Cannot democratically delete a key message.`;
-        if (matches.length > 0) return MESSAGES.silentSelfDestruct(msg, protectKeyText);
+        if (matches.length > 0) {
+            remove();
+            return MESSAGES.silentSelfDestruct(msg, protectKeyText);
+        }
 
+        // Count votes and delete, less votes required if leader votes, even less if commander votes.
         const countVotes = 0;
 
         MESSAGES.silentSelfDestruct(msg, `${cleanEmoji} Trying to clean up message. ${cleanEmoji}`);
