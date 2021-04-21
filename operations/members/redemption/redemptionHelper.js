@@ -68,8 +68,10 @@ export default class RedemptionHelper {
             
             // Handle user approved.
             if (forVotes >= reqForVotes) {
-                // Add to database
-                await COOP.USERS.addToDatabase(targetMember.user.id, targetMember.joinedDate);
+                // Add to database if not already in it.
+                const savedUser = await COOP.USERS.loadSingle(targetMember.user.id);
+                if (!savedUser)
+                    await COOP.USERS.addToDatabase(targetMember.user.id, targetMember.joinedDate);
 
                 // Inform the user.
                 try {
