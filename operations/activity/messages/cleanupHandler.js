@@ -1,16 +1,31 @@
-import { MESSAGES } from "../../../origin/coop";
+import { KEY_MESSAGES } from "../../../origin/config";
+import { MESSAGES, ROLES, USERS } from "../../../origin/coop";
 
-export const emoji = '✝️';
+export const cleanEmoji = '✝️';
 
 // Allow people to delete messages but not key messages, lmao.
 export default class CleanupHandler {
 
-    static async onReaction(reaction, user) {
-        if (reaction.emoji.name !== emoji) return false;
-        
+    static async onReaction({ emoji, message: msg }, user) {
+        if (emoji.name !== cleanEmoji) return false;
+        if (USERS.isCooper(user.id)) return false;
+
+        // Prevent non-members trying to delete content.
+        // TODO: Add member role ping/hyperlink
+        const memberReqText = `<@${user.id}>, member role is required for that action. ${cleanEmoji}`;
+        if (!ROLES._has({ user }, 'MEMBER')) 
+            return MESSAGES.silentSelfDestruct(msg, memberReqText);
+
+        // Protect key messages and other from attempts to sabotage.
+        const linkDel = MESSAGES.link(msg);
+        const matchFn = keyMsgKey => KEY_MESSAGES[keyMsgKey] === linkDel;
+        const matches = Object.keys(KEY_MESSAGES).filter(matchFn);
+        const protectKeyText = `${cleanEmoji} Cannot democratically delete a key message.`;
+        if (matches.length > 0) MESSAGES.silentSelfDestruct(msg, protectKeyText);
+
         const countVotes = 0;
 
-        MESSAGES.selfDestruct(reaction.message, 'Trying to clean up message.');
+        MESSAGES.silentSelfDestruct(msg, `${cleanEmoji} Trying to clean up message. ${cleanEmoji}`);
     }
 
 }
