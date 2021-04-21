@@ -14,7 +14,7 @@ export default async function memberJoined(member) {
       COOP.MESSAGES.link(welcomeMessage));
 
     // Notify community:
-    COOP.CHANNELS._codes(['FEED', 'TALK'], `**Someone new joined "${member.user.username}": ${COOP.CHANNELS.textRef('INTRO')}!**`);
+    COOP.CHANNELS._codes(['FEED', 'TALK'], `**Someone new joined "${member.user.username}": ${COOP.CHANNELS.textRef('ENTRY')}!**`);
 
   } catch(e) {
     console.error(e)

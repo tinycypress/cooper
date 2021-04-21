@@ -324,7 +324,7 @@ export default class EggHuntMinigame {
                 // Provide feedback.
                 let dropText = `${name} was sent an egg via DM! ${emojiText}`;
                 if (rarity === 'LEGENDARY_EGG') dropText = 'OooOoOoOoooo... ' + dropText;
-                CHANNELS._postToChannelCode('ACTIONS', dropText);
+                CHANNELS._postToChannelCode('TALK', dropText);
             }
         } catch(e) {
             console.error(e);

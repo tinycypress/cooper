@@ -13,6 +13,7 @@ import ReactionHelper from '../../../../activity/messages/reactionHelper';
 import { EMOJIS, RAW_EMOJIS } from "../../../../../origin/config";
 import COOP, { STATE, CHICKEN as Chicken } from "../../../../../origin/coop";
 import ElectionHelper from "../../../../members/hierarchy/election/electionHelper";
+import GoldCoinHandler from "./handlers/goldCoinHandler";
 
 
 export default class UsableItemHelper {
@@ -26,6 +27,7 @@ export default class UsableItemHelper {
             DiamondHandler.onReaction(reaction, user);
             ShieldHandler.onReaction(reaction, user);
             RPGHandler.onReaction(reaction, user);
+            GoldCoinHandler.onReaction(reaction, user);
 
             // TODO: CHECK THAT NOBODY ELSE REACTED.
 

@@ -8,6 +8,7 @@ import { itemCodeArg, itemQtyArg, validItemQtyArgFloatGuard } from '../../operat
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP from '../../origin/coop';
+import GoldCoinHandler from '../../operations/minigames/medium/economy/items/handlers/goldCoinHandler';
 
 export default class UseCommand extends CoopCommand {
 
@@ -41,6 +42,7 @@ export default class UseCommand extends CoopCommand {
 		if (itemCode === 'SHIELD') ShieldHandler.use(msg);
 		if (itemCode === 'RPG') RPGHandler.use(msg); // TODO: WIP
 		if (itemCode === 'EASTER_EGG') EasterEggHandler.use(msg, msg.author); // TODO: WIP
+		if (itemCode === 'GOLD_COIN') GoldCoinHandler.use(msg, msg.author); // TODO: WIP
     }
     
 }
