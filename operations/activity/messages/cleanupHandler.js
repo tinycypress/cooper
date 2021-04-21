@@ -13,7 +13,8 @@ export default class CleanupHandler {
         // Prevent non-members trying to delete content.
         // TODO: Add member role ping/hyperlink
         const memberReqText = `<@${user.id}>, member role is required for that action. ${cleanEmoji}`;
-        if (!ROLES._has({ user }, 'MEMBER')) 
+        const member = USERS._getMemberByID(user.id);
+        if (!ROLES._has(member, 'MEMBER'))
             return MESSAGES.silentSelfDestruct(msg, memberReqText);
 
         // Protect key messages and other from attempts to sabotage.
