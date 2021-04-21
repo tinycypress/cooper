@@ -20,10 +20,13 @@ export default class CleanupHandler {
         // Protect key messages and other from attempts to sabotage.
         const linkDel = MESSAGES.link(msg);
         const matchFn = keyMsgKey => {
-            console.log(KEY_MESSAGES[keyMsgKey], linkDel);
+            console.log(KEY_MESSAGES[keyMsgKey], linkDel, KEY_MESSAGES[keyMsgKey] === linkDel);
             return KEY_MESSAGES[keyMsgKey] === linkDel;
         }
         const matches = Object.keys(KEY_MESSAGES).filter(matchFn);
+
+        console.log(matches);
+
         const protectKeyText = `${cleanEmoji} Cannot democratically delete a key message.`;
         if (matches.length > 0) return MESSAGES.silentSelfDestruct(msg, protectKeyText);
 

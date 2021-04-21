@@ -2,8 +2,9 @@ import announcementOpts from "./announceOpts";
 import communityOpts from "./communityOpts";
 import gameOpts from "./gameOpts";
 
-import { CHANNELS, KEY_MESSAGES } from '../../../origin/config';
-import COOP, { CHICKEN } from "../../../origin/coop";
+import { CHANNELS as CHANNELS_CONFIG, KEY_MESSAGES } from '../../../origin/config';
+import COOP, { CHICKEN, CHANNELS } from "../../../origin/coop";
+import STATE from "../../../origin/state";
 
 
 export default class AboutHelper {
@@ -57,7 +58,7 @@ export default class AboutHelper {
         const reactEmoji = reaction.emoji.name;
 
         // Check if this reaction is on about channel.
-        if (reaction.message.channel.id !== CHANNELS.ABOUT.id) return false;
+        if (reaction.message.channel.id !== CHANNELS_CONFIG.ABOUT.id) return false;
 
         // Ignore Cooper.
         if (COOP.USERS.isCooper(user.id)) return false;
@@ -91,10 +92,10 @@ export default class AboutHelper {
         // Edit latest member message.
         const last = await COOP.USERS.getLastUser();
         const lastMember = COOP.USERS._getMemberByID(last.discord_id);
-        const lastJoinLink = await CHICKEN.getConfigVal('about_lastjoin_msg');
-        await COOP.MESSAGES.editByLink(lastJoinLink, `**Latest Member**\n` +
-            `${lastMember.user.username} was our latest member!`
-        );
+
+        const latestMemberText = `**Latest Member**\n${lastMember.user.username} was our latest member!`;
+        if (STATE.CHANCE.bool({ likelihood: 5 }))
+            CHANNELS._send('TALK', latestMemberText);
         
         // post leaderboard to economy
         const leaderboardMsgLink = await CHICKEN.getConfigVal('about_leaderboard_msg');

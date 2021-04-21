@@ -120,7 +120,6 @@ export default class MessageNotifications {
             });
 
             // Edit the message in about channel.
-            COOP.MESSAGES.editByLink(KEY_MESSAGES.latest_messages, notificationString);
             COOP.CHANNELS._postToFeed(notificationString, 4444);
         }
     }
