@@ -48,10 +48,8 @@ export default class RolesHelper {
                     const role = this.getRoleByID(guild, roleID);
         
                     // Push roles
-                    if (role) 
-                        roles.push(role);
+                    if (role) roles.push(role);
                 }
-    
             }
 
         });

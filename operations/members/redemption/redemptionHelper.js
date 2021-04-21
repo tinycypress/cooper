@@ -81,7 +81,7 @@ export default class RedemptionHelper {
                 }
 
                 // Give intro roles
-                await COOP.ROLES._addManyToMember(targetMember, STARTING_ROLES);
+                COOP.ROLES._addManyToMember(targetMember, STARTING_ROLES);
                 
                 // Inform community.
                 COOP.CHANNELS._codes(['ENTRY', 'TALK'], 
