@@ -36,6 +36,10 @@ export default class RolesHelper {
         return this.getRoleByID(SERVER._coop(), ROLES[roleCode].id);
     }
 
+    static _idsByCodes(codes = []) {
+        return codes.map(code => ROLES[code].id);
+    }
+
     static _getCodes(roleCodes = []) {
         let roles = [];
         const guild = SERVER._coop();
@@ -71,8 +75,10 @@ export default class RolesHelper {
         }
     }
 
-    static _addManyToMember(member, roleCodes) {
-        return member.roles.add(COOP.ROLES._getCodes(roleCodes));
+    static _addCodes(userID, roleCodes) {
+        const member = COOP.USERS._getMemberByID(userID);
+        const roleIDs = RolesHelper._idsByCodes(roleCodes);
+        return member.roles.add(roleIDs);
     }
 
     static async toggle(userID, roleCode) {

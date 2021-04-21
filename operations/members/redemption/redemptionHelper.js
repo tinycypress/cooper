@@ -25,16 +25,14 @@ export default class RedemptionHelper {
     }
 
     static async processVote(reaction, user) {
-        const guild = SERVER.getByCode(STATE.CLIENT, 'PROD');
-
         const targetUser = reaction.message.author;
 
         let forVotes = 0;
         let againstVotes = 0;
 
         try {
-            const voterMember = await COOP.USERS.fetchMemberByID(guild, user.id);
-            const targetMember = await COOP.USERS.fetchMemberByID(guild, targetUser.id);
+            const voterMember = COOP.USERS._getMemberByID(user.id);
+            const targetMember = COOP.USERS._getMemberByID(targetUser.id);
 
             // If member left, don't do anything.
             if (!targetMember) return false;
@@ -83,7 +81,7 @@ export default class RedemptionHelper {
                 }
 
                 // Give intro roles
-                const introRolesResult = await COOP.ROLES._addManyToMember(targetMember, STARTING_ROLES);
+                const introRolesResult = await COOP.ROLES._addCodes(targetMember.user.id, STARTING_ROLES);
                 console.log(introRolesResult);
                 
                 // Inform community.

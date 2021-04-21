@@ -3,13 +3,14 @@ import dotenv from 'dotenv';
 
 import Database from './database';
 
-import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
+import COOP, { CHANNELS, ITEMS, MESSAGES, ROLES, SERVER, TIME, USERS } from '../coop';
 
 import EventsHelper from '../../operations/eventsHelper';
 
 import { status } from '../../operations/marketing/rewards/loyalty';
 import client from './client';
 import UsersHelper from '../../operations/members/usersHelper';
+import RolesHelper from '../../operations/members/hierarchy/roles/rolesHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -40,7 +41,8 @@ const shallowBot = async () => {
 		// Track deficit
 		// Track coin price
 		// Track coin value
-		UsersHelper.populateUsers()
+		// UsersHelper.populateUsers()
+
 
         // Structures
         // 100dz integration TODOs
