@@ -90,7 +90,7 @@ export default class EggHuntMinigame {
         return eggRarity;
     }
 
-    static async processBombDrop(rarity, user) {
+    static async processBombDrop(msgRef, rarity, user) {
         // Ignore toxic eggs for now.
         if (rarity === 'TOXIC_EGG') return false;
 
@@ -103,7 +103,8 @@ export default class EggHuntMinigame {
         const emojiText = MESSAGES.emojiText(EMOJIS[rarity]);
         const emojiItemText = MESSAGES.emojiText(EMOJIS[reward.item]);
         const eventText = `${actionText} ${emojiText}\n${emojiItemText} ${reward.item}x${reward.qty}`;
-        CHANNELS._postToChannelCode('ACTIONS', eventText, 2000);
+        
+        CHANNELS.silentPropagate(msgRef, eventText, 'ACTIONS', 10000);
         
         await ITEMS.add(user.id, reward.item, reward.qty);
     }
@@ -145,7 +146,7 @@ export default class EggHuntMinigame {
             Promise.all(awardedUserIDs.map(userID => COOP.POINTS.addPointsByID(userID, reward)));
 
             // Add/update random item to user if it was a legendary egg
-            this.processBombDrop(rarity, user);
+            this.processBombDrop(reaction.message, rarity, user);
 
             // Create feedback text from list of users.
             const usersRewardedText = awardedUserIDs.map(userID => aroundUsers[userID].username).join(', ');
@@ -190,15 +191,14 @@ export default class EggHuntMinigame {
 
                 setTimeout(async () => {
                     if (!CHANNELS.checkIsByCode(reaction.message.channel.id, 'FEED')) {
-
                         const feedbackMsg = await reaction.message.say(feedbackText);
                         MESSAGES.delayReact(feedbackMsg, EMOJIS.FRYING_PAN, 1333);
                         MESSAGES.delayDelete(feedbackMsg, 10000);
                     }
-                    setTimeout(() => { CHANNELS._postToChannelCode('ACTIONS', feedbackText); }, 666);
+                    setTimeout(() => CHANNELS._postToChannelCode('ACTIONS', feedbackText), 666);
 
-                    // CHANNELS.propagate()
                 }, 333)
+                // TODO: REfactor to CHANNELS.propagate()
             } else {
                 const unableMsg = await reaction.message.say('Unable to use FRYING_PAN, you own none. :/');
                 setTimeout(() => reaction.users.remove(user.id), 666);
@@ -332,19 +332,18 @@ export default class EggHuntMinigame {
     }
 
     static run() {        
-        this.drop('AVERAGE_EGG', 'Whoops! I dropped an egg, but where...?');
+        if (STATE.CHANCE.bool({ likelihood: 40 }))
+            this.drop('AVERAGE_EGG', 'Whoops! I dropped an egg, but where...?');
 
-        if (STATE.CHANCE.bool({ likelihood: 15 })) {
+        if (STATE.CHANCE.bool({ likelihood: 15 }))
             this.drop('TOXIC_EGG', 'I dropped an egg, but where...? Tsk.');
 
-            if (STATE.CHANCE.bool({ likelihood: 7.5 })) {
-                this.drop('RARE_EGG', 'Funknes! Rare egg on the loose!');
+        if (STATE.CHANCE.bool({ likelihood: 7.5 }))
+            this.drop('RARE_EGG', 'Funknes! Rare egg on the loose!');
 
-                if (STATE.CHANCE.bool({ likelihood: 4.5 })) {
-                    CHANNELS._postToChannelCode('TALK', 'A legendary egg was dropped! Find and grab it before others can!');
-                    this.drop('LEGENDARY_EGG');
-                }
-            }
+        if (STATE.CHANCE.bool({ likelihood: 4.5 })) {
+            CHANNELS._postToChannelCode('TALK', 'A legendary egg was dropped! Find and grab it before others can!');
+            this.drop('LEGENDARY_EGG');
         }
 
         // Small chance of rolling for a direct message egg.
@@ -357,27 +356,35 @@ export default class EggHuntMinigame {
 
         // Small chance of bonus eggs being released.     
         if (STATE.CHANCE.bool({ likelihood: 4.5 })) {        
-            // Calculate a number of bonus eggs.   
+            // Calculate a number of bonus eggs.
+            let bonusEggStatus = 'Bonus eggs rolling!';
             let bonusEggsNum = STATE.CHANCE.natural({ min: 5, max: 25 });
 
             // Even rare chance of mass release.
             if (STATE.CHANCE.bool({ likelihood: 1.5 })) {
                 bonusEggsNum = STATE.CHANCE.natural({ min: 10, max: 45 });
-                CHANNELS._postToChannelCode('TALK', 'Bonus eggs rolling!');
+                bonusEggStatus = 'Bonus eggs hurtling!';
             }
             
             // Even rare(er) chance of mass(er) release.
             if (STATE.CHANCE.bool({ likelihood: .075 })) {
                 bonusEggsNum = STATE.CHANCE.natural({ min: 20, max: 70 });
-                CHANNELS._postToChannelCode('TALK', 'Bonus eggs hurtling!');
+                bonusEggStatus = 'Bonus eggs bonusing!';
             }
 
+            // Announce bonus eggs socially.
+            CHANNELS._tempSend('TALK', bonusEggStatus, 0, 60000 * 5);
+
             // Drop the bonus average eggs.
-            for (let i = 0; i < bonusEggsNum; i++) this.drop('AVERAGE_EGG', null);
+            for (let i = 0; i < bonusEggsNum; i++) {
+                setTimeout(() => this.drop('AVERAGE_EGG', null), i * 3333);
+            }
 
             // Add in a mixture of toxic eggs.
             const toxicEggsMixupNum = STATE.CHANCE.natural({ min: 1, max: Math.floor(bonusEggsNum / 2.5) });
-            for (let i = 0; i < toxicEggsMixupNum; i++) this.drop('TOXIC_EGG', null);
+            for (let i = 0; i < toxicEggsMixupNum; i++) {
+                setTimeout(() => this.drop('TOXIC_EGG', null), i * 3333);
+            }
         }
     }
 
