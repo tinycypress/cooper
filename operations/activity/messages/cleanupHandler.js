@@ -7,7 +7,7 @@ export const cleanEmoji = '❎';
 export default class CleanupHandler {
 
     static async onReaction(reaction, user) {
-        if (emoji.name !== cleanEmoji) return false;
+        if (reaction.emoji.name !== cleanEmoji) return false;
         if (USERS.isCooper(user.id)) return false;
 
         // Prevent non-members trying to delete content.
@@ -23,7 +23,7 @@ export default class CleanupHandler {
         const matches = Object.keys(KEY_MESSAGES).filter(matchFn);
         const protectKeyText = `${cleanEmoji} Cannot democratically delete a key message.`;
         if (matches.length > 0) {
-            remove();
+            reaction.remove();
             return MESSAGES.silentSelfDestruct(reaction.message, protectKeyText);
         }
 
