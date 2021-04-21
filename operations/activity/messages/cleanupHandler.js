@@ -1,10 +1,14 @@
 import { KEY_MESSAGES } from "../../../origin/config";
-import { MESSAGES, ROLES, USERS } from "../../../origin/coop";
+import { MESSAGES, REACTIONS, ROLES, USERS } from "../../../origin/coop";
+import VotingHelper from "../redemption/votingHelper";
 
 export const cleanEmoji = '❎';
 
 // Allow people to delete messages but not key messages, lmao.
 export default class CleanupHandler {
+
+
+    // TODO: Should consider where this breaks things... elections?
 
     static async onReaction(reaction, user) {
         if (reaction.emoji.name !== cleanEmoji) return false;
@@ -28,9 +32,13 @@ export default class CleanupHandler {
         }
 
         // Count votes and delete, less votes required if leader votes, even less if commander votes.
-        const countVotes = 0;
-
-        MESSAGES.silentSelfDestruct(reaction.message, `${cleanEmoji} Trying to clean up message. ${cleanEmoji}`);
+        const countVotes = REACTIONS.countType(reaction.message, cleanEmoji);
+        const numReq = VotingHelper.getNumRequired(.03);
+        if (countVotes > numReq) {
+            const cleanedText = `${cleanEmoji} message was democratically deleted.`;
+            MESSAGES.silentSelfDestruct(reaction.message, cleanedText, 0, 4000);
+            MESSAGES.delayDelete(reaction.message, 333);
+        }
     }
 
 }

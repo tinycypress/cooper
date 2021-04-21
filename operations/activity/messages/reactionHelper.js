@@ -25,13 +25,7 @@ export default class ReactionHelper {
     }
 
     static countTypeCode(message, codeType) {
-        let count = 0;
-
-        const type = EMOJIS[codeType];
-        message.reactions.cache.map(reaction => {
-            if (reaction.emoji.name === type) count = reaction.count;
-        });
-        return count;
+        return this.countType(message, EMOJIS[codeType]);
     }
 
 }
