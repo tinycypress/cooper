@@ -2,7 +2,7 @@ import EconomyNotifications from "../../activity/information/economyNotification
 
 import SkillsHelper from "../medium/skills/skillsHelper";
 
-import COOP, { STATE, REACTIONS, SERVER, USABLE } from "../../../origin/coop";
+import COOP, { STATE, REACTIONS, SERVER, USABLE, ITEMS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import Statistics from "../../activity/information/statistics";
 
@@ -64,7 +64,8 @@ export default class WoodcuttingMinigame {
             if (axeUpdate) {
                 const brokenDamage = -2;
                 const pointsDamageResult = await COOP.POINTS.addPointsByID(user.id, brokenDamage);
-                
+                const ptsDmgText = ITEMS.displayQty(pointsDamageResult);
+
                 // Update economy statistics.
                 EconomyNotifications.add('WOODCUTTING', {
                     playerID: user.id,
@@ -77,7 +78,7 @@ export default class WoodcuttingMinigame {
                 SkillsHelper.addXP(user.id, 'woodcutting', 2);
                 
                 const actionText = `${user.username} broke an axe trying to cut wood, ${userAxesNum - 1} remaining!`;
-                const damageText = `${brokenDamage} points (${pointsDamageResult}) but gained 2xp in woodcutting for trying.`;
+                const damageText = `${brokenDamage} points (${ptsDmgText}) but gained 2xp in woodcutting for trying.`;
                 COOP.CHANNELS.propagate(msg, `${actionText} ${damageText}`, 'ACTIONS');
             }
         } else {
@@ -109,7 +110,8 @@ export default class WoodcuttingMinigame {
             
             // Provide feedback.
             const actionText = `${user.username} successfully chopped wood.`;
-            const rewardText = `+1xp, +1 point (${addPoints}), +${extractedWoodNum} wood (${addedWood})!`;
+            const ptsText = ITEMS.displayQty(addPoints);
+            const rewardText = `+1xp, +1 point (${ptsText}), +${extractedWoodNum} wood (${addedWood})!`;
             COOP.CHANNELS.propagate(msg, `${actionText} ${rewardText}`, 'ACTIONS');
 
             EconomyNotifications.add('WOODCUTTING', {

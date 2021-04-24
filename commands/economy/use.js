@@ -4,20 +4,25 @@ import ShieldHandler from '../../operations/minigames/medium/economy/items/handl
 import RPGHandler from '../../operations/minigames/medium/economy/items/handlers/rpgHandler';
 import EasterEggHandler from '../../operations/minigames/medium/economy/items/handlers/easterEggHandler';
 
-import { itemCodeArg, itemQtyArg, validItemQtyArgFloatGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
+import { itemCodeArg, itemQtyArg, validItemQtyArgFloatGuard, usableItemCodeGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP from '../../origin/coop';
+import COOP, { USABLE } from '../../origin/coop';
 import GoldCoinHandler from '../../operations/minigames/medium/economy/items/handlers/goldCoinHandler';
 
 export default class UseCommand extends CoopCommand {
 
 	constructor(client) {
+
 		super(client, {
 			name: 'use',
 			group: 'economy',
 			memberName: 'use',
-			aliases: ['u'],
+			aliases: [
+				'u', 
+				// All all usable itemCodes as aliases too
+				...USABLE.getUsableItems().map(code => code.toLowerCase())
+			],
 			description: 'This command lets you use the items you own',
 			details: `Details of the use command`,
 			examples: ['use', '!use laxative'],
@@ -29,12 +34,17 @@ export default class UseCommand extends CoopCommand {
 		super.run(msg);
 
 		// Guard to a proper float input.
-		if (!validItemQtyArgFloatGuard(qty))
+		qty = parseFloat(qty);
+		
+		if (!validItemQtyArgFloatGuard(msg, msg.author, qty))
 			return null;
-
 
 		// Interpret item code from text/string/emoji/item_code.
 		itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
+
+		// Usable item guard
+		if (!usableItemCodeGuard(msg, itemCode, msg.author.username))
+			return null;
 
 		// Item is usable, therefore use it.
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);

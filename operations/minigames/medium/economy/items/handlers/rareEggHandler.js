@@ -3,7 +3,7 @@ import { EGG_DATA } from '../../../../small/egghunt';
 import UsableItemHelper from "../usableItemHelper";
 
 import { EMOJIS } from "../../../../../../origin/config";
-import COOP, { STATE, REACTIONS } from "../../../../../../origin/coop";
+import COOP, { STATE, REACTIONS, ITEMS } from "../../../../../../origin/coop";
 
 export default class RareEggHandler {
 
@@ -27,7 +27,7 @@ export default class RareEggHandler {
                     const updatedPoints = await COOP.POINTS.addPointsByID(targetID, damage);
 
                     // Calculate feedback text.
-                    const damageInfoText = ` ${damage} points (${updatedPoints})`;
+                    const damageInfoText = ` ${damage} points (${ITEMS.displayQty(updatedPoints)})`;
                     let actionInfoText = `${user.username} used a rare egg on ${author.username}`;
                     if (backFired) actionInfoText = `${user.username} tried to use a rare egg on ${author.username}, but it backfired`;
                     const feedbackMsgText = `${actionInfoText}: ${damageInfoText}.`;

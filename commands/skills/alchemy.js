@@ -1,7 +1,7 @@
 import DropTable from '../../operations/minigames/medium/economy/items/droptable';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { USABLE } from '../../origin/coop';
+import COOP, { ITEMS, MESSAGES, USABLE } from '../../origin/coop';
 
 export default class AlchemyCommand extends CoopCommand {
 
@@ -34,16 +34,19 @@ export default class AlchemyCommand extends CoopCommand {
 	async run(msg, { qty, itemCode }) {
 		super.run(msg);
 
-		const alcQty = Math.round(parseInt(qty) / 100);
+		const alcQty = Math.round(parseInt(qty) / 10);
+		const inputEmoji = MESSAGES._displayEmojiCode(itemCode);
 
 		if (!alcQty || alcQty < 1) 
-			return COOP.MESSAGES.selfDestruct(msg, 'At least 100 required.')
+			return COOP.MESSAGES.selfDestruct(msg, `At least 10x${inputEmoji} (${itemCode}) - or another egg type - required for alchemy.`)
 
 		let rarity = null;
 		itemCode = COOP.ITEMS.parseFromStr(itemCode);
 		if (itemCode === 'AVERAGE_EGG') rarity = 'AVERAGE';
 		if (itemCode === 'RARE_EGG') rarity = 'RARE';
 		if (itemCode === 'LEGENDARY_EGG') rarity = 'LEGENDARY';
+
+		// TODO: Could implement easter and christmas eggs? Kings egg?
 
 		if (!rarity) 
 			return COOP.MESSAGES.selfDestruct(msg, 'Invalid item identifier.')

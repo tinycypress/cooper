@@ -1,6 +1,6 @@
 import BuffsHelper from "../../../conquest/buffsHelper";
 
-import COOP, { USABLE } from "../../../../../../origin/coop";
+import COOP, { ITEMS, USABLE } from "../../../../../../origin/coop";
 
 export default class BombHandler {
 
@@ -43,7 +43,7 @@ export default class BombHandler {
                         if (reaction.count > 1) doubledInfo = `(x${reaction.count})`;
 
                         const subjectsInvolved = `<@${user.id}> bombed <@${target.id}>`;
-                        const changesOccurred = `${damage}${doubledInfo} points (${updatedPoints}).`;
+                        const changesOccurred = `${damage}${doubledInfo} points (${ITEMS.displayQty(updatedPoints)}).`;
                         const feedbackText = `${subjectsInvolved}: ${changesOccurred}`;
 
                         // TODO: After one of these hits... should remove all reactions etc.

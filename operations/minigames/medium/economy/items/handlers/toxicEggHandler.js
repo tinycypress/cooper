@@ -1,7 +1,7 @@
 import BuffsHelper from "../../../conquest/buffsHelper";
 import UsableItemHelper from "../usableItemHelper";
 
-import COOP, { STATE } from "../../../../../../origin/coop";
+import COOP, { ITEMS, STATE } from "../../../../../../origin/coop";
 import { EMOJIS } from "../../../../../../origin/config";
 
 
@@ -49,7 +49,8 @@ export default class ToxicEggHandler {
                     // Add visuals animation
                     COOP.MESSAGES.delayReact(msg, '☢️', 666);
 
-                    const damageInfoText = ` ${damage} points (${updatedPoints})`;
+                    
+                    const damageInfoText = ` ${damage} points (${ITEMS.displayQty(updatedPoints)})`;
                     
                     if (backFired) actionInfoText = `${user.username} tried to use a toxic egg on ${author.username}, but it backfired`;
 

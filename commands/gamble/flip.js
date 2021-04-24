@@ -63,7 +63,8 @@ export default class FlipCommand extends CoopCommand {
 		const firstReactor = await firstConfirmPrompt(msg, joinText, msg.author.id);
 		if (!firstReactor) {		
 			const refundTotal = await ITEMS.add(msg.author.id, 'GOLD_COIN', amount);
-			const refundText = `Nobody joined your coinflip :'(. Refunded ${amount}x${goldCoin} you now have ${refundTotal}x${goldCoin}.`;
+			const qtyText = ITEMS.displayQty(refundTotal);
+			const refundText = `Nobody joined your coinflip :'(. Refunded ${amount}x${goldCoin} you now have ${qtyText}x${goldCoin}.`;
 			return MESSAGES.silentSelfDestruct(msg, refundText);
 		}
 
@@ -131,10 +132,11 @@ export default class FlipCommand extends CoopCommand {
 		const rewardAmount = 2 * amount;
 
 		const newTotal = await ITEMS.add(winner.id, 'GOLD_COIN', rewardAmount);
+		const qtyText = ITEMS.displayQty(newTotal);
 
 		// Provide feedback with silent ping.
 		const choiceText = `${goldCoin} coin lands on ${winningRoll}, <@${chooser.id}> chose ${sideChoice}`;
-		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin} and now has ${newTotal}x${goldCoin}, <@${loser.id}> loser.`;
+		const resultText = `${choiceText}, <@${winner.id}> wins ${rewardAmount}x${goldCoin} and now has ${qtyText}x${goldCoin}, <@${loser.id}> loser.`;
 		MESSAGES.silentSelfDestruct(msg, resultText);
     }
 }

@@ -4,7 +4,7 @@ import SkillsHelper from "../medium/skills/skillsHelper";
 
 import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 
-import COOP, { STATE, REACTIONS, SERVER } from "../../../origin/coop";
+import COOP, { STATE, REACTIONS, SERVER, ITEMS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import Statistics from "../../activity/information/statistics";
 
@@ -65,6 +65,7 @@ export default class MiningMinigame {
             if (pickaxeUpdate) {
                 const brokenPickDamage = -2;
                 const pointsDamageResult = await COOP.POINTS.addPointsByID(user.id, brokenPickDamage);
+                const ptsDmgText = ITEMS.displayQty(pointsDamageResult);
                 
                 // Update mining economy statistics.
                 EconomyNotifications.add('MINING', {
@@ -78,7 +79,7 @@ export default class MiningMinigame {
                 SkillsHelper.addXP(user.id, 'mining', 2);
 
                 const actionText = `${user.username} broke a pickaxe trying to mine, ${userPickaxesNum - 1} remaining!`;
-                const damageText = `${brokenPickDamage} points (${pointsDamageResult}) but gained mining 2xp for trying!.`;
+                const damageText = `${brokenPickDamage} points (${ptsDmgText}) but gained mining 2xp for trying!.`;
                 COOP.CHANNELS.propagate(msg, `${actionText} ${damageText}`, 'ACTIONS');
             }
         } else {
@@ -117,7 +118,8 @@ export default class MiningMinigame {
             // Provide feedback.
             const metalOreEmoji = COOP.MESSAGES._displayEmojiCode('METAL_ORE');
             const actionText = `${user.username} successfully mined a rock.`;
-            const rewardText = `+1 point (${addPoints}), +${extractedOreNum} ${metalOreEmoji} (${addMetalOre})!`;
+            const ptsText = ITEMS.displayQty(addPoints);
+            const rewardText = `+1 point (${ptsText}), +${extractedOreNum} ${metalOreEmoji} (${addMetalOre})!`;
             COOP.CHANNELS.propagate(msg, `${actionText} ${rewardText}`, 'ACTIONS');
         }
     }

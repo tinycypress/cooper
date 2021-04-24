@@ -3,7 +3,7 @@ import ElectionHelper from '../../operations/members/hierarchy/election/election
 import { usableItemCodeGuard, useManyGuard, validItemQtyArgFloatGuard, validUserArgGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { MESSAGES } from '../../origin/coop';
+import COOP, { ITEMS, MESSAGES } from '../../origin/coop';
 
 
 
@@ -97,7 +97,8 @@ export default class GiveCommand extends CoopCommand {
 			// Send feedback message.
 			// TODO: State how many both have now after gift.
 			const itemEmoji = MESSAGES._displayEmojiCode(itemCode);
-			const addText = `<@${msg.author.id}> gave <@${target.id}> ${itemEmoji} ${itemCode}x${qty}.`;
+			const qtyText = ITEMS.displayQty(qty);
+			const addText = `<@${msg.author.id}> gave <@${target.id}> ${itemEmoji} ${itemCode}x${qtyText}.`;
 			COOP.CHANNELS.silentPropagate(msg, addText, 'FEED');
 
 		} catch(e) {
