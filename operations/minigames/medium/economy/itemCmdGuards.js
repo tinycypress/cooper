@@ -100,7 +100,9 @@ export async function ownEnoughGuard(user, itemCode, qty, msgRef) {
         const itemQty = await ITEMS.getUserItemQty(user.id, itemCode);
         const emoji = MESSAGES._displayEmojiCode(itemCode);
         if (itemQty < 0 || itemQty - qty < 0) {
-            const notEnoughText = `<@${user.id}> does not own enough ${emoji} ${itemCode}. ${itemQty}/${qty}`
+            const displayItemQty = ITEMS.displayQty(itemQty);
+            const itemStatusText = `<@${user.id}> does not own enough ${emoji} (${itemCode})`;
+            const notEnoughText = `${itemStatusText}: ${displayItemQty}/${qty}`
             MESSAGES.silentSelfDestruct(msgRef, notEnoughText, 0, 10000);
 
             // Indicate guard failed.
