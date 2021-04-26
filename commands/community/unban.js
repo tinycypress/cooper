@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 
-import COOP, { MESSAGES, ROLES, SERVER, USERS } from '../../origin/coop';
+import COOP, { MESSAGES, REACTIONS, ROLES, SERVER, USERS } from '../../origin/coop';
 import { EMOJIS } from '../../origin/config';
 
 export default class UnbanCommand extends CoopCommand {
@@ -31,9 +31,6 @@ export default class UnbanCommand extends CoopCommand {
 			
 			// Prevent usage of unban for another hour.
 			const userBan = await SERVER._coop().fetchBan(discordID);
-			if (!userBan) {
-				return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban?');
-			}
 			
 			const banReason = false ? 'Ban reason.' : 'Unknown ban reason.';
 
@@ -63,13 +60,16 @@ export default class UnbanCommand extends CoopCommand {
 
 			console.log(consentResult);
 
-
 			// Unban a user by ID (or with a user/guild member object)
 			// const unbanResult = await SERVER._coop().members.unban(user.id);
 			// 	.then(user => console.log(`Unbanned ${user.username} from ${guild.name}`))
 			// 	.catch(console.error);
 
 		} catch(e) {
+			if (e.message === 'Unknown Ban') {
+				return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban/ban does not exist.');
+			}
+
 			console.log('Democratic unban failed.');
 			console.error(e);
 		}
