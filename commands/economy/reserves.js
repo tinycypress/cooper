@@ -11,9 +11,9 @@ export default class ReservesCommand extends CoopCommand {
 			name: 'reserves',
 			group: 'economy',
 			memberName: 'reserves',
-			aliases: ['res'],
-			description: 'This command lets you reserves the items you own',
-			details: `Details of the reserves command`,
+			aliases: ['res', 'balance'],
+			description: 'This command lets you deficit the items you own',
+			details: `Details of the deficit command`,
 			examples: ['reserves', '!reserves laxative']
 		});
 	}
@@ -21,11 +21,16 @@ export default class ReservesCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 
+		// Get the FIAT, BTC, DOGE, LTC balances and combine:
+
+
+
 		// TODO: This should be updated in an economy channel somewhere.
 		// TODO: Notify community with over 10% change to reserves.
 		COOP.MESSAGES.selfDestruct(
 			msg, 
-			`**Economy Reserves:**\n${await ReservesHelper.balanceText()}`
+			`**Economy Reserves:**\n${await ReservesHelper.balanceText()}` +
+			`// TODO: Get the FIAT, BTC, DOGE, LTC balances and combine...`
 		);
     }
     

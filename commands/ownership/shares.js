@@ -55,9 +55,9 @@ export default class SharesCommand extends CoopCommand {
         const emoji = MESSAGES._displayEmojiCode(itemCode);
         const ownershipText = `**${itemCode} ${emoji} ownership shares/market %:**\n\n` +
             meaningfulOwnersArr.map((val, index) => 
-                `#${index}. <@${val.owner_id}>` + 
-                `${ITEMS.displayQty(val.quantity)}` +
-                `(${perc(val.quantity, itemTotal)}%)`
+                `#${index + 1}. ` + 
+                `${ITEMS.displayQty(val.quantity)} ` +
+                `(${perc(val.quantity, itemTotal)}%) <@${val.owner_id}>`
             ).join('\n');
 
 		// Output share of requested item (if valid)

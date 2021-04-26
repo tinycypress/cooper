@@ -39,19 +39,16 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
-        // Democratic unban
         // Transactions command exists already. -> Last 500 transactions/self-cleaning
+        // All item shares (postgres query)
 
         // Recurring event for testing prospects.
         // Code for handling prospects.
 
-		// Track deficit
-		// Track coin price
-		// Track coin value
-
-
+		
         // Structures
-        // Paypal in/out
+        // Paypal in/out // Track deficit (use detail reserved)
+        // Add cost command (democratically)
         // 100dz integration TODOs
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
