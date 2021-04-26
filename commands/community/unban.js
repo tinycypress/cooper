@@ -35,10 +35,13 @@ export default class UnbanCommand extends CoopCommand {
 		
 			// Show the ban info on the unban reaction collector for consent/safety.
 			// Add the suggestion reactions for voting.
-			const userBanData = userBans.find(ban => ban.user.id === discordID);
+			const userBanData = userBans.find(ban => {
+				console.log(ban.user.id === discordID, ban.user.id, discordID);
+				return ban.user.id === discordID
+			});
 			if (!userBanData) return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban/ban does not exist.');
 
-			// Output a consent awaiting message attempting to unban the user.
+			// Output a consent awaiting message attempting to unban the user
 			const banReason = userBanData.reason ? userBanData.reason : 'Unknown ban reason.';
 			const unbanVoteText = `**Vote on unbanning <@${discordID}>, ban reason:**\n\n`
 				+ `${banReason}\n\n_Press ${VOTE_FOR} to vote unban._`;
