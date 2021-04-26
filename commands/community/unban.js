@@ -36,6 +36,11 @@ export default class UnbanCommand extends CoopCommand {
 			// Show the ban info on the unban reaction collector for consent/safety.
 			// Add the suggestion reactions for voting.
 			const userBan = userBans.find(user => user.id === discordID);
+
+			console.log('user ban start');
+			console.log(userBan);
+			console.log('user ban end');
+
 			const banReason = userBan ? 'Ban reason.' : 'Unknown ban reason.';
 			const unbanVoteText = `Vote on unbanning <@${discordID}>, press ${VOTE_FOR} to vote unban.`;
 			const unbanConsentMsg = await MESSAGES.silentSelfDestruct(msg, unbanVoteText, 0, 60000);
@@ -46,15 +51,15 @@ export default class UnbanCommand extends CoopCommand {
 			// Calculate the result of the multi-member consent/approval vote.
 			const consentResult = await REACTIONS._usersEmojisAwait(unbanConsentMsg, [VOTE_FOR], modifierFn);			
 			const unbanVotesReq = VotingHelper.getNumRequired(SACRIFICE_RATIO_PERC);
-			// const forCount = REACTIONS.countType(consentResult, VOTE_FOR - 1);
-			// const votesSufficient = forCount >= unbanVotesReq;
+			const forCount = REACTIONS.countTypeCollection(consentResult, VOTE_FOR) - 1;
+			const votesSufficient = forCount >= unbanVotesReq;
 
 			// console.log(userBan);
-			
+
 			console.log(consentResult);
 
-			// console.log(forCount);
-			// console.log(votesSufficient);
+			console.log(forCount);
+			console.log(votesSufficient);
 
 			// Form the result text and output.
 			// let resultText = `Unban vote ${votesSufficient ? 'successful' : 'failed'} ` +

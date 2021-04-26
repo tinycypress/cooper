@@ -34,6 +34,12 @@ export default class ReactionHelper {
         return count;
     }
 
+    static countTypeCollection(col, type) {
+        return col.reduce((acc, { emoji, count }) => {
+            if (emoji.name === type) acc += count;
+        }, 0);
+    }
+
     static countTypeCode(message, codeType) {
         return this.countType(message, EMOJIS[codeType]);
     }
