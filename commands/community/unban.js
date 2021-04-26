@@ -32,20 +32,17 @@ export default class UnbanCommand extends CoopCommand {
 		try {
 			// Prevent usage of unban for another hour.
 			const userBans = await SERVER._coop().fetchBans();
-			const userBan = userBans.find(user => user.id === discordID);
 			
 			// Show the ban info on the unban reaction collector for consent/safety.
+			// Add the suggestion reactions for voting.
+			const userBan = userBans.find(user => user.id === discordID);
 			const banReason = userBan ? 'Ban reason.' : 'Unknown ban reason.';
 			const unbanVoteText = `Vote on unbanning <@${discordID}>, press ${VOTE_FOR} to vote unban.`;
 			const unbanConsentMsg = await MESSAGES.silentSelfDestruct(msg, unbanVoteText, 0, 60000);
-			
-			// Add the suggestion reactions for voting.
 			await MESSAGES.delayReact(unbanConsentMsg, VOTE_FOR, 333);
-			await MESSAGES.delayReact(unbanConsentMsg, VOTE_AGAINST, 666);
 			
 			// Create a function for updating the consent message during voting.
-			const modifierFn = ({ edit, content }, { id }, vote) => edit(`${content} \n${vote} <@${id}>`);
-
+			const modifierFn = (msg, { id }, vote) => msg.edit(`${msg.content} \n${vote} <@${id}>`);
 			// Calculate the result of the multi-member consent/approval vote.
 			const consentResult = await REACTIONS._usersEmojisAwait(unbanConsentMsg, [VOTE_FOR], modifierFn);			
 			const unbanVotesReq = VotingHelper.getNumRequired(SACRIFICE_RATIO_PERC);
