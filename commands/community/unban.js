@@ -43,7 +43,9 @@ export default class UnbanCommand extends CoopCommand {
 			await MESSAGES.delayReact(unbanConsentMsg, VOTE_AGAINST, 666);
 			
 			// Create a function for updating the consent message during voting.
-			const modifierFn = (msg, user, vote) => msg.edit(msg.content + vote + ` <@${user.id}>`);
+			const modifierFn = (msg, user, vote) => msg.edit(`
+				${msg.content} \n${vote} <@${user.id}>
+			`.trim());
 
 			// Wait for reactions indicating democratic consent to unban.
 			const voteEmojis = [VOTE_FOR, VOTE_AGAINST];

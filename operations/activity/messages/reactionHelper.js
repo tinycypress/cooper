@@ -47,7 +47,7 @@ export default class ReactionHelper {
 
     static _usersEmojisAwait(msgRef, emojis = [], modifier = null) {
         // Construct the await reactions filter.
-        return this.defaultAwaitManyOpts(msgRef, ({ emoji }, user) => {
+        return this.handleConsentManyVoteMsg(msgRef, ({ emoji }, user) => {
             // Make sure user has MEMBER role.
             const isMember = ROLES._idHasCode(user.id, 'MEMBER');
 
