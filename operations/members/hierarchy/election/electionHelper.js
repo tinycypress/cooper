@@ -16,6 +16,8 @@ import EventsHelper from '../../../eventsHelper';
 import { baseTickDur } from '../../../manifest';
 
 
+export const LEADERS_RATIO_PERC = .025;
+
 
 
 export default class ElectionHelper {
@@ -165,7 +167,7 @@ export default class ElectionHelper {
     }
 
     static getMaxNumLeaders() {
-        return VotingHelper.getNumRequired(.025);
+        return VotingHelper.getNumRequired(LEADERS_RATIO_PERC);
     }
 
     // Provide updates and functionality for an ongoing election.

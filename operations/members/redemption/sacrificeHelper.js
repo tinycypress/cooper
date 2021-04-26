@@ -6,6 +6,9 @@ import CooperMorality from '../../minigames/small/cooperMorality';
 import COOP from '../../../origin/coop';
 
 
+export const SACRIFICE_RATIO_PERC = .03;
+export const KEEP_RATIO_PERC = .02;
+
 export default class SacrificeHelper {
    
     static isReactionSacrificeVote(reaction, user) {
@@ -73,8 +76,8 @@ export default class SacrificeHelper {
             if (!targetMember) return false;
             
             // Calculate the number of required votes for the redemption poll.
-            const reqSacrificeVotes = VotingHelper.getNumRequired(.03);
-            const reqKeepVotes = VotingHelper.getNumRequired(.02);
+            const reqSacrificeVotes = VotingHelper.getNumRequired(SACRIFICE_RATIO_PERC);
+            const reqKeepVotes = VotingHelper.getNumRequired(KEEP_RATIO_PERC);
         
             // Get existing reactions on message.
             let sacrificeVotes = 0;
@@ -125,7 +128,7 @@ export default class SacrificeHelper {
         const guild = COOP.SERVER.getByCode(COOP.STATE.CLIENT, 'PROD');
 
         // Calculate the number of required votes for the redemption poll.
-        const reqSacrificeVotes = VotingHelper.getNumRequired(.015);
+        const reqSacrificeVotes = VotingHelper.getNumRequired(SACRIFICE_RATIO_PERC);
     
         // Get existing reactions on message.
         let sacrificeVotes = 0;

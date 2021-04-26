@@ -27,6 +27,7 @@ export default class TransactionsCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
+			// TODO: Finish this. <3
 			MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, transactions history is WIP.`);
 			
 		} catch(e) {
