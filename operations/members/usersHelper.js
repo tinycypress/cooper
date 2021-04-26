@@ -61,6 +61,11 @@ export default class UsersHelper {
         this.directMSG(guild, userID, msg);
     }
 
+    // TODO: Implement for election, maybe limit to announcement notifications.
+    static _dmAll(msg) {
+
+    }
+
     static getOnlineMembers = (guild) => guild.members.cache.filter(member => member.presence.status === 'online');
     
     static filterMembers = (guild, filter) => guild.members.cache.filter(filter);

@@ -65,12 +65,8 @@ export default class ElectionHelper {
         // TODO: Could create as temp messages so this is unnecessary?
         // Or offer as double feature.
 
-        candidates.map((candidate, index) => {
-            setTimeout(() =>
-                MESSAGES.deleteByLink(candidate.campaign_msg_link), 
-                1500 * index
-            );
-        });
+        candidates.map((candidate, index) => setTimeout(() => 
+            MESSAGES.deleteByLink(candidate.campaign_msg_link), 1500 * index));
 
         // Clear database
         const query = {
@@ -149,15 +145,18 @@ export default class ElectionHelper {
             await this.editElectionInfoMsg(startElecText);
 
             // Inform all members so they can fairly stand.
-            const feedMsg = await COOP.CHANNELS._postToFeed(
-                `@everyone, our latest ${COOP.CHANNELS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
+            const electionText = `our latest ${COOP.CHANNELS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
                 `For further information on our elections refer to our forth amendment in ${COOP.CHANNELS.textRef('CONSTITUTION')}\n\n` +
                 `To stand for election, send in any channel this message: \n\n !stand ((and your campaign message here, brackets - () - not needed)) \n\n` +
-                `Time remaining: ${readableElecLeft}.`
-            );
+                `Time remaining: ${readableElecLeft}.`;
+
+            await COOP.CHANNELS._postToFeed(`@everyone, ${electionText}`);
+
+            // TODO: Finish this method and output a formatted election message.
+            // COOP.USERS._dmAll((username) => `${username}, ${electionText}`);
 
             // React crown to this message.
-            MESSAGES.delayReact(feedMsg, '👑', 666);
+            // await MESSAGES.delayReact(feedMsg, '👑', 666);
 
         } catch(e) {
             console.log('Starting the election failed... :\'(');
@@ -315,6 +314,7 @@ export default class ElectionHelper {
             const commanderItems = await COOP.ITEMS.getUsersWithItem('ELECTION_CROWN');        
 
             // Remove all of the sworsd from the old leaders.
+            // TODO: Refactor to a more optimised method.
             leaderItems.map(exLeader => 
                 COOP.ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD'));
 

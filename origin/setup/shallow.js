@@ -43,6 +43,8 @@ const shallowBot = async () => {
 		// Track coin value
 		// UsersHelper.populateUsers()
 
+        const bans = await SERVER._coop().fetchBans();
+        console.log(bans);
 
         // Structures
         // 100dz integration TODOs

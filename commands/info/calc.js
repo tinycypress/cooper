@@ -27,7 +27,7 @@ export default class CalcCommand extends CoopCommand {
 		// Guard.
 		if (!queryString) return COOP.MESSAGES.selfDestruct(msg, 'Must include an equation/etc for calc.');
 		
-		const appID = "EL6YXA-LGWAWXQPHE";
+		const appID = process.env.WOLFRAM_ID;
 		const inputQueryStr = encodeURIComponent(queryString);
 		const apiEndpoint = `https://api.wolframalpha.com/v1/simple?appid=${appID}&i=${inputQueryStr}`;
 
