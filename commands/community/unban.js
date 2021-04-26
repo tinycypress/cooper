@@ -15,8 +15,8 @@ export default class UnbanCommand extends CoopCommand {
 			examples: ['unban', 'unban example'],
 			args: [
 				{
-					key: 'user',
-					type: 'user',
+					key: 'discordID',
+					type: 'string',
 					prompt: 'Full Discord ID of the person you wish to vote on unbanning? (e.g. shinoa#4124)',
 
 				}
@@ -24,13 +24,13 @@ export default class UnbanCommand extends CoopCommand {
 		});
 	}
 
-	async run(msg, { user }) {
+	async run(msg, { discordID }) {
 		super.run(msg);
 
 		try {
 			
 			// Prevent usage of unban for another hour.
-			const userBan = await SERVER._coop().fetchBan(user.id);
+			const userBan = await SERVER._coop().fetchBan(discordID);
 			if (!userBan) {
 				return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban?');
 			}
