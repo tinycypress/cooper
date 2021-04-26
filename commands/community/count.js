@@ -24,7 +24,7 @@ export default class CountCommand extends CoopCommand {
 			// Delete after sixty seconds.
             const emojiText = COOP.MESSAGES.emojiText(EMOJIS.COOP);
             const userCount = SERVER._coop().memberCount || 0;
-            const countText = `${userCount} #beaks presently banned from The Coop ${emojiText}!`;
+            const countText = `${userCount} #beaks presently in The Coop ${emojiText}!`;
 			COOP.MESSAGES.selfDestruct(msg, countText, 0, 20000);
 
 		} catch(e) {
