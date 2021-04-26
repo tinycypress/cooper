@@ -36,10 +36,11 @@ export default class UnbanCommand extends CoopCommand {
 			// Show the ban info on the unban reaction collector for consent/safety.
 			// Add the suggestion reactions for voting.
 			const userBan = userBans.find(user => {
+				console.log(user);
 				console.log(user.id, discordID, user.id === discordID, typeof user.id, typeof discordID);
 				return user.id === discordID;
 			});
-			
+
 			console.log(userBan);
 			if (!userBan) return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban/ban does not exist.');
 
