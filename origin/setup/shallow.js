@@ -40,7 +40,7 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
         // Democratic unban
-
+        // Last 500 transactions/self-cleaning
 
         
 		// Track deficit

@@ -132,7 +132,7 @@ export default class MessagesHelper {
                                 console.error(e);
                                 reject(e);
                             } else {
-                                resolve(true);
+                                resolve(false);
                             }
                         });
                 }, delay);

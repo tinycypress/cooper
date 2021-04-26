@@ -1,4 +1,5 @@
 import { EMOJIS } from '../../../origin/config';
+import { ROLES, USERS } from '../../../origin/coop';
 
 export default class ReactionHelper {
 
@@ -26,6 +27,41 @@ export default class ReactionHelper {
 
     static countTypeCode(message, codeType) {
         return this.countType(message, EMOJIS[codeType]);
+    }
+
+    static defaultAwaitSingleOpts = {
+        max: 1, time: 60000, errors: ['time']
+    };
+
+    static defaultAwaitManyOpts = {
+        max: 1000, time: 60000, errors: ['time']
+    };
+
+    // handleConsentSingleVoteMsg - In other words... a self-confirmation prompt?
+
+    static handleConsentManyVoteMsg(msgRef, filterFn, opts = this.defaultAwaitManyOpts) {
+        return msgRef.awaitReactions(filterFn, opts);
+    }
+
+
+
+    static _usersEmojisAwait(msgRef, emojis = []) {
+        return this.defaultAwaitManyOpts(msgRef,
+            // Construct the await reactions filter.
+            ({ emoji }, user) => {
+                // Make sure user has MEMBER role.
+                const isMember = ROLES._idHasCode(user.id, 'MEMBER');
+    
+                // Only allow the two voting emojis for this calculation.
+                const isValidEmoji = emojis.includes(emoji.name);
+    
+                // Disallow Cooper
+                const isCooper = USERS.isCooper(user.id);
+
+                // Test conditions for this proposed reaction/interaction.
+                return isValidEmoji && !isCooper && isMember;
+            }
+        );
     }
 
 }

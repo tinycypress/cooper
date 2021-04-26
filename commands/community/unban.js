@@ -1,7 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import { VOTE_AGAINST, VOTE_FOR } from '../../origin/config/rawemojis.json';
 
-import COOP, { MESSAGES, REACTIONS, ROLES, SERVER, USERS } from '../../origin/coop';
-import { EMOJIS } from '../../origin/config';
+import { MESSAGES, REACTIONS, ROLES, SERVER, USERS } from '../../origin/coop';
 
 export default class UnbanCommand extends CoopCommand {
 
@@ -33,38 +33,31 @@ export default class UnbanCommand extends CoopCommand {
 			const userBans = await SERVER._coop().fetchBans();
 			const userBan = userBans.find(user => user.id === discordID);
 			
+			// Show the ban info on the unban reaction collector for consent/safety.
 			const banReason = false ? 'Ban reason.' : 'Unknown ban reason.';
-
-			console.log(userBan);
-
-			console.log(banReason);
+			const unbanVoteText = 'Testing.';
+			const unbanConsentMsg = await MESSAGES.selfDestruct(msg, unbanVoteText, 0, 30000);
+			
+			// Add the suggestion reactions for voting.
+			await MESSAGES.delayReact(unbanConsentMsg, VOTE_FOR, 333);
+			await MESSAGES.delayReact(unbanConsentMsg, VOTE_AGAINST, 666);
 			
 			// Wait for reactions indicating democratic consent to unban.
-			const unbanVoteText = 'Testing.';
-
-			// Show the ban info on the unban reaction collector for consent/safety.
-			const unbanConsentMsg = await MESSAGES.selfDestruct(msg, unbanVoteText, 0, 30000);
-
-			// Add the suggestion reactions for voting.
-			MESSAGES.delayReact(unbanConsentMsg, EMOJIS.VOTE_FOR, 333);
-			MESSAGES.delayReact(unbanConsentMsg, EMOJIS.VOTE_AGAINST, 666);
-
-			// Use the approval emojis
-			const consentResult = await unbanConsentMsg.awaitReactions((reaction, user) => {
-				// Make sure user has MEMBER role.
-				const isMember = ROLES._idHasCode(user.id, 'MEMBER');
-				const isValidEmoji = [EMOJIS.VOTE_FOR, EMOJIS.VOTE_AGAINST].includes(reaction.emoji.name);
-				const isCooper = USERS.isCooper(user.id);
-				return isValidEmoji && !isCooper && isMember;
-			}, { max: 1, time: 30000, errors: ['time'] });
-
-
+			const voteEmojis = [VOTE_FOR, VOTE_AGAINST];
+			const consentResult = await REACTIONS._usersEmojisAwait(unbanConsentMsg, voteEmojis);
+			
+			// Calculate the result of the multi-member consent/approval vote.
 			console.log(consentResult);
+
+			console.log(userBan);
+			console.log(banReason);
 
 			// Unban a user by ID (or with a user/guild member object)
 			// const unbanResult = await SERVER._coop().members.unban(user.id);
 			// 	.then(user => console.log(`Unbanned ${user.username} from ${guild.name}`))
 			// 	.catch(console.error);
+
+			return MESSAGES.silentSelfDestruct(msg, `Attempted to unban <#${discordID}>, work in progress.`);
 
 		} catch(e) {
 			if (e.message === 'Unknown Ban') {
