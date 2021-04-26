@@ -46,17 +46,19 @@ export default class UnbanCommand extends CoopCommand {
 			// Calculate the result of the multi-member consent/approval vote.
 			const consentResult = await REACTIONS._usersEmojisAwait(unbanConsentMsg, [VOTE_FOR], modifierFn);			
 			const unbanVotesReq = VotingHelper.getNumRequired(SACRIFICE_RATIO_PERC);
-			const forCount = REACTIONS.countType(consentResult, VOTE_FOR - 1);
-			const votesSufficient = forCount >= unbanVotesReq;
+			// const forCount = REACTIONS.countType(consentResult, VOTE_FOR - 1);
+			// const votesSufficient = forCount >= unbanVotesReq;
 
-			console.log(userBan);
+			// console.log(userBan);
+			
 			console.log(consentResult);
-			console.log(forCount);
-			console.log(votesSufficient);
+
+			// console.log(forCount);
+			// console.log(votesSufficient);
 
 			// Form the result text and output.
-			let resultText = `Unban vote ${votesSufficient ? 'successful' : 'failed'} ` +
-				`${forCount}/${unbanVotesReq} ${VOTE_FOR}. (WORK IN PROGRESS)`;
+			// let resultText = `Unban vote ${votesSufficient ? 'successful' : 'failed'} ` +
+				// `${forCount}/${unbanVotesReq} ${VOTE_FOR}. (WORK IN PROGRESS)`;
 
 			// Unban a user by ID (or with a user/guild member object)
 			// const unbanResult = await SERVER._coop().members.unban(user.id);
