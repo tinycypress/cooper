@@ -52,8 +52,8 @@ export default class SharesCommand extends CoopCommand {
         meaningfulOwnersArr.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
 		
 		// Format and output the resulting message/info.
-        const emoji = MESSAGES._displayEmojiCode(item);
-        const ownershipText = `**${item} ${emoji} ownership shares/market %:**\n\n` +
+        const emoji = MESSAGES._displayEmojiCode(itemCode);
+        const ownershipText = `**${itemCode} ${emoji} ownership shares/market %:**\n\n` +
             meaningfulOwnersArr.map((val, index) => 
                 `#${index}. <@${val.owner_id}>` + 
                 `${ITEMS.displayQty(val.quantity)}` +

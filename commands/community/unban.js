@@ -35,10 +35,7 @@ export default class UnbanCommand extends CoopCommand {
 		
 			// Show the ban info on the unban reaction collector for consent/safety.
 			// Add the suggestion reactions for voting.
-			const userBanData = userBans.find(ban => {
-				console.log(ban.user.id === discordID, ban.user.id, discordID);
-				return ban.user.id === discordID
-			});
+			const userBanData = userBans.find(ban => ban.user.id === discordID);
 			if (!userBanData) return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban/ban does not exist.');
 
 			// Output a consent awaiting message attempting to unban the user
@@ -57,18 +54,12 @@ export default class UnbanCommand extends CoopCommand {
 			const forCount = REACTIONS.countTypeCollection(consentResult, VOTE_FOR) - 1;
 			const votesSufficient = forCount >= unbanVotesReq;
 
-			console.log(consentResult);
-			console.log(forCount);
-			console.log(votesSufficient);
-
 			// Unban a user by ID (or with a user/guild member object)
-			// const unbanResult = await SERVER._coop().members.unban(user.id);
-			// 	.then(user => console.log(`Unbanned ${user.username} from ${guild.name}`))
-			// 	.catch(console.error);
+			if (votesSufficient) await SERVER._coop().members.unban(discordID);
 
 			// Form the result text and output.
 			const resultText = `Unban vote ${votesSufficient ? 'successful' : 'failed'} ` +
-				`${forCount}/${unbanVotesReq} ${VOTE_FOR}. (WORK IN PROGRESS)`;
+				`${forCount}/${unbanVotesReq} ${VOTE_FOR}.`;
 			return MESSAGES.selfDestruct(msg, resultText, 0, 20000);
 
 		} catch(e) {
