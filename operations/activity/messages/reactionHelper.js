@@ -45,23 +45,27 @@ export default class ReactionHelper {
 
 
 
-    static _usersEmojisAwait(msgRef, emojis = []) {
-        return this.defaultAwaitManyOpts(msgRef,
-            // Construct the await reactions filter.
-            ({ emoji }, user) => {
-                // Make sure user has MEMBER role.
-                const isMember = ROLES._idHasCode(user.id, 'MEMBER');
-    
-                // Only allow the two voting emojis for this calculation.
-                const isValidEmoji = emojis.includes(emoji.name);
-    
-                // Disallow Cooper
-                const isCooper = USERS.isCooper(user.id);
+    static _usersEmojisAwait(msgRef, emojis = [], modifier = null) {
+        // Construct the await reactions filter.
+        return this.defaultAwaitManyOpts(msgRef, ({ emoji }, user) => {
+            // Make sure user has MEMBER role.
+            const isMember = ROLES._idHasCode(user.id, 'MEMBER');
 
-                // Test conditions for this proposed reaction/interaction.
-                return isValidEmoji && !isCooper && isMember;
-            }
-        );
+            // Only allow the two voting emojis for this calculation.
+            const isValidEmoji = emojis.includes(emoji.name);
+
+            // Disallow Cooper
+            const isCooper = USERS.isCooper(user.id);
+
+            // Test conditions for this proposed reaction/interaction.
+            const valid = isValidEmoji && !isCooper && isMember;
+
+            // Apply any modifier(s)
+            if (valid && modifier) modifier(msgRef, user, emoji);
+
+            // Return the calculated/guarded result.
+            return valid;
+        });
     }
 
 }

@@ -36,15 +36,18 @@ export default class UnbanCommand extends CoopCommand {
 			// Show the ban info on the unban reaction collector for consent/safety.
 			const banReason = false ? 'Ban reason.' : 'Unknown ban reason.';
 			const unbanVoteText = 'Testing.';
-			const unbanConsentMsg = await MESSAGES.selfDestruct(msg, unbanVoteText, 0, 30000);
+			const unbanConsentMsg = await MESSAGES.silentSelfDestruct(msg, unbanVoteText, 0, 60000);
 			
 			// Add the suggestion reactions for voting.
 			await MESSAGES.delayReact(unbanConsentMsg, VOTE_FOR, 333);
 			await MESSAGES.delayReact(unbanConsentMsg, VOTE_AGAINST, 666);
 			
+			// Create a function for updating the consent message during voting.
+			const modifierFn = (msg, user, vote) => msg.edit(msg.content + vote + ` <@${user.id}>`);
+
 			// Wait for reactions indicating democratic consent to unban.
 			const voteEmojis = [VOTE_FOR, VOTE_AGAINST];
-			const consentResult = await REACTIONS._usersEmojisAwait(unbanConsentMsg, voteEmojis);
+			const consentResult = await REACTIONS._usersEmojisAwait(unbanConsentMsg, voteEmojis, modifierFn);
 			
 			// Calculate the result of the multi-member consent/approval vote.
 			console.log(consentResult);
