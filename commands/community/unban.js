@@ -33,6 +33,8 @@ export default class UnbanCommand extends CoopCommand {
 			// Prevent usage of unban for another hour.
 			const userBans = await SERVER._coop().fetchBans();
 			
+			console.log(userBans);
+
 			// Show the ban info on the unban reaction collector for consent/safety.
 			// Add the suggestion reactions for voting.
 			const userBan = userBans.find(user => user.id === discordID);
@@ -62,8 +64,8 @@ export default class UnbanCommand extends CoopCommand {
 			console.log(votesSufficient);
 
 			// Form the result text and output.
-			// let resultText = `Unban vote ${votesSufficient ? 'successful' : 'failed'} ` +
-				// `${forCount}/${unbanVotesReq} ${VOTE_FOR}. (WORK IN PROGRESS)`;
+			let resultText = `Unban vote ${votesSufficient ? 'successful' : 'failed'} ` +
+				`${forCount}/${unbanVotesReq} ${VOTE_FOR}. (WORK IN PROGRESS)`;
 
 			// Unban a user by ID (or with a user/guild member object)
 			// const unbanResult = await SERVER._coop().members.unban(user.id);
