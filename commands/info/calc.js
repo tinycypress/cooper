@@ -2,7 +2,6 @@ import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP from '../../origin/coop';
 
 import fetch from 'node-fetch';
-// import fileType from 'file-type';
 
 export default class CalcCommand extends CoopCommand {
 

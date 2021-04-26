@@ -29,12 +29,15 @@ export default async function workPostHandler(msg) {
                 annotationLines.shift()
 
                 const description = annotationLines.join('\n') + "\n\n" +
-                    "Do you have Business/Art/Code interests? Join us! https://discord.gg/5cmN8uW"
+                    "Do you have Business/Art/Code interests? Join us! https://discord.gg/5cmN8uW";
+
                 await CDNManager.upload(
                     file.url,
                     name,
                     description
                 );
+
+                // TODO: Return the created link/image to the server for access/sharing.
             });
         } catch(e) {
             console.error(e);

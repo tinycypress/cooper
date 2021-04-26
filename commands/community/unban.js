@@ -30,17 +30,19 @@ export default class UnbanCommand extends CoopCommand {
 		try {
 			COOP.MESSAGES.selfDestruct(msg, 'You wanna democratically unban, ey?', 0, 20000);
 
-
-			const unbanArgFilter = m => {
-				if (USERS.isCooper) return false;
-				// There is a match for the message content of this user.
-			}
-
 			// Wait for reactions indicating democratic consent to unban.
 
-
 			// Prevent usage of unban for another hour.
+			// Returns: Promise<BanInfo>
+			// const userBan = await SERVER._coop().fetchBan(user.id);
+			// console.log(userBan);
 
+			// Show the ban info on the unban reaction collector for consent/safety.
+
+			// Unban a user by ID (or with a user/guild member object)
+			// guild.members.unban('84484653687267328')
+			// 	.then(user => console.log(`Unbanned ${user.username} from ${guild.name}`))
+			// 	.catch(console.error);
 
 
 
