@@ -30,7 +30,8 @@ export default class UnbanCommand extends CoopCommand {
 		try {
 			
 			// Prevent usage of unban for another hour.
-			const userBan = await SERVER._coop().fetchBan(discordID);
+			const userBans = await SERVER._coop().fetchBans();
+			const userBan = userBans.find(user => user.id === discordID);
 			
 			const banReason = false ? 'Ban reason.' : 'Unknown ban reason.';
 
