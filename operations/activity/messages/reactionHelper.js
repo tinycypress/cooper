@@ -1,6 +1,15 @@
 import { EMOJIS } from '../../../origin/config';
 import { ROLES, USERS } from '../../../origin/coop';
 
+
+export const defaultAwaitSingleOpts = {
+    max: 1, time: 60000, errors: ['time']
+};
+
+export const defaultAwaitManyOpts = {
+    max: 1000, time: 60000, errors: ['time']
+};
+
 export default class ReactionHelper {
 
     // Check if the user with specified ID reacted to a message with a certain emoji.
@@ -29,20 +38,11 @@ export default class ReactionHelper {
         return this.countType(message, EMOJIS[codeType]);
     }
 
-    static defaultAwaitSingleOpts = {
-        max: 1, time: 60000, errors: ['time']
-    };
-
-    static defaultAwaitManyOpts = {
-        max: 1000, time: 60000, errors: ['time']
-    };
-
     // handleConsentSingleVoteMsg - In other words... a self-confirmation prompt?
 
-    static handleConsentManyVoteMsg(msgRef, filterFn, opts = this.defaultAwaitManyOpts) {
+    static handleConsentManyVoteMsg(msgRef, filterFn, opts = defaultAwaitManyOpts) {
         return msgRef.awaitReactions(filterFn, opts);
     }
-
 
 
     static _usersEmojisAwait(msgRef, emojis = [], modifier = null) {
