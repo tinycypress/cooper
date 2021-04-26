@@ -36,7 +36,7 @@ export default class UnbanCommand extends CoopCommand {
 			
 			// Show the ban info on the unban reaction collector for consent/safety.
 			const banReason = userBan ? 'Ban reason.' : 'Unknown ban reason.';
-			const unbanVoteText = 'Testing.';
+			const unbanVoteText = `Vote on unbanning <@${discordID}>, press ${VOTE_FOR} to vote unban.`;
 			const unbanConsentMsg = await MESSAGES.silentSelfDestruct(msg, unbanVoteText, 0, 60000);
 			
 			// Add the suggestion reactions for voting.
