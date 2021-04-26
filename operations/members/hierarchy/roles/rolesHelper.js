@@ -1,4 +1,4 @@
-import COOP, { SERVER } from '../../../../origin/coop';
+import COOP, { SERVER, USERS } from '../../../../origin/coop';
 import { ROLES } from '../../../../origin/config';
 
 
@@ -112,6 +112,11 @@ export default class RolesHelper {
             console.error(e);
         }
         // 723676356818239773 LEADER
+    }
+
+    static _idHasCode(userID, roleCode) {
+        const member = USERS._getMemberByID(userID);
+        return this._has(member, roleCode);
     }
 
     static _has(member, roleCode) {

@@ -11,6 +11,7 @@ import { status } from '../../operations/marketing/rewards/loyalty';
 import client from './client';
 import UsersHelper from '../../operations/members/usersHelper';
 import RolesHelper from '../../operations/members/hierarchy/roles/rolesHelper';
+import DatabaseHelper from '../../operations/databaseHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -38,17 +39,18 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
+        // Democratic unban
+
+
+        
 		// Track deficit
 		// Track coin price
 		// Track coin value
-		// UsersHelper.populateUsers()
 
-        const bans = await SERVER._coop().fetchBans();
-        console.log(bans);
 
         // Structures
-        // 100dz integration TODOs
         // Paypal in/out
+        // 100dz integration TODOs
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

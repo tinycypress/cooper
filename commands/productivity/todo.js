@@ -39,6 +39,9 @@ export default class TodoCommand extends CoopCommand {
 		// Take human readable due time.
 		const dueDate = TIME.parseHuman(due);
 
+		// Convert category to lower case for better matches.
+		category = category.toLowerCase();
+
 		// Invalid input time feedback
 		if (isNaN(dueDate))
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is invalid duration for a todo task.`);

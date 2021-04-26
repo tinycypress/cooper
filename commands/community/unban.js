@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 
-import COOP, { SERVER, USERS } from '../../origin/coop';
+import COOP, { MESSAGES, ROLES, SERVER, USERS } from '../../origin/coop';
 import { EMOJIS } from '../../origin/config';
 
 export default class UnbanCommand extends CoopCommand {
@@ -28,25 +28,49 @@ export default class UnbanCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
-			COOP.MESSAGES.selfDestruct(msg, 'You wanna democratically unban, ey?', 0, 20000);
-
-			// Wait for reactions indicating democratic consent to unban.
-
+			
 			// Prevent usage of unban for another hour.
-			// Returns: Promise<BanInfo>
-			// const userBan = await SERVER._coop().fetchBan(user.id);
-			// console.log(userBan);
+			const userBan = await SERVER._coop().fetchBan(user.id);
+			if (!userBan) {
+				return MESSAGES.silentSelfDestruct(msg, 'Could not find that user to unban?');
+			}
+			
+			const banReason = false ? 'Ban reason.' : 'Unknown ban reason.';
+
+			console.log(userBan);
+
+			console.log(banReason);
+			
+			// Wait for reactions indicating democratic consent to unban.
+			const unbanVoteText = 'Testing.';
 
 			// Show the ban info on the unban reaction collector for consent/safety.
+			const unbanConsentMsg = await MESSAGES.selfDestruct(msg, unbanVoteText, 0, 30000);
+
+			// Add the suggestion reactions for voting.
+			MESSAGES.delayReact(unbanConsentMsg, EMOJIS.VOTE_FOR, 333);
+			MESSAGES.delayReact(unbanConsentMsg, EMOJIS.VOTE_AGAINST, 666);
+
+			// Use the approval emojis
+			const consentResult = await unbanConsentMsg.awaitReactions((reaction, user) => {
+				// Make sure user has MEMBER role.
+				const isMember = ROLES._idHasCode(user.id, 'MEMBER');
+				const isValidEmoji = [EMOJIS.VOTE_FOR, EMOJIS.VOTE_AGAINST].includes(reaction.emoji.name);
+				const isCooper = USERS.isCooper(user.id);
+				return isValidEmoji && !isCooper && isMember;
+			}, { max: 1, time: 30000, errors: ['time'] });
+
+
+			console.log(consentResult);
+
 
 			// Unban a user by ID (or with a user/guild member object)
-			// guild.members.unban('84484653687267328')
+			// const unbanResult = await SERVER._coop().members.unban(user.id);
 			// 	.then(user => console.log(`Unbanned ${user.username} from ${guild.name}`))
 			// 	.catch(console.error);
 
-
-
 		} catch(e) {
+			console.log('Democratic unban failed.');
 			console.error(e);
 		}
     }
