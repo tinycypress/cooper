@@ -57,7 +57,7 @@ export default class SharesCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
 				overallOwnershipData.map(val => 
 					`${val.share}% ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} <@${val.owner_id}>`
-				).join('\n'));
+				).join(',') + '.');
 		}
 
 	
