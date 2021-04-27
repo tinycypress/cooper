@@ -1,5 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import DatabaseHelper from '../../operations/databaseHelper';
 import { MESSAGES } from '../../origin/coop';
+import Database from '../../origin/setup/database';
 
 export default class TransactionsCommand extends CoopCommand {
 
@@ -28,9 +30,20 @@ export default class TransactionsCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
-			// TODO: Finish this. <3
 			MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, transactions history is WIP.`);
 			
+			// const query = {
+			// 	name: 'get-transactions',
+			// 	text: `SELECT * FROM items WHERE item_code = 'COOP_POINT'
+			// 		ORDER BY quantity DESC OFFSET $1 LIMIT 20`.trim(),
+			// 	values: [pos]
+			// };
+	
+			// const result = await Database.query(query);
+			// const rows = DatabaseHelper.many(result);
+	
+			// return rows;
+
 			// CREATE TABLE item_qty_change_history( 
 			//     id SERIAL PRIMARY KEY, 
 			//     owner VARCHAR, 

@@ -3,7 +3,7 @@ import BuffsHelper, { BUFF_TYPES } from '../../../conquest/buffsHelper';
 import { usedOwnedUsableGuard } from '../../itemCmdGuards';
 
 import COOP, { MESSAGES } from '../../../../../../origin/coop';
-import { EMOJIS } from '../../../../../../origin/config';
+import { RAW_EMOJIS } from '../../../../../../origin/config';
 
 // Give shield user protected state for a set amount of time.
 
@@ -20,10 +20,8 @@ export default class ShieldHandler {
 
     // Intercept item usages via emoji reactions.
     static async onReaction(reaction, user) {
-        console.log(EMOJIS.SHIELD, reaction.emoji.name);
-
         // Confirm reaction is shield before processing.  
-        if (EMOJIS.SHIELD !== reaction.emoji.name) return false;
+        if (RAW_EMOJIS.SHIELD !== reaction.emoji.name) return false;
 
         // Prevent Cooper from having an effect.
         if (COOP.USERS.isCooper(user.id)) return false;
