@@ -16,8 +16,12 @@ import { EMOJIS } from '../../../../../../origin/config';
 // What does the shield do: Start typing squidling.
 export default class ShieldHandler {
 
+    // TODO: Shield reaction does not work for adding onto another person.
+
     // Intercept item usages via emoji reactions.
-    static async onReaction(reaction, user) {     
+    static async onReaction(reaction, user) {
+        console.log(EMOJIS.SHIELD, reaction.emoji.name);
+
         // Confirm reaction is shield before processing.  
         if (EMOJIS.SHIELD !== reaction.emoji.name) return false;
 
@@ -61,7 +65,7 @@ export default class ShieldHandler {
 
         // Provide feedback.
         const successText = `${MESSAGES._displayEmojiCode('SHIELD').repeat(2)} ${msg.author.username} used a SHIELD, extending their protection to ${protectionExpiry} mins.`;
-        return COOP.MESSAGES.selfDestruct(msg, successText, 5000);
+        return COOP.MESSAGES.selfDestruct(msg, successText, 0, 10000);
     }
 
 

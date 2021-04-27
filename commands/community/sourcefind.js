@@ -33,12 +33,12 @@ export default class SourceFindCommand extends CoopCommand {
 				.replace('!sourcef ', '')
 
 			// Format for searching.
-			const fmtQuery = encodeURIComponent(query).replace(/\-/g, '+')
+			const fmtQuery = encodeURIComponent(query.replace(/ /g, '+'))
 
 			// Append the search query to URL.
-			const gitBaseUrl = `https://github.com/lmf-git/cooper/`;
+			const gitBaseUrl = `https://github.com/lmf-git/cooper`;
 			MESSAGES.selfDestruct(msg, `**Source query result (${query}):**\n` + 
-				gitBaseUrl + 'search?q=' + fmtQuery, 0, 25000);
+				`<${gitBaseUrl}/search?q=${fmtQuery}>`, 0, 25000);
 
 
 		} catch(e) {
