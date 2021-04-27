@@ -53,6 +53,11 @@ export default class SharesCommand extends CoopCommand {
 
 			overallOwnershipData.sort((a, b) => (a.share < b.share) ? 1 : -1);
 
+			console.log(overallOwnershipData.map(val => 
+				`(${val.share}%) ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} ` + 
+				`<@${val.owner_id}> (${val.item_code})`
+			).join('\n'));
+
 			// Output share of requested item (if valid)
 			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
 				overallOwnershipData.map(val => 
