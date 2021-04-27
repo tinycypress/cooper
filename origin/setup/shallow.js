@@ -57,7 +57,7 @@ const shallowBot = async () => {
                     AND grouped_items.highest = i.quantity`
         });
 
-        console.log(results);
+        console.log(results.length);
 
         // Recurring event for testing prospects.
         // Code for handling prospects.
