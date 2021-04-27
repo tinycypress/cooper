@@ -106,7 +106,7 @@ export default class EggHuntMinigame {
         
         CHANNELS.silentPropagate(msgRef, eventText, 'ACTIONS', 10000);
         
-        await ITEMS.add(user.id, reward.item, reward.qty);
+        await ITEMS.add(user.id, reward.item, reward.qty, `${actionTypeText}'d ${rarity} (bomb)`);
     }
 
     // TODO: Add a small chance of bomb exploding on you.
@@ -125,7 +125,7 @@ export default class EggHuntMinigame {
             if (bombQuantity <= 0) return await reaction.users.remove(user.id);
 
             // Remove bomb from user.
-            await ITEMS.subtract(user.id, 'BOMB', 1);
+            await ITEMS.subtract(user.id, 'BOMB', 1, `Bombed an ${rarity}`);
 
             // User has enough eggs, blow egg up.
             const blownupEggMsg = await reaction.message.edit('💥');
@@ -143,7 +143,7 @@ export default class EggHuntMinigame {
 
             // Store points and egg collection data in database.
             const awardedUserIDs = Object.keys(aroundUsers);
-            Promise.all(awardedUserIDs.map(userID => COOP.POINTS.addPointsByID(userID, reward)));
+            Promise.all(awardedUserIDs.map(userID => COOP.ITEMS.add(userID, 'COOP_POINT', reward, `Bombed ${rarity} splash effect`)));
 
             // Add/update random item to user if it was a legendary egg
             this.processBombDrop(reaction.message, rarity, user);
@@ -175,8 +175,8 @@ export default class EggHuntMinigame {
                 const actionReward = -points;   
     
                 // Process the points change.
-                const updatedPoints = await COOP.POINTS.addPointsByID(user.id, actionReward);
-    
+                const updatedPoints = await COOP.ITEMS.add(user.id, 'COOP_POINT', actionReward, `Fried toxic egg`);
+
                 // TODO: Create omelette item after being cooked.
     
                 // TODO: Maybe include in output message??
@@ -238,13 +238,13 @@ export default class EggHuntMinigame {
 
             if (STATE.CHANCE.bool({ likelihood: 83 })) {
                 // Store points and egg collection data in database.
-                const updatedPoints = await COOP.POINTS.addPointsByID(user.id, reward);
+                const updatedPoints = await COOP.ITEMS.add(user.id, 'COOP_POINT', reward, `Collected ${rarity}`);
                 const updated = ItemsHelper.displayQty(updatedPoints);
 
                 acknowledgementMsgText += ` (${updated})`;
                 
                 // Add/update egg item to user
-                await ITEMS.add(user.id, rarity, 1);
+                await ITEMS.add(user.id, rarity, 1, 'Egghunt collection');
 
                 // Animate the egg collection.
                 const emojiText = MESSAGES.emojiText(EGG_DATA[rarity].emoji);
@@ -407,8 +407,7 @@ export default class EggHuntMinigame {
             const didUse = await UsableItemHelper.use(msg.author.id, eggRarity, 1);
             if (!didUse) return false;
 
-            await ITEMS.add(STATE.CLIENT.user.id, eggRarity, 1);
-
+            await ITEMS.add(STATE.CLIENT.user.id, eggRarity, 1, 'Stolen trolling egg, karma');
             
             MESSAGES.selfDestruct(msg, 'Thanks for the egg! ;)', 0, 666);
             

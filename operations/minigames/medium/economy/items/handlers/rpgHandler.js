@@ -46,8 +46,8 @@ export default class RPGHandler {
         const pointAvg = await COOP.ITEMS.perBeak('COOP_POINT');
         const reward = parseInt(pointAvg * .25);
 
-        // Add the points to the user.
-        await COOP.ITEMS.subtract(target.id, 'COOP_POINT', reward);
+        // Subtract the points from the user.
+        await COOP.ITEMS.subtract(target.id, 'COOP_POINT', reward, 'RPG damage');
 
 
         // TODO: Check if the user is using a shield.

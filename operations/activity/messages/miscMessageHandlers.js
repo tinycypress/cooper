@@ -41,7 +41,7 @@ export default class MiscMessageHandlers {
         if ((isBreh || isBruh) && !COOP.USERS.isCooperMsg(msg)) {
             let type = 'bruh';
             if (isBreh) type = 'breh';
-            const updatedPoints = await COOP.POINTS.addPointsByID(msg.author.id, twentyPercRoll ? 1 : -1);
+            const updatedPoints = await COOP.ITEMS.add(msg.author.id, 'COOP_POINT', twentyPercRoll ? 1 : -1, 'b-roulette');
             setTimeout(async () => {
                 const feedbackMsg = await msg.say(
                     `${twentyPercRoll ? '+1' : '-1'} point, ${type}. ` +

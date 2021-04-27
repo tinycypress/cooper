@@ -52,7 +52,7 @@ export default class UsableItemHelper {
         // Check if enough qty of item is owned.
         if (ownedQty - useQty >= 0) {
             // TODO: Just ensure that subtract does this itself...? Get rid of use?
-            await COOP.ITEMS.subtract(userID, itemCode, useQty);
+            await COOP.ITEMS.subtract(userID, itemCode, useQty, 'Used item');
             return true;
         } else return false;
     }
@@ -140,7 +140,8 @@ export default class UsableItemHelper {
             COOP.MESSAGES.delayDelete(reaction.message, 0);
 
             // Add recalculated item ownership to user.
-            const addEvent = await COOP.ITEMS.add(user.id, itemCode, 1);
+            // TODO: Add channel name in pick up.
+            const addEvent = await COOP.ITEMS.add(user.id, itemCode, 1, 'Picked up');
 
 			// Intercept the giving of election items.
 			if (itemCode === 'LEADERS_SWORD' || itemCode === 'ELECTION_CROWN')

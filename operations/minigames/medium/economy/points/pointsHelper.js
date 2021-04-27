@@ -11,16 +11,6 @@ import COOP, {ITEMS, STATE } from "../../../../../origin/coop";
 
 export default class PointsHelper {
     
-    static async getPointsByID(id) {
-        const qty = await COOP.ITEMS.getUserItemQty(id, 'COOP_POINT')
-        return qty;
-    }
-
-    static async addPointsByID(userID, points) {
-        const addResult = await COOP.ITEMS.add(userID, 'COOP_POINT', points);
-        return addResult;
-    }
-
     static async getLeaderboard(pos = 0) {
         const query = {
             name: 'get-leaderboard',
@@ -232,8 +222,8 @@ export default class PointsHelper {
             let successText = `${username} is now the point leader.`;
             if (prevWinner) successText = ` ${username} overtakes ${prevWinner.username} for most points!`;
 
-            const pointsAfter = await this.addPointsByID(highestRecord.owner_id, 5);
-            successText += ` Given MOST POINTS role and awarded 5 points (${pointsAfter})!`;
+            const pointsAfter = await ITEMS.add(highestRecord.owner_id, 'COOP_POINT', 25, 'Highest points role winner');
+            successText += ` Given MOST POINTS role and awarded 25 points (${pointsAfter})!`;
 
             COOP.CHANNELS._postToFeed(successText);
             mostPointsMember.roles.add(mostPointsRole);

@@ -62,7 +62,7 @@ export default class AlchemyCommand extends CoopCommand {
 			return COOP.MESSAGES.selfDestruct(msg, 'Not enough eggs.')
 
 		// Add item to the user.
-		await COOP.ITEMS.add(msg.author.id, drop.item, rewardQty);
+		await COOP.ITEMS.add(msg.author.id, drop.item, rewardQty, `Alchemised ${rarity}x${qty}`);
 
 		// Present feedback text/msg.
 		const emoji = COOP.MESSAGES._displayEmojiCode(drop.item);

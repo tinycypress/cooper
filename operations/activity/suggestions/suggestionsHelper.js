@@ -131,7 +131,6 @@ export default class SuggestionsHelper {
             try {
                 // Reward the person who posted the suggestion for contributing to the community
                 // TODO: ^
-                // COOP.POINTS.addPointsByID
                 // console.log(suggestion.mentions);
 
                 const rejectedText = `Suggestion passed, proposal: ${suggestion.content}\n` +

@@ -32,7 +32,7 @@ export default class BombHandler {
                         const damage = -4 * reaction.count;
     
                         // Apply the damage to the target's points.
-                        const updatedPoints = await COOP.POINTS.addPointsByID(target.id, damage);
+                        const updatedPoints = await COOP.ITEMS.subtract(target.id, 'COOP_POINT', Math.abs(damage), 'Bomb effect x' + reaction.count);
     
                         // Add visuals animation
                         COOP.MESSAGES.delayReactionRemove(reaction, 333);

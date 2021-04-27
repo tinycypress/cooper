@@ -266,8 +266,8 @@ export default class ElectionHelper {
             await this.resetHierarchyItems();
 
             // Add the election items.
-            COOP.ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1);
-            hierarchy.leaders.map(leader => COOP.ITEMS.add(leader.id, 'LEADERS_SWORD', 1));
+            COOP.ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1, 'Election victory (commander)');
+            hierarchy.leaders.map(leader => COOP.ITEMS.add(leader.id, 'LEADERS_SWORD', 1, 'Election victory (leader)'));
 
         } catch(e) {
             console.log('Something went wrong ending the election...');
@@ -318,11 +318,11 @@ export default class ElectionHelper {
             // Remove all of the sworsd from the old leaders.
             // TODO: Refactor to a more optimised method.
             leaderItems.map(exLeader => 
-                COOP.ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD'));
+                COOP.ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD', 1, 'Election reset'));
 
             // Remove the commander crown item from the (now) ex commander.
             if (commanderItems) 
-                COOP.ITEMS.subtract(commanderItems[0].owner_id, 'ELECTION_CROWN', 1);
+                COOP.ITEMS.subtract(commanderItems[0].owner_id, 'ELECTION_CROWN', 1, 'Election reset');
 
         } catch(e) {
             console.log('Error reseting hierarchy items');

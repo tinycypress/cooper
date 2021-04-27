@@ -11,7 +11,7 @@ export default class EasterEggHandler {
         const reward = parseInt(rewardBase * .25);
 
         // Add the points to the user.
-        await COOP.ITEMS.add(subject.id, 'COOP_POINT', reward);
+        await COOP.ITEMS.add(subject.id, 'COOP_POINT', reward, 'Easter egg effect');
 
         // Add feedback.
         const coopEmoji = COOP.MESSAGES._displayEmojiCode('COOP_POINT');

@@ -49,9 +49,9 @@ export default class SubscriptionHelper {
                                     const rewardText = `Thank you for subscribing ${username}. `;
                                     const rewardAmountText = `+25 points, +5 AXE, +5 PICKAXE rewarded!`;
 
-                                    COOP.POINTS.addPointsByID(msg.author.id, 25);
-                                    COOP.ITEMS.add(msg.author.id, 'AXE', 5);
-                                    COOP.ITEMS.add(msg.author.id, 'PICK_AXE', 5);
+                                    COOP.ITEMS.add(msg.author.id, 'COOP_POINT', 25, 'Email subscription reward');
+                                    COOP.ITEMS.add(msg.author.id, 'AXE', 5, 'Email subscription reward');
+                                    COOP.ITEMS.add(msg.author.id, 'PICK_AXE', 5, 'Email subscription reward');
 
                                     setTimeout(async () => {
                                         COOP.CHANNELS._postToFeed(rewardText + rewardAmountText);

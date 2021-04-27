@@ -62,7 +62,7 @@ export default class FlipCommand extends CoopCommand {
 		const joinText = `React to join a flip for ${amount}x${goldCoin}!`;
 		const firstReactor = await firstConfirmPrompt(msg, joinText, msg.author.id);
 		if (!firstReactor) {		
-			const refundTotal = await ITEMS.add(msg.author.id, 'GOLD_COIN', amount);
+			const refundTotal = await ITEMS.add(msg.author.id, 'GOLD_COIN', amount, 'Flip no-join refund');
 			const qtyText = ITEMS.displayQty(refundTotal);
 			const refundText = `Nobody joined your coinflip :'(. Refunded ${amount}x${goldCoin} you now have ${qtyText}x${goldCoin}.`;
 			return MESSAGES.silentSelfDestruct(msg, refundText);
@@ -71,7 +71,7 @@ export default class FlipCommand extends CoopCommand {
 		// Check if reactor has coin qty, otherwise fail and refund game creator.
 		if (!await doesOwnDidUseGuard(firstReactor, 'GOLD_COIN', amount, msg)) {
 			// Refund game creator
-			await ITEMS.add(userID, 'GOLD_COIN', amount);
+			await ITEMS.add(userID, 'GOLD_COIN', amount, 'Insufficient joiner flip refund');
 
 			// Clean up the other messages?
 
@@ -118,8 +118,9 @@ export default class FlipCommand extends CoopCommand {
 		// Refund if invalid input/timeout.
 		if (choiceCollected.size === 0 || !sideChoice) {
 			const failErrorText = `Coinflip failed/expired, <@${chooser.id}> and <@${nonchooser.id}> were refunded ${goldCoin}x${amount}.`;
-			await ITEMS.add(chooser.id, 'GOLD_COIN', amount);
-			await ITEMS.add(nonchooser.id, 'GOLD_COIN', amount);
+			// TODO: Add the user's id too
+			await ITEMS.add(chooser.id, 'GOLD_COIN', amount, 'Coin flip failed/expired refund');
+			await ITEMS.add(nonchooser.id, 'GOLD_COIN', amount, 'Coin flip failed/expired refund');
 			return MESSAGES.silentSelfDestruct(msg, failErrorText);
 		}
 
@@ -131,7 +132,7 @@ export default class FlipCommand extends CoopCommand {
 		// Calculate and give reward.
 		const rewardAmount = 2 * amount;
 
-		const newTotal = await ITEMS.add(winner.id, 'GOLD_COIN', rewardAmount);
+		const newTotal = await ITEMS.add(winner.id, 'GOLD_COIN', rewardAmount, 'Coin flip victory');
 		const qtyText = ITEMS.displayQty(newTotal);
 
 		// Provide feedback with silent ping.

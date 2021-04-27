@@ -40,7 +40,7 @@ export default class ToxicEggHandler {
 
 
                     // Apply the damage to the target's points.
-                    const updatedPoints = await COOP.POINTS.addPointsByID(targetID, damage);
+                    const updatedPoints = await COOP.ITEMS.subtract(targetID, 'COOP_POINT', Math.abs(damage), 'Toxic egg effect');
 
                     const popularity = COOP.REACTIONS.countType(msg, '☢️');
                     if (popularity <= 3) COOP.MESSAGES.delayReactionRemove(reaction, 333);

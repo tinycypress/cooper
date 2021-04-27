@@ -41,9 +41,6 @@ const shallowBot = async () => {
         
         // Transactions command exists already. -> Last 500 transactions/self-cleaning
 
-
-        status()
-
         // Recurring event for testing prospects.
         // Code for handling prospects.
     
@@ -52,6 +49,8 @@ const shallowBot = async () => {
         // Paypal in/out // Track deficit (use detail reserved)
         // Add cost command (democratically approved)
         // 100dz integration TODOs
+
+        // Debt interest on negative item ownership values.
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

@@ -24,6 +24,13 @@ export default class ReservesCommand extends CoopCommand {
 		// Get the FIAT, BTC, DOGE, LTC balances and combine:
 
 
+        // CREATE TABLE reserves( 
+        //     id SERIAL PRIMARY KEY, 
+        //     currency_code VARCHAR, 
+        //     running float, 
+        //     change float,
+        //     note VARCHAR
+        // );
 
 		// TODO: This should be updated in an economy channel somewhere.
 		// TODO: Notify community with over 10% change to reserves.

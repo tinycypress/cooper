@@ -159,10 +159,10 @@ export default class TradingHelper {
                 const didUse = await USABLE.use(accepteeID, trade.receive_item, trade.receive_qty);
                 if (didUse) {
                     // Add the offer items to the acceptee.
-                    await COOP.ITEMS.add(accepteeID, trade.offer_item, trade.offer_qty);
+                    await COOP.ITEMS.add(accepteeID, trade.offer_item, trade.offer_qty, 'Trade accepted');
     
                     // Add the receive items to the trader.
-                    await COOP.ITEMS.add(trade.trader_id, trade.receive_item, trade.receive_qty);
+                    await COOP.ITEMS.add(trade.trader_id, trade.receive_item, trade.receive_qty, 'Trade accepted');
     
                     // Delete/close the open trade offer.
                     await this.remove(openTradeID);
@@ -192,7 +192,7 @@ export default class TradingHelper {
             const trade = await this.get(cancelTradeID);
 
             // Add the offer items to the cancelee.
-            await COOP.ITEMS.add(canceleeID, trade.offer_item, trade.offer_qty);
+            await COOP.ITEMS.add(canceleeID, trade.offer_item, trade.offer_qty, 'Trade cancelled');
 
             // Delete/close the open trade offer.
             await this.remove(cancelTradeID);

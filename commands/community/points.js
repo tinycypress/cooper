@@ -22,7 +22,7 @@ export default class PointsCommand extends CoopCommand {
 		if (msg.mentions.users.first()) targetUser = msg.mentions.users.first();
 
         try {
-			const points = await COOP.POINTS.getPointsByID(targetUser.id);
+			const points = await COOP.ITEMS.getUserItemQty(targetUser.id, 'COOP_POINT');
 			await msg.channel.send(`${targetUser.username}'s points: ${points}`);
 
         } catch(err) {

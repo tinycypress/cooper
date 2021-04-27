@@ -24,7 +24,7 @@ export default class RareEggHandler {
                     const damage = EGG_DATA['RARE_EGG'].points;
 
                     // Apply the damage to the target's points.
-                    const updatedPoints = await COOP.POINTS.addPointsByID(targetID, damage);
+                    const updatedPoints = await COOP.ITEMS.add(targetID, 'COOP_POINT', damage, 'Rare egg effect');
 
                     // Calculate feedback text.
                     const damageInfoText = ` ${damage} points (${ITEMS.displayQty(updatedPoints)})`;

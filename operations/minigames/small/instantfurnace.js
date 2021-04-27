@@ -1,4 +1,4 @@
-import COOP, { STATE, SERVER, USABLE, MESSAGES } from "../../../origin/coop";
+import { STATE, SERVER, USABLE, MESSAGES, CHANNELS, USERS, ITEMS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 
 export const BAR_DATA = {
@@ -21,8 +21,8 @@ export default class InstantFurnaceMinigame {
     // Burn metal ore into metal
     static async onReaction(reaction, user) {
         // Reject all N/A
-        if (!COOP.USERS.isCooper(reaction.message.author.id)) return false;
-        if (COOP.USERS.isCooper(user.id)) return false;
+        if (!USERS.isCooper(reaction.message.author.id)) return false;
+        if (USERS.isCooper(user.id)) return false;
         if (reaction.message.content.trim() !== '🌋') return false;
         if (reaction.emoji.name !== 'metal_ore') return false;
         
@@ -31,12 +31,12 @@ export default class InstantFurnaceMinigame {
             const oreLimitMin = 25;
 
             // Check the quantity for the user.
-            const hasQty = await COOP.ITEMS.hasQty(user.id, 'METAL_ORE', oreLimitMin);
-            if (!hasQty) return COOP.MESSAGES.selfDestruct(reaction.message, `${user.username} lacks ${oreLimitMin}xMETAL_ORE.`, 0, 5000);
+            const hasQty = await ITEMS.hasQty(user.id, 'METAL_ORE', oreLimitMin);
+            if (!hasQty) return MESSAGES.selfDestruct(reaction.message, `${user.username} lacks ${oreLimitMin}xMETAL_ORE.`, 0, 5000);
 
             // Guard the action from those not sincerely using the item.
             const didUse = await USABLE.use(user.id, 'METAL_ORE', oreLimitMin);
-            if (!didUse) return COOP.MESSAGES.selfDestruct(reaction.message, `${user.username}, something went wrong smelting your ore. ;(`, 5000);
+            if (!didUse) return MESSAGES.selfDestruct(reaction.message, `${user.username}, something went wrong smelting your ore. ;(`, 5000);
 
             // Add smelting multiplier effect.
             const multiplier = reaction.count - 1;
@@ -58,7 +58,7 @@ export default class InstantFurnaceMinigame {
             // Add rewards to user.
             await Object.keys(rewards).map(rewardItem => {
                 const qty = rewards[rewardItem];
-                return COOP.ITEMS.add(user.id, rewardItem, qty)
+                return ITEMS.add(user.id, rewardItem, qty)
             });
 
             const sumTotal = Object.keys(rewards).reduce((acc, val) => {
@@ -66,14 +66,12 @@ export default class InstantFurnaceMinigame {
             }, 0);
 
             const smeltString = `${user.username} smelted the following ${sumTotal} bars within the instant furnace: \n` +
-                `${
-                    Object.keys(rewards).map(rewardKey => {
-                        return `${COOP.MESSAGES._displayEmojiCode(rewardKey)}x${rewards[rewardKey]}`
-                    }).join(', ')
-                }`
+                Object.keys(rewards).map(rewardKey => {
+                    return `${MESSAGES._displayEmojiCode(rewardKey)}x${rewards[rewardKey]}`
+                }).join(', ');
 
             // Create record in channel and in actions.
-            COOP.CHANNELS.propagate(reaction.message, smeltString, 'ACTIONS');
+            CHANNELS.propagate(reaction.message, smeltString, 'ACTIONS');
 
         } catch(e) {
             console.log('Failure reacting to instant furnace');
@@ -81,21 +79,33 @@ export default class InstantFurnaceMinigame {
         }
     }
 
+    // An instant furnace appears.
     static async spawn() {
-        // Run based on roll.
         try {
-            // An instant furnace appears.
-            const msg = await COOP.CHANNELS._postToChannelCode('TALK', '🌋');
-            COOP.MESSAGES.delayDelete(msg, 60000);
-            
-            // TODO: Hurts the person next to it on spawn.
-            // console.log(msg);
+            const msg = await CHANNELS._postToChannelCode('TALK', '🌋');
             
             // TODO: Animate flame out like egg collect.
+            MESSAGES.delayDelete(msg, 60000);
             await SERVER.addTempMessage(msg, 60);
 
             // Add reaction for action suggestion/tip.
-            COOP.MESSAGES.delayReact(msg, EMOJIS.METAL_ORE, 333);
+            MESSAGES.delayReact(msg, EMOJIS.METAL_ORE, 333);
+
+            // Burn the users within close distance of it.
+            if (STATE.CHANCE.bool({ likelihood: 10 })) {
+                const siblingMsgs = await msg.channel.messages.fetch({ limit: 6 });
+                const usersIDsAround = siblingMsgs.map(msg => msg.author.id)
+                    .filter(userID => !USERS.isCooper(userID))
+                    .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+    
+                const coopEmoji = MESSAGES._displayEmojiCode('COOP');
+                const burnText = usersIDsAround.map(userID => `<@${userID}>`).join(', ') +
+                    ` ${usersIDsAround.length > 1 ? 'were all' : 'was'} burned by the the instant furnace! -10x${coopEmoji}`;
+
+                usersIDsAround.map(userID => ITEMS.subtract(userID, 'COOP_POINT', 10, 'Volcano burn'));
+
+                CHANNELS.silentPropagate(msg, burnText, 'ACTIONS', 333, 10000);
+            }
 
         } catch(e) {
             console.log('Error running instance furnace.');

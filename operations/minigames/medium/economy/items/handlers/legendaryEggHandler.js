@@ -25,7 +25,7 @@ export default class LegendaryEggHandler {
                     const damage = EGG_DATA['LEGENDARY_EGG'].points;
 
                     // Apply the damage to the target's points.
-                    const updatedPoints = await COOP.POINTS.addPointsByID(targetID, damage);
+                    const updatedPoints = await COOP.ITEMS.add(targetID, 'COOP_POINT', damage, 'Legendary egg effect');
 
                     // Remove egg reaction based on popularity
                     const popularity = REACTIONS.countType(reaction.message, '💜');

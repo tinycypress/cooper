@@ -102,11 +102,11 @@ export default class CraftingHelper {
             // Subtract all of the ingredients.
             await Promise.all(
                 // TODO: Optimise into one database call.
-                ingredList.map(ingred => COOP.ITEMS.subtract(memberID, ingred, ingredients[ingred] * qty)
+                ingredList.map(ingred => COOP.ITEMS.subtract(memberID, ingred, ingredients[ingred] * qty, `Crafted ${qty}x${itemCode}`)
             ));
 
             // Add the resultant item.
-            await COOP.ITEMS.add(memberID, itemCode, qty);
+            await COOP.ITEMS.add(memberID, itemCode, qty, `Crafted`);
 
             // Calculate experience
             SkillsHelper.addXP(memberID, 'crafting', product.xpReward * qty);

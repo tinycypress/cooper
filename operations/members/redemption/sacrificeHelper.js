@@ -197,7 +197,7 @@ export default class SacrificeHelper {
         if (lastMsgSecs) lastMessageFmt = COOP.TIME.secsLongFmt(lastMsgSecs);
 
         const totalMsgsSent = await COOP.USERS.getField(user.id, 'total_msgs') || 0;
-        const points = await COOP.POINTS.getPointsByID(user.id);
+        const points = await COOP.ITEMS.getUserItemQty(user.id, 'COOP_POINT');
         const totalItems = await COOP.ITEMS.getUserTotal(user.id);
 
         const cooperMood = await CooperMorality.load();

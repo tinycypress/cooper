@@ -11,7 +11,7 @@ export default class CooperMorality {
     static async calculate() {
         let morality = null;
 
-        const points = await COOP.POINTS.getPointsByID(COOP.STATE.CLIENT.user.id);
+        const points = await COOP.ITEMS.getUserItemQty(COOP.STATE.CLIENT.user.id, 'COOP_POINT');
 
         if (points < 0) morality = 'EVIL';
         if (points > 0) morality = 'GOOD';
@@ -69,7 +69,7 @@ export default class CooperMorality {
         // Add the item to each user.
         await Promise.all(dropResults.map(dropSet =>
             Promise.all(dropSet.drops.map(drop =>
-                COOP.ITEMS.add(dropSet.user.id, drop.item, drop.qty)
+                COOP.ITEMS.add(dropSet.user.id, drop.item, drop.qty, 'Cooper\'s giveaway')
             ))
         ));
         

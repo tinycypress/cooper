@@ -45,7 +45,7 @@ export default class AverageEggHandler {
                 // Only apply damage when egg hasn't broken on self.
                 if (!(backFired && isSelf)) {
                     // Apply the damage to the target's points.
-                    const updatedPoints = await COOP.POINTS.addPointsByID(targetID, damage);
+                    const updatedPoints = await COOP.ITEMS.add(targetID, 'COOP_POINT', damage, 'Average egg effect');
 
                     // Update feedback string, did cause damage.
                     damageInfoText = `: ${damage} points (${ITEMS.displayQty(updatedPoints)})`;

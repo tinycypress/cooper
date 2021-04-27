@@ -1,6 +1,6 @@
 import EmojiHelper from "./emojiHelper";
 
-import COOP, { USABLE, SERVER } from "../../../../../origin/coop";
+import COOP, { USABLE, SERVER, TIME } from "../../../../../origin/coop";
 import { ITEMS, EMOJIS, RAW_EMOJIS } from '../../../../../origin/config';
 import DatabaseHelper from "../../../../databaseHelper";
 import Database from '../../../../../origin/setup/database';
@@ -31,8 +31,22 @@ export default class ItemsHelper {
         return emoji + " " + nameCapitalized + " ";
     }
 
+    static async saveTransaction(userID, item_code, qty, runningQty, reason = 'N/A') {
+        const nowSecs = TIME._secs();
+        const query = {
+            name: "record-item-change",
+            text: `INSERT INTO item_qty_change_history(owner, item, change, running, note, occurred_secs)
+                VALUES($1, $2, $3, $4, $5, $6)`,
+            values: [userID, item_code, qty, runningQty, reason, nowSecs]
+        };
 
-    static async add(userID, item_code, quantity) {
+        const result = await Database.query(query);
+        const successDelete = result.rowCount === 1;
+        return successDelete;
+    };
+
+    static async add(userID, item_code, quantity, sourceReason = 'unknown') {
+        // TODO: Could make item source throw an error if not declared.
         const query = {
             name: "add-item",
             text: `INSERT INTO items(owner_id, item_code, quantity)
@@ -46,10 +60,13 @@ export default class ItemsHelper {
         
         const result = await Database.query(query);
         const newQty = (result.rows[0] || { quantity: 0 }).quantity;
+
+        await this.saveTransaction(userID, item_code, quantity, newQty, sourceReason);
+
         return newQty;
     }
 
-    static async subtract(userID, itemCode, subQuantity) {
+    static async subtract(userID, itemCode, subQuantity, takeReason = 'unknown') {
         // If item count goes to zero, remove it
         const query = {
             name: "subtract-item",
@@ -60,11 +77,10 @@ export default class ItemsHelper {
         };
         const updateResult = await Database.query(query);
 
-        // Remove if zero
-        if (updateResult.rowCount > 0) {
-            const updatedQty = updateResult.rows[0].quantity || 0;
-            if (updatedQty <= 0) await this.delete(userID, itemCode);
-        }
+        const updatedQty = updateResult.rows[0].quantity;
+        
+        // Record the change!
+        await this.saveTransaction(userID, itemCode, subQuantity, updatedQty, takeReason);
 
         return updateResult;
     }
@@ -305,7 +321,7 @@ export default class ItemsHelper {
         // If the new winner didn't already have the role, award it and notify server.
         if (!alreadyHadRole) {
             // Add point reward to item leader.
-            const pointsAfter = await COOP.POINTS.addPointsByID(richestMember.user.id, 100);
+            const pointsAfter = await COOP.ITEMS.add(richestMember.user.id, 'COOP_POINT', 100, 'Won richest role');
             
             // Add the role to new item leader.
             richestMember.roles.add(richestRole);
@@ -363,7 +379,8 @@ export default class ItemsHelper {
         // If the new winner didn't already have the role, award it and notify server.
         if (!alreadyHadRole) {
             // Add point reward to item leader.
-            const pointsAfter = await COOP.POINTS.addPointsByID(mostItems.owner_id, 50);
+            
+            const pointsAfter = await COOP.ITEMS.add(mostItems.owner_id, 'COOP_POINT', 50, 'Won most items role');
             
             // Add the role to new item leader.
             mostItemsMember.roles.add(mostItemsRole);

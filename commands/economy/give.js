@@ -85,7 +85,7 @@ export default class GiveCommand extends CoopCommand {
 			// REVIEWS: Maybe a guard/check with an error is needed for item add too? :D
 
 			// Add the item to the gift recepient.
-			await COOP.ITEMS.add(target.id, itemCode, qty);
+			await COOP.ITEMS.add(target.id, itemCode, qty, `Gifted by ${msg.author.username}`);
 
 			// TODO: create .addManifest and let them have the giftbox too :D.
 			// TODO: Make sure pickups are logged/recorded in a channel (drop too).

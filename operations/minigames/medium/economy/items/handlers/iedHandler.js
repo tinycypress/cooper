@@ -28,7 +28,6 @@ export default class IEDHandler {
                     //     const damage = -4 * reaction.count;
     
                     //     // Apply the damage to the target's points.
-                    //     const updatedPoints = await COOP.POINTS.addPointsByID(messageAuthor.id, damage);
     
                     //     // Add visuals animation
                     //     COOP.MESSAGES.delayReactionRemove(reaction, 333);
