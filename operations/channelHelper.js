@@ -13,10 +13,10 @@ export default class ChannelHelper {
     static textRef(code) { return `<#${CHANNELS_CONFIG[code].id}>`; }
 
     // TODO: Need to reuse this a lot! Ping/link without pinging! <3 <3 
-    static _send(code, msg, opts = silentOpts) {
+    static _send(code, text, opts = silentOpts) {
         const coop = SERVER._coop();
         const chan = this.getByCode(coop, code);
-        return chan.send(msg, opts);
+        return chan.send(text, opts);
     }
 
     static async silentPropagate(msgRef, text, recordChan, selfDestruct = true) {
