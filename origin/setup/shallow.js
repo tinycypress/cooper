@@ -42,13 +42,30 @@ const shallowBot = async () => {
         // Transactions command exists already. -> Last 500 transactions/self-cleaning
         // All item shares (postgres query)
 
+    
+        const results = await DatabaseHelper.manyQuery({
+            name: 'all-item-shares',
+            text: `SELECT DISTINCT 
+                i.owner_id, i.quantity, i.item_code, total_qty, ROUND((i.quantity / total_qty) * 100) as share
+                FROM items i
+                    INNER JOIN ( 
+                        SELECT item_code, MAX(quantity) AS highest, SUM(quantity) as total_qty
+                        FROM items
+                        GROUP BY item_code
+                    ) AS grouped_items
+                    ON  grouped_items.item_code = i.item_code
+                    AND grouped_items.highest = i.quantity`
+        });
+
+        console.log(results);
+
         // Recurring event for testing prospects.
         // Code for handling prospects.
 
 		
         // Structures
         // Paypal in/out // Track deficit (use detail reserved)
-        // Add cost command (democratically)
+        // Add cost command (democratically approved)
         // 100dz integration TODOs
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.

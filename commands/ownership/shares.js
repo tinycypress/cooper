@@ -23,6 +23,7 @@ export default class SharesCommand extends CoopCommand {
 					key: 'itemCode',
 					type: 'string',
 					prompt: 'Which item code do you want to check the shares %?',
+					default: '*'
 				}
 			]
 		});
@@ -34,6 +35,41 @@ export default class SharesCommand extends CoopCommand {
 		const validItemCode = ItemsHelper.interpretItemCodeArg(itemCode);
 		if (itemCode !== '*' && !usableItemCodeGuard(msg, validItemCode, msg.author))
 			return null;
+
+
+		if (itemCode === '*') {
+			const overallOwnershipData = await DatabaseHelper.manyQuery({
+				name: 'all-item-shares',
+				text: `SELECT DISTINCT i.owner_id, i.quantity, i.item_code FROM items i
+					INNER JOIN ( 
+						SELECT item_code, MAX(quantity) AS highest, SUM(quantity) as total_qty
+						FROM items
+						GROUP BY item_code
+					) AS grouped_items
+					ON  grouped_items.item_code = i.item_code
+					AND grouped_items.highest = i.quantity`
+			});
+
+			overallOwnershipData.sort((a, b) => (a.share < b.share) ? 1 : -1);
+
+			// Output share of requested item (if valid)
+			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
+				overallOwnershipData.map(val => 
+					`(${val.share}%) ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)}` + 
+					`<@${val.owner_id}> (${val.item_code})`
+				).join('\n'));
+		}
+
+	
+
+
+
+
+
+
+
+
+
 
 		// Select all owners and their quantities of this item.
         const itemOwnershipArr = await DatabaseHelper.manyQuery({
