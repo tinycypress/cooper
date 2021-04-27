@@ -1,4 +1,4 @@
-import { CHANNELS, MESSAGES, SERVER, STATE } from "../../../origin/coop";
+import { CHANNELS, STATE, TIME } from "../../../origin/coop";
 import Database from "../../../origin/setup/database";
 import DatabaseHelper from "../../databaseHelper";
 
@@ -10,7 +10,7 @@ export default class TodoHelper {
         if (STATE.CHANCE.bool({ likelihood: 10 })) {
             const todos = await this.getAll();
             const currentSecs = Date.now() / 1000;
-            const due = todos.filter(todo => todo.deadline <= currentSecs);
+            const due = todos.filter(todo => todo.due <= currentSecs);
     
             let dueText = `📝 **TODOs**\n\n` +
                 `Due Now: ${due.length}\n` +
@@ -55,6 +55,13 @@ export default class TodoHelper {
         });
         const successDelete = result.rowCount === 1;
         return successDelete;
+    }
+
+    static dueReadable(secsDue) {
+        const secsNow = TIME._secs();
+        if (secsDue < secsNow) return '__**OVERDUE**__';
+        // TODO: Need negative in case it's that...
+        return TIME.humaniseSecs(secsDue - secsNow);
     }
 
     static async add(userID, todo) {

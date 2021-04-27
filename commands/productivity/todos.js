@@ -57,16 +57,10 @@ export default class TodosCommand extends CoopCommand {
 		}
 
 
-        const secsNow = TIME._secs();
-        const dueReadable = due => {
-			if (due < secsNow) return '__**OVERDUE**__';
-			return TIME.humaniseSecs(due - secsNow);
-		}
-
         const userTodosText = `**${targetUser}'s todos:**\n\n` +
             todos.map(
                 // TODO: Bold/underline the due date if overdue...
-                todo => `#${todo.id}. ${todo.title} - ${dueReadable(todo.due)}`
+                todo => `#${todo.id}. ${todo.title} - ${TodoHelper.dueReadable(todo.due)}`
             ).join('\n') +
             `\n\n_Type and send "!todos" to check yours._`;
 
