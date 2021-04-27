@@ -40,29 +40,24 @@ export default class SharesCommand extends CoopCommand {
 		if (itemCode === '*') {
 			const overallOwnershipData = await DatabaseHelper.manyQuery({
 				name: 'all-item-shares',
-				text: `SELECT DISTINCT i.owner_id, i.quantity, i.item_code FROM items i
-					INNER JOIN ( 
-						SELECT item_code, MAX(quantity) AS highest, SUM(quantity) as total_qty
-						FROM items
-						GROUP BY item_code
-					) AS grouped_items
-					ON  grouped_items.item_code = i.item_code
-					AND grouped_items.highest = i.quantity`
+				text: `SELECT DISTINCT i.owner_id, i.quantity, i.item_code, total_qty, ROUND((i.quantity / total_qty) * 100) as share
+                FROM items i
+                    INNER JOIN ( 
+                        SELECT item_code, MAX(quantity) AS highest, SUM(quantity) as total_qty
+                        FROM items
+                        GROUP BY item_code
+                    ) AS grouped_items
+                    ON  grouped_items.item_code = i.item_code
+                    AND grouped_items.highest = i.quantity`
 			});
 
 			overallOwnershipData.sort((a, b) => (a.share < b.share) ? 1 : -1);
 
-			console.log(overallOwnershipData);
-			console.log(overallOwnershipData.length);
-
 			// Output share of requested item (if valid)
 			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
-				overallOwnershipData.map(val => {
-					console.log(val);
-					return 'Testing'
-				}
-					// `(${val.share}%) ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} ` + 
-					// `<@${val.owner_id}> (${val.item_code})`
+				overallOwnershipData.map(val => 
+					`(${val.share}%) ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} ` + 
+					`<@${val.owner_id}> (${val.item_code})`
 				).join('\n'));
 		}
 
