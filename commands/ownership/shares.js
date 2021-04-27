@@ -2,7 +2,7 @@ import CoopCommand from "../../operations/activity/messages/coopCommand";
 import DatabaseHelper from "../../operations/databaseHelper";
 import { usableItemCodeGuard } from "../../operations/minigames/medium/economy/itemCmdGuards";
 import ItemsHelper from "../../operations/minigames/medium/economy/items/itemsHelper";
-import { ITEMS, MESSAGES } from "../../origin/coop";
+import { ITEMS, MESSAGES, USERS } from "../../origin/coop";
 
 // TODO: Refactor to a different location.
 const perc = (sub, total) => Math.round((sub / total) * 100);
@@ -55,9 +55,11 @@ export default class SharesCommand extends CoopCommand {
 
 			// Output share of requested item (if valid)
 			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
-				overallOwnershipData.map(val => 
-					`${val.share}% ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} <@${val.owner_id}>`
-				).join(',') + '.');
+				overallOwnershipData.map(val => {
+					const username = USERS._get(val.owner_id).user.username;
+					const itemQty = `${ITEMS.displayQty(val.quantity)}x${val.item_code}`;
+					return `${val.share}% ${itemQty} - ${username}`;
+				}).join(',') + '.');
 		}
 
 	
