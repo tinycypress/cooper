@@ -40,7 +40,7 @@ export default class SharesCommand extends CoopCommand {
 		if (itemCode === '*') {
 			const overallOwnershipData = await DatabaseHelper.manyQuery({
 				name: 'all-item-shares',
-				text: `SELECT DISTINCT i.item_code, i.owner_id, i.quantity, total_qty, ROUND((i.quantity / total_qty) * 100) as share
+				text: `SELECT DISTINCT ON (i.item_code) i.item_code, i.owner_id, i.quantity, total_qty, ROUND((i.quantity / total_qty) * 100) as share
                 FROM items i
                     INNER JOIN ( 
                         SELECT item_code, MAX(quantity) AS highest, SUM(quantity) as total_qty
