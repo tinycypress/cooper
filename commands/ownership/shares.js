@@ -63,8 +63,9 @@ export default class SharesCommand extends CoopCommand {
 				}).join(', ') + '.');
 		}
 
-	
-
+		
+		// After ALL accounted, support codes, emojis, names.
+		itemCode = ITEMS.interpretItemCodeArg(itemCode)
 
 
 		// Select all owners and their quantities of this item.

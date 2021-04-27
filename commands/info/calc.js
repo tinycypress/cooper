@@ -21,8 +21,8 @@ export default class CalcCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 
-		const queryString =  msg.content.trim().replace('!calc ', '');
-
+		const queryString = msg.content.trim().replace('!calc ', '');
+		
 		// Guard.
 		if (!queryString) return COOP.MESSAGES.selfDestruct(msg, 'Must include an equation/etc for calc.');
 		
