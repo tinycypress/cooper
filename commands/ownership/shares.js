@@ -40,7 +40,7 @@ export default class SharesCommand extends CoopCommand {
 		if (itemCode === '*') {
 			const overallOwnershipData = await DatabaseHelper.manyQuery({
 				name: 'all-item-shares',
-				text: `SELECT DISTINCT i.owner_id, i.quantity, i.item_code, total_qty, ROUND((i.quantity / total_qty) * 100) as share
+				text: `SELECT DISTINCT i.item_code, i.owner_id, i.quantity, total_qty, ROUND((i.quantity / total_qty) * 100) as share
                 FROM items i
                     INNER JOIN ( 
                         SELECT item_code, MAX(quantity) AS highest, SUM(quantity) as total_qty
@@ -53,16 +53,10 @@ export default class SharesCommand extends CoopCommand {
 
 			overallOwnershipData.sort((a, b) => (a.share < b.share) ? 1 : -1);
 
-			console.log(overallOwnershipData.map(val => 
-				`(${val.share}%) ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} ` + 
-				`<@${val.owner_id}> (${val.item_code})`
-			).join('\n'));
-
 			// Output share of requested item (if valid)
 			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
 				overallOwnershipData.map(val => 
-					`(${val.share}%) ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} ` + 
-					`<@${val.owner_id}> (${val.item_code})`
+					`${val.share}% ${ITEMS.displayQty(val.quantity)}x${MESSAGES._displayEmojiCode(val.item_code)} <@${val.owner_id}>`
 				).join('\n'));
 		}
 
