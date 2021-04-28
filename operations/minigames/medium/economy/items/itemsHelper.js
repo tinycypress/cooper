@@ -45,7 +45,7 @@ export default class ItemsHelper {
         return successDelete;
     };
 
-    static async add(userID, item_code, quantity, sourceReason = 'unknown') {
+    static async add(userID, itemCode, quantity, sourceReason = 'unknown') {
         // TODO: Could make item source throw an error if not declared.
         const query = {
             name: "add-item",
@@ -55,13 +55,17 @@ export default class ItemsHelper {
                 DO 
                 UPDATE SET quantity = items.quantity + EXCLUDED.quantity
                 RETURNING quantity`,
-            values: [userID, item_code, quantity]
+            values: [userID, itemCode, quantity]
         };
         
         const result = await Database.query(query);
         const newQty = (result.rows[0] || { quantity: 0 }).quantity;
 
-        await this.saveTransaction(userID, item_code, quantity, newQty, sourceReason);
+        // Get the total of that item now.
+        const total = await this.count(itemCode);
+
+        
+        await this.saveTransaction(userID, itemCode, quantity, total, sourceReason);
 
         return newQty;
     }
@@ -75,14 +79,14 @@ export default class ItemsHelper {
                 RETURNING quantity`,
             values: [userID, itemCode, subQuantity]
         };
-        const updateResult = await Database.query(query);
+        const itemRow = await DatabaseHelper.singleQuery(query);
 
-        const updatedQty = updateResult.rows[0].quantity;
+        // Get the total of that item now.
+        const total = await ITEMS.count(itemCode);
         
         // Record the change, with quantity cast to a negative number.
-        await this.saveTransaction(userID, itemCode, -subQuantity, updatedQty, takeReason);
-
-        return updatedQty;
+        await this.saveTransaction(userID, itemCode, -subQuantity, total, takeReason);
+        return itemRow.quantity;
     }
 
     static async getUserItem(userID, itemCode) {
