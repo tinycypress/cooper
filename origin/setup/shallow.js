@@ -40,16 +40,12 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Democratic message clean up debug
-
         // Paypal in/out // Track deficit (use detail reserved)
         // Add cost command (democratically approved) copy !sacrifice
         // Structures
 
-
-
-
-
+        // Favours (adding to other users todo lists)
+        // A reaction that can be used to copy a shared todo
         // 100dz integration TODOs
         // Debt interest on negative item ownership values.
 

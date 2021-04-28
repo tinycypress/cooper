@@ -37,7 +37,7 @@ export default class CleanupHandler {
             MESSAGES.silentSelfDestruct(reaction.message, cleanedText, 0, 4000);
             MESSAGES.delayDelete(reaction.message, 333);
         } else {
-            const attemptCleanText = `<@${user.id}> suggests ${cleanEmoji}ing above message by <@${reaction.message.author.id}>.`;
+            const attemptCleanText = `<@${user.id}> suggests ${cleanEmoji}ing above message by <@${reaction.message.author.id}>, react with the same emoji (${cleanEmoji}) for removal.`;
             MESSAGES.silentSelfDestruct(reaction.message, attemptCleanText, 0, 4000);
         }
     }
