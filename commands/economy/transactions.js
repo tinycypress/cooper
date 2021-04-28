@@ -35,7 +35,8 @@ export default class TransactionsCommand extends CoopCommand {
 			const query = {
 				name: 'get-transactions',
 				text: `SELECT * FROM item_qty_change_history 
-					LIMIT 20 OFFSET $1 ORDER BY id DESC`.trim(),
+					ORDER BY id DESC
+					LIMIT 20 OFFSET $1`.trim(),
 				values: [offset]
 			};
 	

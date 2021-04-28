@@ -39,11 +39,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
-        // Transactions command exists already. -> Last 500 transactions/self-cleaning
-
-
-        // todo change category.
-
         // Recurring event for testing prospects.
         // Code for handling prospects.
     
