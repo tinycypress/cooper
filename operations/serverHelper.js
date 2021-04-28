@@ -147,9 +147,24 @@ export default class ServerHelper {
     
                         // Format the data for discord API request.
                         const deletionMessageIDs = deletionItems.map(item => item.messageID);
+
+                        const existentDeletionMessageIDs = await deletionMessageIDs.filter(async item => {
+                            // If it's in cache, don't check at all.
+                            const cachedMsg = chan.messages.get(item.messageID);
+                            if (cachedMsg && !cachedMsg.deleted)
+                                return true;
+
+                            const stillExist = await chan.messages.fetch(item.messageID);
+                            if (!stillExist) {
+                                // Remove record from temp messages table.
+                                this.deleteTempMsgLink(`${msgUrlBase}/${chan.id}/${item.messageID}`);
+                                return false;
+                            }
+                            return true;
+                        });
                         
                         // Delete messages from discord.
-                        const successfulDeletions = await chan.bulkDelete(deletionMessageIDs);
+                        const successfulDeletions = await chan.bulkDelete(existentDeletionMessageIDs);
                                                 
                         // On bulkDelete success, remove from our database.
                         // TODO: Investigate why item param is unused (Format/type of successfulDeletions - coerce it)

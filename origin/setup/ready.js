@@ -17,11 +17,8 @@ export default async () => {
             }
         });
 
-        // TODO: Check if election is on before preloading.
-
-            // Cache candidate messages (ONLY IF ITS ON, CHECK PLEASE)
-            // Maybe rename to preloadIfNecessary()
-            await ElectionHelper.onLoad();
+        // Check if election is on before preloading/caching campaign messages.
+        await ElectionHelper.preloadIfNecessary();
 
         // Preload all about/options preferences options.
         await AboutHelper.preloadMesssages();

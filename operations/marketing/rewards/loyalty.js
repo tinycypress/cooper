@@ -56,7 +56,7 @@ export function status() {
     const numWinners = 2;
 
     // Post elgible members with draw result.
-    const loyaltyCheckText = `**Rewarding status loyalty!**\n\n` +
+    const loyaltyCheckText = `**Rewarding status loyalty (WIP - no reward yet)!**\n\n` +
         `Eligble:\n` + eligibleMembersFmt.map(e => `<@${e.user.id}>`).join(', ') + '.\n\n' +
         `Winners:\n` + CHANCE.pickset(eligibleMembersFmt, numWinners).map(e => 
             `<@${e.user.id}>${e.text ? ` (${e.text})` : ''}`

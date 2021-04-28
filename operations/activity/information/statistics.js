@@ -21,10 +21,15 @@ export default class Statistics {
     }
 
     static calcCommunityVelocity() {
+        // TODO/REVIEW: This should read from last database value?
         let velocity = 0;
 
         // Calculate the number of current users to adjust ratios.
         const numUsers = ServerHelper._count();
+
+
+        // TODO: Add the ratio of active users compared to offline.
+
 
         // Add score of messages (1 per message).
         const totalMsgs = MessageNotifications.getFreshMsgTotalCount();

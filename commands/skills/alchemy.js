@@ -1,7 +1,7 @@
 import DropTable from '../../operations/minigames/medium/economy/items/droptable';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { ITEMS, MESSAGES, USABLE } from '../../origin/coop';
+import COOP, { MESSAGES, USABLE } from '../../origin/coop';
 
 export default class AlchemyCommand extends CoopCommand {
 
@@ -16,7 +16,7 @@ export default class AlchemyCommand extends CoopCommand {
 			args: [
 				{
 					key: 'itemCode',
-					prompt: 'Which rarity? (item_code)',
+					prompt: 'Which egg rarity do you wish to alc? (item_code)',
 					type: 'string',
 					default: 'AVERAGE_EGG'
 				},

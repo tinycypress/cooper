@@ -11,6 +11,7 @@ export default class CleanupHandler {
     // TODO: Should consider where this breaks things... elections?
 
     static async onReaction(reaction, user) {
+        console.log(reaction.emoji.name, cleanEmoji);
         if (reaction.emoji.name !== cleanEmoji) return false;
         if (USERS.isCooper(user.id)) return false;
 

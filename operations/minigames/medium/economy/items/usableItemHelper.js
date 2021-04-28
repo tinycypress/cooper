@@ -37,7 +37,8 @@ export default class UsableItemHelper {
             }
         }
 
-        // Allow Cooper to add average/rare eggs when prompted.
+        // Allow Cooper to add average/rare/legendary eggs when prompted.
+        // SPAMREFORM: Should not remove reaction if insufficient qty (cooper only)
         // SPAMREFORM: Should fail silently.
         ToxicEggHandler.onReaction(reaction, user);
         LegendaryEggHandler.onReaction(reaction, user);

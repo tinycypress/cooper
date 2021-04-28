@@ -53,7 +53,6 @@ export default async function messageAddedHandler(msg) {
     // Suppress previews from links but add toggle react.
     LinkPreviewFilter.onMessage(msg);
 
-
-    // SPAMREFORM: KILL COMMANDOJS MESSAGES:
+    // Handle spammy messages from Commandojs and other sources.
     MessageSpamHelper.onMessage(msg);
 }

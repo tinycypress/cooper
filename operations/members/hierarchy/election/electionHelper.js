@@ -590,7 +590,7 @@ export default class ElectionHelper {
 
 
     // Preload campaign messages into cache so they are always reactable.
-    static async onLoad() {
+    static async preloadIfNecessary() {
         const isElectionOn = await this.isVotingPeriod();
         if (isElectionOn) {
             await this.loadAllCampaigns();

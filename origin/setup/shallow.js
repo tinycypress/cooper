@@ -40,11 +40,13 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // Democratic message clean up debug
+
         // Paypal in/out // Track deficit (use detail reserved)
         // Add cost command (democratically approved) copy !sacrifice
         // Structures
 
-        
+
 
 
 

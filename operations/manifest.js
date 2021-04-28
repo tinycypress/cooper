@@ -87,7 +87,7 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
 
   // Marketing
-  EventsHelper.runInterval(status, baseTickDur * 5.25);
+  EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
 
 
   // Election related

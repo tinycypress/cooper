@@ -31,7 +31,7 @@ export default class HelpCommand extends CoopCommand {
 			'nuke',
 
 			// Added to prevent infinite loop on !help (help) text search.
-			'help'
+			// 'help'
 		];
 		
 		const hiddenGroups = [
@@ -140,7 +140,7 @@ export default class HelpCommand extends CoopCommand {
 					(command.details ? `\nDetails: ${command.details}` : '') +
 					(hasExamples ? `\nExamples: \n${command.examples.map((ex, i) => 
 						`e.g. #${i + 1}: ${ex}`
-					)}` : '')
+					).join('\n')}` : '')
 				)
 			}
 
