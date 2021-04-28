@@ -1,6 +1,6 @@
 import VotingHelper from "../../activity/redemption/votingHelper";
 
-import COOP, { SERVER, STATE } from "../../../origin/coop";
+import COOP, { STATE } from "../../../origin/coop";
 import { RAW_EMOJIS, ROLES, CHANNELS } from '../../../origin/config';
 
 

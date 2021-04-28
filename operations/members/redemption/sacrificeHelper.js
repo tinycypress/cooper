@@ -3,7 +3,7 @@ import VotingHelper from '../../activity/redemption/votingHelper';
 import { KEY_MESSAGES, EMOJIS, CHANNELS } from '../../../origin/config';
 import CooperMorality from '../../minigames/small/cooperMorality';
 
-import COOP from '../../../origin/coop';
+import COOP, { ROLES } from '../../../origin/coop';
 
 
 export const SACRIFICE_RATIO_PERC = .03;
@@ -61,10 +61,17 @@ export default class SacrificeHelper {
         try {
             const sacrificeEmbedDesc = reaction.message.embeds[0].description;
             const sacrificeeID = /<@(\d+)>/.exec(sacrificeEmbedDesc)[1];
+
+            if (!sacrificeeID)
+                throw new Error('Could not discern sacrificee from sacrifice embed');
+
+
             const targetMember = await COOP.USERS.fetchMemberByID(guild, sacrificeeID);
+            const isProspect = ROLES._idHasCode(sacrificeeID, 'PROSPECT');
+
 
             // If target member is self, remove vote.
-            if (user.id === targetMember.user.id) {
+            if (user.id === sacrificeeID) {
                 // Remove vote.
                 reaction.users.remove(user.id);
 
@@ -97,7 +104,9 @@ export default class SacrificeHelper {
                 // Check if enough votes to sacrifice.
                 if (remainingSacrificeVotes === 0) {
                     // Notify when user is voted out.
-                    await COOP.CHANNELS._postToFeed(`<@${targetMember.id}> was sacrificed!`);
+                    await COOP.CHANNELS._postToFeed(
+                        (isProspect ? 'Prospect ' : '')
+                        `<@${sacrificeeID}> was sacrificed!`);
                     await targetMember.ban();
 
                 } else {
@@ -115,7 +124,12 @@ export default class SacrificeHelper {
                 
             // Intercept latest vote granted protection to user.
             } else if (rawKeepVotes === 0 && reaction.emoji.name === EMOJIS.SACRIFICE_SHIELD) {
-                await COOP.CHANNELS._postToFeed(`<@${targetMember.id}> was protected from sacrifice by votes!`);
+                let savedText = `<@${sacrificeeID}> was protected from sacrifice by votes!`;
+                if (isProspect) {
+                    savedText = `Prospect <@${targetMember.id}> survives sacrifice and is no longer marked as PROSPECT!`
+                    ROLES._remove(sacrificeeID, 'PROSPECT');
+                }
+                await COOP.CHANNELS._postToFeed(savedText);
             } 
 
         } catch(e) {
@@ -224,9 +238,13 @@ export default class SacrificeHelper {
         if (oneRoll && cooperMood === 'NEUTRAL') moodText = ' just awaiting the paperwork';
         if (oneRoll && twentyRoll && cooperMood === 'NEUTRAL') moodText = ' all sacrificial rights reserved, The Coop';
 
+        const isProspect = ROLES._idHasCode(user.id, 'PROSPECT');
+
         // Add message to sacrifice
         const sacrificeEmbed = COOP.MESSAGES.embed({ 
-            title: `${user.username}, you may be sacrificed${moodText}!`,
+            title: 
+                (isProspect ? `Prospect ` : '') +
+                `${user.username}, you may be sacrificed${moodText}!`,
             description: 
                 `**Decide <@${user.id}>'s fate**: React to choose! Dagger (remove) OR Shield (keep)!\n` +
                 `\n**Member Stats:**\n` +
@@ -251,7 +269,8 @@ export default class SacrificeHelper {
             COOP.CHANNELS._postToFeed(sacrificeMsgText);
 
             setTimeout(() => {
-                const begPromptMsgText = `<@${user.id}> you may beg to be spared from <#${CHANNELS.SACRIFICE.id}> here.`;
+                const begPromptMsgText = (isProspect ? `Prospect ` : '') + 
+                    `<@${user.id}> you may beg to be spared from <#${CHANNELS.SACRIFICE.id}> here.`;
                 COOP.CHANNELS._postToChannelCode('TALK', begPromptMsgText);
             }, 1500);
         }, 1500);

@@ -422,7 +422,7 @@ export default class ItemsHelper {
     static displayQty(num) {
         const rounded = Math.round((num + Number.EPSILON) * 100) / 100;
         const noZeroes = rounded.toString();
-        return noZeroes
+        return noZeroes;
     }
 
 

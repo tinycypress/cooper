@@ -12,6 +12,7 @@ import client from './client';
 import UsersHelper from '../../operations/members/usersHelper';
 import RolesHelper from '../../operations/members/hierarchy/roles/rolesHelper';
 import DatabaseHelper from '../../operations/databaseHelper';
+import ProspectHelper from '../../operations/members/redemption/prospectHelper';
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -38,29 +39,20 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-        
-        // Recurring event for testing prospects.
 
-        // Is there viable join date data for this?
-        // Add the code into sacrifice.
-
-
-
-
-
-
-
-
-
-
-        // Code for handling prospects.
         // Democratic sacrifice (OPPOSITE OF !unban)
         // Structures
+
         // Paypal in/out // Track deficit (use detail reserved)
         // Add cost command (democratically approved)
         // 100dz integration TODOs
 
         // Debt interest on negative item ownership values.
+        // const query = {
+        //     text: ''
+        // };
+        // const negativeItemOwnership = 
+
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

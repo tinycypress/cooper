@@ -25,7 +25,7 @@ export default class ShieldHandler {
             return false;
 
         // Do not conflict with sacrifice.
-        if (reaction.message.channel.id !== CHANNELS.SACRIFICE.id) 
+        if (reaction.message.channel.id === CHANNELS.SACRIFICE.id) 
             return false;
 
         // Prevent Cooper from having an effect.
@@ -40,7 +40,6 @@ export default class ShieldHandler {
         const used = await usedOwnedUsableGuard(user, 'SHIELD', 1, msg);
         if (!used) return false;
 
-
         // Reference the shielding target.
         const target = reaction.message.author;
         
@@ -51,8 +50,9 @@ export default class ShieldHandler {
         const targetName = target.id === user.id ? 'their self' : target.username;
 
         const successText = COOP.MESSAGES.noWhiteSpace`${user.username} used a ${MESSAGES._displayEmojiCode('SHIELD')} SHIELD
-            on ${targetName}, extending their protection to ${protectionExpiry} 30 mins.`;
+            on ${targetName}, adding 30 mins to their total protection (${protectionExpiry} mins).`;
             
+        // Indicate shield effect success from reaction usage.
         COOP.MESSAGES.selfDestruct(reaction.message, successText, 0, 15000);
     }
 

@@ -23,6 +23,7 @@ import AboutHelper from "./marketing/about/aboutHelper";
 import COOP, { SERVER } from "../origin/coop";
 import TodoHelper from "./productivity/todos/todoHelper";
 import { status } from "./marketing/rewards/loyalty";
+import ProspectHelper from "./members/redemption/prospectHelper";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -97,7 +98,10 @@ export default function eventsManifest() {
 
 
   // Sacrifice, moderation related.
-  EventsHelper.runInterval(() => SacrificeHelper.random(), baseTickDur * 12);
+  EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 20, baseTickDur * 12);
+  EventsHelper.chanceRunInterval(() => ProspectHelper.randomReady(), 20, baseTickDur * 14);
+
+  // TODO: This does not seem sufficient?
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
 
 
