@@ -19,13 +19,14 @@ export default class PirateCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 		
+		// Cleanup query string.
+		let query = msg.content.replace(/ /g, '-');
+		query = query.replace('!pirate ', '');
+		query = query.replace('!prt ', '');
+		
+
 		// Trim query and encode
-		const searchStr = encodeURIComponent(
-			msg.content
-				.replace(/ /g, '-')
-				.replace('!pirate ', '')
-				.replace('!prt ', '')
-		);
+		const searchStr = encodeURIComponent(query);
 
 		// searchStr.replace('')
 		
