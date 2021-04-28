@@ -250,11 +250,12 @@ export default class ElectionHelper {
             const nextElecFmt = await this.nextElecFmt();
 
             // Announce the winners!
+            // TODO: Add the silent pings into this for leaders/commander.
             const declareText = `**Latest <#${CHANNELS.ELECTION.id}> ends with these results!**\n\n` +
 
-                `**New Commander:**\n${hierarchy.commander.username}\n\n` +
+                `**New ${ROLES._textRef('COMMANDER')}:**\n${hierarchy.commander.username}\n\n` +
 
-                `**New Leaders:** \n` +
+                `**New ${ROLES._textRef('LEADER')}:** \n` +
                     `${hierarchy.leaders.map(leader => `${leader.username} (${leader.votes} Votes)`).join('\n')}\n\n` +
 
                 `**Next Election:** ${nextElecFmt}.`;
@@ -695,9 +696,9 @@ export default class ElectionHelper {
             await this.editElectionInfoMsg(
                 `**Election is over, here are your current officials:** \n\n` +
 
-                `**Commander:**\n${hierarchy.commander.user.username} :crown: \n\n` +
+                `**${ROLES._textRef('COMMANDER')}:**\n${hierarchy.commander.user.username} :crown: \n\n` +
 
-                `**Leaders:**\n` +
+                `**${ROLES._textRef('LEADER')}:**\n` +
                     `${hierarchy.leaders.map(leader => `${leader.user.username} :crossed_swords:`).join('\n')}\n\n` +
 
                 `**Next Election:** ${nextElecReadable} (${humanRemaining})`

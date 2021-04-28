@@ -1,4 +1,4 @@
-import { KEY_MESSAGES } from "../../../origin/config";
+import { KEY_MESSAGES, ROLES as ROLES_CONFIG } from "../../../origin/config";
 import { MESSAGES, REACTIONS, ROLES, USERS } from "../../../origin/coop";
 import VotingHelper from "../redemption/votingHelper";
 
@@ -9,15 +9,12 @@ export default class CleanupHandler {
 
 
     // TODO: Should consider where this breaks things... elections?
-
     static async onReaction(reaction, user) {
-        console.log(reaction.emoji.name, cleanEmoji);
         if (reaction.emoji.name !== cleanEmoji) return false;
         if (USERS.isCooper(user.id)) return false;
 
         // Prevent non-members trying to delete content.
-        // TODO: Add member role ping/hyperlink
-        const memberReqText = `<@${user.id}>, member role is required for that action. ${cleanEmoji}`;
+        const memberReqText = `<@${user.id}>, <@&${ROLES_CONFIG.MEMBER.id}> role is required for that action. ${cleanEmoji}`;
         const member = USERS._getMemberByID(user.id);
         if (!ROLES._has(member, 'MEMBER'))
             return MESSAGES.silentSelfDestruct(reaction.message, memberReqText);
@@ -39,6 +36,9 @@ export default class CleanupHandler {
             const cleanedText = `${cleanEmoji} message was democratically deleted.`;
             MESSAGES.silentSelfDestruct(reaction.message, cleanedText, 0, 4000);
             MESSAGES.delayDelete(reaction.message, 333);
+        } else {
+            const attemptCleanText = `<@${user.id}> suggests ${cleanEmoji}ing above message by <@${reaction.message.author.id}>.`;
+            MESSAGES.silentSelfDestruct(reaction.message, attemptCleanText, 0, 4000);
         }
     }
 

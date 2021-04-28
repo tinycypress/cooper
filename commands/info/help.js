@@ -138,7 +138,7 @@ export default class HelpCommand extends CoopCommand {
 					`Group: ${command.groupID}\n` +
 					`Description: ${command.description}` + 
 					(command.details ? `\nDetails: ${command.details}` : '') +
-					(hasExamples ? `\nExamples: \n${command.examples.map((ex, i) => 
+					(hasExamples ? `\n\nExamples: \n${command.examples.map((ex, i) => 
 						`e.g. #${i + 1}: ${ex}`
 					).join('\n')}` : '')
 				)

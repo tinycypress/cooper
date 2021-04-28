@@ -4,6 +4,10 @@ import { ROLES } from '../../../../origin/config';
 
 export default class RolesHelper {
 
+    static _textRef(code) {
+        return `<@&${ROLES[code].id}>`;
+    }
+
     static _allWith(roleCode) {
         const role = ROLES[roleCode].id || null;
         if (!role) return [];
