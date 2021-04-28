@@ -41,6 +41,9 @@ const shallowBot = async () => {
         
         // Transactions command exists already. -> Last 500 transactions/self-cleaning
 
+        
+        // Do todo change category.
+
         // Recurring event for testing prospects.
         // Code for handling prospects.
     

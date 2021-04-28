@@ -33,7 +33,7 @@ export function status() {
     // Attempt to award the members, pickset.
     const eligibleMembersFmt = eligbleMembers.map(member => {
         const customStatus = getCustomStatus(member);
-        console.log(member.user.username, customStatus);
+        // console.log(member.user.username, customStatus);
 
         let emoji = null;
 

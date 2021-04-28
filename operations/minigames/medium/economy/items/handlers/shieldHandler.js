@@ -3,7 +3,7 @@ import BuffsHelper, { BUFF_TYPES } from '../../../conquest/buffsHelper';
 import { usedOwnedUsableGuard } from '../../itemCmdGuards';
 
 import COOP, { MESSAGES } from '../../../../../../origin/coop';
-import { RAW_EMOJIS } from '../../../../../../origin/config';
+import { CHANNELS, RAW_EMOJIS } from '../../../../../../origin/config';
 
 // Give shield user protected state for a set amount of time.
 
@@ -21,10 +21,16 @@ export default class ShieldHandler {
     // Intercept item usages via emoji reactions.
     static async onReaction(reaction, user) {
         // Confirm reaction is shield before processing.  
-        if (RAW_EMOJIS.SHIELD !== reaction.emoji.name) return false;
+        if (RAW_EMOJIS.SHIELD !== reaction.emoji.name) 
+            return false;
+
+        // Do not conflict with sacrifice.
+        if (reaction.message.channel.id !== CHANNELS.SACRIFICE.id) 
+            return false;
 
         // Prevent Cooper from having an effect.
-        if (COOP.USERS.isCooper(user.id)) return false;
+        if (COOP.USERS.isCooper(user.id)) 
+            return false;
 
         // Reference for shorter code lines.
         const msg = reaction.message;

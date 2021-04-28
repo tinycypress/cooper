@@ -13,7 +13,7 @@ export default class TodoHelper {
             const due = todos.filter(todo => todo.due <= currentSecs);
     
             let dueText = `📝 **TODOs**\n\n` +
-                `Due Now: ${due.length}\n` +
+                `Overdue: ${due.length}\n` +
                 `Ongoing: ${todos.length - due.length}\n` +
                 `Total: ${todos.length}\n` +
     

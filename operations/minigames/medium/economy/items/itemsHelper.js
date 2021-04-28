@@ -79,10 +79,10 @@ export default class ItemsHelper {
 
         const updatedQty = updateResult.rows[0].quantity;
         
-        // Record the change!
-        await this.saveTransaction(userID, itemCode, subQuantity, updatedQty, takeReason);
+        // Record the change, with quantity cast to a negative number.
+        await this.saveTransaction(userID, itemCode, -subQuantity, updatedQty, takeReason);
 
-        return updateResult;
+        return updatedQty;
     }
 
     static async getUserItem(userID, itemCode) {
