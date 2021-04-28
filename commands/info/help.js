@@ -132,10 +132,16 @@ export default class HelpCommand extends CoopCommand {
 			}
 
 			if (command) {
+				const hasExamples = command.examples.length > 0;
 				return msg.direct(`**${MESSAGES.titleCase(command.name)} specifics:**\n\n` +
 					`Name: ${command.name}\n` +
 					`Group: ${command.groupID}\n` +
-					`Description: ${command.description}`);
+					`Description: ${command.description}` + 
+					(command.details ? `\nDetails: ${command.details}` : '') +
+					(hasExamples ? `\nExamples: \n${command.examples.map((ex, i) => 
+						`e.g. #${i + 1}: ${ex}`
+					)}` : '')
+				)
 			}
 
         } catch(e) {

@@ -12,7 +12,6 @@ export default class AlchemyCommand extends CoopCommand {
 			memberName: 'alchemy',
 			aliases: ['alc'],
 			description: 'Alchemise various eggs, we\'re not yolking.',
-			details: ``,
 			examples: ['alchemy', '!alchemy 100 RARE_EGG'],
 			args: [
 				{
@@ -25,7 +24,7 @@ export default class AlchemyCommand extends CoopCommand {
 					key: 'qty',
 					prompt: 'How many eggs?',
 					type: 'integer',
-					default: 100
+					default: 5
 				},
 			],
 		});
@@ -34,11 +33,11 @@ export default class AlchemyCommand extends CoopCommand {
 	async run(msg, { qty, itemCode }) {
 		super.run(msg);
 
-		const alcQty = Math.round(parseInt(qty) / 10);
+		const alcQty = Math.round(parseInt(qty) / 5);
 		const inputEmoji = MESSAGES._displayEmojiCode(itemCode);
 
 		if (!alcQty || alcQty < 1) 
-			return COOP.MESSAGES.selfDestruct(msg, `At least 10x${inputEmoji} (${itemCode}) - or another egg type - required for alchemy.`)
+			return COOP.MESSAGES.selfDestruct(msg, `At least 5x${inputEmoji} (${itemCode}) - or another egg type - required for alchemy.`)
 
 		let rarity = null;
 		itemCode = COOP.ITEMS.parseFromStr(itemCode);
