@@ -44,6 +44,7 @@ const shallowBot = async () => {
         // Add cost command (democratically approved) copy !sacrifice
         // Structures
 
+        
 
 
 
