@@ -24,11 +24,8 @@ export default class PirateCommand extends CoopCommand {
 		query = query.replace('!pirate ', '');
 		query = query.replace('!prt ', '');
 		
-
 		// Trim query and encode
 		const searchStr = encodeURIComponent(query);
-
-		// searchStr.replace('')
 		
 		// Generate feedback flash
 		const linkMsg = await COOP.MESSAGES.selfDestruct(msg, 'https://moviesjoy.to/search/' + searchStr, 0, 15000);
