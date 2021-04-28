@@ -41,8 +41,8 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Paypal in/out // Track deficit (use detail reserved)
+        // Add cost command (democratically approved) copy !sacrifice
         // Structures
-        // Add cost command (democratically approved)
 
 
 

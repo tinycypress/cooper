@@ -45,7 +45,7 @@ export default class TransactionsCommand extends CoopCommand {
 
 			const txHistText = `**Latest ${offset + 20} item changes:**\n\n` +
 				result.map(txC => 
-					`#${txC.id} ${TIME.humaniseSecs(txc.occurred_secs)} <@${txC.owner}>'s ` + 
+					`#${txC.id} ${TIME.humaniseSecs(txC.occurred_secs)} <@${txC.owner}>'s ` + 
 					`${txC.change > 0 ? '+' : ''}${ITEMS.displayQty(txC.change)}x${txC.item} ` +
 					`${MESSAGES._displayEmojiCode(txC.item)} ${txC.change > 0 ? '->' : '<-'}` + 
 					`Coop's ${ITEMS.displayQty(txC.running)}`
