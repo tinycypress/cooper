@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import DatabaseHelper from '../../operations/databaseHelper';
-import { ITEMS, MESSAGES } from '../../origin/coop';
+import { ITEMS, MESSAGES, TIME } from '../../origin/coop';
 
 export default class TransactionsCommand extends CoopCommand {
 
@@ -45,13 +45,17 @@ export default class TransactionsCommand extends CoopCommand {
 
 			const txHistText = `**Latest ${offset + 20} item changes:**\n\n` +
 				result.map(txC => 
-					`#${txC.id} <@${txC.owner}>'s ` + 
-					`${ITEMS.displayQty(txC.change)}x${txC.item} ` +
-					`${MESSAGES._displayEmojiCode(txC.item)} -> ` + 
-					`Coop's ${ITEMS.displayQty(txC.running)} - _${txC.note}_`
-				).join('\n') + '\n\n_!transactions or !txh to check transaction history again._';
+					`#${txC.id} ${TIME.humaniseSecs(txc.occurred_secs)} <@${txC.owner}>'s ` + 
+					`${txC.change > 0 ? '+' : ''}${ITEMS.displayQty(txC.change)}x${txC.item} ` +
+					`${MESSAGES._displayEmojiCode(txC.item)} ${txC.change > 0 ? '->' : '<-'}` + 
+					`Coop's ${ITEMS.displayQty(txC.running)}`
+					// `Coop's ${ITEMS.displayQty(txC.running)} - _${txC.note}_`
+				).join('\n') + '\n\n_!transactions or !txh to check transaction history again. TODO: Add inspect tx command._';
 
 			MESSAGES.silentSelfDestruct(msg, txHistText, 0, 20000);
+
+
+			// TODO: Needs to show the time!!
 
 			// CREATE TABLE item_qty_change_history( 
 			//     id SERIAL PRIMARY KEY, 

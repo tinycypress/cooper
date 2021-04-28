@@ -40,19 +40,15 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Democratic sacrifice (OPPOSITE OF !unban)
-        // Structures
-
         // Paypal in/out // Track deficit (use detail reserved)
+        // Structures
         // Add cost command (democratically approved)
+
+
+
+
         // 100dz integration TODOs
-
         // Debt interest on negative item ownership values.
-        // const query = {
-        //     text: ''
-        // };
-        // const negativeItemOwnership = 
-
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
