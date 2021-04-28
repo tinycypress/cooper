@@ -42,12 +42,12 @@ export default class TransactionsCommand extends CoopCommand {
 	
 			const result = await DatabaseHelper.manyQuery(query);
 			
-
-			const txHistText = `**Latest ${offset + 20} item changes:**\n\n` +
+			const nowSecs = TIME._secs();
+			const txHistText = `**Latest ${offset + 20} transactions:**\n\n` +
 				result.map(txC => 
-					`#${txC.id} ${TIME.humaniseSecs(txC.occurred_secs)} <@${txC.owner}>'s ` + 
+					`${TIME.humaniseSecs(nowSecs - txC.occurred_secs)} ago <@${txC.owner}>'s ` + 
 					`${txC.change > 0 ? '+' : ''}${ITEMS.displayQty(txC.change)}x${txC.item} ` +
-					`${MESSAGES._displayEmojiCode(txC.item)} ${txC.change > 0 ? '->' : '<-'}` + 
+					`${MESSAGES._displayEmojiCode(txC.item)} ${txC.change > 0 ? '->' : '<-'} ` + 
 					`Coop's ${ITEMS.displayQty(txC.running)}`
 					// `Coop's ${ITEMS.displayQty(txC.running)} - _${txC.note}_`
 				).join('\n') + '\n\n_!transactions or !txh to check transaction history again. TODO: Add inspect tx command._';
