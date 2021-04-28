@@ -82,7 +82,7 @@ export default class ItemsHelper {
         const itemRow = await DatabaseHelper.singleQuery(query);
 
         // Get the total of that item now.
-        const total = await ITEMS.count(itemCode);
+        const total = await this.count(itemCode);
         
         // Record the change, with quantity cast to a negative number.
         await this.saveTransaction(userID, itemCode, -subQuantity, total, takeReason);

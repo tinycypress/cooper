@@ -40,8 +40,20 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
         // Recurring event for testing prospects.
+
+        // Is there viable join date data for this?
+        // Add the code into sacrifice.
+
+
+
+
+
+
+
+
+
+
         // Code for handling prospects.
-    
         // Democratic sacrifice (OPPOSITE OF !unban)
         // Structures
         // Paypal in/out // Track deficit (use detail reserved)
