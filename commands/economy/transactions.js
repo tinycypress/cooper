@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import DatabaseHelper from '../../operations/databaseHelper';
-import { MESSAGES } from '../../origin/coop';
+import { ITEMS, MESSAGES } from '../../origin/coop';
 
 export default class TransactionsCommand extends CoopCommand {
 
@@ -34,17 +34,21 @@ export default class TransactionsCommand extends CoopCommand {
 		try {	
 			const query = {
 				name: 'get-transactions',
-				text: `SELECT * FROM item_qty_change_history LIMIT 20 OFFSET $1`.trim(),
+				text: `SELECT * FROM item_qty_change_history 
+					LIMIT 20 OFFSET $1 ORDER BY id DESC`.trim(),
 				values: [offset]
 			};
 	
 			const result = await DatabaseHelper.manyQuery(query);
-	
+			
+
 			const txHistText = `**Latest ${offset + 20} item changes:**\n\n` +
-				result.map((txC, i) => 
-					`.${offset + i} ${txC.owner}'s ${txC.change}${txC.item} -> ` + 
-					`${txC.running} (${txC.note})\n`
-				) + '\n\n_!transactions or !txh to check transaction history again._';
+				result.map(txC => 
+					`#${txC.id} <@${txC.owner}>'s ` + 
+					`${ITEMS.displayQty(txC.change)}x${txC.item} ` +
+					`${MESSAGES._displayEmojiCode(txC.item)} -> ` + 
+					`Coop's ${ITEMS.displayQty(txC.running)} - _${txC.note}_`
+				).join('\n') + '\n\n_!transactions or !txh to check transaction history again._';
 
 			MESSAGES.silentSelfDestruct(msg, txHistText, 0, 20000);
 
