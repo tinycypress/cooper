@@ -32,12 +32,11 @@ export default class TransactionsCommand extends CoopCommand {
 		try {
 			MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, transactions history is WIP.`);
 			
-			// const query = {
-			// 	name: 'get-transactions',
-			// 	text: `SELECT * FROM items WHERE item_code = 'COOP_POINT'
-			// 		ORDER BY quantity DESC OFFSET $1 LIMIT 20`.trim(),
-			// 	values: [pos]
-			// };
+			const query = {
+				name: 'get-transactions',
+				text: `SELECT * FROM item_qty_change_history LIMIT 20`.trim(),
+				values: [pos]
+			};
 	
 			// const result = await Database.query(query);
 			// const rows = DatabaseHelper.many(result);

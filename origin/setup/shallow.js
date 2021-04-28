@@ -40,8 +40,6 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
         // Transactions command exists already. -> Last 500 transactions/self-cleaning
-        
-
 
         // Recurring event for testing prospects.
         // Code for handling prospects.

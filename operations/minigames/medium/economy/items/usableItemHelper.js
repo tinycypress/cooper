@@ -45,14 +45,14 @@ export default class UsableItemHelper {
         RareEggHandler.onReaction(reaction, user);
     }
 
-    static async use(userID, itemCode, useQty) {
+    static async use(userID, itemCode, useQty, note = 'Used item') {
         // Attempt to load item ownership.
         const ownedQty = await COOP.ITEMS.getUserItemQty(userID, itemCode);
 
         // Check if enough qty of item is owned.
         if (ownedQty - useQty >= 0) {
             // TODO: Just ensure that subtract does this itself...? Get rid of use?
-            await COOP.ITEMS.subtract(userID, itemCode, useQty, 'Used item');
+            await COOP.ITEMS.subtract(userID, itemCode, useQty, note);
             return true;
         } else return false;
     }
