@@ -48,7 +48,7 @@ export default class NewProjectCommand extends CoopCommand {
 
 		// Invalid input time feedback
 		if (isNaN(dueDate))
-			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is invalid duration for a project deadline`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${deadline} is invalid duration for a project deadline`);
 
 		// Limit complexity to giving them the correct format to use... pick up slack in !suggest for it
 		const tempFmtText = `<@${msg.author.id}>, use the following message for creating your project channel:`;

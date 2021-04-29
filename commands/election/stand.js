@@ -80,7 +80,7 @@ export default class StandCommand extends CoopCommand {
 				if (!prevCandidate) {
 					COOP.MESSAGES.selfDestruct(msg, `${msg.author.username}, you wanna stand for <#${CHANNELS.ELECTION.id}>, eyyy?`);
 
-					const emojiText = COOP.MESSAGES.emojiText(EMOJIS.ELECTION_CROWN);
+					const emojiText = COOP.MESSAGES._displayEmojiCode('ELECTION_CROWN');
 					const electionEmbed = COOP.MESSAGES.embed({ 
 						title: `Election Event: ${msg.author.username} stands for election!`,
 						description: `${msg.content}\n\n` +

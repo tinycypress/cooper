@@ -47,6 +47,10 @@ const shallowBot = async () => {
         
         // Structures reform
 
+        // Explore the differences between these...?
+        // _displayEmojiCode
+        // emojiText
+
         // Democratically delete a channel.
 
         // Low priority:
