@@ -66,8 +66,6 @@ export default class CraftingHelper {
             // Filter out unowned items.
             if (!ingred) return false;
 
-            console.log(ingred);
-
             // Check sufficiency
             const req = ingredients[ingred.item_code] * qty;
             const owned = ingred.quantity;

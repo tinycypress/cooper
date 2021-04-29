@@ -152,8 +152,8 @@ export default class ChannelHelper {
 
     static selectWeightedActive(channels, weights) {
         // TODO: Implement this
-        console.log('selectWeightedActive');
-        console.log(channels, weights);
+        // console.log('selectWeightedActive');
+        // console.log(channels, weights);
         // http://chancejs.com/miscellaneous/weighted.html
         // STATE.CHANCE.weighted
         // chance.weighted(['a',%20'b'],%20[100,%201])
@@ -162,17 +162,17 @@ export default class ChannelHelper {
     // Implement as part of community velocity reform.
     static _randomSomewhatActive() {
         // Only run this half the time, so we don't only drop in active channels.
+        // TODO: Implement this
         if (STATE.CHANCE.bool({ likelihood: 50 })) {
             // Try to select a random active text channel.
             const actives = MessageNotifications.getActiveChannels();
 
             // If there are any active channels return first of them! :D
             if (actives.size > 0) {
-                // TODO: Implement this
-                console.log(actives.entries());
-                this.selectWeightedActive([], []);
+                // console.log(actives.entries());
+                // this.selectWeightedActive([], []);
 
-                return actives.entries().next().value
+                return actives.entries().next().value;
             }
         }
 
