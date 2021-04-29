@@ -1,4 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import { PROJECT_ARGS_MSG_ORDER } from '../../operations/productivity/projects/projectsHelper';
 import { MESSAGES, TIME } from '../../origin/coop';
 
 export default class NewProjectCommand extends CoopCommand {
@@ -51,14 +52,14 @@ export default class NewProjectCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${deadline} is invalid duration for a project deadline`);
 
 		// Limit complexity to giving them the correct format to use... pick up slack in !suggest for it
-		const tempFmtText = `<@${msg.author.id}>, use the following message for creating your project channel:`;
-		// \n\n` +
+		const tempFmtText = `<@${msg.author.id}>, generating the following message for creating your project channel:`;
 
+		const projectData = { name, deadline, description, visibility };
 		const suggestionText = `!suggest CREATE_PROJECT\n` +
-			`[name]${name}[/name] [deadline]${deadline}[/deadline]\n` +
-			`[description]${description}[/description]` +
-			`[visibility]${visibility}[/visibility]`;
-			
+			PROJECT_ARGS_MSG_ORDER.map(arg => 
+				`${MESSAGES.titleCase(arg)}: ${projectData[arg]}`
+			).join(' | ');
+
 		const suggestHelpMsg = await MESSAGES.silentSelfDestruct(msg, tempFmtText, 0, 20000);
 		MESSAGES.delayEdit(suggestHelpMsg, suggestionText, 2000);
     }

@@ -558,10 +558,12 @@ export default class ElectionHelper {
                 votes.push({
                     username: candidate.username,
                     id: candidate.id,
+                    // Count all crown reactions.
                     votes: campaignMsg.reactions.cache.reduce((acc, reaction) => {
-                        // Count all crown reactions.
-                        if (reaction.emoji.name === '👑') return acc += (reaction.count - 1);
-                        else return 0;
+                        if (reaction.emoji.name === '👑') 
+                            return acc += (reaction.count - 1);
+                        else 
+                            return 0;
                     }, 0)
                 });
             }

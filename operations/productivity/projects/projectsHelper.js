@@ -1,5 +1,8 @@
 import { CHANNELS } from "../../../origin/coop";
 
+export const PROJECT_ARGS_MSG_ORDER = [
+    'name', 'deadline', 'description', 'visibility'
+];
 
 // Default deadline to 1 week in seconds
 const weekSecs = ((60 * 60) * 24) * 7;
