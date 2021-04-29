@@ -54,9 +54,11 @@ export default class NewProjectCommand extends CoopCommand {
 		const tempFmtText = `<@${msg.author.id}>, use the following message for creating your project channel:`;
 		// \n\n` +
 
-		const suggestionText = `!suggest CREATE_PROJECT_CHANNEL\n` +
-			`[NAME]${name}[/NAME] [DEADLINE]${deadline}[/DEADLINE] [VISIBILITY]${visibility}[/VISIBILITY]` +
-			`[DESCRIPTION]${description}[/DESCRIPTION]`
+		const suggestionText = `!suggest CREATE_PROJECT\n` +
+			`[name]${name}[/name] [deadline]${deadline}[/deadline]\n` +
+			`[description]${description}[/description]` +
+			`[visibility]${visibility}[/visibility]`;
+			
 		const suggestHelpMsg = await MESSAGES.silentSelfDestruct(msg, tempFmtText, 0, 20000);
 		MESSAGES.delayEdit(suggestHelpMsg, suggestionText, 2000);
     }
