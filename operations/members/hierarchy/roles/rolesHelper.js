@@ -1,22 +1,22 @@
 import COOP, { SERVER, USERS } from '../../../../origin/coop';
-import { ROLES } from '../../../../origin/config';
+import { ROLES as ROLES_CONFIG } from '../../../../origin/config';
 
 
 export default class RolesHelper {
 
     static _textRef(code) {
-        return `<@&${ROLES[code].id}>`;
+        return `<@&${ROLES_CONFIG[code].id}>`;
     }
 
     static _allWith(roleCode) {
-        const role = ROLES[roleCode].id || null;
+        const role = ROLES_CONFIG[roleCode].id || null;
         if (!role) return [];
         return COOP.USERS._cache()
             .filter(member => member.roles.cache.has(role));
     }
 
     static _allWithout(roleCode) {
-        const role = ROLES[roleCode].id || null;
+        const role = ROLES_CONFIG[roleCode].id || null;
         if (!role) return [];
         return COOP.USERS._cache()
             .filter(member => !member.roles.cache.has(role));
@@ -37,11 +37,11 @@ export default class RolesHelper {
     }
 
     static _getByCode(roleCode) {
-        return this.getRoleByID(SERVER._coop(), ROLES[roleCode].id);
+        return this.getRoleByID(SERVER._coop(), ROLES_CONFIG[roleCode].id);
     }
 
     static _idsByCodes(codes = []) {
-        return codes.map(code => ROLES[code].id);
+        return codes.map(code => ROLES_CONFIG[code].id);
     }
 
     static _getCodes(roleCodes = []) {
@@ -49,7 +49,7 @@ export default class RolesHelper {
         const guild = SERVER._coop();
 
         roleCodes.map(code => {
-            const roleConfig = ROLES[code] || null;
+            const roleConfig = ROLES_CONFIG[code] || null;
             if (roleConfig) {
                 const roleID = roleConfig.id || null;
                 if (!roleID) {
@@ -65,7 +65,7 @@ export default class RolesHelper {
     static _add(userID, roleCode) {
         try {
             const guild = SERVER._coop();
-            const role = this.getRoleByID(guild, ROLES[roleCode].id);
+            const role = this.getRoleByID(guild, ROLES_CONFIG[roleCode].id);
             const member = COOP.USERS._getMemberByID(userID);
 
             if (role && member) return member.roles.add(role);
@@ -89,12 +89,21 @@ export default class RolesHelper {
         try {
             const member = COOP.USERS._getMemberByID(userID);
 
+            if (this._idHasCode(userID, 'MEMBER')) {
+                // TODO: Remove non-members reactions.
+                // TODO: Try to send a message stating they need to be approved?
+                return false;
+            }
+
+
             // TODO: Track roles self-changed as statistic.
             if (!member) return false;
-            if (!Object.keys(ROLES).includes(roleCode)) return false;
+            if (!Object.keys(ROLES_CONFIG).includes(roleCode)) return false;
+
+
     
             // Check if user has it or not.
-            const hasRoleAlready = COOP.USERS.hasRoleID(member, ROLES[roleCode].id);
+            const hasRoleAlready = COOP.USERS.hasRoleID(member, ROLES_CONFIG[roleCode].id);
             if (!hasRoleAlready) await this._add(userID, roleCode);
             else await this._remove(userID, roleCode);
             return true;
@@ -108,7 +117,7 @@ export default class RolesHelper {
     static async _remove(userID, roleCode) {
         try {
             const guild = SERVER._coop();
-            const role = this.getRoleByID(guild, ROLES[roleCode].id);
+            const role = this.getRoleByID(guild, ROLES_CONFIG[roleCode].id);
             const user = COOP.USERS._getMemberByID(userID);
             if (role && user) return await user.roles.remove(role);
         } catch(e) {
@@ -124,7 +133,7 @@ export default class RolesHelper {
     }
 
     static _has(member, roleCode) {
-        const roleID = ROLES[roleCode].id;
+        const roleID = ROLES_CONFIG[roleCode].id;
         return member.roles.cache.has(roleID);
     }
 
@@ -135,7 +144,7 @@ export default class RolesHelper {
 
             // Test if they have any role codes.
             roleCodes.forEach(roleCode => {
-                const roleID = ROLES[roleCode].id;
+                const roleID = ROLES_CONFIG[roleCode].id;
                 if (member.roles.cache.has(roleID)) match = true;
             });
 
@@ -147,7 +156,7 @@ export default class RolesHelper {
         let user = null;
 
         const guild = SERVER._coop();
-        const roleID = ROLES[code].id || null;
+        const roleID = ROLES_CONFIG[code].id || null;
 
         const filterUsers = guild.members.cache.filter(member => member.roles.cache.has(roleID));
         if (filterUsers.size > 0) user = filterUsers.first();

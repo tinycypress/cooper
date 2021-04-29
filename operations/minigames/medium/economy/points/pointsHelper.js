@@ -135,7 +135,7 @@ export default class PointsHelper {
             await membersOfWeek.map(member => {
                 if (member.id !== highestChange.userID) {
                     prevWinner = member;
-                    return COOP.ROLES._remove(member.id)
+                    return COOP.ROLES._remove(member.id, 'MEMBEROFWEEK');
                 } else {
                     // Found already, won twice in a row. Bonus?
                     hadAlready = true;
