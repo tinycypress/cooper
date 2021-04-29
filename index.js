@@ -44,5 +44,5 @@ export default async function bootstrap() {
     // const items = UsableItemHelper.getUsableItems();
     // const randomItem = STATE.CHANCE.pickone(items);
     // const itemEmoji = MESSAGES._displayEmojiCode(randomItem);
-    botClient.user.setActivity(`!help `, { type: 'WATCHING' });
+    botClient.user.setActivity(`!help... STRUCTURE REFORM`, { type: 'WATCHING' });
 }

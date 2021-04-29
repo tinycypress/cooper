@@ -28,6 +28,13 @@ export default class SuggestCommand extends CoopCommand {
 			const cleanedContent = msg.content.replace('!suggestion', '').replace('!suggest', '');
 			const pollAcknowledgement = await COOP.CHANNELS._postToChannelCode('SUGGESTIONS', cleanedContent);
 
+
+			// Detect attempts to suggest PROJECT_CHANNEL
+			if (msg.content.toLowerCase().includes('project channel')) {
+				// If needs an owner to give the project channel to.
+			}
+
+
 			// Add reactions for people to use.
 			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
 			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);

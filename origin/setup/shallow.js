@@ -40,13 +40,20 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Paypal in/out // Track deficit (use detail reserved)
+        // Higher priority:
+        // Paypal/stripe integration for pay in and pay out 
+        // Track deficit (use detail reserved)
         // Add cost command (democratically approved) copy !sacrifice
-        // Structures
+        
+        // Structures reform
 
+        // Democratically delete a channel.
+
+        // Low priority:
         // Favours (adding to other users todo lists)
         // A reaction that can be used to copy a shared todo
         // 100dz integration TODOs
+
         // Debt interest on negative item ownership values.
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
