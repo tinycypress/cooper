@@ -32,7 +32,7 @@ export default class ProspectHelper {
             readyProspects.sort((a, b) => a.duration < b.duration ? -1 : 1);
             
             // Select the longest tenure prospect who is ready and offer rite of passage.
-            SacrificeHelper.offer(readyProspects[0].user);
+            await SacrificeHelper.offer(readyProspects[0].user);
 
         } catch(e) {
             console.log('Error sacrificing random ready prospect member!');

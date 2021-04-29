@@ -85,7 +85,7 @@ export default class PointsHelper {
         if (isNaN(percChange)) percChange = 0;
 
         return {
-            user: userID,
+            userID: userID,
             points: qty,
             lastWeekPoints: oldPoints,
             percChange
@@ -105,11 +105,13 @@ export default class PointsHelper {
             const users = await COOP.USERS.load();
             const updateData = [];
             const percChanges = await Promise.all(users.map(async (user) => {
-                // TODO: Can optimise by skilling users with no points.
                 const result = await this.getPercChange(user.discord_id);
     
                 if (result.points !== result.lastWeekPoints)
-                    updateData.push({ id: result.user, points: result.points });
+                    updateData.push({ 
+                        id: result.userID, 
+                        points: result.points 
+                    });
     
                 return result;
             }));
@@ -131,7 +133,7 @@ export default class PointsHelper {
             let hadAlready = false;
             let prevWinner = null;
             await membersOfWeek.map(member => {
-                if (member.id !== highestChange) {
+                if (member.id !== highestChange.userID) {
                     prevWinner = member;
                     return COOP.ROLES._remove(member.id)
                 } else {
@@ -146,28 +148,28 @@ export default class PointsHelper {
     
             if (hadAlready) {
                 // Declare they won again.
-                updateText = `**MOTW check ran and <@${highestChange.user}> wins again!**\n\n`
+                updateText = `**MOTW check ran and <@${highestChange.userID}> wins again!**\n\n`
             } else {
                 // Give the winner the role.
-                COOP.ROLES._add(highestChange.user.id, 'MEMBEROFWEEK');
+                COOP.ROLES._add(highestChange.userID, 'MEMBEROFWEEK');
     
                 // Took it from previous winner.
                 if (prevWinner) {
-                    updateText = `**MOTW check ran and <@${highestChange.user}> seizes the role from <@${prevWinner.id}>!**\n\n`;
+                    updateText = `**MOTW check ran and <@${highestChange.userID}> seizes the role from <@${prevWinner.id}>!**\n\n`;
                 } else {
-                    updateText = `**MOTW check ran and <@${highestChange.user}> seizes the role!**\n\n`;
+                    updateText = `**MOTW check ran and <@${highestChange.userID}> seizes the role!**\n\n`;
                 }
             }
     
             // Add reasoning.
-            updateText += `<@${highestChange.user}> was selected by MOTW as the best/most promising member this week!\n\n`;
+            updateText += `<@${highestChange.userID}> was selected by MOTW as the best/most promising member this week!\n\n`;
     
             // TODO: Show 3/4 runners up.
     
     
             // Give the winner the reward.
             const cpDisplay = COOP.MESSAGES._displayEmojiCode('COOP_POINT');
-            await COOP.ITEMS.add(highestChange.user, 'COOP_POINT', 30);
+            await COOP.ITEMS.add(highestChange.userID, 'COOP_POINT', 30);
             updateText += `_Given 50${cpDisplay} for MOTW reward._`;
 
 
@@ -189,7 +191,7 @@ export default class PointsHelper {
             Chicken.setConfig('last_motwcheck_secs', COOP.TIME._secs());
 
             // Send DM :D
-            COOP.USERS._dm(highestChange.user, 'You were given MEMBER OF THE WEEK reward! Check talk channel for more info.');
+            COOP.USERS._dm(highestChange.userID, 'You were given MEMBER OF THE WEEK reward! Check talk channel for more info.');
 
         } catch(e) {
             console.log('Error updating MOTW');
