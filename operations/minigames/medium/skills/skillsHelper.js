@@ -117,8 +117,6 @@ export default class SkillsHelper {
         const prevLevel = this.calcLvl(prevXP);
         const currLevel = this.calcLvl(currXP);
 
-        console.log(currLevel, currXP);
-
         // Count for level changes besides default level.
         if (prevLevel !== currLevel && currLevel > 1) {
             const { user } = USERS._get(userID);

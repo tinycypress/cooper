@@ -1,9 +1,5 @@
-import Sugar from 'sugar';
-
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import MessagesHelper from '../../operations/activity/messages/messagesHelper';
-import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP, { TIME } from '../../origin/coop';
 
 export default class ChangeTodoCategoryCommand extends CoopCommand {
 
@@ -35,7 +31,7 @@ export default class ChangeTodoCategoryCommand extends CoopCommand {
 		super.run(msg);
 
 		return MessagesHelper.silentSelfDestruct(msg,
-			`This cannot change a todo's category yet, WIP`
+			`This cannot change a todo's category yet, WIP ${id} ${category}`
 		);
     }    
 }

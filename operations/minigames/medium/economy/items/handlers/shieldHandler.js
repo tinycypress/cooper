@@ -49,7 +49,7 @@ export default class ShieldHandler {
         // Format and send the feedback text for shield effect.
         const targetName = target.id === user.id ? 'their self' : target.username;
 
-        const successText = COOP.MESSAGES.noWhiteSpace`${user.username} used a ${MESSAGES._displayEmojiCode('SHIELD')} SHIELD
+        const successText = COOP.MESSAGES.noWhiteSpace`${user.username} used a ${MESSAGES.emojiCodeText('SHIELD')} SHIELD
             on ${targetName}, adding 30 mins to their total protection (${protectionExpiry} mins).`;
             
         // Indicate shield effect success from reaction usage.
@@ -68,7 +68,7 @@ export default class ShieldHandler {
         const protectionExpiry = this.runEffect(msg.author.id);
 
         // Provide feedback.
-        const successText = `${MESSAGES._displayEmojiCode('SHIELD').repeat(2)} ${msg.author.username} used a SHIELD, extending their protection to ${protectionExpiry} mins.`;
+        const successText = `${MESSAGES.emojiCodeText('SHIELD').repeat(2)} ${msg.author.username} used a SHIELD, extending their protection to ${protectionExpiry} mins.`;
         return COOP.MESSAGES.selfDestruct(msg, successText, 0, 10000);
     }
 

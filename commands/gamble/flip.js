@@ -44,7 +44,7 @@ export default class FlipCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, `Coin flip betting amount value was invalid. (${amountInput})`);
 
 		// Confirm game start and amount
-		const goldCoin = MESSAGES._displayEmojiCode('GOLD_COIN');
+		const goldCoin = MESSAGES.emojiCodeText('GOLD_COIN');
 
 		// Check that the author of the command confirmed it.
 		const confirmText = `<@${userID}>, you want to flip ${amount}x${goldCoin}?`;

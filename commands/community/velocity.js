@@ -1,8 +1,9 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 
-import COOP, { ITEMS, SERVER } from '../../origin/coop';
-import { EMOJIS } from '../../origin/config';
+import COOP, { ITEMS } from '../../origin/coop';
 import Statistics from '../../operations/activity/information/statistics';
+
+
 
 export default class VelocityCommand extends CoopCommand {
 

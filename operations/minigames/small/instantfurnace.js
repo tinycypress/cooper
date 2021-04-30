@@ -67,7 +67,7 @@ export default class InstantFurnaceMinigame {
 
             const smeltString = `${user.username} smelted the following ${sumTotal} bars within the instant furnace: \n` +
                 Object.keys(rewards).map(rewardKey => {
-                    return `${MESSAGES._displayEmojiCode(rewardKey)}x${rewards[rewardKey]}`
+                    return `${MESSAGES.emojiCodeText(rewardKey)}x${rewards[rewardKey]}`
                 }).join(', ');
 
             // Create record in channel and in actions.
@@ -98,7 +98,7 @@ export default class InstantFurnaceMinigame {
                     .filter(userID => !USERS.isCooper(userID))
                     .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
     
-                const coopEmoji = MESSAGES._displayEmojiCode('COOP');
+                const coopEmoji = MESSAGES.emojiCodeText('COOP');
                 const burnText = usersIDsAround.map(userID => `<@${userID}>`).join(', ') +
                     ` ${usersIDsAround.length > 1 ? 'were all' : 'was'} burned by the the instant furnace! -10x${coopEmoji}`;
 

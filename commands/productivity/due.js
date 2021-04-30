@@ -1,7 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import MessagesHelper from '../../operations/activity/messages/messagesHelper';
-import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP, { MESSAGES, TIME } from '../../origin/coop';
+import { MESSAGES, TIME } from '../../origin/coop';
 
 export default class DueWithinCommand extends CoopCommand {
 
@@ -43,7 +42,7 @@ export default class DueWithinCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, 'Invalid timeframe for checking todos provided', 333, 10000);
 
 		// Load all todos of specified/default category.
-		const todos = await TodoHelper.getUserTodos(msg.author.id, category);
+		// const todos = await TodoHelper.getUserTodos(msg.author.id, category);
 
 		// TODO: Calculate which are overdue.
 
@@ -54,7 +53,7 @@ export default class DueWithinCommand extends CoopCommand {
 
 		// dev message
 		const feedbackText = `**<@${msg.author.id}>'s todos due (within ${referenceReadable})**` +
-			`...WIP?` +
+			`...WIP? Category: ${category}` +
 			`\n\n_Check yours by typing: !due <timeframe> <category>`;
 
 		MessagesHelper.silentSelfDestruct(msg, feedbackText);

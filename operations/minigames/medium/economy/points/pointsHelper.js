@@ -168,7 +168,7 @@ export default class PointsHelper {
     
     
             // Give the winner the reward.
-            const cpDisplay = COOP.MESSAGES._displayEmojiCode('COOP_POINT');
+            const cpDisplay = COOP.MESSAGES.emojiCodeText('COOP_POINT');
             await COOP.ITEMS.add(highestChange.userID, 'COOP_POINT', 30);
             updateText += `_Given 50${cpDisplay} for MOTW reward._`;
 

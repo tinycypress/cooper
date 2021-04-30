@@ -1,8 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 
-import COOP, { ITEMS, MESSAGES, SERVER } from '../../origin/coop';
-import { EMOJIS } from '../../origin/config';
-import Statistics from '../../operations/activity/information/statistics';
+import { MESSAGES } from '../../origin/coop';
 
 export default class BuildCommand extends CoopCommand {
 
@@ -29,10 +27,10 @@ export default class BuildCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 
-		const cp = MESSAGES._displayEmojiCode('COOP_POINT');
-		const steel = MESSAGES._displayEmojiCode('STEEL_BAR');
-		const wood = MESSAGES._displayEmojiCode('WOOD');
-		const iron = MESSAGES._displayEmojiCode('IRON_BAR');
+		const cp = MESSAGES.emojiCodeText('COOP_POINT');
+		const steel = MESSAGES.emojiCodeText('STEEL_BAR');
+		const wood = MESSAGES.emojiCodeText('WOOD');
+		const iron = MESSAGES.emojiCodeText('IRON_BAR');
 
 		MESSAGES.silentSelfDestruct(msg, 
 			`**Who will be first to build their base? :D\n\n**` +

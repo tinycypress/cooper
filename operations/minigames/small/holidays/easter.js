@@ -4,60 +4,8 @@ export default class EasterMinigame {
 
     // Burn metal ore into metal
     static async onReaction(reaction, user) {
-        // console.log('Confirm basket matches this.');
-        // console.log(reaction.emoji);
         if (user.id !== 1) return false;
         console.log(reaction);
-        
-        // if (this.isPickupable(reaction, user)) {
-        //     this.pickup(reaction, user);
-        // }
-
-        // Check if basket, but allow regular pickup to function
-
-
-            // Find item code via emoji/emoji ID (trimmed) string in comparison to emojis.json.
-            // const emojiID = COOP.MESSAGES.getEmojiIdentifier(reaction.message);
-            // const itemCode = COOP.ITEMS.emojiToItemCode(emojiID);
-                
-            // // If invalid item code or not usable, don't allow pick up event.
-            // if (!itemCode || !this.isUsable(itemCode))
-            //     return COOP.MESSAGES.selfDestruct(reaction.message,
-            //         `${user.username} you can't pick that up. (${itemCode})`
-            //     );
-
-        // // Reject all N/A
-        // if (!COOP.USERS.isCooper(reaction.message.author.id)) return false;
-        // if (COOP.USERS.isCooper(user.id)) return false;
-        // if (reaction.message.content.trim() !== '🌋') return false;
-        // if (reaction.emoji.name !== 'metal_ore') return false;
-        
-
-        // // Declare they're chasing the rabbit.
-        // const attemptText = `${MESSAGES._displayEmojiCode('EASTER_EGG')} ${user.username} is attempting to collect easter eggs...`;
-        // COOP.MESSAGES.selfDestruct(reaction.message, attemptText, 333, 3333);
-
-        // try {
-        //     setTimeout(async () => {
-        //         // Add multiplier effect.
-        //         const collectedNum = Math.max(reaction.count - 1, 1);
-    
-        //         // Add rewards to user.
-        //         await COOP.ITEMS.add(user.id, 'EASTER_EGG', collectedNum);
-                
-        //         // Create record in channel and in actions.
-        //         const rewardText = `${user.username} collected ${collectedNum} easter eggs from the holiday spawn! ` 
-        //             + MESSAGES._displayEmojiCode('EASTER_EGG').repeat(collectedNum);
-        //         COOP.CHANNELS.propagate(reaction.message, rewardText, 'ACTIONS');
-
-        //         // Delete it to prevent further duplication.
-        //         COOP.MESSAGES.delayDelete(reaction.message, 0);
-        //     }, 5000);
-
-        // } catch(e) {
-        //     console.log('Failure reacting to easter spawn (reaction).');
-        //     console.error(e);
-        // }
     }
 
     // TODO: Consider getting a server time from somewhere to standardise all time?
@@ -88,11 +36,8 @@ export default class EasterMinigame {
         const easterMonth = Math.floor(n0 / 31) - 1;
         const easterDay = n0 % 31 + 1;
         const easterDate = new Date(year, easterMonth, easterDay);
-        return (
-            dateNow.getMonth() === easterDate.getMonth() 
-            && 
-            dateNow.getDate() === easterDate.getDate()
-        );
+        return (dateNow.getMonth() === easterDate.getMonth() 
+            && dateNow.getDate() === easterDate.getDate());
     }
 
     static async run() {
@@ -115,7 +60,7 @@ export default class EasterMinigame {
     
         
             //     // Format and output text.
-            //     const emojiText = COOP.MESSAGES._displayEmojiCode('EASTER_EGG');
+            //     const emojiText = COOP.MESSAGES.emojiCodeText('EASTER_EGG');
             //     const talk = COOP.CHANNELS._getCode('TALK');
             //     const keyInfo = COOP.CHANNELS._getCode('KEY_INFO');
             //     COOP.MESSAGES.selfDestruct(keyInfo, `${emojiText.repeat(3)} May drop one in talk now... ;) <#${talk.id}>`, 0, 30000);

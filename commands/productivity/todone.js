@@ -1,6 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import { CHANNELS, MESSAGES, TIME } from '../../origin/coop';
+import { CHANNELS, MESSAGES } from '../../origin/coop';
 
 
 // #42. Gay tuesday - a day

@@ -34,7 +34,7 @@ export default class AlchemyCommand extends CoopCommand {
 		super.run(msg);
 
 		const alcQty = Math.round(parseInt(qty) / 5);
-		const inputEmoji = MESSAGES._displayEmojiCode(itemCode);
+		const inputEmoji = MESSAGES.emojiCodeText(itemCode);
 
 		if (!alcQty || alcQty < 1) 
 			return COOP.MESSAGES.selfDestruct(msg, `At least 5x${inputEmoji} (${itemCode}) - or another egg type - required for alchemy.`)
@@ -64,7 +64,7 @@ export default class AlchemyCommand extends CoopCommand {
 		await COOP.ITEMS.add(msg.author.id, drop.item, rewardQty, `Alchemised ${rarity}x${qty}`);
 
 		// Present feedback text/msg.
-		const emoji = COOP.MESSAGES._displayEmojiCode(drop.item);
+		const emoji = COOP.MESSAGES.emojiCodeText(drop.item);
 		const actionText = `${msg.author.username} alchemises ${emoji}`;
 		const dropText = actionText + `x${rewardQty}`;
 

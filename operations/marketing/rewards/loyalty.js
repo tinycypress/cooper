@@ -61,7 +61,9 @@ export function status() {
         `Winners:\n` + CHANCE.pickset(eligibleMembersFmt, numWinners).map(e => 
             `<@${e.user.id}>${e.text ? ` (${e.text})` : ''}`
         ).join(', ') + '.\n\n' +
-        `_Add an egg emoji 🥚 or Coop egghunt emoji to your status to be rewarded._`;
+        `_Add any egg emoji 🥚 or Coop egghunt emoji to your status to be rewarded._`;
+
+    // TODO: Add the other egg emojis.
 
     CHANNELS._send('TALK', loyaltyCheckText);
-};
+}

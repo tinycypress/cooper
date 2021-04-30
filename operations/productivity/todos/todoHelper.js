@@ -82,11 +82,11 @@ export default class TodoHelper {
         }
     }
 
-    static async modifyDeadline(todoID, secs) {
+    // static async modifyDeadline(todoID, secs) {
 
-    }
+    // }
 
     // TODO: meh
-    static async punish() {}
-    static async reward() {}
+    // static async punish() {}
+    // static async reward() {}
 }

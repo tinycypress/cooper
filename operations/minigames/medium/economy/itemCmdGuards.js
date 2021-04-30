@@ -98,7 +98,7 @@ export async function ownEnoughGuard(user, itemCode, qty, msgRef) {
     try {
         // Load the user's owned item qty.
         const itemQty = await ITEMS.getUserItemQty(user.id, itemCode);
-        const emoji = MESSAGES._displayEmojiCode(itemCode);
+        const emoji = MESSAGES.emojiCodeText(itemCode);
         if (itemQty < 0 || itemQty - qty < 0) {
             const displayItemQty = ITEMS.displayQty(itemQty);
             const itemStatusText = `<@${user.id}> does not own enough ${emoji} (${itemCode})`;
@@ -159,7 +159,7 @@ export async function ownEnoughManyGuard(user, msg, itemManifest) {
                 hasAll.filter(itemCheck => !itemCheck.sufficient)
                 
                     // Format it.
-                    .map(itemCheck => `${MESSAGES._displayEmojiCode(itemCheck.item)} ${itemCheck.item}` + 
+                    .map(itemCheck => `${MESSAGES.emojiCodeText(itemCheck.item)} ${itemCheck.item}` + 
                         ` ${itemCheck.has}/${itemCheck.required}`)
                     .join(', ') + '.';
             

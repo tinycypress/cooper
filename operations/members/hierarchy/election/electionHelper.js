@@ -7,7 +7,6 @@ import CHANNELS from '../../../../origin/config/channels.json';
 
 import COOP, { MESSAGES, ROLES } from '../../../../origin/coop';
 
-
 import DatabaseHelper from '../../../databaseHelper';
 import Database from '../../../../origin/setup/database';
 import VotingHelper from '../../../activity/redemption/votingHelper';
@@ -510,8 +509,8 @@ export default class ElectionHelper {
                             if (msg) resolve(msg);
                         }
                     } catch(e) {
+                        console.log('Error loading campaign message');
                         console.log(idSet);
-                        console.log('Error loading campaign message')
                     }
                 }, 666 * index);
             });
@@ -625,7 +624,6 @@ export default class ElectionHelper {
 
         return candidates;
     }
-
 
     static async lastElecSecs() {
         const lastElecSecsVal = await Chicken.getConfigVal('last_election');

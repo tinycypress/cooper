@@ -1,10 +1,6 @@
-
-
-
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import MessagesHelper from '../../operations/activity/messages/messagesHelper';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import COOP, { MESSAGES, TIME } from '../../origin/coop';
+import { MESSAGES } from '../../origin/coop';
 
 export default class TodosCommand extends CoopCommand {
 

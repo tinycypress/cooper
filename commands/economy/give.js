@@ -96,7 +96,7 @@ export default class GiveCommand extends CoopCommand {
 
 			// Send feedback message.
 			// TODO: State how many both have now after gift.
-			const itemEmoji = MESSAGES._displayEmojiCode(itemCode);
+			const itemEmoji = MESSAGES.emojiCodeText(itemCode);
 			const qtyText = ITEMS.displayQty(qty);
 			const addText = `<@${msg.author.id}> gave <@${target.id}> ${itemEmoji} ${itemCode}x${qtyText}.`;
 			COOP.CHANNELS.silentPropagate(msg, addText, 'FEED');

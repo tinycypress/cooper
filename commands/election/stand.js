@@ -2,7 +2,7 @@ import ElectionHelper from '../../operations/members/hierarchy/election/election
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP from '../../origin/coop';
-import { EMOJIS, CHANNELS } from '../../origin/config';
+import { CHANNELS } from '../../origin/config';
 
 
 
@@ -80,7 +80,7 @@ export default class StandCommand extends CoopCommand {
 				if (!prevCandidate) {
 					COOP.MESSAGES.selfDestruct(msg, `${msg.author.username}, you wanna stand for <#${CHANNELS.ELECTION.id}>, eyyy?`);
 
-					const emojiText = COOP.MESSAGES._displayEmojiCode('ELECTION_CROWN');
+					const emojiText = COOP.MESSAGES.emojiCodeText('ELECTION_CROWN');
 					const electionEmbed = COOP.MESSAGES.embed({ 
 						title: `Election Event: ${msg.author.username} stands for election!`,
 						description: `${msg.content}\n\n` +

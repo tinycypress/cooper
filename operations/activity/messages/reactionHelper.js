@@ -36,7 +36,6 @@ export default class ReactionHelper {
 
     static countTypeCollection(col, type) {
         return col.reduce((acc, react) => {
-            console.log(react, type);
             if (react.emoji.name === type) return acc += react.count;
             return acc;
         }, 0);

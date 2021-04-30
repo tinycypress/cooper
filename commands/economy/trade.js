@@ -83,8 +83,8 @@ export default class TradeCommand extends CoopCommand {
 			if (!canUserFulfil) return COOP.MESSAGES.selfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
 
 			// Generate strings with emojis based on item codes.
-			const tradeAwayStr = `${COOP.MESSAGES._displayEmojiCode(offerItemCode)}x${offerQty}`;
-			const receiveBackStr = `${COOP.MESSAGES._displayEmojiCode(receiveItemCode)}x${receiveQty}`;
+			const tradeAwayStr = `${COOP.MESSAGES.emojiCodeText(offerItemCode)}x${offerQty}`;
+			const receiveBackStr = `${COOP.MESSAGES.emojiCodeText(receiveItemCode)}x${receiveQty}`;
 			const exchangeString = `<- ${tradeAwayStr}\n-> ${receiveBackStr}`;
 
 			// Check if there is an existing offer matching this specifically.

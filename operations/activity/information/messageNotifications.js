@@ -1,6 +1,6 @@
 import Statistics from './statistics';
 import COOP, { STATE } from '../../../origin/coop';
-import { KEY_MESSAGES } from '../../../origin/config';
+// import { KEY_MESSAGES } from '../../../origin/config';
 
 export default class MessageNotifications {
 

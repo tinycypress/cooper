@@ -1,9 +1,9 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import VotingHelper from '../../operations/activity/redemption/votingHelper';
 import { SACRIFICE_RATIO_PERC } from '../../operations/members/redemption/sacrificeHelper';
-import { VOTE_AGAINST, VOTE_FOR } from '../../origin/config/rawemojis.json';
+import { VOTE_FOR } from '../../origin/config/rawemojis.json';
 
-import { MESSAGES, REACTIONS, ROLES, SERVER, USERS } from '../../origin/coop';
+import { MESSAGES, REACTIONS, SERVER } from '../../origin/coop';
 
 export default class UnbanCommand extends CoopCommand {
 

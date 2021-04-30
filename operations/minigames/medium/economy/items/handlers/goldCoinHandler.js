@@ -1,5 +1,5 @@
-import { usedOwnedUsableGuard } from '../../itemCmdGuards';
-import COOP, { MESSAGES, USERS } from '../../../../../../origin/coop';
+// import { usedOwnedUsableGuard } from '../../itemCmdGuards';
+import { MESSAGES, USERS } from '../../../../../../origin/coop';
 
 export default class GoldCoinHandler {
     
@@ -7,7 +7,7 @@ export default class GoldCoinHandler {
         const subject = target ? target : user;
         
 
-        const coinEmoji = MESSAGES._displayEmojiCode('GOLD_COIN');
+        const coinEmoji = MESSAGES.emojiCodeText('GOLD_COIN');
         MESSAGES.selfDestruct(msgRef, `${user.username} tries to use ${coinEmoji} on ${subject.username}.`);
 
         // Calculate reward.

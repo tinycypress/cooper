@@ -17,7 +17,7 @@ export default class CalcCommand extends CoopCommand {
 		});
 	}
 
-	// console.log(await result.text());
+	
 	async run(msg) {
 		super.run(msg);
 

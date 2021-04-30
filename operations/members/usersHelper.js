@@ -21,13 +21,6 @@ export default class UsersHelper {
         return this._cache().get(id);
     }
 
-    static getLastMsgDateFmt(userID) {
-
-        // TODO: Fmt.
-        const member = this._getMemberByID(userID);
-        console.log(member);
-    }
-
     static getMemberByID = (guild, id) => guild.members.cache.get(id);
 
     static fetchMemberByID = (guild, id) => guild.members.fetch(id);
@@ -62,9 +55,7 @@ export default class UsersHelper {
     }
 
     // TODO: Implement for election, maybe limit to announcement notifications.
-    static _dmAll(msg) {
-
-    }
+    // static _dmAll(msg) {}
 
     static getOnlineMembers = (guild) => guild.members.cache.filter(member => member.presence.status === 'online');
     
@@ -232,7 +223,7 @@ export default class UsersHelper {
 
     static async populateUsers() {
         // Constant/aesthetic only reference.
-        const coopEmoji = COOP.MESSAGES._displayEmojiCode('COOP');
+        const coopEmoji = COOP.MESSAGES.emojiCodeText('COOP');
 
         // Load all recognised users.
         const dbUsers = await this.load();

@@ -178,7 +178,7 @@ export default class CratedropMinigame {
                             COOP.ITEMS.add(user.id, rewardItem, rewardQty, `${rarity} reward`);
 
                             // Get the item emoji.
-                            const itemEmoji = COOP.MESSAGES._displayEmojiCode(rewardItem);
+                            const itemEmoji = COOP.MESSAGES.emojiCodeText(rewardItem);
                             return `${itemEmoji} ${rewardItem}x${rewardQty}`;
                         }).join(', ');
 

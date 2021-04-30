@@ -3,8 +3,8 @@ import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { MESSAGES } from '../../origin/coop';
 
 // Filter for a valid confirmation.
-const proceedfeedbackReactFilter = ({ emoji }, user) => 
-		user.id === msg.author.id && emoji.name == '👍';
+const proceedfeedbackReactFilter = ({ message, emoji }, user) => 
+		user.id === message.author.id && emoji.name == '👍';
 
 // Recursive confirmation prompt.
 const confirmationPrompt = async function(text, callback) {

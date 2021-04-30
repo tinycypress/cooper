@@ -14,8 +14,8 @@ export default class EasterEggHandler {
         await COOP.ITEMS.add(subject.id, 'COOP_POINT', reward, 'Easter egg effect');
 
         // Add feedback.
-        const coopEmoji = COOP.MESSAGES._displayEmojiCode('COOP_POINT');
-        const eggEmoji = COOP.MESSAGES._displayEmojiCode('EASTER_EGG');
+        const coopEmoji = COOP.MESSAGES.emojiCodeText('COOP_POINT');
+        const eggEmoji = COOP.MESSAGES.emojiCodeText('EASTER_EGG');
         const optTarget = target ? ` on <@${target.id}>` : '';
         const feedbackText = `**${eggEmoji.repeat(2)} ${user.username} used their easter egg${optTarget}!**\n\n` +
             `They gained ${reward}x${coopEmoji} (25% of the average CP per beak (${rewardBase}))!`;

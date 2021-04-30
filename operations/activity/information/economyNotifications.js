@@ -45,7 +45,7 @@ export default class EconomyNotifications {
                     Object.keys(woodcutting.users)
                         .map(wcUserID => {
                             const wcUser = woodcutting.users[wcUserID];
-                            return `${wcUser.username} ${wcUser.points}x${MESSAGES._displayEmojiCode('COOP')} ${wcUser.cut}x:wood:`;
+                            return `${wcUser.username} ${wcUser.points}x${MESSAGES.emojiCodeText('COOP')} ${wcUser.cut}x:wood:`;
                         })
                         .join(', ') +
 
@@ -57,7 +57,7 @@ export default class EconomyNotifications {
 
 
 
-                const metalOreEmoji = MESSAGES._displayEmojiCode('METAL_ORE');
+                const metalOreEmoji = MESSAGES.emojiCodeText('METAL_ORE');
 
                 notificationString += `**Latest Mining Totals:**\n` +
                     `Hits: ${mining.totals.hits}\n` +
@@ -71,7 +71,7 @@ export default class EconomyNotifications {
                         .map(mnUserID => {
                             const mnUser = mining.users[mnUserID];
                             // TODO: Add metal ore and diamonds here (emojis display):
-                            return `${mnUser.username} ${mnUser.points}x${MESSAGES._displayEmojiCode('COOP')} ${mnUser.mined}x${metalOreEmoji}`;
+                            return `${mnUser.username} ${mnUser.points}x${MESSAGES.emojiCodeText('COOP')} ${mnUser.mined}x${metalOreEmoji}`;
                         })
                         .join(', ') +
 

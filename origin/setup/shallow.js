@@ -1,31 +1,20 @@
 import { Client } from 'discord.js-commando';
+import Database from './database';
 import dotenv from 'dotenv';
 
-import Database from './database';
-
-import COOP, { CHANNELS, ITEMS, MESSAGES, ROLES, SERVER, TIME, USERS } from '../coop';
-
-import EventsHelper from '../../operations/eventsHelper';
-
-import { status } from '../../operations/marketing/rewards/loyalty';
-import client from './client';
-import UsersHelper from '../../operations/members/usersHelper';
-import RolesHelper from '../../operations/members/hierarchy/roles/rolesHelper';
-import DatabaseHelper from '../../operations/databaseHelper';
-import ProspectHelper from '../../operations/members/redemption/prospectHelper';
-
-// Commonly useful.
-// const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
-const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
 
 
 // v DEV IMPORT AREA v
-
+import COOP, {} from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
 dotenv.config();
 
+
+// Commonly useful.
+// const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
+// const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
 
 const shallowBot = async () => {
     // Instantiate a CommandoJS "client".
@@ -39,27 +28,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-        // Higher priority:
-        // Paypal/stripe integration for pay in and pay out 
-        // Track deficit (use detail reserved)
-        // Add cost command (democratically approved) copy !sacrifice
-        
-        // Structures reform
-
-        // Explore the differences between these...?
-        // _displayEmojiCode
-        // emojiText
-
-        // Democratically delete a channel.
-
-        // Low priority:
-        // Favours (adding to other users todo lists)
-        // A reaction that can be used to copy a shared todo
-        // 100dz integration TODOs
-
-        // Debt interest on negative item ownership values.
-
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

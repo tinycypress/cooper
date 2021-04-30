@@ -120,7 +120,7 @@ export default class HelpCommand extends CoopCommand {
                 const commandsInCategory = category.commands.map(cmd => MESSAGES.titleCase(cmd.name));
 
 				// Default to empty text.
-				let categoryHelpText = `${MESSAGES.titleCase(categoryName)} (category) doesn\'t have any commands.`;
+				let categoryHelpText = `${MESSAGES.titleCase(categoryName)} (category) doesn't have any commands.`;
 
 				if (commandsInCategory.length > 0) {
 					categoryHelpText = `**${MESSAGES.titleCase(categoryName)} (category)'s specifics:**\n\n` +

@@ -1,4 +1,4 @@
-import { CHANNELS } from "../../../origin/coop";
+// import { CHANNELS } from "../../../origin/coop";
 
 export const PROJECT_ARGS_MSG_ORDER = [
     'name', 'deadline', 'description', 'visibility'

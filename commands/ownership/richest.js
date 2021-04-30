@@ -24,7 +24,7 @@ export default class RichestCommand extends CoopCommand {
 		const mostItemsUser = COOP.USERS._get(mostItems.owner_id).user;
 
 		// Provide the result to the user.
-		const emoji = COOP.MESSAGES._displayEmojiCode('GOLD_COIN');
+		const emoji = COOP.MESSAGES.emojiCodeText('GOLD_COIN');
 		const msgText = `${mostItemsUser.username} is the richest member (${mostItems.total}x${emoji}).`;
 		COOP.MESSAGES.selfDestruct(msg, msgText);
     }

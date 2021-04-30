@@ -1,6 +1,6 @@
 import createEmbed from "./embedHelper";
 
-import COOP, { SERVER }  from "../../../origin/coop";
+import { MESSAGES, CHANNELS, SERVER }  from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import { silentOpts } from "../../channelHelper";
 
@@ -31,7 +31,7 @@ export default class MessagesHelper {
 
         return result;
     }
-    
+
     static link(msg) {
         const link = `https://discordapp.com/channels/` +
             `${msg.guild.id}/` +
@@ -74,12 +74,15 @@ export default class MessagesHelper {
 
     static isOnlyEmojis(text) {
         const onlyEmojis = text.replace(new RegExp('[\u0000-\u1eeff]', 'g'), '');
+        // eslint-disable-next-line
         const visibleChars = text.replace(new RegExp('[\n\r\s]+|( )+', 'g'), '');
         return onlyEmojis.length === visibleChars.length;
     }
 
     static isOnlyEmojisOrIDs(text) {
+        // eslint-disable-next-line
         const codeChars = text.replace(new RegExp(':\w+:', 'g'), '')
+        // eslint-disable-next-line
         const visibleChars = text.replace(new RegExp('[\n\r\s]+|( )+', 'g'), '')
         const isOnlyIDCodes = codeChars.length === visibleChars.length;
         return this.isOnlyEmojis(text) || isOnlyIDCodes;
@@ -94,10 +97,9 @@ export default class MessagesHelper {
         return emoji.codePointAt(0).toString(16);
     }
 
-
     // Handles :single: and :double:id emoji input
     // Not sure about emoji direct unicode (image char)
-    static _displayEmojiCode(code) {
+    static emojiCodeText(code) {
         let displayStr = '?';
 
         const emoji = EMOJIS[code];
@@ -105,6 +107,7 @@ export default class MessagesHelper {
 
         return displayStr;
     }
+
     static emojiText(emoji) {
         // const numColons = emoji.split(":").length - 1;
         const truePieces = emoji.split(':').filter(piece => piece !== '');
@@ -113,7 +116,7 @@ export default class MessagesHelper {
     }
 
     static delayReactionRemove(reaction, delay) {
-        if (reaction) setTimeout(() => { reaction.remove(); }, delay);
+        if (reaction) setTimeout(() => reaction.remove(), delay);
     }
 
     static delayReactionRemoveUser(reaction, userID, delay) {
@@ -170,8 +173,6 @@ export default class MessagesHelper {
             }
         }, delay);
     }
-
-
 
     static silentSelfDestruct(msgOrChannelRef, content, delayMs = 666, fuseMs = 30000) {
         return new Promise((resolve, reject) => {
@@ -259,7 +260,7 @@ export default class MessagesHelper {
         
         try {
             const msgData = this.parselink(link);
-            const channel = COOP.CHANNELS._get(msgData.channel);
+            const channel = CHANNELS._get(msgData.channel);
             const fetchedMsg = await channel.messages.fetch(msgData.message);
             if (fetchedMsg) msg = fetchedMsg;
             return msg;
@@ -292,23 +293,20 @@ export default class MessagesHelper {
 
     static async preloadMsgLinks(messageLinks = []) {
         return await Promise.all(messageLinks.map((link, index) => {
-            const channelCache = (SERVER._coop()).channels.cache;
             return new Promise((resolve, reject) => {
                 setTimeout(async () => {
-                    const entityIDs = COOP.MESSAGES.parselink(link);
-                    const chan = channelCache.get(entityIDs.channel);
+                    const entityIDs = MESSAGES.parselink(link);
+                    const chan = CHANNELS._get(entityIDs.channel);
                     if (chan) {
                         const msg = await chan.messages.fetch(entityIDs.message);
-                        resolve(msg);
+                        if (msg) resolve(msg);
+                        if (!msg) reject(`${entityIDs.message} message does not exist.`);
+                    } else {
+                        reject(`${entityIDs.channel} channel does not exist.`);
                     }
-                    resolve(null);
                 }, 666 * index);
             });
         }));
-    }
-
-    static async getReactionType(message, type) {
-        
     }
 
 }

@@ -116,7 +116,7 @@ export default class MiningMinigame {
             else await msg.delete();
             
             // Provide feedback.
-            const metalOreEmoji = COOP.MESSAGES._displayEmojiCode('METAL_ORE');
+            const metalOreEmoji = COOP.MESSAGES.emojiCodeText('METAL_ORE');
             const actionText = `${user.username} successfully mined a rock.`;
             const ptsText = ITEMS.displayQty(addPoints);
             const rewardText = `+1 point (${ptsText}), +${extractedOreNum} ${metalOreEmoji} (${addMetalOre})!`;

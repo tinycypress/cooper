@@ -30,7 +30,7 @@ export default class ToxicEggHandler {
                     if (BuffsHelper.has('INVINCIBILITY', targetID)) {
 
                         // TODO: Count invincibility blocks into stats.
-                        const shieldEmoji = COOP.MESSAGES._displayEmojiCode('SHIELD');
+                        const shieldEmoji = COOP.MESSAGES.emojiCodeText('SHIELD');
                         return COOP.MESSAGES.selfDestruct(msg, `${shieldEmoji.repeat(2)} ${author.username} was protected from ${user.username}'s toxic egg by invincibility buff!`)
                     }
 

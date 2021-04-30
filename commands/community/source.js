@@ -51,11 +51,8 @@ export default class SourceCommand extends CoopCommand {
 
 		} catch(e) {
 			// Debugging only.
-			// console.log(`'Error getting file: ${path}`);
-			// console.log(e.message);
-			// console.log(e.name);
-
-			// console.error(e);
+			console.log(`'Error getting file: ${path}`);
+			console.error(e);
 
 			return null;
 		}
@@ -75,10 +72,7 @@ export default class SourceCommand extends CoopCommand {
 			folder.sort((a, b) => (isFolder(a) === isFolder(b)) ? 0 : isFolder(a) ? -1 : 1);
 
 			return folder;
-
 		} catch(e) {
-			console.log(`'Error getting file: ${path}`);
-			console.error(e);
 			return null;
 		}
 	}

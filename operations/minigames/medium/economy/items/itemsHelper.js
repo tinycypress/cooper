@@ -43,7 +43,7 @@ export default class ItemsHelper {
         const result = await Database.query(query);
         const successDelete = result.rowCount === 1;
         return successDelete;
-    };
+    }
 
     static async add(userID, itemCode, quantity, sourceReason = 'unknown') {
         // TODO: Could make item source throw an error if not declared.
@@ -213,7 +213,7 @@ export default class ItemsHelper {
     }
     
     static itemEmojiQtyStr(itemCode, itemQty = 1) {
-        return `${COOP.MESSAGES._displayEmojiCode(itemCode)}x${itemQty}`;
+        return `${COOP.MESSAGES.emojiCodeText(itemCode)}x${itemQty}`;
     }
 
     static gainItemQtyStr(itemCode, itemQty = 1) {

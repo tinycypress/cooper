@@ -48,12 +48,12 @@ export default class IngredientsCommand extends CoopCommand {
 
 			// Access required crafting level for item.
 			const craftingItem = CraftingHelper.CRAFTABLES[itemCode];
-			const craftItemEmoji = COOP.MESSAGES._displayEmojiCode(itemCode); 
+			const craftItemEmoji = COOP.MESSAGES.emojiCodeText(itemCode); 
 
 			// Format text and send feedback.
 			const ingredientsText = `Ingredients required for crafting ${craftItemEmoji} ${itemCode}x${qty}: ` + 
 				Object.keys(craftingItem.ingredients).map(ingredKey => {
-					const emoji = COOP.MESSAGES._displayEmojiCode(ingredKey);
+					const emoji = COOP.MESSAGES.emojiCodeText(ingredKey);
 					return `${emoji} ${ingredKey}x${craftingItem.ingredients[ingredKey] * qty}`;
 				}).join(', ');
 

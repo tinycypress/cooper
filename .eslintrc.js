@@ -10,5 +10,7 @@ module.exports = {
         "sourceType": "module"
     },
     "parser": "@babel/eslint-parser",
-    "rules": {}
+    "rules": {
+        "no-control-regex": 0
+    }
 };

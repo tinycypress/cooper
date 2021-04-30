@@ -57,7 +57,7 @@ export default class SharesCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, `**Item ownership shares/market %:**\n\n` +
 				overallOwnershipData.map(val => {
 					const username = USERS._get(val.owner_id).user.username;
-					const emoji = MESSAGES._displayEmojiCode(val.item_code);
+					const emoji = MESSAGES.emojiCodeText(val.item_code);
 					const itemQty = `${ITEMS.displayQty(val.quantity)}x${emoji}`;
 					return `${username}'s ${itemQty} (${val.share}%)`;
 				}).join(', ') + '.');
@@ -85,7 +85,7 @@ export default class SharesCommand extends CoopCommand {
         meaningfulOwnersArr.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
 		
 		// Format and output the resulting message/info.
-        const emoji = MESSAGES._displayEmojiCode(itemCode);
+        const emoji = MESSAGES.emojiCodeText(itemCode);
         const ownershipText = `**${itemCode} ${emoji} ownership shares/market %:**\n\n` +
             meaningfulOwnersArr.map((val, index) => 
                 `#${index + 1}. ` + 

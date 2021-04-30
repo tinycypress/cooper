@@ -77,7 +77,7 @@ export default class CooperMorality {
         const giveawayText = `**Cooper's good mood makes him charitable!**\n\n` +
             dropResults.map(dropSet => 
                 `${dropSet.user.username}: ${dropSet.drops.map(drop => 
-                    `${COOP.MESSAGES._displayEmojiCode(drop.item)}x${drop.qty}`
+                    `${COOP.MESSAGES.emojiCodeText(drop.item)}x${drop.qty}`
                 ).join(', ')
             }`).join('.\n\n');
         COOP.CHANNELS._codes(['FEED', 'TALK'], giveawayText)

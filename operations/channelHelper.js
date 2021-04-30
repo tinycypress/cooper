@@ -138,7 +138,7 @@ export default class ChannelHelper {
     }
 
     static _randomOnlyActive() {
-        const selection = null;
+        let selection = null;
 
         // Try to select a random active text channel.
         const actives = MessageNotifications.getActiveChannels();
@@ -150,14 +150,14 @@ export default class ChannelHelper {
         return selection;
     }
 
-    static selectWeightedActive(channels, weights) {
-        // TODO: Implement this
+    // TODO: Implement this
+    // static selectWeightedActive(channels, weights) {
         // console.log('selectWeightedActive');
         // console.log(channels, weights);
         // http://chancejs.com/miscellaneous/weighted.html
         // STATE.CHANCE.weighted
         // chance.weighted(['a',%20'b'],%20[100,%201])
-    }
+    // }
 
     // Implement as part of community velocity reform.
     static _randomSomewhatActive() {

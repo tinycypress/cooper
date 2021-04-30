@@ -23,7 +23,7 @@ export default class AnnounceCommand extends CoopCommand {
 
 		try {
 			// TODO: REFACTOR THIS TO AN ANNOUNCE COMMAND, GUARDED TO LEADERSHIP.
-			// const emojiText = COOP.MESSAGES._displayEmojiCode('EASTER_EGG');
+			// const emojiText = COOP.MESSAGES.emojiCodeText('EASTER_EGG');
 			// const announceText = `@everyone, collect our limited edition ${emojiText}${emojiText} easter egg for easter! Happy Easter.`;        
 			// const announceMsg = await COOP.CHANNELS._postToChannelCode('KEY_INFO', announceText);
 			// COOP.MESSAGES.delayReact(announceMsg, EMOJIS.COOP, 333);

@@ -1,28 +1,33 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import TodoHelper from '../../operations/productivity/todos/todoHelper';
-import { MESSAGES, TIME } from '../../origin/coop';
+import { MESSAGES, TIME, USERS } from '../../origin/coop';
 
-export default class TodoCommand extends CoopCommand {
+export default class FavourCommand extends CoopCommand {
 
 	constructor(client) {
 		super(client, {
-			name: 'todo',
+			name: 'favour',
 			group: 'productivity',
-			memberName: 'todo',
-			aliases: ['td'],
-			description: 'Information todo our fine community!',
+			memberName: 'favour',
+			aliases: ['fav'],
+			description: 'Information favour our fine community!',
 			details: `Details`,
-			examples: ['todo', 'todo example?'],
+			examples: ['favour', 'favour example?'],
 			args: [
 				{
+					key: 'target',
+					prompt: 'The user you want to request the favour from.',
+					type: 'user'
+				},
+				{
 					key: 'title',
-					prompt: 'TODO title?',
-					type: 'string',
+					prompt: 'The favour\'s TODO title?',
+					type: 'string'
 				},
 				{
 					key: 'due',
 					prompt: 'TODO deadline future time? Ex. next Tuesday, 3pm Wednesday, in 30 minutes, in half a year... etc',
-					type: 'string',
+					type: 'string'
 				},
 				{
 					key: 'category',
@@ -33,8 +38,14 @@ export default class TodoCommand extends CoopCommand {
 		});
 	}
 
-	async run(msg, { title, due, category }) {
+	async run(msg, { target, title, due, category }) {
 		super.run(msg);
+
+		// Prevent invalid member.
+		const member = USERS._get(target.id);
+		const invalidTarget = `<@${msg.author.id}>, invalid target user for adding favour.`
+		if (!member)
+			return MESSAGES.silentSelfDestruct(msg, invalidTarget, 0, 7500);
 
 		// Take human readable due time.
 		const dueDate = TIME.parseHuman(due);
@@ -44,7 +55,7 @@ export default class TodoCommand extends CoopCommand {
 
 		// Invalid input time feedback
 		if (isNaN(dueDate))
-			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is invalid duration for a todo task.`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is invalid duration for the favour task.`);
 
 		// TODO: Integrate complexity system!! Get people to rank how hard their tasks are.
 
@@ -53,21 +64,21 @@ export default class TodoCommand extends CoopCommand {
 		const dueSecs = Math.round(dueDate.getTime() / 1000);
 
 		// Add a TODO for this user.
-		const result = await TodoHelper.add(msg.author.id, {
-			title, due: dueSecs, category
+		const result = await TodoHelper.add(target.id, {
+			title: 'Favour - ' + title, 
+			due: dueSecs, 
+			category
 		});
 		
 		// Handle already exists error
 		if (result === 'ALREADY_EXISTS')
-			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, you already have a todo entry with that title!`);
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your target already has a todo with that title.!`);
 		
 		// Feedback.
 		const secsNow = TIME._secs();
 		const deadline = TIME.humaniseSecs(Math.max(dueSecs - secsNow, 0));
-		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your todo was created!\n\n` +
+		return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your favour was added to <@${target.id}>!\n\n` +
 			title +
 			`\n\nDeadline: ${deadline}`);
     }
 }
-
-

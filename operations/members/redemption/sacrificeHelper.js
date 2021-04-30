@@ -105,8 +105,7 @@ export default class SacrificeHelper {
                 if (remainingSacrificeVotes === 0) {
                     // Notify when user is voted out.
                     await COOP.CHANNELS._postToFeed(
-                        (isProspect ? 'Prospect ' : '')
-                        `<@${sacrificeeID}> was sacrificed!`);
+                        (isProspect ? 'Prospect ' : '') + `<@${sacrificeeID}> was sacrificed!`);
                     await targetMember.ban();
 
                 } else {

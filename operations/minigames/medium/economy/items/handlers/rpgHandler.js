@@ -29,7 +29,7 @@ export default class RPGHandler {
 
 
     // Allow people to use the items without having to react to a message.
-    static async use(msg) {
+    // static async use(msg) {
         // TODO: Need to enable a target for this.
 
         // // Attempt to use the rpg item
@@ -38,7 +38,7 @@ export default class RPGHandler {
 
         // // Run effect which also provides feedback.
         // this.effect(msg.author.id);
-    }
+    // }
 
 
     static async effect(target, msg, attacker) {
@@ -53,8 +53,8 @@ export default class RPGHandler {
         // TODO: Check if the user is using a shield.
 
         // Add feedback.
-        const coopEmoji = COOP.MESSAGES._displayEmojiCode('COOP_POINT');    
-        const rpgEmojiText = COOP.MESSAGES._displayEmojiCode('RPG');
+        const coopEmoji = COOP.MESSAGES.emojiCodeText('COOP_POINT');    
+        const rpgEmojiText = COOP.MESSAGES.emojiCodeText('RPG');
 
         const targetName = target.id === attacker.id ? 'their self' : `<@${target.id}>`;
         const damage = `${reward}x${coopEmoji} (25% of the average CP per beak (${ITEMS.displayQty(pointAvg)}))`;

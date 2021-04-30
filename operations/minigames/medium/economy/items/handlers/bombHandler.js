@@ -21,7 +21,7 @@ export default class BombHandler {
                     if (BuffsHelper.has('INVINCIBILITY', target.id)) {
                         // TODO: Add some kind of animation via message edit. :D
                         // TODO: Count invincibility blocks into stats.
-                        const shieldEmoji = COOP.MESSAGES._displayEmojiCode('SHIELD');
+                        const shieldEmoji = COOP.MESSAGES.emojiCodeText('SHIELD');
                         return COOP.MESSAGES.silentSelfDestruct(msg, 
                             `${shieldEmoji.repeat(2)} <@${target.id}> was protected from <@${user.id}>'s bomb by invincibility buff! `)
                     }
