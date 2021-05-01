@@ -2,7 +2,7 @@ import EconomyNotifications from "../../activity/information/economyNotification
 
 import SkillsHelper from "../medium/skills/skillsHelper";
 
-import COOP, { STATE, REACTIONS, SERVER, USABLE, ITEMS } from "../../../origin/coop";
+import { STATE, REACTIONS, SERVER, USABLE, ITEMS, MESSAGES, USERS, CHANNELS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import Statistics from "../../activity/information/statistics";
 
@@ -11,12 +11,12 @@ export default class WoodcuttingMinigame {
     // Reaction interceptor to check if user is attempting to interact.
     static async onReaction(reaction, user) {
         // High chance of preventing any Woodcutting at all to deal with rate limiting.
-        if (STATE.CHANCE.bool({ likelihood: 44 })) return false;
+        if (STATE.CHANCE.bool({ likelihood: 20 })) return false;
 
-        const isOnlyEmojis = COOP.MESSAGES.isOnlyEmojisOrIDs(reaction.message.content);
+        const isOnlyEmojis = MESSAGES.isOnlyEmojisOrIDs(reaction.message.content);
         const isAxeReact = reaction.emoji.name === '🪓';
-        const isCooperMsg = COOP.USERS.isCooperMsg(reaction.message);
-        const isUserReact = !COOP.USERS.isCooper(user.id);
+        const isCooperMsg = USERS.isCooperMsg(reaction.message);
+        const isUserReact = !USERS.isCooper(user.id);
         
         // Woodcutting minigame guards.
         if (!isUserReact) return false;
@@ -27,8 +27,8 @@ export default class WoodcuttingMinigame {
         const msgContent = reaction.message.content;
 
         const firstEmojiString = (msgContent[0] || '') + (msgContent[1] || '');
-        const firstEmojiUni = COOP.MESSAGES.emojiToUni(firstEmojiString);
-        const rockEmojiUni = COOP.MESSAGES.emojiToUni(EMOJIS.WOOD);
+        const firstEmojiUni = MESSAGES.emojiToUni(firstEmojiString);
+        const rockEmojiUni = MESSAGES.emojiToUni(EMOJIS.WOOD);
         const isWoodMsg = firstEmojiUni === rockEmojiUni;
 
         if (!isWoodMsg) return false;
@@ -40,15 +40,15 @@ export default class WoodcuttingMinigame {
         const msg = reaction.message;
 
         // Calculate magnitude from message: more rocks, greater reward.
-        const textMagnitude = COOP.MESSAGES.countAllEmojiCodes(msg.content);
+        const textMagnitude = MESSAGES.countAllEmojiCodes(msg.content);
         const rewardRemaining = STATE.CHANCE.natural({ min: 1, max: textMagnitude * 4 });
 
         // Check if has a axe
-        const userAxesNum = await COOP.ITEMS.getUserItemQty(user.id, 'AXE');
+        const userAxesNum = await ITEMS.getUserItemQty(user.id, 'AXE');
         const noText = `${user.username} tried to cut wood, but doesn't have an axe.`;
-        // Remove reaction and warn.
-        // if (userAxesNum <= 0) DELETE REACTION
-        if (userAxesNum <= 0) return COOP.MESSAGES.selfDestruct(msg, noText, 0, 3333);
+        if (userAxesNum <= 0) 
+            return MESSAGES.silentSelfDestruct(msg, noText, 0, 3333);
+
 
         // Handle chance of axe breaking
         const pickaxeBreakPerc = Math.min(25, rewardRemaining);
@@ -63,7 +63,7 @@ export default class WoodcuttingMinigame {
             const axeUpdate = await USABLE.use(user.id, 'AXE', 1);
             if (axeUpdate) {
                 const brokenDamage = -2;
-                const pointsDamageResult = await COOP.ITEMS.subtract(user.id, 'COOP_POINT', Math.abs(brokenDamage), 'Broken axe damage');
+                const pointsDamageResult = await ITEMS.subtract(user.id, 'COOP_POINT', Math.abs(brokenDamage), 'Broken axe damage');
                 const ptsDmgText = ITEMS.displayQty(pointsDamageResult);
 
                 // Update economy statistics.
@@ -77,31 +77,31 @@ export default class WoodcuttingMinigame {
                 // Add the experience.
                 SkillsHelper.addXP(user.id, 'woodcutting', 2);
                 
-                const actionText = `${user.username} broke an axe trying to cut wood, ${userAxesNum - 1} remaining!`;
+                const actionText = `<@${user.id}> broke an axe trying to cut wood, ${userAxesNum - 1} remaining!`;
                 const damageText = `${brokenDamage} points (${ptsDmgText}) but gained 2xp in woodcutting for trying.`;
-                COOP.CHANNELS.propagate(msg, `${actionText} ${damageText}`, 'ACTIONS');
+                MESSAGES.silentSelfDestruct(msg, `${actionText} ${damageText}`, 0, 10000);
             }
         } else {
             // See if updating the item returns the item and quantity.
-            const addedWood = await COOP.ITEMS.add(user.id, 'WOOD', extractedWoodNum, 'Woodcutting');
-            const addPoints = await COOP.ITEMS.add(user.id, 'COOP_POINT', 1, 'Woodcutting');
+            const addedWood = await ITEMS.add(user.id, 'WOOD', extractedWoodNum, 'Woodcutting');
+            const addPoints = await ITEMS.add(user.id, 'COOP_POINT', 1, 'Woodcutting');
 
             // Rare events from woodcutting.
             if (STATE.CHANCE.bool({ likelihood: 3.33 })) {
-                const addDiamond = await COOP.ITEMS.add(user.id, 'AVERAGE_EGG', 1, 'Woodcutting uncommon event');
-                COOP.CHANNELS.propagate(msg, `${user.username} catches an average egg as it falls from a tree! (${addDiamond})`, 'ACTIONS');
+                const addDiamond = await ITEMS.add(user.id, 'AVERAGE_EGG', 1, 'Woodcutting uncommon event');
+                CHANNELS.propagate(msg, `${user.username} catches an average egg as it falls from a tree! (${addDiamond})`, 'ACTIONS');
             }
             
             if (STATE.CHANCE.bool({ likelihood: 0.25 })) {
                 const branchQty = STATE.CHANCE.natural({ min: 5, max: 25 });
-                await COOP.ITEMS.add(user.id, 'RARE_EGG', branchQty, 'Woodcutting rare event');
-                COOP.CHANNELS.propagate(msg, `${user.username} triggered a chain branch reaction, ${branchQty} rare eggs found!`, 'ACTIONS');
+                await ITEMS.add(user.id, 'RARE_EGG', branchQty, 'Woodcutting rare event');
+                CHANNELS.propagate(msg, `${user.username} triggered a chain branch reaction, ${branchQty} rare eggs found!`, 'ACTIONS');
             }
 
             if (STATE.CHANCE.bool({ likelihood: 0.0525 })) {
                 const legendaryNestQty = STATE.CHANCE.natural({ min: 2, max: 4 });
-                await COOP.ITEMS.add(user.id, 'LEGENDARY_EGG', legendaryNestQty, 'Woodcutting, very rare event');
-                COOP.CHANNELS.propagate(msg, `${user.username} hit a lucky branch, ${legendaryNestQty} legendary egg(s) found!`, 'ACTIONS');
+                await ITEMS.add(user.id, 'LEGENDARY_EGG', legendaryNestQty, 'Woodcutting, very rare event');
+                CHANNELS.propagate(msg, `${user.username} hit a lucky branch, ${legendaryNestQty} legendary egg(s) found!`, 'TALK');
             }
 
             // Reduce the number of rocks in the message.
@@ -112,7 +112,7 @@ export default class WoodcuttingMinigame {
             const actionText = `${user.username} successfully chopped wood.`;
             const ptsText = ITEMS.displayQty(addPoints);
             const rewardText = `+1xp, +1 point (${ptsText}), +${extractedWoodNum} wood (${addedWood})!`;
-            COOP.CHANNELS.propagate(msg, `${actionText} ${rewardText}`, 'ACTIONS');
+            CHANNELS.propagate(msg, `${actionText} ${rewardText}`, 'ACTIONS');
 
             EconomyNotifications.add('WOODCUTTING', {
                 pointGain: 1,
@@ -137,15 +137,15 @@ export default class WoodcuttingMinigame {
         if (STATE.CHANCE.bool({ likelihood: 1 }))
             magnitude = STATE.CHANCE.natural({ min: base * 7, max: base * 35 });
 
-        const woodMsg = await COOP.CHANNELS._randomText().send(EMOJIS.WOOD.repeat(magnitude));
+        const woodMsg = await CHANNELS._randomText().send(EMOJIS.WOOD.repeat(magnitude));
 
         // TODO: Count as ungathered wood in activity messages.
         SERVER.addTempMessage(woodMsg, 30 * 60);
 
-        COOP.MESSAGES.delayReact(woodMsg, '🪓', 666);
+        MESSAGES.delayReact(woodMsg, '🪓', 666);
 
         const branchText = magnitude > 1 ? `${magnitude} branches` : `a branch`;
         const woodcuttingEventText = `${'Ooo'.repeat(Math.floor(magnitude))} a tree with ${branchText} to fell!`
-        COOP.CHANNELS._postToChannelCode('ACTIONS', woodcuttingEventText, 1222);
+        CHANNELS._tempSend('TALK', woodcuttingEventText, 0, 20000);
     }
 }

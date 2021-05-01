@@ -545,7 +545,9 @@ export default class ElectionHelper {
             let candidate = null;
             const embed = campaignMsg.embeds[0] || null;
             if (embed) {
+                // eslint-disable-next-line
                 const idMatches = embed.description.match(/\<@(\d+)\>/gms);
+                
                 let embedUserID = idMatches[0];
                 embedUserID = embedUserID.replace('<@', '');
                 embedUserID = embedUserID.replace('>', '');

@@ -63,6 +63,11 @@ export default class FavourCommand extends CoopCommand {
 		// Calculate unix secs for due/deadline.
 		const dueSecs = Math.round(dueDate.getTime() / 1000);
 
+		// Prevent too long of a deadline.
+		if (dueSecs >= 3.154e+7)
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, your deadline is too long (has to be less than a year).`);
+
+
 		// Add a TODO for this user.
 		const result = await TodoHelper.add(target.id, {
 			title: 'Favour - ' + title, 
