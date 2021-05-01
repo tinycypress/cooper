@@ -92,7 +92,7 @@ export default class MessageNotifications {
                     const authorsArr = Object.keys(notificationData.authors)
                         .map(authorKey => notificationData.authors[authorKey]);
     
-                    authorsArr.sort((a, b) => a.count < b.count ? -1 : 1);
+                    authorsArr.sort((a, b) => a.count > b.count ? -1 : 1);
     
                     // Add formatted string for posting as notification.
                     const label = notificationData.count > 1 ? 'messages' : 'message';
