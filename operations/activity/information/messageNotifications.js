@@ -1,6 +1,5 @@
 import Statistics from './statistics';
 import COOP, { STATE } from '../../../origin/coop';
-// import { KEY_MESSAGES } from '../../../origin/config';
 
 export default class MessageNotifications {
 
@@ -74,57 +73,62 @@ export default class MessageNotifications {
     }
 
     static post() {
-        const notificationChannelIDs = Object.keys(STATE.MESSAGE_HISTORY);
-        if (notificationChannelIDs.length > 0) {
-            // Count total messages beforehand to add to string as header.
-            const totalCount = notificationChannelIDs.reduce((acc, val) => {
-                acc += STATE.MESSAGE_HISTORY[val].count;
-                return acc;
-            }, 0);
-            
-            // TODO: Order by most messages.
-            let notificationString = `**${totalCount} latest messages!**\n\n`;
-            
-            notificationChannelIDs.map(channelID => {
-                // Access the notification data for this specific channel.
-                const notificationData = STATE.MESSAGE_HISTORY[channelID];
-
-                const authorsArr = Object.keys(notificationData.authors)
-                    .map(authorKey => notificationData.authors[authorKey]);
-
-                authorsArr.sort((a, b) => a < b ? -1 : 1);
-
-                // Add formatted string for posting as notification.
-                const label = notificationData.count > 1 ? 'messages' : 'message';
-                notificationString += `<#${channelID}> ${notificationData.count} ${label}! \n` +
-                    `From: ${authorsArr.map(authorData => 
-                        `${authorData.username} (${authorData.count})`)
-                        .join(', ')}`;
-
-                // Add some line spacing.
-                notificationString += '\n\n';
-
-
-                // Update the last message time and total messages count of these users.
-                Object.keys(notificationData.authors).map(async (authorKey) => {
-                    const count = notificationData.authors[authorKey].count;
-
-                    // Update last message secs to current time.
-                    COOP.USERS.updateField(authorKey, 'last_msg_secs', COOP.TIME._secs());
-
-                    // TODO: Improve with more efficient postgres method COOP.USERS.add() like Items.
-
-                    // Update total_msgs field for the user.
-                    const newTotal = (await COOP.USERS.getField(authorKey, 'total_msgs')) + count;
-                    COOP.USERS.updateField(authorKey, 'total_msgs', newTotal);
+        try {
+            const notificationChannelIDs = Object.keys(STATE.MESSAGE_HISTORY);
+            if (notificationChannelIDs.length > 0) {
+                // Count total messages beforehand to add to string as header.
+                const totalCount = notificationChannelIDs.reduce((acc, val) => {
+                    acc += STATE.MESSAGE_HISTORY[val].count;
+                    return acc;
+                }, 0);
+                
+                // TODO: Order by most messages.
+                let notificationString = `**${totalCount} latest messages!**\n\n`;
+                
+                notificationChannelIDs.map(channelID => {
+                    // Access the notification data for this specific channel.
+                    const notificationData = STATE.MESSAGE_HISTORY[channelID];
+    
+                    const authorsArr = Object.keys(notificationData.authors)
+                        .map(authorKey => notificationData.authors[authorKey]);
+    
+                    authorsArr.sort((a, b) => a.count < b.count ? -1 : 1);
+    
+                    // Add formatted string for posting as notification.
+                    const label = notificationData.count > 1 ? 'messages' : 'message';
+                    notificationString += `<#${channelID}> ${notificationData.count} ${label}! \n` +
+                        `From: ${authorsArr.map(authorData => 
+                            `${authorData.username} (${authorData.count})`)
+                            .join(', ')}`;
+    
+                    // Add some line spacing.
+                    notificationString += '\n\n';
+    
+    
+                    // Update the last message time and total messages count of these users.
+                    Object.keys(notificationData.authors).map(async (authorKey) => {
+                        const count = notificationData.authors[authorKey].count;
+    
+                        // Update last message secs to current time.
+                        COOP.USERS.updateField(authorKey, 'last_msg_secs', COOP.TIME._secs());
+    
+                        // TODO: Improve with more efficient postgres method COOP.USERS.add() like Items.
+    
+                        // Update total_msgs field for the user.
+                        const newTotal = (await COOP.USERS.getField(authorKey, 'total_msgs')) + count;
+                        COOP.USERS.updateField(authorKey, 'total_msgs', newTotal);
+                    });
+    
+                    // All outstanding state accounted for, cleanup.
+                    this.clear(channelID);
                 });
-
-                // All outstanding state accounted for, cleanup.
-                this.clear(channelID);
-            });
-
-            // Edit the message in about channel.
-            COOP.CHANNELS._postToFeed(notificationString, 4444);
+    
+                // Edit the message in about channel.
+                COOP.CHANNELS._postToFeed(notificationString, 4444);
+            }
+        } catch(e) {
+            console.log('Error posting latest messages.');
+            console.error(e);
         }
     }
     
