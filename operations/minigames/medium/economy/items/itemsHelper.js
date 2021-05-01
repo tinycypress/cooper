@@ -5,6 +5,7 @@ import { ITEMS, EMOJIS, RAW_EMOJIS } from '../../../../../origin/config';
 import DatabaseHelper from "../../../../databaseHelper";
 import Database from '../../../../../origin/setup/database';
 
+
 export default class ItemsHelper {
 
     // Input Takes a string and extracts the items mentioned in it. Returns an array containing the item codes. The search is greedy so will extrct the longest possible name
@@ -63,7 +64,6 @@ export default class ItemsHelper {
 
         // Get the total of that item now.
         const total = await this.count(itemCode);
-
         
         await this.saveTransaction(userID, itemCode, quantity, total, sourceReason);
 
@@ -83,6 +83,9 @@ export default class ItemsHelper {
 
         // Get the total of that item now.
         const total = await this.count(itemCode);
+
+        // Delete the user's row if it contains exactly zero, but do not forgive negative (debt) values.
+        if (itemRow.quantity === 0) await this.delete(userID, itemCode)
         
         // Record the change, with quantity cast to a negative number.
         await this.saveTransaction(userID, itemCode, -subQuantity, total, takeReason);
