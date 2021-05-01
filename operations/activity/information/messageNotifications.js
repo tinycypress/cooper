@@ -89,13 +89,17 @@ export default class MessageNotifications {
                 // Access the notification data for this specific channel.
                 const notificationData = STATE.MESSAGE_HISTORY[channelID];
 
+                const authorsArr = Object.keys(notificationData.authors)
+                    .map(authorKey => notificationData.authors[authorKey]);
+
+                authorsArr.sort((a, b) => a < b ? -1 : 1);
+
                 // Add formatted string for posting as notification.
                 const label = notificationData.count > 1 ? 'messages' : 'message';
                 notificationString += `<#${channelID}> ${notificationData.count} ${label}! \n` +
-                    `From: ${Object.keys(notificationData.authors).map(authorKey => {
-                        const { username, count } = notificationData.authors[authorKey];
-                        return `${username} (${count})`;
-                    }).join(', ')}`;
+                    `From: ${authorsArr.map(authorData => 
+                        `${authorData.username} (${authorData.count})`)
+                        .join(', ')}`;
 
                 // Add some line spacing.
                 notificationString += '\n\n';
