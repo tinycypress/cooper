@@ -1,6 +1,6 @@
 import EggHuntMinigame from "../../minigames/small/egghunt";
 
-import COOP, { STATE } from "../../../origin/coop";
+import COOP, { MESSAGES, STATE } from "../../../origin/coop";
 import { CHANNELS } from "../../../origin/config";
 import Axios from "axios";
 
@@ -36,11 +36,13 @@ export default class MiscMessageHandlers {
         const twentyPercRoll = STATE.CHANCE.bool({ likelihood: 20 });
         const isBruh = msg.content.toLowerCase().indexOf('bruh') > -1;
         const isBreh = msg.content.toLowerCase().indexOf('breh') > -1;
-        
+        const isBrah = msg.content.toLowerCase().indexOf('brah') > -1;
+
         // TODO: Account for bruuuh
-        if ((isBreh || isBruh) && !COOP.USERS.isCooperMsg(msg)) {
+        if ((isBreh || isBruh || isBrah) && !COOP.USERS.isCooperMsg(msg)) {
             let type = 'bruh';
             if (isBreh) type = 'breh';
+            if (isBrah) type = 'brah';
             const updatedPoints = await COOP.ITEMS.add(msg.author.id, 'COOP_POINT', twentyPercRoll ? 1 : -1, 'b-roulette');
             setTimeout(async () => {
                 const feedbackMsg = await msg.say(
@@ -190,8 +192,22 @@ export default class MiscMessageHandlers {
         if (msg.author.id === '268163597371310082' && STATE.CHANCE.bool({ likelihood: 0.5 }))
             COOP.MESSAGES.delayReact(msg, '✡️', 333);
 
-        if (msg.author.id === '268163597371310082' && STATE.CHANCE.bool({ likelihood: 0.25 }))
-            COOP.MESSAGES.delayReact(msg, '🚿', 333);
+        // One for Arron
+        if (msg.author.id === '431178585089245184' && STATE.CHANCE.bool({ likelihood: 0.5 }))
+            COOP.MESSAGES.delayReact(msg, '🏃', 333);
+
+
+        // One for Solaris
+        if (msg.author.id === '346149426479235074' && STATE.CHANCE.bool({ likelihood: 1.5 })) {
+            COOP.MESSAGES.delayReact(msg, '✨', 333);
+            STATE.CHANCE.bool({ likelihood: 5 })
+                COOP.MESSAGES.delayReact(msg, '💫', 666);
+
+            STATE.CHANCE.bool({ likelihood: 2.5 })
+                MESSAGES.silentSelfDestruct(msg, '( ´･ω･)', 0, 3000);
+        }
+            
+
 
     }
 }
