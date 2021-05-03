@@ -10,7 +10,7 @@ export default class LeaderboardCommand extends CoopCommand {
 			name: 'leaderboard',
 			group: 'community',
 			memberName: 'leaderboard',
-			aliases: [],
+			aliases: ['lb', 'top'],
 			description: 'polls will always be stolen at The Coop by those who demand them.',
 			details: `Details of the points command`,
 			examples: ['points', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],

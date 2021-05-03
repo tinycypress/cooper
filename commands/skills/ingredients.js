@@ -51,7 +51,7 @@ export default class IngredientsCommand extends CoopCommand {
 			const craftItemEmoji = COOP.MESSAGES.emojiCodeText(itemCode); 
 
 			// Format text and send feedback.
-			const ingredientsText = `Ingredients required for crafting ${craftItemEmoji} ${itemCode}x${qty}: ` + 
+			const ingredientsText = `Ingredients required for crafting ${craftItemEmoji} ${itemCode}x${qty}:\n` + 
 				Object.keys(craftingItem.ingredients).map(ingredKey => {
 					const emoji = COOP.MESSAGES.emojiCodeText(ingredKey);
 					return `${emoji} ${ingredKey}x${craftingItem.ingredients[ingredKey] * qty}`;
