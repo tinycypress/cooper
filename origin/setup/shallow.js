@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP, { ITEMS } from '../coop';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -29,7 +30,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // ITEMS.add('431178585089245184', 'LEADERS_SWORD', 1, 'Fixing election')
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

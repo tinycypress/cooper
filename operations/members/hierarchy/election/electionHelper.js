@@ -130,7 +130,7 @@ export default class ElectionHelper {
         EventsHelper.runInterval(() => this.checkProgress(), baseTickDur);
 
         // Ensure leadership and commander based on items so they are treated seriously.
-        EventsHelper.runInterval(() => this.ensureItemSeriousness(), baseTickDur * 6);
+        EventsHelper.runInterval(() => this.ensureItemSeriousness(), baseTickDur * 3);
     }
 
 
@@ -230,7 +230,7 @@ export default class ElectionHelper {
             const hierarchy = this.calcHierarchy(votes);
            
             // Remove roles from previous hierarchy.
-            await this.resetHierarchyRoles();
+            await this.resetHierarchyRoles(hierarchy);
 
             // Add roles to winners.
             ROLES._add(hierarchy.commander.id, 'COMMANDER');
@@ -263,7 +263,7 @@ export default class ElectionHelper {
             await this.editElectionInfoMsg(declareText);
 
             // Handle election items.
-            await this.resetHierarchyItems();
+            await this.resetHierarchyItems(hierarchy);
 
             // Add the election items.
             COOP.ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1, 'Election victory (commander)');
@@ -275,7 +275,7 @@ export default class ElectionHelper {
         }
     }
 
-    static async resetHierarchyRoles() {
+    static async resetHierarchyRoles(hierarchy) {
         try {
             const exCommander = ROLES._getUsersWithRoleCodes(['COMMANDER']).first();
             const exLeaders = ROLES._getUsersWithRoleCodes(['LEADER']);
@@ -284,22 +284,39 @@ export default class ElectionHelper {
             let index = 0;
             await Promise.all(exLeaders.map(async (exLeader) => {
                 index++;
-                await new Promise(r => setTimeout(r, 777 * index));
-                await ROLES._remove(exLeader.user.id, 'LEADER');
+
+                // Check ex leader is not re-elected.
+                let leaderReElected = false;
+                hierarchy.leaders.map(l => {
+                    if (l.user.id === exLeader.user.id)
+                        leaderReElected = true;
+                });
+                // If it isn't a relected leader, remove role.
+                if (!leaderReElected) {
+                    await new Promise(r => setTimeout(r, 444 * index));
+                    await ROLES._remove(exLeader.user.id, 'LEADER');
+                }
                 return true;
             }));
 
-            // Remove the former commander role.
-            await ROLES._remove(exCommander.user.id, 'COMMANDER');
+            // Check if Commander is re-elected
+            if (exCommander.user.id !== hierarchy.commander.id) {
+                // Remove the former commander role.
+                await ROLES._remove(exCommander.user.id, 'COMMANDER');
+        
+                // Add former commander to ex commander!
+                if (!ROLES._has(exCommander, 'FORMER_COMMANDER')) {
+                    COOP.CHANNELS._postToFeed(`${exCommander.user.username} is recognised as a former commander and allowed access into the former commanders' secret channel!`);
+                    await ROLES._add(exCommander.user.id, 'FORMER_COMMANDER');
     
-            // Add former commander to ex commander!
-            if (!ROLES._has(exCommander, 'FORMER_COMMANDER')) {
-                COOP.CHANNELS._postToFeed(`${exCommander.user.username} is recognised as a former commander and allowed access into the former commanders' secret channel!`);
-                await ROLES._add(exCommander.user.id, 'FORMER_COMMANDER');
-
-                // Update last served data for the former commander.
-                // last_served
+                    // Update last served data for the former commander.
+                    // last_served
+                }
+            } else {
+                COOP.CHANNELS._postToFeed(`${exCommander.user.username} is re-elected as Commander for another term!`);
             }
+
+
     
             return true;
 
@@ -309,19 +326,28 @@ export default class ElectionHelper {
         }
     }
 
-    static async resetHierarchyItems() {
+    static async resetHierarchyItems(hierarchy) {
         try {
             // Load hierarchy of users (role-based hierarchy).
             const leaderItems = await COOP.ITEMS.getUsersWithItem('LEADERS_SWORD');
             const commanderItems = await COOP.ITEMS.getUsersWithItem('ELECTION_CROWN');        
 
-            // Remove all of the sworsd from the old leaders.
-            // TODO: Refactor to a more optimised method.
-            leaderItems.map(exLeader => 
-                COOP.ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD', 1, 'Election reset'));
+            // Remove all of the swords from the old leaders.            
+            leaderItems.map(async exLeader => {
+                // Check ex leader is not re-elected.
+                let leaderReElected = false;
+                hierarchy.leaders.map(l => {
+                    if (l.user.id === exLeader.owner_id)
+                        leaderReElected = true;
+                });
+                // If it isn't a relected leader, remove role.
+                if (!leaderReElected)
+                    COOP.ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD', 1, 'Election reset');
+            });
 
-            // Remove the commander crown item from the (now) ex commander.
-            if (commanderItems) 
+            // Remove commander crown if not re-elected.
+            const exCommanderID = commanderItems[0].owner_id;
+            if (exCommanderID !== hierarchy.commander.id) 
                 COOP.ITEMS.subtract(commanderItems[0].owner_id, 'ELECTION_CROWN', 1, 'Election reset');
 
         } catch(e) {
