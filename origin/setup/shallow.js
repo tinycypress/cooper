@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, {} from '../coop';
+import COOP, { ITEMS } from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -28,6 +28,9 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+        // ITEMS.add('431178585089245184', 'LEADERS_SWORD', 1, 'Fixing election')
+
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

@@ -20,41 +20,39 @@ export default class Statistics {
         // STATE.REACTION_HISTORY
     }
 
-    static calcCommunityVelocity() {
-        // TODO/REVIEW: This should read from last database value?
-        let velocity = 0;
+static calcCommunityVelocity() {
+    // TODO/REVIEW: This should read from last database value?
+    let velocity = 0;
 
-        // Calculate the number of current users to adjust ratios.
-        const numUsers = ServerHelper._count();
+    // Calculate the number of current users to adjust ratios.
+    const numUsers = ServerHelper._count();
 
+    // TODO: Add the ratio of active users compared to offline.
 
-        // TODO: Add the ratio of active users compared to offline.
+    // Add score of messages (1 per message).
+    const totalMsgs = MessageNotifications.getFreshMsgTotalCount();
+    const beakAverage = totalMsgs / numUsers;
+    const msgPerBeak = isNaN(beakAverage) ? 0 : beakAverage;
 
+    const activeChannels = Object.keys(STATE.MESSAGE_HISTORY);
+    const channelAverage = msgPerBeak / activeChannels.length;
+    const msgPerChannel = isNaN(channelAverage) ? 0 : channelAverage;
 
-        // Add score of messages (1 per message).
-        const totalMsgs = MessageNotifications.getFreshMsgTotalCount();
-        const beakAverage = totalMsgs / numUsers;
-        const msgPerBeak = isNaN(beakAverage) ? 0 : beakAverage;
+    // Calculate the number of active talkers adjusted for average.
+    const activeMessagers = activeChannels.reduce((acc, channelID) => {
+        const authors = STATE.MESSAGE_HISTORY[channelID].authors;
+        const numAuthors = Object.keys(authors).length;
+        return acc += numAuthors / numUsers;
+    }, 0);
 
-        const activeChannels = Object.keys(STATE.MESSAGE_HISTORY);
-        const channelAverage = msgPerBeak / activeChannels.length;
-        const msgPerChannel = isNaN(channelAverage) ? 0 : channelAverage;
+    // TODO: Adjust / little bonus for more active messagers.
+    velocity += activeMessagers;
 
-        // Calculate the number of active talkers adjusted for average.
-        const activeMessagers = activeChannels.reduce((acc, channelID) => {
-            const authors = STATE.MESSAGE_HISTORY[channelID].authors;
-            const numAuthors = Object.keys(authors).length;
-            return acc += numAuthors / numUsers;
-        }, 0);
+    // Add velocity for the channel activity.
+    velocity += msgPerChannel;
 
-        // TODO: Adjust / little bonus for more active messagers.
-        velocity += activeMessagers;
-
-        // Add velocity for the channel activity.
-        velocity += msgPerChannel;
-
-        return velocity;
-    }
+    return velocity;
+}
 
     // Use this to calculate and update community velocity.
     // TODO: Drop rates command and velocity command for comparison.
