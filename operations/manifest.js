@@ -64,6 +64,22 @@ export const VELOCITY_EVENTS = {
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
 export default function eventsManifest() {
 
+  // TODO: This does not seem sufficient?
+  // Spam talk with low probability, low lifespan messages:
+  // Skill scores, item circulation, leaderboard, tip, latest trades
+  // TODO: Update and create most items role
+  // If easter, double egg spawns too.
+  // TODO: Add a !bang very, very, rarely.
+  EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
+  
+
+
+
+
+
+
+
+
   // Core tick handler for more granularity over timing.
   EventsHelper.runInterval(() => SERVER.tick(), 30000);
 
@@ -101,22 +117,10 @@ export default function eventsManifest() {
   EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 20, baseTickDur * 12);
   EventsHelper.chanceRunInterval(() => ProspectHelper.randomReady(), 20, baseTickDur * 14);
 
-  // TODO: This does not seem sufficient?
-  EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
 
-
-  // TODO:
-  // Spam talk with low probability, low lifespan messages:
-  // Skill scores, item circulation, leaderboard, tip, latest trades
-
-  // TODO: Incomplete.
   EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 45, baseTickDur * 4);
 
-  // Minigame related items.
-  
-  // TODO: Needs a lot more effort.
   EventsHelper.runInterval(() => CooperMorality.evaluate(), baseTickDur * 4.5);
-
 
   // Update person with most points role.
   EventsHelper.runInterval(() => COOP.POINTS.updateCurrentWinner(), baseTickDur * 3);
@@ -126,12 +130,6 @@ export default function eventsManifest() {
 
   // Update person in the community economy with MOST_ITEMS and give role/reward.
   EventsHelper.runInterval(() => COOP.ITEMS.updateMostItems(), baseTickDur * 3);
-
-
-
-
-
-  // If easter, double egg spawns too.
   
   // Holiday related!
   EventsHelper.chanceRunInterval(() => EasterMinigame.run(), 33, baseTickDur / 3);
@@ -141,14 +139,6 @@ export default function eventsManifest() {
 
   // Clean up CONQUEST buffs/item effects.
   EventsHelper.runInterval(() => BuffsHelper.cleanupExpired(), baseTickDur / 3);
-
-  // TODO: Update and create most items role
- 
-
-
-  // TODO: Add a !bang very, very, rarely.
-
-
 
   // Miscellaneous features.
   EventsHelper.chanceRunInterval(() => {

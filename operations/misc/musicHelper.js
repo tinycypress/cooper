@@ -16,8 +16,10 @@ export default class MusicHelper {
         return STATE.VOICE_CONNECTION;
     }
 
-    // TODO: Play the url passed.
+    // Play the url passed.
     static async play(stream) {
+        // TODO: Fade the volume down (blend into next url/track)
+
         // Connect, may have disconnected.
         await this.connect();
 
@@ -41,7 +43,11 @@ export default class MusicHelper {
         }, 150);
 
         // Leave if nothing else is queued?
-        this.STREAM_DISPATCHER.on("finish", () => STATE.VOICE_CONNECTION.leave());
+        this.STREAM_DISPATCHER.on("finish", () => {
+            // Disconnect on finish.
+            CHANNELS._getCode('STREAM_ACTUAL').join()
+                .then(conn => conn.disconnect());
+        });
 
         // Always remember to handle errors appropriately!
         this.STREAM_DISPATCHER.on('error', console.error);
