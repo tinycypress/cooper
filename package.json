@@ -20,6 +20,7 @@
     "block_io": "^3.0.4",
     "chance": "^1.1.7",
     "cors": "^2.8.5",
+    "discord-ytdl-core": "^5.0.3",
     "discord.js": "^12.3.1",
     "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
     "dotenv": "^8.2.0",
@@ -30,10 +31,12 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "node-eval": "^2.0.0",
+    "node-opus": "^0.3.3",
     "pg": "^8.4.1",
     "pg-format": "^1.0.4",
     "pg-promise": "^10.7.0",
-    "sugar": "^2.0.6"
+    "sugar": "^2.0.6",
+    "ytdl-core": "^4.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",

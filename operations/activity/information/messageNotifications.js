@@ -1,5 +1,5 @@
 import Statistics from './statistics';
-import COOP, { STATE } from '../../../origin/coop';
+import COOP, { CHANNELS, STATE } from '../../../origin/coop';
 
 export default class MessageNotifications {
 
@@ -123,8 +123,8 @@ export default class MessageNotifications {
                     this.clear(channelID);
                 });
     
-                // Edit the message in about channel.
-                COOP.CHANNELS._postToFeed(notificationString, 4444);
+                // Spam leaders with it - their problem.
+                CHANNELS._send('LEADERS', notificationString);
             }
         } catch(e) {
             console.log('Error posting latest messages.');

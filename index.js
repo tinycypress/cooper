@@ -9,8 +9,12 @@ import registerLogging from './origin/setup/logging';
 import eventsManifest from './operations/manifest';
 
 // Singleton state accessor
-import { STATE } from './origin/coop';
+import { STATE, CHANNELS } from './origin/coop';
+import MusicHelper from './operations/misc/musicHelper';
 
+
+// Help debugging the ghost errors from promises/rejects.
+process.on("unhandledRejection", console.error);
 
 // Run the production bot.
 bootstrap();
@@ -44,4 +48,8 @@ export default async function bootstrap() {
     // const randomItem = STATE.CHANCE.pickone(items);
     // const itemEmoji = MESSAGES.emojiCodeText(randomItem);
     botClient.user.setActivity(`!help... STRUCTURE REFORM`, { type: 'WATCHING' });
+
+
+    // Connect to the music stream.
+    MusicHelper.connect();
 }

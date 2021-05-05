@@ -4,6 +4,9 @@ const STATE = {
     // The DiscordJS/Commando client.
     CLIENT: null,
 
+    // Voice connection
+    VOICE_CONNECTION: null,
+
     // Internal memory/ephemeral.
         // Message ephemeral state for tracking message updates/notifications
         MESSAGE_HISTORY: {},

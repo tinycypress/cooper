@@ -216,7 +216,7 @@ export default class ChannelHelper {
         // TODO: Refactor into drop table, where it can be reused.
 
         // List of channels to not post to, maybe should reuse somewhere.
-        const filteredChannels = ['ENTRY', 'INTRO', 'LEADERS'];
+        const filteredChannels = ['ENTRY', 'INTRO', 'LEADERS', 'STREAM_ACTUAL'];
 
         // Prevent egg and crate drops in unverified channels.
         const filteredKeys = Object.keys(CHANNELS_CONFIG)
