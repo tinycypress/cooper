@@ -11,7 +11,7 @@ export default class MusicHelper {
         STATE.VOICE_CONNECTION = await stream.join();
 
         // Is the sub-property "voice" necessary? :think:
-        VOICE_CONNECTION.voice.setSelfDeaf(true);
+        await STATE.VOICE_CONNECTION.voice.setSelfDeaf(true);
 
         return STATE.VOICE_CONNECTION;
     }

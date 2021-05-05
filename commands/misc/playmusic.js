@@ -12,7 +12,7 @@ export default class PlayMusicCommand extends CoopCommand {
 			memberName: 'playmusic',
 			aliases: ['pm', 'pmusic'],
 			description: 'Plays music by taking youtube links',
-			examples: ['!playmusic', '!playmusic example?'],
+			examples: ['!playmusic <YT_LINK>', '!pm <YT_LINK>', '!playmusic example?'],
 			args: [
 				{
 					key: 'link',
