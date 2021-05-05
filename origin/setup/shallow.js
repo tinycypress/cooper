@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop';
-import MusicHelper from '../../operations/misc/musicHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
