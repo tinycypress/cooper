@@ -16,6 +16,7 @@
   "author": "x",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.5.0",
     "axios": "^0.21.1",
     "block_io": "^3.0.4",
     "chance": "^1.1.7",
@@ -28,7 +29,7 @@
     "ffmpeg-static": "^4.3.0",
     "imgur": "^0.3.1",
     "is-promise": "^4.0.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-eval": "^2.0.0",
     "node-opus": "^0.3.3",
