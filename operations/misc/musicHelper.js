@@ -1,5 +1,5 @@
 import { CHANNELS, STATE } from "../../origin/coop";
-import ytdl from 'discord-ytdl-core';
+import ytdl from 'ytdl-core';
 
 export default class MusicHelper {
 
@@ -16,31 +16,45 @@ export default class MusicHelper {
         return STATE.VOICE_CONNECTION;
     }
 
+    
+    static rampVolume(targetVol) {
+        // Gradually increase/decrease the volume.
+        let currentVolume = 0;
+        const rampInterval = setInterval(() => {                           
+            // Handle the ramp directions differently.
+            if (targetVol > 0) {
+                currentVolume += .1
+                if (currentVolume >= targetVol) 
+                    clearInterval(rampInterval);
+            } else {
+                currentVolume -= .1;
+                if (currentVolume <= targetVol) 
+                    clearInterval(rampInterval);
+            }
+
+            // Apply the decreased % volume level.
+            this.STREAM_DISPATCHER.setVolume(currentVolume);
+        }, 500);
+    }
+
+    static crossfade(stream) {
+        // Gradually decrease the volume.
+        this.rampVolume(0);
+
+        // Play the stream.
+        this.STREAM_DISPATCHER = STATE.VOICE_CONNECTION.play(stream, { volume: 0 });
+
+        // Gradually increase the volume.
+        this.rampVolume(0.25);
+    }
+
     // Play the url passed.
     static async play(stream) {
-        // TODO: Fade the volume down (blend into next url/track)
-
         // Connect, may have disconnected.
         await this.connect();
 
-        // Play the stream.
-        this.STREAM_DISPATCHER = STATE.VOICE_CONNECTION.play(stream, { 
-            type: "opus",
-            volume: 0
-        });
-
-        // Gradually increase the volume.
-        let volume = 0;
-        const i = setInterval(() => {               
-            // Stop if all volume increases have been accomplished.
-            if (volume >= .30) clearInterval(i);
-
-            // Count the level as applied.
-            volume += .1;
-
-            // Apply the increased % volume level.
-            this.STREAM_DISPATCHER.setVolume(0.25);
-        }, 150);
+        // Blend the tracks.
+        this.crossfade(stream);
 
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
@@ -68,11 +82,7 @@ export default class MusicHelper {
 
     static load(url) {
         // Create a non mp4 write stream, needs to be:
-        return ytdl(url, {
-            filter: "audioonly",
-            opusEncoded: true,
-            encoderArgs: ['-af', 'bass=g=10,dynaudnorm=f=200']
-        });
+        return ytdl(url, { filter: "audioonly" });
     }
 
     // static async queue() {}

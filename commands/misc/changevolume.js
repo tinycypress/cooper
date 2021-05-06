@@ -1,6 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { MESSAGES } from '../../origin/coop';
-import ytdl from 'discord-ytdl-core';
 import MusicHelper from '../../operations/misc/musicHelper';
 
 export default class ChangeVolumeCommand extends CoopCommand {
