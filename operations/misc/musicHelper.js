@@ -59,7 +59,12 @@ export default class MusicHelper {
     static async playNext() {
         const link = this.QUEUE[0];
         const track = this.load(link);
+
+        // Attempt to play.
         this.play(track);
+
+        // After attempt to play remove from queue.
+        this.QUEUE.shift();
     }
 
     // Play the url passed.
@@ -69,9 +74,6 @@ export default class MusicHelper {
 
         // Blend the tracks.
         this.crossfade(stream);
-
-        // After attempt to play remove from queue.
-        this.QUEUE.shift();
 
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
@@ -105,7 +107,7 @@ export default class MusicHelper {
         return ytdl(url, { filter: "audioonly" });
     }
 
-    static async queue(link) {
+    static queue(link) {
 
         console.log('pushing', link);
 

@@ -36,23 +36,19 @@ export default class PlayMusicCommand extends CoopCommand {
 
 		console.log('QUEUE', MusicHelper.QUEUE);
 
-		// If queue empty start immediately.
-		if (MusicHelper.QUEUE.length === 0) {
-			// Play
-			const track = MusicHelper.load(link);
-			MusicHelper.play(track);
 
-		// Otherwise queue it for playing when previous completes.
-		} else {
-			// Approve adding to queue - democratic?
-			MusicHelper.queue(link);
+		// Approve adding to queue - democratic?
+		MusicHelper.queue(link);
 
+
+		if (MusicHelper.QUEUE.length === 1)
+			MusicHelper.playNext();
+		else {
 			// Indicate queueing success.
 			const queueText = `Added your link <${link}> to the queue.` 
 				+ MusicHelper.QUEUE.join(', ') + '.';
 			MESSAGES.selfDestruct(msg, queueText, 0, 10000);
 		}
-
     }
     
 }
