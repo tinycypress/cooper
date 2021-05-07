@@ -62,9 +62,6 @@ export default class MusicHelper {
 
         // Attempt to play.
         this.play(track);
-
-        // After attempt to play remove from queue.
-        this.QUEUE.shift();
     }
 
     // Play the url passed.
@@ -77,9 +74,13 @@ export default class MusicHelper {
 
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
-            if (this.QUEUE.length > 0)
+            if (this.QUEUE.length > 0) {
+                // Remove completed track from queue.
+                this.QUEUE.shift();
+                
+                // Play the next track.
                 this.playNext();
-            else 
+            } else 
                 // Disconnect on finish.
                 CHANNELS._getCode('STREAM_ACTUAL').join()
                     .then(conn => conn.disconnect());
