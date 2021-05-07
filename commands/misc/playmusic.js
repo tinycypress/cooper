@@ -34,19 +34,15 @@ export default class PlayMusicCommand extends CoopCommand {
 		if (!ytdl.validateURL(link))
 			return MESSAGES.selfDestruct(msg, 'Cannot parse music link. Try another.');
 
-		console.log('QUEUE', MusicHelper.QUEUE);
-
-
 		// Approve adding to queue - democratic?
 		MusicHelper.queue(link);
 
-
-		if (MusicHelper.QUEUE.length === 1)
-			MusicHelper.playNext();
+		// If the track we just queued is the only queue item, start playing.
+		if (MusicHelper.QUEUE.length === 1) MusicHelper.playNext();
 		else {
 			// Indicate queueing success.
 			const queueText = `Added your link <${link}> to the queue.` 
-				+ MusicHelper.QUEUE.join(', ') + '.';
+				+ MusicHelper.QUEUE.map(l => `<${l}>`).join(', ') + '.';
 			MESSAGES.selfDestruct(msg, queueText, 0, 10000);
 		}
     }
