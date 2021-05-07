@@ -107,10 +107,14 @@ export default class MusicHelper {
 
     static async queue(link) {
 
+        console.log('pushing', link);
+
         // Add the track to the music queue.
         this.QUEUE.push(link);
+
+        console.log(this.QUEUE)
     }
-    
+
     // static async unqueue() {}
 
 }
