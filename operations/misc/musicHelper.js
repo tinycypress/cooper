@@ -5,6 +5,8 @@ export default class MusicHelper {
 
     static STREAM_DISPATCHER = null;
 
+    static QUEUE = [];
+
     static async connect() {
         // Join the stream channel in order to be the music bot.
         const stream = CHANNELS._getCode('STREAM_ACTUAL');
@@ -38,14 +40,26 @@ export default class MusicHelper {
     }
 
     static crossfade(stream) {
-        // Gradually decrease the volume.
-        this.rampVolume(0);
+        try {
+            // Gradually decrease the volume.
+            this.rampVolume(0);
+    
+            // Play the stream.
+            this.STREAM_DISPATCHER = STATE.VOICE_CONNECTION.play(stream, { volume: 0 });
+    
+            // Gradually increase the volume.
+            this.rampVolume(0.25);
+        } catch(e) {
+            console.log('Error playing stream:');
+            console.log(e.message, e.reason);
+            console.error(e);
+        }
+    }
 
-        // Play the stream.
-        this.STREAM_DISPATCHER = STATE.VOICE_CONNECTION.play(stream, { volume: 0 });
-
-        // Gradually increase the volume.
-        this.rampVolume(0.25);
+    static async playNext() {
+        const link = this.QUEUE[0];
+        const track = this.load(link);
+        this.play(track);
     }
 
     // Play the url passed.
@@ -56,11 +70,17 @@ export default class MusicHelper {
         // Blend the tracks.
         this.crossfade(stream);
 
+        // After attempt to play remove from queue.
+        this.QUEUE.shift();
+
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
-            // Disconnect on finish.
-            CHANNELS._getCode('STREAM_ACTUAL').join()
-                .then(conn => conn.disconnect());
+            if (this.QUEUE.length > 0)
+                this.playNext();
+            else 
+                // Disconnect on finish.
+                CHANNELS._getCode('STREAM_ACTUAL').join()
+                    .then(conn => conn.disconnect());
         });
 
         // Always remember to handle errors appropriately!
@@ -85,7 +105,12 @@ export default class MusicHelper {
         return ytdl(url, { filter: "audioonly" });
     }
 
-    // static async queue() {}
+    static async queue(link) {
+
+        // Add the track to the music queue.
+        this.QUEUE.push(link);
+    }
+    
     // static async unqueue() {}
 
 }
