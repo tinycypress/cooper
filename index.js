@@ -9,16 +9,17 @@ import registerLogging from './origin/setup/logging';
 import eventsManifest from './operations/manifest';
 
 // Singleton state accessor
-import { STATE, CHANNELS } from './origin/coop';
+import { STATE } from './origin/coop';
 import MusicHelper from './operations/misc/musicHelper';
 
-
 // Help debugging the ghost errors from promises/rejects.
-process.on("unhandledRejection", console.error);
+process.on("unhandledRejection", e => {
+    console.error(e);
+    console.log('UNHANDLED REJECTION ABOVE');
+});
 
 // Run the production bot.
 bootstrap();
-
 
 // Define the production bot.
 export default async function bootstrap() {
@@ -28,7 +29,7 @@ export default async function bootstrap() {
     // Setup the bot wallet for economy reserves.
     STATE.WALLET = new BlockIO(process.env.BITCOIN_APIKEY, process.env.WALLET_PIN);
 
-    // Connect to PostGres Database
+    // Connect to PostGres Database and attach event/error handlers.
     await Database.connect();
 
     // Login to Discord with the bot.
@@ -44,11 +45,7 @@ export default async function bootstrap() {
     await CDNManager.start();
 
     // Set activity.
-    // const items = UsableItemHelper.getUsableItems();
-    // const randomItem = STATE.CHANCE.pickone(items);
-    // const itemEmoji = MESSAGES.emojiCodeText(randomItem);
     botClient.user.setActivity(`!help... STRUCTURE REFORM`, { type: 'WATCHING' });
-
 
     // Connect to the music stream.
     MusicHelper.connect();

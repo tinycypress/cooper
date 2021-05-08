@@ -1,4 +1,5 @@
 import Client from 'pg/lib/client';
+import { CHANNELS } from '../coop';
 
 export default class Database {
 
@@ -16,7 +17,15 @@ export default class Database {
 
         client.on('error', e => {
             console.error(e);
-        })
+
+            // Detect connection severed and restart.
+            console.log(e.message, e.reason);
+            if (e.message.includes('is not queryable')) {
+                console.log('Lost database connection');
+                CHANNELS._tempSend('TALK', 'Seppuku?');
+                // process.exit()
+            }
+        });
 
         this.connection = client;
     }
