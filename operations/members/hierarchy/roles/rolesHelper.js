@@ -87,20 +87,18 @@ export default class RolesHelper {
 
     static async toggle(userID, roleCode) {
         try {
+            if (!Object.keys(ROLES_CONFIG).includes(roleCode)) return false;
+
             const member = COOP.USERS._getMemberByID(userID);
 
-            if (this._idHasCode(userID, 'MEMBER')) {
+            // TODO: Track roles self-changed as statistic.
+            if (!member) return false;
+
+            if (!this._idHasCode(userID, 'MEMBER')) {
                 // TODO: Remove non-members reactions.
                 // TODO: Try to send a message stating they need to be approved?
                 return false;
             }
-
-
-            // TODO: Track roles self-changed as statistic.
-            if (!member) return false;
-            if (!Object.keys(ROLES_CONFIG).includes(roleCode)) return false;
-
-
     
             // Check if user has it or not.
             const hasRoleAlready = COOP.USERS.hasRoleID(member, ROLES_CONFIG[roleCode].id);
