@@ -1,6 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import { MESSAGES } from '../../origin/coop';
-import MusicHelper from '../../operations/misc/musicHelper';
+import { MESSAGES, CHANNELS } from '../../origin/coop';
 
 export default class MuzzleCooperCommand extends CoopCommand {
 

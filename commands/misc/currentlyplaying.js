@@ -24,7 +24,7 @@ export default class CurrentlyPlayingCommand extends CoopCommand {
 			MESSAGES.selfDestruct(msg, noTrackText, 0, 10000);
 		} else {
 			// Indicate queueing success.
-			const currentPlayingText = `Currently playing: ${MusicHelper.QUEUE[0]}` ;
+			const currentPlayingText = `Currently playing: ${MusicHelper.CURRENTLY_PLAYING}` ;
 			MESSAGES.selfDestruct(msg, currentPlayingText, 0, 10000);
 		}
 

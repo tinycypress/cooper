@@ -5,6 +5,7 @@ export default class MusicHelper {
 
     static STREAM_DISPATCHER = null;
 
+    static CURRENTLY_PLAYING = null;
     static QUEUE = [];
 
     static async connect() {
@@ -16,6 +17,14 @@ export default class MusicHelper {
         await STATE.VOICE_CONNECTION.voice.setSelfDeaf(true);
 
         return STATE.VOICE_CONNECTION;
+    }
+
+    static disconnect() {
+        if (STATE.VOICE_CONNECTION && typeof STATE.VOICE_CONNECTION === 'function')
+            STATE.VOICE_CONNECTION.disconnect();
+
+        // This definitely works but above is clearer/faster/UNTESTED.
+        CHANNELS._getCode('STREAM_ACTUAL').join().then(conn => conn.disconnect());
     }
 
     
@@ -60,6 +69,9 @@ export default class MusicHelper {
         const link = this.QUEUE[0];
         const track = this.load(link);
 
+        // Remove attempt track from queue.
+        this.CURRENTLY_PLAYING = this.QUEUE.shift();
+
         // Attempt to play.
         this.play(track);
     }
@@ -74,16 +86,12 @@ export default class MusicHelper {
 
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
-            if (this.QUEUE.length > 0) {
-                // Remove completed track from queue.
-                this.QUEUE.shift();
-                
+            if (this.QUEUE.length > 0) {              
                 // Play the next track.
                 this.playNext();
             } else 
                 // Disconnect on finish.
-                CHANNELS._getCode('STREAM_ACTUAL').join()
-                    .then(conn => conn.disconnect());
+                this.disconnect();
         });
 
         // Always remember to handle errors appropriately!
