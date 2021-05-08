@@ -18,9 +18,9 @@ export default class CurrentlyPlayingCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 		
-		if (MusicHelper.QUEUE.length <= 0) {
+		if (!MusicHelper.CURRENTLY_PLAYING) {
 			// Indicate queueing success.
-			const noTrackText = `No tracks currently queued. !pm <link> to add to queue.` ;
+			const noTrackText = `No track currently playing. !pm <link> to add to queue.` ;
 			MESSAGES.selfDestruct(msg, noTrackText, 0, 10000);
 		} else {
 			// Indicate queueing success.
