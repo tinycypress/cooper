@@ -38,7 +38,7 @@ export default class PlayMusicCommand extends CoopCommand {
 		MusicHelper.queue(link);
 
 		// If the track we just queued is the only queue item, start playing.
-		if (MusicHelper.QUEUE.length === 1) MusicHelper.playNext();
+		if (!MusicHelper.CURRENTLY_PLAYING) MusicHelper.playNext();
 		else {
 			// Indicate queueing success.
 			const queueText = `Added your link <${link}> to the queue.` 
