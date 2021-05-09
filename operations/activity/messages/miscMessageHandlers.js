@@ -206,8 +206,11 @@ export default class MiscMessageHandlers {
             STATE.CHANCE.bool({ likelihood: 2.5 })
                 MESSAGES.silentSelfDestruct(msg, '( ´･ω･)', 0, 3000);
         }
-            
 
+        if (msg.author.id === '837582425164873739' && STATE.CHANCE.bool({ likelihood: 1.5 })) {
+            COOP.MESSAGES.delayReact(msg, '🍄', 666);
+        }
+        
 
     }
 }
