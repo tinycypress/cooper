@@ -60,7 +60,6 @@ export default class MusicHelper {
             this.rampVolume(0.25);
         } catch(e) {
             console.log('Error playing stream:');
-            console.log(e.message, e.reason);
             console.error(e);
         }
     }

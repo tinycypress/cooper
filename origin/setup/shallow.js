@@ -28,37 +28,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
-        const msg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/762472730980515870/811321280682655784')
-
-
-
-
-        MESSAGES.delayEdit(msg, 
-            "**Community Games (Opt in) 🎲**\n" +
-
-            "We have a few games and features here that you may access by opt-ing in, we default to off to limit \"spam\" notifications.\n\n" +
-            
-            "**Gaming 🎮**\n" +
-            "_To discuss games and arrange to play games with other members._\n\n" +
-            
-            "**Conquest 🗡 **\n" +
-            "_Work in progress category for inter-communal conflict._\n\n" +
-
-            "**Logs 📉**\n" +
-            "_Logs and statistics for those who are **too interested**._"
-        );
-
-
-        // MESSAGES.delayReact(msg, '📉');
-
-        // console.log(msg.content);
-        // Add reaction
-        // 📉
-
-        // Edit this message
-        // https://discord.com/channels/723660447508725802/762472730980515870/811321280682655784
         
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

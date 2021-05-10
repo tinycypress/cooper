@@ -15,6 +15,7 @@ import MusicHelper from './operations/misc/musicHelper';
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
     console.error(e);
+    console.log(e.message, e.reason);
     console.log('UNHANDLED REJECTION ABOVE');
 });
 
