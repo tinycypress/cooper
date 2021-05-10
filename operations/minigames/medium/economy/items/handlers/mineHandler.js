@@ -1,4 +1,4 @@
-import { MESSAGES, USERS } from "../../../../../../origin/coop";
+import { MESSAGES, USERS, ITEMS } from "../../../../../../origin/coop";
 
 export default class MineHandler {
 
@@ -8,8 +8,8 @@ export default class MineHandler {
 
     static async onReaction(reaction, user) {
         // Check reaction emoji is MINE
-        const reactEmojiFlake = `:${emoji.name}:${emoji.id}`;
-        if (reactEmojiFlake !== COOP.ITEMS.codeToFlake('MINE')) return false;
+        const reactEmojiFlake = `:${reaction.emoji.name}:${reaction.emoji.id}`;
+        if (reactEmojiFlake !== ITEMS.codeToFlake('MINE')) return false;
 
         if (USERS.isCooper(user.id)) return false;
 

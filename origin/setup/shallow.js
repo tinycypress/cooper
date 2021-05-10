@@ -3,9 +3,8 @@ import Database from './database';
 import dotenv from 'dotenv';
 
 
-
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, MESSAGES } from '../coop';
+import COOP from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
