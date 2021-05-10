@@ -55,7 +55,7 @@ export default class WoodcuttingMinigame {
         
         // Calculate number of extracted wood with applied collab buff/modifier.
         const numCutters = REACTIONS.countType(msg, '🪓') - 1;
-        const extractedWoodNum = Math.ceil(rewardRemaining / 1.25) * numCutters;
+        const extractedWoodNum = Math.max(0, Math.ceil(rewardRemaining / 1.25) * numCutters);
 
 
         const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });
