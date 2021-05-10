@@ -58,7 +58,7 @@ export default class AboutHelper {
         const reactEmoji = reaction.emoji.name;
 
         // Check if this reaction is on about channel.
-        if (reaction.message.channel.id !== CHANNELS_CONFIG.ABOUT.id) return false;
+        if (reaction.message.channel.id !== CHANNELS_CONFIG.ROLES.id) return false;
 
         // Ignore Cooper.
         if (COOP.USERS.isCooper(user.id)) return false;

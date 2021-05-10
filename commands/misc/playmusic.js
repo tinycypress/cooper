@@ -35,7 +35,7 @@ export default class PlayMusicCommand extends CoopCommand {
 			return MESSAGES.selfDestruct(msg, 'Cannot parse music link. Try another.');
 
 		// Approve adding to queue - democratic?
-		MusicHelper.queue(link);
+		MusicHelper.QUEUE.push(link);
 
 		// If the track we just queued is the only queue item, start playing.
 		if (!MusicHelper.CURRENTLY_PLAYING) MusicHelper.playNext();

@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { MESSAGES } from '../coop';
+import COOP, { CHANNELS, MESSAGES } from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -28,6 +28,8 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+
         
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

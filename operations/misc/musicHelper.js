@@ -58,6 +58,9 @@ export default class MusicHelper {
     
             // Gradually increase the volume.
             this.rampVolume(0.25);
+
+            // Return newly created dispatcher/stream controller.
+            return this.STREAM_DISPATCHER;
         } catch(e) {
             console.log('Error playing stream:');
             console.error(e);
@@ -66,7 +69,7 @@ export default class MusicHelper {
 
     static async playNext() {
         const link = this.QUEUE[0];
-        const track = this.load(link);
+        const track = ytdl(link, { filter: "audioonly" });
 
         // Attempt to play.
         this.play(track, link);
@@ -81,29 +84,20 @@ export default class MusicHelper {
         await this.connect();
 
         // Blend the tracks.
-        this.crossfade(stream);
+        const dispatcher = this.crossfade(stream);
 
         // Indicate that the stream has started.
-        this.STREAM_DISPATCHER.on('start', () => {
-            // Indicate currently playing since successfully started.
-            this.CURRENTLY_PLAYING = null;
-        });
+        dispatcher.on('start', () => this.CURRENTLY_PLAYING = link);
 
         // Leave if nothing else is queued?
-        this.STREAM_DISPATCHER.on("finish", () => {
+        dispatcher.on("finish", () => {
             // There's nothing now playing due to finish.
             this.CURRENTLY_PLAYING = null;
 
-            if (this.QUEUE.length <= 0) {              
-                // Play the next track.
-                this.playNext();
-            } else 
-                // Disconnect on finish.
-                this.disconnect();
+            // Play the next track if there is one.
+            if (this.QUEUE.length <= 0) this.playNext();
+            else this.disconnect();
         });
-
-        // Always remember to handle errors appropriately!
-        this.STREAM_DISPATCHER.on('error', console.error);
     }
 
     static async pause() {
@@ -118,17 +112,4 @@ export default class MusicHelper {
     static setVolume(vol) {
         return this.STREAM_DISPATCHER.setVolume(vol);
     }
-
-    static load(url) {
-        // Create a non mp4 write stream, needs to be:
-        return ytdl(url, { filter: "audioonly" });
-    }
-
-    static queue(link) {
-        // Add the track to the music queue.
-        this.QUEUE.push(link);
-    }
-
-    // static async unqueue() {}
-
 }
