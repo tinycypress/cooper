@@ -20,7 +20,9 @@ export default class AllTracksCommand extends CoopCommand {
 		// Indicate queueing success.
 		const tracksString = MusicHelper.QUEUE.map(l => `<${l}>`).join(', ');
 		const queueText = `**Queued tracks:**\n\n` +
-			MusicHelper.QUEUE.length > 0 ? `${tracksString}.` : 'No queued tracks currently.';
+			MusicHelper.QUEUE.length >= 0 ? `${tracksString}.` : 'No queued tracks currently.';
+
+		console.log(MusicHelper.QUEUE);
 			
 		MESSAGES.selfDestruct(msg, queueText, 0, 10000);
     }
