@@ -1,10 +1,9 @@
-import { CHANNELS, STATE } from "../../origin/coop";
+import { CHANNELS, MESSAGES, STATE } from "../../origin/coop";
 import ytdl from 'ytdl-core';
 
 export default class MusicHelper {
 
     static STREAM_DISPATCHER = null;
-
     static CURRENTLY_PLAYING = null;
     static QUEUE = [];
 
@@ -73,6 +72,9 @@ export default class MusicHelper {
 
         // Attempt to play.
         this.play(track, link);
+
+        // Inform stream track is changing.
+        MESSAGES.selfDestruct(CHANNELS._getCode('STREAM'), 'Next up: ' + link, 0, 15000);
         
         // Remove attempt track from queue.
         this.QUEUE.shift();
