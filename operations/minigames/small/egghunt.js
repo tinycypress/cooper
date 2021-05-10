@@ -184,7 +184,7 @@ export default class EggHuntMinigame {
 
                 // Generate feedback test based on the changes.
                 const feedbackText = `${user.username} fried <${emoji}>! ` +
-                    `Resulting in ${actionReward} point(s) change (now ${updatedPoints}) and 5 cooking XP!`;
+                    `Resulting in ${actionReward} point(s) change (now ${ITEMS.displayQty(updatedPoints)}) and 5 cooking XP!`;
                 
                 // Delete the original egg, now it has been fried.
                 await reaction.message.delete();
