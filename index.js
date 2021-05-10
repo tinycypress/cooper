@@ -14,8 +14,11 @@ import MusicHelper from './operations/misc/musicHelper';
 
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
+    if (e.message.includes('No video id found')) return false;
+    
     console.error(e);
-    console.log(e.message, e.reason);
+    console.error(e.message, e.reason);
+    
     console.log('UNHANDLED REJECTION ABOVE');
 });
 

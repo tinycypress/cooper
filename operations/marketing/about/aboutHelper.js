@@ -77,7 +77,6 @@ export default class AboutHelper {
 
     static async preloadMesssages() {
         const links = [
-            KEY_MESSAGES.about_community_msg,
             KEY_MESSAGES.about_notifications_msg,
             KEY_MESSAGES.about_ourfocus_msg,
             KEY_MESSAGES.about_optout_msg,

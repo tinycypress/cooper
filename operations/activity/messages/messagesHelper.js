@@ -15,6 +15,8 @@ export default class MessagesHelper {
     static parselink(link) {
         let result = null;
 
+        console.log(link);
+
         // Remove domains.
         let subjStr = link.replace('https://discordapp.com/channels/', '');
         subjStr = subjStr.replace('https://discord.com/channels/', '');
