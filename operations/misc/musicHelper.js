@@ -94,8 +94,11 @@ export default class MusicHelper {
             // There's nothing now playing due to finish.
             this.CURRENTLY_PLAYING = null;
 
+            console.log('FINISHED ' + link);
+            console.log(this.QUEUE, this.QUEUE.length);
+
             // Play the next track if there is one.
-            if (this.QUEUE.length <= 0) this.playNext();
+            if (this.QUEUE.length >= 1) this.playNext();
             else this.disconnect();
         });
     }
