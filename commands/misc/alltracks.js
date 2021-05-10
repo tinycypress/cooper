@@ -17,11 +17,9 @@ export default class AllTracksCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 		
-		console.log('Testing all tracks');
-		
+
 		// Indicate queueing success.
 		const queue = MusicHelper.QUEUE;
-		console.log(queue);
 		
 		const queueText = `**Queued tracks:**\n\n` +
 			(queue.length >= 0 ? 

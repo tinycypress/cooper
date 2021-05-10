@@ -18,9 +18,9 @@ export default class MineHandler {
 
     static async effect(msgRef, user) {
         const mineText = MESSAGES.emojiCodeText('MINE');
-        MESSAGES.selfDestruct(msgRef, mineText);
+        MESSAGES.selfDestruct(msgRef, mineText, 3333, 60000);
 
-        MESSAGES.selfDestruct(msgRef, `${user.username} used a MINE ${mineText}.`);
+        MESSAGES.selfDestruct(msgRef, `${user.username} used a MINE ${mineText}.`, 0, 6666);
     }
    
 }
