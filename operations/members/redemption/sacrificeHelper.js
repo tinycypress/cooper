@@ -288,7 +288,8 @@ export default class SacrificeHelper {
             const member = await COOP.USERS.random();
 
             // Access the sacrifice channel for sacrifice data.
-            const sacrificeChannel = COOP.STATE.CLIENT.channels.cache.get(CHANNELS.SACRIFICE.id);
+            
+            const sacrificeChannel = COOP.CHANNELS._getCode('SACRIFICE');
             const sacrificeOffers = await sacrificeChannel.messages.fetch({ limit: 3 });
 
             // If space for another offer, offer one.

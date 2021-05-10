@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop';
+import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -28,7 +29,7 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
+        SacrificeHelper.random();
         
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
