@@ -124,7 +124,7 @@ export default class MessageNotifications {
                 });
     
                 // Spam leaders with it - their problem.
-                CHANNELS._send('LEADERS', notificationString);
+                CHANNELS._send('ACTIONS', notificationString);
             }
         } catch(e) {
             console.log('Error posting latest messages.');

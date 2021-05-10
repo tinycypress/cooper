@@ -1,4 +1,4 @@
-import COOP from "../../../origin/coop";
+import COOP, { USERS } from "../../../origin/coop";
 
 
 export default class AnnouncementOpts {
@@ -22,10 +22,14 @@ export default class AnnouncementOpts {
     }
 
     static privacyBomb(reaction, user) {
-        COOP.USERS._dm(user.id, `Are you sure you want to delete ALL data? (WIP)`);
+        // COOP.USERS._dm(user.id, `Are you sure you want to delete ALL data? (WIP)`);
 
-        console.log('privacyBomb', reaction.message.id, user.username);
-        return 1;
+        // console.log('privacyBomb', reaction.message.id, user.username);
+
+        setTimeout(() => USERS._dm(user.id, 'Deleting all of your data and kicking you in 3...'), 1000);
+        setTimeout(() => USERS._dm(user.id, 'Deleting all of your data and kicking you in 2...'), 2000);
+        setTimeout(() => USERS._dm(user.id, 'Deleting all of your data and kicking you in 1...'), 3000);
+        setTimeout(() => USERS._dm(user.id, 'Just kidding lol.'), 4000);
     }
     
 }

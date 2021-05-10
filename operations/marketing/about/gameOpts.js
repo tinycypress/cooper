@@ -3,8 +3,8 @@ import COOP from '../../../origin/coop';
 
 export default class GameOpts {
 
-    static economyToggle(reaction, user) {
-        COOP.ROLES.toggle(user.id, 'ECONOMY');
+    static logsToggle(reaction, user) {
+        COOP.ROLES.toggle(user.id, 'LOGS');
     }
 
     static conquestToggle(reaction, user) {

@@ -90,6 +90,9 @@ export default class MusicHelper {
                 // Play the next track.
                 this.playNext();
             } else 
+                // There's nothing else to play, reset currently playing.
+                this.CURRENTLY_PLAYING = null;
+
                 // Disconnect on finish.
                 this.disconnect();
         });

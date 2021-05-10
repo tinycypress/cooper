@@ -33,8 +33,8 @@ export default class AboutHelper {
         },
         GAMES: {
             '🎮': (react, user) => COOP.ROLES.toggle(user.id, 'GAMING'),
-            '🤝': gameOpts.economyToggle, // Done
-            '🗡': gameOpts.conquestToggle // Done
+            '🗡': gameOpts.conquestToggle,
+            '📉': gameOpts.logsToggle,
         },
         COMMUNITY: {
             '🧵': communityOpts.miscToggle, // Done
