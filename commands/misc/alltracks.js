@@ -17,12 +17,19 @@ export default class AllTracksCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 		
+		console.log('Testing all tracks');
+		
 		// Indicate queueing success.
-		const tracksString = MusicHelper.QUEUE.map(l => `<${l}>`).join(', ');
+		const queue = MusicHelper.QUEUE;
+		console.log(queue);
+		
 		const queueText = `**Queued tracks:**\n\n` +
-			MusicHelper.QUEUE.length >= 0 ? `${tracksString}.` : 'No queued tracks currently.';
+			(queue.length >= 0 ? 
+				`${queue.map(l => `<${l}>`).join(', ')}.` 
+				: 
+				'No queued tracks currently.'
+			);
 
-		console.log(MusicHelper.QUEUE);
 			
 		MESSAGES.selfDestruct(msg, queueText, 0, 10000);
     }
