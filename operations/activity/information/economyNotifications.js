@@ -90,7 +90,7 @@ export default class EconomyNotifications {
                 console.log(STATE.EVENTS_HISTORY['CRATE_DROP']);
             }
 
-            CHANNELS._postToChannelCode('ACTIONS', notificationString);
+            CHANNELS._postToChannelCode('TALK', notificationString);
 
             this.clear('WOODCUTTING');
             this.clear('MINING');

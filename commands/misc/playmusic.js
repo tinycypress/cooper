@@ -41,7 +41,7 @@ export default class PlayMusicCommand extends CoopCommand {
 		if (!MusicHelper.CURRENTLY_PLAYING) MusicHelper.playNext();
 		else {
 			// Indicate queueing success.
-			const queueText = `Added your link <${link}> to the queue.` 
+			const queueText = `Added your link to the queue.\n\n` 
 				+ MusicHelper.QUEUE.map(l => `<${l}>`).join(', ') + '.';
 			MESSAGES.selfDestruct(msg, queueText, 0, 10000);
 		}

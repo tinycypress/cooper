@@ -85,7 +85,7 @@ export default class MusicHelper {
 
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
-            if (this.QUEUE.length > 0) {              
+            if (this.QUEUE.length > 1) {              
                 // Play the next track.
                 this.playNext();
             } else 

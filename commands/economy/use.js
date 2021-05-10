@@ -9,6 +9,7 @@ import { itemCodeArg, itemQtyArg, validItemQtyArgFloatGuard, usableItemCodeGuard
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP, { USABLE } from '../../origin/coop';
 import GoldCoinHandler from '../../operations/minigames/medium/economy/items/handlers/goldCoinHandler';
+import MineHandler from '../../operations/minigames/medium/economy/items/handlers/mineHandler';
 
 export default class UseCommand extends CoopCommand {
 
@@ -50,9 +51,12 @@ export default class UseCommand extends CoopCommand {
 		if (itemCode === 'LAXATIVE') LaxativeHandler.use(msg, msg.author);
 		if (itemCode === 'FLARE') FlareHandler.use(msg, msg.author);
 		if (itemCode === 'SHIELD') ShieldHandler.use(msg);
+
+		
 		if (itemCode === 'RPG') RPGHandler.use(msg); // TODO: WIP
 		if (itemCode === 'EASTER_EGG') EasterEggHandler.use(msg, msg.author); // TODO: WIP
 		if (itemCode === 'GOLD_COIN') GoldCoinHandler.use(msg, msg.author); // TODO: WIP
+		if (itemCode === 'MINE') MineHandler.use(msg, msg.author);
     }
     
 }
