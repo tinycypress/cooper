@@ -6,7 +6,7 @@ export default class MineHandler {
         this.effect(msg, user);
     }
 
-    static async reaction(reaction, user) {
+    static async onReaction(reaction, user) {
         // Check reaction emoji is MINE
         const reactEmojiFlake = `:${emoji.name}:${emoji.id}`;
         if (reactEmojiFlake !== COOP.ITEMS.codeToFlake('MINE')) return false;

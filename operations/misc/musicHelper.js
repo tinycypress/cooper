@@ -68,30 +68,36 @@ export default class MusicHelper {
         const link = this.QUEUE[0];
         const track = this.load(link);
 
-        // Remove attempt track from queue.
-        this.CURRENTLY_PLAYING = this.QUEUE.shift();
-
         // Attempt to play.
-        this.play(track);
+        this.play(track, link);
+        
+        // Remove attempt track from queue.
+        this.QUEUE.shift();
     }
 
     // Play the url passed.
-    static async play(stream) {
+    static async play(stream, link) {
         // Connect, may have disconnected.
         await this.connect();
 
         // Blend the tracks.
         this.crossfade(stream);
 
+        // Indicate that the stream has started.
+        this.STREAM_DISPATCHER.on('start', () => {
+            // Indicate currently playing since successfully started.
+            this.CURRENTLY_PLAYING = null;
+        });
+
         // Leave if nothing else is queued?
         this.STREAM_DISPATCHER.on("finish", () => {
-            if (this.QUEUE.length > 1) {              
+            // There's nothing now playing due to finish.
+            this.CURRENTLY_PLAYING = null;
+
+            if (this.QUEUE.length <= 0) {              
                 // Play the next track.
                 this.playNext();
             } else 
-                // There's nothing else to play, reset currently playing.
-                this.CURRENTLY_PLAYING = null;
-
                 // Disconnect on finish.
                 this.disconnect();
         });
