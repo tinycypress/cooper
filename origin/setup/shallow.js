@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP from '../coop';
+import COOP, { MESSAGES } from '../coop';
 import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
 // ^ DEV IMPORT AREA ^
 
@@ -29,15 +29,11 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Fix trade
-        
-        // Implement a limit for ridiculous size/growth/pace of item_qty_change_history row count
-        // Add a trade reminder message every so often with tip !trade
         // Implement a limit to !transactions history output
-
-        // Election message needs deleting if user banned/leaves
         // Trades need deleting if user banned/leaves
-        
+
+        // Election message needs deleting if user banned/leaves - do it on election message preload!
+
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };
