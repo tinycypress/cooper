@@ -32,6 +32,14 @@ export default class MessagesHelper {
         return result;
     }
 
+    static unparse(obj) {
+        return this.link({ 
+            guild: { id: obj.guild.id },
+            channel: { id: obj.channel.id },
+            id: obj.id
+        });
+    }
+
     static link(msg) {
         const link = `https://discordapp.com/channels/` +
             `${msg.guild.id}/` +

@@ -29,11 +29,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Implement a limit to !transactions history output
-        // Trades need deleting if user banned/leaves
-
-        // Election message needs deleting if user banned/leaves - do it on election message preload!
-
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

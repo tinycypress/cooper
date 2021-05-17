@@ -5,7 +5,7 @@ import Chicken from "../../../chicken";
 
 import CHANNELS from '../../../../origin/config/channels.json';
 
-import COOP, { MESSAGES, ROLES } from '../../../../origin/coop';
+import COOP, { MESSAGES, ROLES, USERS } from '../../../../origin/coop';
 
 import DatabaseHelper from '../../../databaseHelper';
 import Database from '../../../../origin/setup/database';
@@ -518,9 +518,16 @@ export default class ElectionHelper {
 
     static async loadAllCampaigns() {
         const candidates = await this.getAllCandidates();
-        const preloadMsgIDs = candidates.map(candidate => 
-            MESSAGES.parselink(candidate.campaign_msg_link)
-        );
+        const preloadMsgIDs = candidates.map(candidate => {
+            const userStillExists = !!USERS.getMemberByID(candidate.candidate_id);
+
+            // Attempt to clear up if they have left etc.
+            if (!userStillExists)
+                Database.query({ text: `DELETE FROM candidates WHERE campaign_msg_link = '${candidate.campaign_msg_link}'` });
+
+            // Return formatted.
+            return MESSAGES.parselink(candidate.campaign_msg_link);
+        });
 
         // Preload each candidate message.
         let campaigns = await Promise.allSettled(preloadMsgIDs.map((idSet, index) => {
