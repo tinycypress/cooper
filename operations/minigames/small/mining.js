@@ -57,7 +57,9 @@ export default class MiningMinigame {
 
         // Calculate number of extracted pickaxe with applied collab buff/modifier.
         const numCutters = REACTIONS.countType(msg, '⛏️') - 1;
-        const extractedOreNum = Math.ceil(rewardRemaining / 1.5) * numCutters;
+        
+        // Adjust extracted ore by buffs and adjust to clamp above > 0.
+        const extractedOreNum = Math.max(0, Math.ceil(rewardRemaining / 1.5) * numCutters);
 
         // Test the pickaxe for breaking.
         const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });
