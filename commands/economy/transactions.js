@@ -48,8 +48,8 @@ export default class TransactionsCommand extends CoopCommand {
 					`${TIME.humaniseSecs(nowSecs - txC.occurred_secs)} ago <@${txC.owner}>'s ` + 
 					`${txC.change > 0 ? '+' : ''}${ITEMS.displayQty(txC.change)}x${txC.item} ` +
 					`${MESSAGES.emojiCodeText(txC.item)} ${txC.change > 0 ? '->' : '<-'} ` + 
-					`Coop's ${ITEMS.displayQty(txC.running)}`
-					// `Coop's ${ITEMS.displayQty(txC.running)} - _${txC.note}_`
+					`Coop's ${ITEMS.displayQty(txC.running)}` +
+					`Coop's ${ITEMS.displayQty(txC.running)} - _${txC.note}_`
 				).join('\n') + '\n\n_!transactions or !txh to check transaction history again. TODO: Add inspect tx command._';
 
 			MESSAGES.silentSelfDestruct(msg, txHistText, 0, 20000);

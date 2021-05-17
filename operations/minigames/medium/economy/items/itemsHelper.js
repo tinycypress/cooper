@@ -39,10 +39,20 @@ export default class ItemsHelper {
             text: `INSERT INTO item_qty_change_history(owner, item, change, running, note, occurred_secs)
                 VALUES($1, $2, $3, $4, $5, $6)`,
             values: [userID, item_code, qty, runningQty, reason, nowSecs]
-        };
+        };  
 
         const result = await Database.query(query);
         const successDelete = result.rowCount === 1;
+
+        // Delete if growing too large.
+        if (result.rowCount > 250) {
+            // Delete the last 100.
+            Database.query({
+                text: `DELETE FROM item_qty_change_history WHERE id = any (array(SELECT id FROM item_qty_change_history ORDER BY occurred_secs LIMIT 100))`
+            });
+        }
+
+
         return successDelete;
     }
 
