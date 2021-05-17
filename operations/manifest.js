@@ -114,7 +114,7 @@ export default function eventsManifest() {
 
 
   // Sacrifice, moderation related.
-  EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 20, baseTickDur * 12);
+  EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 25, baseTickDur * 10);
   EventsHelper.chanceRunInterval(() => ProspectHelper.randomReady(), 20, baseTickDur * 14);
 
 
