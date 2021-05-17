@@ -36,16 +36,16 @@ export default class TransactionsCommand extends CoopCommand {
 				name: 'get-transactions',
 				text: `SELECT * FROM item_qty_change_history 
 					ORDER BY id DESC
-					LIMIT 20 OFFSET $1`.trim(),
+					LIMIT 10 OFFSET $1`.trim(),
 				values: [offset]
 			};
 	
 			const result = await DatabaseHelper.manyQuery(query);
 			
 			const nowSecs = TIME._secs();
-			const txHistText = `**Latest ${offset + 20} transactions:**\n\n` +
+			const txHistText = `**Latest ${offset}-${offset + 10} transactions:**\n\n` +
 				result.map(txC => 
-					`${TIME.humaniseSecs(nowSecs - txC.occurred_secs)} ago <@${txC.owner}>'s ` + 
+					`#${txC.id} ${TIME.humaniseSecs(nowSecs - txC.occurred_secs)} ago <@${txC.owner}>'s ` + 
 					`${txC.change > 0 ? '+' : ''}${ITEMS.displayQty(txC.change)}x${txC.item} ` +
 					`${MESSAGES.emojiCodeText(txC.item)} ${txC.change > 0 ? '->' : '<-'} ` + 
 					`Coop's ${ITEMS.displayQty(txC.running)}` +
@@ -53,18 +53,6 @@ export default class TransactionsCommand extends CoopCommand {
 				).join('\n') + '\n\n_!transactions or !txh to check transaction history again. TODO: Add inspect tx command._';
 
 			MESSAGES.silentSelfDestruct(msg, txHistText, 0, 20000);
-
-
-			// TODO: Needs to show the time!!
-
-			// CREATE TABLE item_qty_change_history( 
-			//     id SERIAL PRIMARY KEY, 
-			//     owner VARCHAR, 
-			//     item VARCHAR, 
-			//     running float,
-			//     change float,
-			//     note VARCHAR
-			// );
 
 		} catch(e) {
 			console.log('Failed to retrieve The Coop\'s latest transactions.');

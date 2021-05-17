@@ -94,7 +94,6 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => AboutHelper.addAboutStats(), baseTickDur * 3.5);
   EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 2);
   EventsHelper.runInterval(() => EconomyNotifications.post(), baseTickDur * 1.75);
-  EventsHelper.runInterval(() => TradingHelper.updateChannel(), baseTickDur * 2);
 
 
   // Clean up user data, may have missed detection on a leave/kick/ban.
@@ -132,10 +131,10 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => COOP.ITEMS.updateMostItems(), baseTickDur * 3);
   
   // Holiday related!
-  EventsHelper.chanceRunInterval(() => EasterMinigame.run(), 33, baseTickDur / 3);
+  EventsHelper.chanceRunInterval(() => EasterMinigame.run(), 33, baseTickDur);
 
   // Update trades channel message
-  EventsHelper.runInterval(() => TradingHelper.updateChannel(), baseTickDur * 2);
+  EventsHelper.chanceRunInterval(() => TradingHelper.updateChannel(), 22, baseTickDur * 2);
 
   // Clean up CONQUEST buffs/item effects.
   EventsHelper.runInterval(() => BuffsHelper.cleanupExpired(), baseTickDur / 3);

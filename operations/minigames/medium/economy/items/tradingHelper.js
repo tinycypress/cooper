@@ -1,6 +1,6 @@
 
 import { KEY_MESSAGES } from "../../../../../origin/config";
-import COOP, { USABLE, MESSAGES, TIME } from "../../../../../origin/coop";
+import COOP, { USABLE, MESSAGES, TIME, CHANNELS } from "../../../../../origin/coop";
 import DatabaseHelper from "../../../../databaseHelper";
 import Database from "../../../../../origin/setup/database";
 
@@ -14,6 +14,9 @@ export default class TradingHelper {
         const editResult = await MESSAGES.editByLink(KEY_MESSAGES.trade_info, 'Trade Message Updated ' + dateFmt);
 
         // TODO: Post latest/most recent 5-10 trades in talk.
+        const lastTrades = await this.all();
+        
+        CHANNELS._tempSend('TALK', '**DEV**:\n' + JSON.stringify(lastTrades), 0, 30000);
 
         return editResult;
     }
