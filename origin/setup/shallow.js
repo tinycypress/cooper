@@ -29,7 +29,8 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        SacrificeHelper.random();
+        // Add ingredients alias
+        // Fix trade
         
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

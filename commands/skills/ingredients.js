@@ -11,7 +11,7 @@ export default class IngredientsCommand extends CoopCommand {
 			name: 'ingredients',
 			group: 'skills',
 			memberName: 'ingredients',
-			aliases: ['ingred'],
+			aliases: ['ingred', 'recipe'],
 			description: 'Check ingredients required for crafting an item',
 			details: `Details of the ingredients command`,
 			examples: ['!ingred', '!ingredients axe 10'],
