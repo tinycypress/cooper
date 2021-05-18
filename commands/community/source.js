@@ -103,7 +103,7 @@ export default class SourceCommand extends CoopCommand {
 					const folderContent = `**Behold, my innards! (${filePath}):**\n` +
 						`<${gitBaseUrl}${filePath.replace('./', '')}>\n\n` +
 
-						// TODO: Add distance/breadcrumbs from root here.
+						// POTENTIAL: Add distance/breadcrumbs from root here.
 
 						`-- :file_folder: ${filePath}\n` +
 						`${rawFolderContent

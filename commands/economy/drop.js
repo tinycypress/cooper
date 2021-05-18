@@ -1,7 +1,5 @@
 import EggHuntMinigame from '../../operations/minigames/small/egghunt';
 
-
-
 import { itemCodeArg, usedOwnedUsableGuard } from '../../operations/minigames/medium/economy/itemCmdGuards';
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP, { STATE, SERVER } from '../../origin/coop';

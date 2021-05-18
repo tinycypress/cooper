@@ -21,12 +21,10 @@ export default class BansCommand extends CoopCommand {
 		try {
 			// Delete after sixty seconds.
             const emojiText = COOP.MESSAGES.emojiText(EMOJIS.COOP);
-			
-			// TODO: Calculate as a ratio?
-            // const userCount = SERVER._coop().memberCount || 0;
-			
+		
+            const userCount = SERVER._coop().memberCount || 0;		
 			const userBansNum = (await SERVER._coop().fetchBans()).size || 0;
-            const countText = `${userBansNum} #beaks presently banned from The Coop ${emojiText}!`;
+            const countText = `${userBansNum} #beaks (${Math.round(userCount / userBansNum * 100)}%) presently banned from The Coop ${emojiText}!`;
 			COOP.MESSAGES.selfDestruct(msg, countText, 0, 20000);
 
 		} catch(e) {
