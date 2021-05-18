@@ -264,6 +264,7 @@ export default class EggHuntMinigame {
 
             // Provide record of event.
             CHANNELS._postToChannelCode('ACTIONS', activityFeedMsgText);
+            CHANNELS._tempSend('TALK', activityFeedMsgText, 333, 5000);
         } catch(e) {
             console.error(e);
         }
