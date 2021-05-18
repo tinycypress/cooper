@@ -24,7 +24,6 @@ export default class DropTable {
             'STEEL_BAR'
         ],
         LEGENDARY: [
-            'IED',
             'RPG',
             'GOLD_BAR',
             'GOLD_COIN',

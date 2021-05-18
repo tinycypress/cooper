@@ -70,10 +70,10 @@ export default class TradingHelper {
         return DatabaseHelper.many(result);
     }
 
-    static async findReceiveMatches(receiveItem) {
+    static async findEitherMatching(receiveItem) {
         const query = {
             name: "get-trades-by-offer",
-            text: `SELECT * FROM open_trades WHERE receive_item = $1`,
+            text: `SELECT * FROM open_trades WHERE receive_item = $1 OR offer_item = $1`,
             values: [receiveItem]
         };
 

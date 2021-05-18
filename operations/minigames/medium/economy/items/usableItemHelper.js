@@ -15,6 +15,7 @@ import COOP, { STATE, CHICKEN as Chicken } from "../../../../../origin/coop";
 import ElectionHelper from "../../../../members/hierarchy/election/electionHelper";
 import GoldCoinHandler from "./handlers/goldCoinHandler";
 import MineHandler from "./handlers/mineHandler";
+import DefuseKitHandler from "./handlers/defuseKitHandler";
 
 
 export default class UsableItemHelper {
@@ -30,6 +31,7 @@ export default class UsableItemHelper {
             RPGHandler.onReaction(reaction, user);
             GoldCoinHandler.onReaction(reaction, user);
             MineHandler.onReaction(reaction, user);
+            DefuseKitHandler.onReaction(reaction, user);
 
             // TODO: CHECK THAT NOBODY ELSE REACTED.
 

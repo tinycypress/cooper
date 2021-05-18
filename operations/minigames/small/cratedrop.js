@@ -7,16 +7,7 @@ import COOP, { STATE } from '../../../origin/coop';
 import { EMOJIS } from '../../../origin/config';
 
 
-/**
- * Laxative - Spawns an egg randomly
- * Toxic Egg - Places a toxic egg
- * Mine - Places a mine
- * Bomb
- * Rope - ???? No fucking idea
- * Shield  - Protects from Bombs, IEDs, Mines
- * Defuse kit - Defuse Bombs, IEDs, Mines
- * IED - Kicks member out of server
- */
+
 
 const CRATE_DATA = {
     AVERAGE_CRATE: {

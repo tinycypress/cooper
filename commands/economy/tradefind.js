@@ -80,7 +80,7 @@ export default class TradeFindCommand extends CoopCommand {
 
 		} else if (offerItemCodeStr !== '' && receiveItemCodeStr === '') {
 			// If only offer item given, list all of that type.
-			const types = await TradingHelper.findReceiveMatches(offerItemCode);
+			const types = await TradingHelper.findEitherMatching(offerItemCode);
 
 			// Return no matching trades types warning.
 			if (types.length === 0) {
