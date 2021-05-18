@@ -68,7 +68,7 @@ static calcCommunityVelocity() {
 
         const roundedVel = ITEMS.displayQty(this.calcCommunityVelocity());
         const velocityText = `Community velocity is ${roundedVel}.`
-        COOP.CHANNELS._postToChannelCode('TALK', velocityText);
+        COOP.CHANNELS._tempSend('TALK', velocityText, 0, 60000);
     }
 
 }
