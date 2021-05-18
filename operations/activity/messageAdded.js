@@ -1,20 +1,16 @@
 import MessageNotifications from "./information/messageNotifications";
 
-
 import workPostHandler from "./encouragement/workPosted";
 import achievementPostedHandler from "./encouragement/achievementPosted";
 import introPostedHandler from "./welcome/introPosted";
-
 
 import MessageSpamHelper from "./messages/messageSpamHelper";
 import LinkPreviewFilter from "./messages/linkPreviewFilter";
 import ConfessionHandler from "./messages/confessionHandler";
 import MiscMessageHandlers from "./messages/miscMessageHandlers";
 
-
 import SuggestionsHelper from "./suggestions/suggestionsHelper";
 import SubscriptionHelper from "../marketing/newsletter/subscriptionHelper";
-
 
 import KeyInfoPosted from "./messages/keyinfoPosted";
 
