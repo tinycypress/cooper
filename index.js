@@ -10,7 +10,6 @@ import eventsManifest from './operations/manifest';
 
 // Singleton state accessor
 import { STATE } from './origin/coop';
-import MusicHelper from './operations/misc/musicHelper';
 
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
@@ -50,7 +49,4 @@ export default async function bootstrap() {
 
     // Set activity.
     botClient.user.setActivity(`!help... STRUCTURE REFORM`, { type: 'WATCHING' });
-
-    // Connect to the music stream.
-    MusicHelper.connect();
 }
