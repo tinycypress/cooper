@@ -13,7 +13,7 @@ export default class MiningMinigame {
     // Reaction interceptor to check if user is attempting to interact.
     static async onReaction(reaction, user) {
         // High chance of preventing any mining at all to deal with rate limiting.
-        if (STATE.CHANCE.bool({ likelihood: 20 })) return false;
+        if (!STATE.CHANCE.bool({ likelihood: 20 })) return false;
 
         const isOnlyEmojis = MESSAGES.isOnlyEmojis(reaction.message.content);
         const isPickaxeReact = reaction.emoji.name === '⛏️';

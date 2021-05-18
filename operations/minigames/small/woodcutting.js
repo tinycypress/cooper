@@ -11,7 +11,7 @@ export default class WoodcuttingMinigame {
     // Reaction interceptor to check if user is attempting to interact.
     static async onReaction(reaction, user) {
         // High chance of preventing any Woodcutting at all to deal with rate limiting.
-        if (STATE.CHANCE.bool({ likelihood: 20 })) return false;
+        if (!STATE.CHANCE.bool({ likelihood: 20 })) return false;
 
         const isOnlyEmojis = MESSAGES.isOnlyEmojisOrIDs(reaction.message.content);
         const isAxeReact = reaction.emoji.name === '🪓';
