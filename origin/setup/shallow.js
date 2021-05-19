@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { MESSAGES } from '../coop';
+import COOP, { CHANNELS, MESSAGES } from '../coop';
 import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
 // ^ DEV IMPORT AREA ^
 
@@ -27,8 +27,9 @@ const shallowBot = async () => {
     await COOP.STATE.CLIENT.login(process.env.DISCORD_TOKEN);
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
-        // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // DEV WORK AND TESTING ON THE LINES BELOW.
+        // Sacrifice messages not cleaned up.
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

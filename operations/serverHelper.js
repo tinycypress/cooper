@@ -86,7 +86,7 @@ export default class ServerHelper {
     // TODO: Add types and log that a resource wasn't gathered.
     // TODO: Take the channel bulkDelete approach instead, may achieve better throttled results.
 
-    static async getTempMsgs() {
+    static async getExpiredTempMessages() {
         const query = {
             name: "get-temp-messages",
             text: `SELECT * FROM temp_messages 
@@ -103,7 +103,7 @@ export default class ServerHelper {
     // Load and delete expired messages sorted by oldest first.
     static async processTempMessages() {
         // Load the temporary messages 
-        const tempMessages = await this.getTempMsgs();
+        const tempMessages = await this.getExpiredTempMessages();
 
         // Build an object of deletions for bulk delete.
         const deletions = {};

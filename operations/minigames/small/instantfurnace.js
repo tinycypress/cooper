@@ -97,6 +97,11 @@ export default class InstantFurnaceMinigame {
                 const usersIDsAround = siblingMsgs.map(msg => msg.author.id)
                     .filter(userID => !USERS.isCooper(userID))
                     .reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], []);
+
+                // Add fire emoji to the messages for visual feedback
+                siblingMsgs.map(m => m).map((msg, index) => {
+                    MESSAGES.delayReact(msg, '🔥', 666 * index);
+                });
     
                 const coopEmoji = MESSAGES.emojiCodeText('COOP');
                 const burnText = usersIDsAround.map(userID => `<@${userID}>`).join(', ') +
