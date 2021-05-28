@@ -160,6 +160,12 @@ export default class MessagesHelper {
                 if (typeof msg.delete === 'function') 
                     await msg.delete();
 
+            // TODO: Convert temp_messages to guild_id channel_id message_id columns
+            // const tempMsg = await SERVER.getTempMessage(SERVER._coop(), msg.channel.id, msg.id);
+            // if (tempMsg) {
+                // TODO: Delete the temp message here (client driven).
+            // }
+
             } catch(e) {
                 // Ignore messages already deleted.
                 if (e.message.trim() !== 'Unknown Message') {

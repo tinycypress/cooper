@@ -420,9 +420,6 @@ export default class ItemsHelper {
         // Send drop emoji text and update message ref
         msgRef = await COOP.MESSAGES.selfDestruct(msgRef, emojiText, 0, lifetimeSecs * 1000)
 
-        // Make it a temporary message to it gets cleaned up after an hour.
-        SERVER.addTempMessage(msgRef, lifetimeSecs);
-
         // Add indicative and suggestive icons, maybe refactor.
         COOP.MESSAGES.delayReact(msgRef, EMOJIS.BASKET, 666);
 

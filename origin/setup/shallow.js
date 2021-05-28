@@ -30,6 +30,10 @@ const shallowBot = async () => {
 
         // DEV WORK AND TESTING ON THE LINES BELOW.
         // Sacrifice messages not cleaned up.
+
+        // Test deleting an expired temporary message.
+
+
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
 };

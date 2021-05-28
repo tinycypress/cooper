@@ -100,6 +100,20 @@ export default class ServerHelper {
         return tempMessages;
     }
 
+    static async getTempMessage(guild_id, channel_id, message_id) {
+        const query = {
+            name: "get-temp-messages",
+            text: `SELECT * FROM temp_messages 
+                WHERE expiry_time <= extract(epoch from now())
+                ORDER BY expiry_time ASC
+                LIMIT 40`
+        };
+        
+        const result = await Database.query(query);
+        const tempMessages = DatabaseHelper.many(result);
+        return tempMessages;
+    }
+
     // Load and delete expired messages sorted by oldest first.
     static async processTempMessages() {
         // Load the temporary messages 
@@ -167,7 +181,6 @@ export default class ServerHelper {
                         const successfulDeletions = await chan.bulkDelete(existentDeletionMessageIDs);
                                                 
                         // On bulkDelete success, remove from our database.
-                        // TODO: Investigate why item param is unused (Format/type of successfulDeletions - coerce it)
                         successfulDeletions.map((item, id) => {
                             // Format the msg link from server ID, channel ID and message ID.
                             const msgUrl = `${msgUrlBase}/${chan.id}/${id}`;

@@ -47,9 +47,6 @@ export default class DropCommand extends CoopCommand {
 
 			// TODO: Add to statistics.
 
-			// Make it a temporary message to it gets cleaned up after an hour.
-			SERVER.addTempMessage(dropMsg, 60 * 60);
-
 			// Add indicative and suggestive icons, maybe refactor.
 			COOP.MESSAGES.delayReact(dropMsg, RAW_EMOJIS.DROPPED, 333);
 			COOP.MESSAGES.delayReact(dropMsg, EMOJIS.BASKET, 666);

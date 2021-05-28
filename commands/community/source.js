@@ -44,6 +44,7 @@ export default class SourceCommand extends CoopCommand {
 		try {
 			// Prevent access to secure data.
 			if (path === '.env' || path === './.env') return null;
+			if (path === 'google-credentials.json' || path === './google-credentials.json') return null;
 
 			// Load the file content.
 			const file = await fs.readFile(path, "utf8");

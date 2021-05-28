@@ -35,7 +35,7 @@
     "pg-format": "^1.0.4",
     "pg-promise": "^10.7.0",
     "sugar": "^2.0.6",
-    "ytdl-core": "^4.8.0"
+    "ytdl-core": "^4.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
