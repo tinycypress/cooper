@@ -10,9 +10,8 @@ export default class TradeFindCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'tradefind',
 			aliases: ['findtr'],
-			description: 'This command lets you find the trades you want',
-			details: `Details of the tradefind command`,
-			examples: ['tradefind', '!tradefind laxative'],
+			description: 'View open trades for a specific item. If no item is entered, it displays all open trades.',
+			examples: ['!tradefind <item>', '!tradefind', '!tradefind laxative'],
 			args: [
 				{
 					key: 'offerItemCodeStr',

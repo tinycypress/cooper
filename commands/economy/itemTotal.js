@@ -9,9 +9,8 @@ export default class ItemTotalCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'itemtotal',
 			aliases: ['it'],
-			description: 'polls will always be stolen at The Coop by those who demand them.',
-			details: `Details of the itemtotal command`,
-			examples: ['itemtotal', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
+			description: 'Displays the amount of an item that is currently in the economy, and the average number of items a person has.',
+			examples: ['!itemtotal <item>', '!itemtotal wood'],
 			args: [
 				{
 					key: 'itemCode',

@@ -17,7 +17,7 @@ export default class GiveCommand extends CoopCommand {
 			aliases: ['g'],
 			description: 'This command lets you give the items you own',
 			details: `Details of the give command`,
-			examples: ['give', '!give laxative'],
+			examples: ['!give <item>', '!give laxative'],
 			args: [
 				{
 					key: 'target',

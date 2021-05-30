@@ -10,9 +10,8 @@ export default class TradesCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'trades',
 			aliases: ['mytr'],
-			description: 'This command lets you check your ongoing trades',
-			details: `Details of the trades command`,
-			examples: ['trades', '!trades LAXATIVE'],
+			description: 'Displays your open trades for a specific item. If no item is entered, it displays all your trades.',
+			examples: ['!trades <item>', '!trades', '!trades laxative'],
 			args: [
 				{
 					key: 'offerItemCodeStr',
