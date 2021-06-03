@@ -518,19 +518,26 @@ export default class ElectionHelper {
 
     static async loadAllCampaigns() {
         const candidates = await this.getAllCandidates();
-        const preloadMsgIDs = candidates.map(candidate => {
-            const userStillExists = !!USERS.getMemberByID(candidate.candidate_id);
+        let preloadMsgIDSets = candidates.map(candidate => {
+            const userStillExists = !!USERS._getMemberByID(candidate.candidate_id);
 
             // Attempt to clear up if they have left etc.
-            if (!userStillExists)
+            if (!userStillExists) {
                 Database.query({ text: `DELETE FROM candidates WHERE campaign_msg_link = '${candidate.campaign_msg_link}'` });
+                return false;
+            }
 
             // Return formatted.
             return MESSAGES.parselink(candidate.campaign_msg_link);
         });
 
+        // Filter out the potentially expired(kicked/left/banned user) IDs.
+        preloadMsgIDSets = preloadMsgIDSets.filter(idSet => !!idSet);
+
+
+
         // Preload each candidate message.
-        let campaigns = await Promise.allSettled(preloadMsgIDs.map((idSet, index) => {
+        let campaigns = await Promise.allSettled(preloadMsgIDSets.map((idSet, index) => {
             const guild = COOP.SERVER._coop();
             return new Promise((resolve) => {
                 setTimeout(async () => {
