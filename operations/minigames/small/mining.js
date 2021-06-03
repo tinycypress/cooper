@@ -52,14 +52,14 @@ export default class MiningMinigame {
         if (userPickaxesNum <= 0) 
             return MESSAGES.silentSelfDestruct(msg, noPickText, 0, 5000);
 
-        // Handle chance of pickaxe breaking
-        const pickaxeBreakPerc = Math.min(25, rewardRemaining);
-
         // Calculate number of extracted pickaxe with applied collab buff/modifier.
         const numCutters = REACTIONS.countType(msg, '⛏️') - 1;
         
         // Adjust extracted ore by buffs and adjust to clamp above > 0.
         const extractedOreNum = Math.max(0, Math.ceil(rewardRemaining / 1.5) * numCutters);
+
+        // Clamp lower and upper boundary for chance of pickaxe breaking
+        const pickaxeBreakPerc = Math.min(75, Math.max(25, extractedOreNum));
 
         // Test the pickaxe for breaking.
         const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });

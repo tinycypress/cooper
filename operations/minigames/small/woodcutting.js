@@ -49,16 +49,15 @@ export default class WoodcuttingMinigame {
         if (userAxesNum <= 0) 
             return MESSAGES.silentSelfDestruct(msg, noText, 0, 3333);
 
-
-        // Handle chance of axe breaking
-        const pickaxeBreakPerc = Math.min(25, rewardRemaining);
         
         // Calculate number of extracted wood with applied collab buff/modifier.
         const numCutters = REACTIONS.countType(msg, '🪓') - 1;
         const extractedWoodNum = Math.max(0, Math.ceil(rewardRemaining / 1.25) * numCutters);
 
+        // Clamp lower and upper boundary for chance of pickaxe breaking
+        const axeBreakPerc = Math.min(75, Math.max(25, extractedWoodNum));
 
-        const didBreak = STATE.CHANCE.bool({ likelihood: pickaxeBreakPerc });
+        const didBreak = STATE.CHANCE.bool({ likelihood: axeBreakPerc });
         if (didBreak) {
             const axeUpdate = await USABLE.use(user.id, 'AXE', 1);
             if (axeUpdate) {
