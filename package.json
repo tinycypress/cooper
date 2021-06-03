@@ -1,16 +1,12 @@
 {
   "name": "cooper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "get cooped with cooper",
   "scripts": {
     "startBot": "node -r esm ./index.js",
     "db": "heroku pg:psql --app cooperchickenbot",
     "dev": "nodemon --exec babel-node ./origin/setup/shallow.js",
     "lint": "eslint ."
-  },
-  "engines": {
-    "node": "14.x",
-    "npm": "6.x"
   },
   "author": "lmf-git",
   "dependencies": {
@@ -30,7 +26,6 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-eval": "^2.0.0",
-    "node-opus": "^0.3.3",
     "pg": "^8.4.1",
     "pg-format": "^1.0.4",
     "pg-promise": "^10.7.0",
