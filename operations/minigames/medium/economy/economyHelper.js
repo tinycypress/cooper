@@ -10,7 +10,7 @@ export default class EconomyHelper {
         const itemCode = STATE.CHANCE.pickone(items);
         const stat = await ItemTotalCommand.getStat(itemCode);
 
-        await CHANNELS._postToChannelCode('ACTIONS', stat);
+        await CHANNELS._postToChannelCode('TALK', stat);
     }
 
 }

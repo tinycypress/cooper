@@ -117,7 +117,7 @@ export default function eventsManifest() {
   EventsHelper.chanceRunInterval(() => ProspectHelper.randomReady(), 20, baseTickDur * 14);
 
 
-  EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 45, baseTickDur * 4);
+  EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 15, baseTickDur * 4);
 
   EventsHelper.runInterval(() => CooperMorality.evaluate(), baseTickDur * 4.5);
 

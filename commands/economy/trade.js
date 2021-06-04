@@ -82,6 +82,11 @@ export default class TradeCommand extends CoopCommand {
 			// TODO: Provide a more useful error message here with qty details.
 			if (!canUserFulfil) return COOP.MESSAGES.selfDestruct(msg, `Insufficient item quantity for trade.`, 0, 7500);
 
+			// Get their existing trades to check slots.
+			const ownerExistingTrades = await TradingHelper.getByTrader(tradeeID);
+			if (ownerExistingTrades.length > 5)
+				return COOP.MESSAGES.selfDestruct(msg, `Insufficient available trade slots ${ownerExistingTrades.length}/5.`, 0, 7500);
+
 			// Generate strings with emojis based on item codes.
 			const tradeAwayStr = `${COOP.MESSAGES.emojiCodeText(offerItemCode)}x${offerQty}`;
 			const receiveBackStr = `${COOP.MESSAGES.emojiCodeText(receiveItemCode)}x${receiveQty}`;

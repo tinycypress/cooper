@@ -13,10 +13,9 @@ export default class TradingHelper {
         const dateFmt = TIME.secsLongFmt(Date.now() / 1000);
         const editResult = await MESSAGES.editByLink(KEY_MESSAGES.trade_info, 'Trade Message Updated ' + dateFmt);
 
-        // TODO: Post latest/most recent 5-10 trades in talk.
+        // Post latest/most recent 5-10 trades in talk.
         const lastTrades = await this.all();
-        
-        CHANNELS._tempSend('TALK', '**DEV**:\n' + JSON.stringify(lastTrades), 0, 30000);
+        CHANNELS._tempSend('TALK', '**Latest active trades**:\n' + this.manyTradeItemsStr(lastTrades), 0, 30000);
 
         return editResult;
     }

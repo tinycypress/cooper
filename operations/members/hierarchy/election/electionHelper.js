@@ -534,8 +534,6 @@ export default class ElectionHelper {
         // Filter out the potentially expired(kicked/left/banned user) IDs.
         preloadMsgIDSets = preloadMsgIDSets.filter(idSet => !!idSet);
 
-
-
         // Preload each candidate message.
         let campaigns = await Promise.allSettled(preloadMsgIDSets.map((idSet, index) => {
             const guild = COOP.SERVER._coop();

@@ -44,12 +44,19 @@ export default class ItemsHelper {
         const result = await Database.query(query);
         const successDelete = result.rowCount === 1;
 
+        console.log('Saving a transaction, number of rows: ', result.rowCount);
+
         // Delete if growing too large.
         if (result.rowCount > 250) {
             // Delete the last 100.
-            Database.query({
-                text: `DELETE FROM item_qty_change_history WHERE id = any (array(SELECT id FROM item_qty_change_history ORDER BY occurred_secs LIMIT 100))`
-            });
+            try {
+                await Database.query({
+                    text: `DELETE FROM item_qty_change_history WHERE id = any (array(SELECT id FROM item_qty_change_history ORDER BY occurred_secs LIMIT 100))`
+                });
+            } catch(e) {
+                console.log('Error clipping item qty change history');
+                console.error(e);
+            }
         }
 
 

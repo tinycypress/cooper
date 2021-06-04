@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, MESSAGES } from '../coop';
-import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
+import COOP from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -29,10 +28,14 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
 
         // DEV WORK AND TESTING ON THE LINES BELOW.
-        // Sacrifice messages not cleaned up.
+        
+        
+        // Major problems with cleaning up messages and overflowing item_qty_change_history
+        // 1. Clip item_qty_change_history / test / debug
 
-        // Test deleting an expired temporary message.
 
+        // 2. Debug what actually happens with temporary messages.
+        // 2.1. Test deleting an expired temporary message.
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
