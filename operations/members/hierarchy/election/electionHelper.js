@@ -524,6 +524,7 @@ export default class ElectionHelper {
             // Attempt to clear up if they have left etc.
             if (!userStillExists) {
                 Database.query({ text: `DELETE FROM candidates WHERE campaign_msg_link = '${candidate.campaign_msg_link}'` });
+                MESSAGES.deleteByLink(candidate.campaign_msg_link);
                 return false;
             }
 

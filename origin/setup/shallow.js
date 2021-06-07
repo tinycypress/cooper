@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP from '../coop';
+import COOP, { SERVER } from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -36,6 +36,15 @@ const shallowBot = async () => {
 
         // 2. Debug what actually happens with temporary messages.
         // 2.1. Test deleting an expired temporary message.
+
+        // const tempMessageLink = 'https://discord.com/channels/723660447508725802/724362429353558026/850082537628106772';
+        // const tempMessage = await SERVER.getTempMessageByLink(tempMessageLink);
+        // console.log(tempMessage);
+
+        // Message was deleted from temp_messages but wasn't actually deleted.
+
+
+
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

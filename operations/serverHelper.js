@@ -100,19 +100,17 @@ export default class ServerHelper {
         return tempMessages;
     }
 
-    // static async getTempMessage(guild_id, channel_id, message_id) {
-    //     const query = {
-    //         name: "get-temp-messages",
-    //         text: `SELECT * FROM temp_messages 
-    //             WHERE expiry_time <= extract(epoch from now())
-    //             ORDER BY expiry_time ASC
-    //             LIMIT 40`
-    //     };
+    static async getTempMessageByLink(link) {
+        const query = {
+            name: "get-temp-message",
+            text: `SELECT * FROM temp_messages WHERE message_link = $1`,
+            values: [link]
+        };
         
-    //     const result = await Database.query(query);
-    //     const tempMessages = DatabaseHelper.many(result);
-    //     return tempMessages;
-    // }
+        const result = await Database.query(query);
+        const tempMessage = DatabaseHelper.single(result);
+        return tempMessage;
+    }
 
     // Load and delete expired messages sorted by oldest first.
     static async processTempMessages() {
