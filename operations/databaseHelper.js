@@ -2,6 +2,11 @@ import Database from "../origin/setup/database";
 
 export default class DatabaseHelper {
 
+	static singleField(queryResult, field, defaultVal = null) {
+        const fieldVal = (queryResult.rows[0] || { [field]: defaultVal })[field];
+		return fieldVal;
+	}
+
 	static single(queryResult) {
 		let singleResult = null;
 		if (queryResult.rowCount > 0) singleResult = queryResult.rows[0];

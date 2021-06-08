@@ -288,7 +288,7 @@ export default class ElectionHelper {
                 // Check ex leader is not re-elected.
                 let leaderReElected = false;
                 hierarchy.leaders.map(l => {
-                    if (l.user.id === exLeader.user.id)
+                    if (l.id === exLeader.user.id)
                         leaderReElected = true;
                 });
                 // If it isn't a relected leader, remove role.
@@ -337,7 +337,7 @@ export default class ElectionHelper {
                 // Check ex leader is not re-elected.
                 let leaderReElected = false;
                 hierarchy.leaders.map(l => {
-                    if (l.user.id === exLeader.owner_id)
+                    if (l.id === exLeader.owner_id)
                         leaderReElected = true;
                 });
                 // If it isn't a relected leader, remove role.

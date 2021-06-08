@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { SERVER } from '../coop';
+import COOP, { ITEMS, SERVER } from '../coop';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
+import DatabaseHelper from '../../operations/databaseHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -42,9 +44,6 @@ const shallowBot = async () => {
         // console.log(tempMessage);
 
         // Message was deleted from temp_messages but wasn't actually deleted.
-
-
-
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

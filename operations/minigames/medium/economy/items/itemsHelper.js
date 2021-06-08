@@ -1,6 +1,6 @@
 import EmojiHelper from "./emojiHelper";
 
-import COOP, { USABLE, SERVER, TIME } from "../../../../../origin/coop";
+import COOP, { USABLE, SERVER, TIME, STATE } from "../../../../../origin/coop";
 import { ITEMS, EMOJIS, RAW_EMOJIS } from '../../../../../origin/config';
 import DatabaseHelper from "../../../../databaseHelper";
 import Database from '../../../../../origin/setup/database';
@@ -25,11 +25,24 @@ export default class ItemsHelper {
         return matches.map(x => x.replace(/\s/g, '_'));
     }
 
+
+
     static beautifyItemCode(itemCode) {
         const lowerName = itemCode.replace("_", " ").toLowerCase();
         const nameCapitalized = lowerName.charAt(0).toUpperCase() + lowerName.slice(1);
         const emoji = COOP.MESSAGES.emojifyID(EMOJIS[itemCode]);
         return emoji + " " + nameCapitalized + " ";
+    }
+
+    static async getTransactionRowCount() {
+        const query = {
+            name: "transactions-rows-count",
+            text: `SELECT COUNT(*) FROM item_qty_change_history`
+        };  
+
+        const result = await Database.query(query);
+        const numTxRows = DatabaseHelper.singleField(result, 'count', 0);
+        return numTxRows;
     }
 
     static async saveTransaction(userID, item_code, qty, runningQty, reason = 'N/A') {
@@ -42,25 +55,33 @@ export default class ItemsHelper {
         };  
 
         const result = await Database.query(query);
-        const successDelete = result.rowCount === 1;
+        const successInert = result.rowCount === 1;
 
-        console.log('Saving a transaction, number of rows: ', result.rowCount);
+        // Five percent chance of checking for clean up. (Gets run a lot).
+        if (STATE.CHANCE.bool({ likelihood: 5 })) {
+            const numTxRows = await this.getTransactionRowCount();
+            console.log(numTxRows);
 
-        // Delete if growing too large.
-        if (result.rowCount > 250) {
-            // Delete the last 100.
-            try {
-                await Database.query({
-                    text: `DELETE FROM item_qty_change_history WHERE id = any (array(SELECT id FROM item_qty_change_history ORDER BY occurred_secs LIMIT 100))`
-                });
-            } catch(e) {
-                console.log('Error clipping item qty change history');
-                console.error(e);
+            console.log(result);
+            console.log('Saving a transaction, number of rows: ', result.rowCount);
+    
+            // Delete if growing too large.
+            if (result.rowCount > 250) {
+                // Delete the last 100.
+                try {
+                    await Database.query({
+                        text: `DELETE FROM item_qty_change_history WHERE id = any (array(SELECT id FROM item_qty_change_history ORDER BY occurred_secs LIMIT 100))`
+                    });
+                } catch(e) {
+                    console.log('Error clipping item qty change history');
+                    console.error(e);
+                }
             }
         }
 
 
-        return successDelete;
+
+        return successInert;
     }
 
     static async add(userID, itemCode, quantity, sourceReason = 'unknown') {
@@ -77,7 +98,9 @@ export default class ItemsHelper {
         };
         
         const result = await Database.query(query);
-        const newQty = (result.rows[0] || { quantity: 0 }).quantity;
+        const newQty = DatabaseHelper.singleField(result, 'quantity', 0)
+
+        
 
         // Get the total of that item now.
         const total = await this.count(itemCode);
