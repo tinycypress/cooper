@@ -60,13 +60,7 @@ export default class ItemsHelper {
         // Five percent chance of checking for clean up. (Gets run a lot).
         if (STATE.CHANCE.bool({ likelihood: 5 })) {
             const numTxRows = await this.getTransactionRowCount();
-            console.log(numTxRows);
-
-            console.log(result);
-            console.log('Saving a transaction, number of rows: ', result.rowCount);
-    
-            // Delete if growing too large.
-            if (result.rowCount > 250) {
+            if (numTxRows > 250) {
                 // Delete the last 100.
                 try {
                     await Database.query({

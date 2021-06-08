@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { ITEMS, SERVER } from '../coop';
+import COOP, { ITEMS, ROLES, SERVER } from '../coop';
 import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 import DatabaseHelper from '../../operations/databaseHelper';
 // ^ DEV IMPORT AREA ^
@@ -32,10 +32,6 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
         
         
-        // Major problems with cleaning up messages and overflowing item_qty_change_history
-        // 1. Clip item_qty_change_history / test / debug
-
-
         // 2. Debug what actually happens with temporary messages.
         // 2.1. Test deleting an expired temporary message.
 
