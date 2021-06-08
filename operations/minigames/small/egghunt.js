@@ -1,6 +1,7 @@
 import { map as _map, values as _values } from 'lodash';
 import { RAW_EMOJIS, EMOJIS } from '../../../origin/config';
 import COOP, { STATE, CHANNELS, ITEMS, MESSAGES, USERS } from '../../../origin/coop';
+import TemporaryMessages from '../../maintenance/temporaryMessages';
 
 
 import DropTable from '../medium/economy/items/droptable';
@@ -295,7 +296,7 @@ export default class EggHuntMinigame {
 
 
                     // Schedule the deletion/cleanup of the dropped egg.
-                    COOP.SERVER.addTempMessage(eggMsg, eggLifespan, 'EGG_HUNT', { rarity });
+                    TemporaryMessages.add(eggMsg, eggLifespan, 'EGG_HUNT', { rarity });
                     MESSAGES.delayDelete(eggMsg, eggLifespan * 1000);
 
                     // If an annotation for the egg drop was provided, use it.

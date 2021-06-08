@@ -4,6 +4,7 @@ import { KEY_MESSAGES, EMOJIS, CHANNELS } from '../../../origin/config';
 import CooperMorality from '../../minigames/small/cooperMorality';
 
 import COOP, { ROLES } from '../../../origin/coop';
+import TemporaryMessages from '../../maintenance/temporaryMessages';
 
 
 export const SACRIFICE_RATIO_PERC = .03;
@@ -257,7 +258,7 @@ export default class SacrificeHelper {
 
         // Schedule end of message and reaction voting (24hr)
         const sacrificeMsg = await COOP.CHANNELS._postToChannelCode('SACRIFICE', sacrificeEmbed);
-        COOP.SERVER.addTempMessage(sacrificeMsg, 60 * 60 * 24);
+        TemporaryMessages.add(sacrificeMsg, 60 * 60 * 24);
 
         // Update the user's latest recorded sacrifice time.
         await COOP.USERS.updateField(user.id, 'last_sacrificed_secs', COOP.TIME._secs());

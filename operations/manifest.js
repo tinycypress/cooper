@@ -24,6 +24,7 @@ import COOP, { SERVER } from "../origin/coop";
 import TodoHelper from "./productivity/todos/todoHelper";
 import { status } from "./marketing/rewards/loyalty";
 import ProspectHelper from "./members/redemption/prospectHelper";
+import serverTick from "./serverTick";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -81,7 +82,7 @@ export default function eventsManifest() {
 
 
   // Core tick handler for more granularity over timing.
-  EventsHelper.runInterval(() => SERVER.tick(), 30000);
+  EventsHelper.runInterval(() => serverTick(), 30000);
 
   // Check Todo helper items late! PUNISH!
   EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);

@@ -1,5 +1,6 @@
 import { STATE, SERVER, USABLE, MESSAGES, CHANNELS, USERS, ITEMS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
+import TemporaryMessages from "../../maintenance/temporaryMessages";
 
 export const BAR_DATA = {
     GOLD_BAR: {
@@ -86,7 +87,7 @@ export default class InstantFurnaceMinigame {
             
             // TODO: Animate flame out like egg collect.
             MESSAGES.delayDelete(msg, 60000);
-            await SERVER.addTempMessage(msg, 60);
+            TemporaryMessages.add(msg, 60);
 
             // Add reaction for action suggestion/tip.
             MESSAGES.delayReact(msg, EMOJIS.METAL_ORE, 333);

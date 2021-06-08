@@ -3,6 +3,7 @@ import createEmbed from "./embedHelper";
 import { MESSAGES, CHANNELS, SERVER }  from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import { silentOpts } from "../../channelHelper";
+import TemporaryMessages from "../../maintenance/temporaryMessages";
 
 export default class MessagesHelper {
 
@@ -208,7 +209,7 @@ export default class MessagesHelper {
                         
                         if (messageRef) {
                             this.delayDelete(messageRef, fuseMs);
-                            SERVER.addTempMessage(messageRef)
+                            TemporaryMessages.add(messageRef)
                             resolve(messageRef);
                         } else {
                             resolve(null);
@@ -242,7 +243,7 @@ export default class MessagesHelper {
                         
                         if (messageRef) {
                             this.delayDelete(messageRef, fuseMs);
-                            SERVER.addTempMessage(messageRef)
+                            TemporaryMessages.add(messageRef)
                             resolve(messageRef);
                         }
                     }

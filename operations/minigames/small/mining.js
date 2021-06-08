@@ -7,6 +7,7 @@ import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 import { STATE, REACTIONS, SERVER, ITEMS, MESSAGES, USERS, CHANNELS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import Statistics from "../../activity/information/statistics";
+import TemporaryMessages from "../../maintenance/temporaryMessages";
 
 export default class MiningMinigame {
     
@@ -146,7 +147,7 @@ export default class MiningMinigame {
         
         // Ensure message is stored in database for clear up.
         // TODO: Count as ungathered rock in activity messages.
-        SERVER.addTempMessage(rockMsg, 30 * 60);
+        TemporaryMessages.add(rockMsg, 30 * 60);
 
         MESSAGES.delayReact(rockMsg, '⛏️');
 
