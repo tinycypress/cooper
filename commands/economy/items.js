@@ -11,9 +11,8 @@ export default class ItemsCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'items',
 			aliases: ['eggs', 'inv', 'inventory', 'i'],
-			description: 'polls will always be stolen at The Coop by those who demand them.',
-			details: `Details of the items command`,
-			examples: ['items', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
+			description: 'Lists the current items you own',
+			examples: ['!items'],
 			args: [
 				{
 					key: 'targetUser',

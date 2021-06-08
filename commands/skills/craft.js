@@ -13,9 +13,8 @@ export default class CraftCommand extends CoopCommand {
 			group: 'skills',
 			memberName: 'craft',
 			aliases: ['c'],
-			description: 'This command lets you craft the items you want',
-			details: `Details of the craft command`,
-			examples: ['craft', '!craft laxative'],
+			description: 'Craft an item. Default quantity is 1.',
+			examples: ['!craft <item> <quantity>', '!craft laxative', '!craft laxative 3'],
 			args: [
 				{
 					key: 'itemCode',

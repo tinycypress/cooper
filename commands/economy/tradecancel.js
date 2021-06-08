@@ -12,9 +12,8 @@ export default class TradeCancelCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'tradecancel',
 			aliases: [],
-			description: 'Cancel one of your open trades.',
-			details: `Details of the tradecancel command`,
-			examples: ['tradecancel', '!tradecancel {TRADE_ORDER_ID eg. 21} -> !tradecancel 21'],
+			description: 'Cancel one of your open trades. Use !trades to view your open trades.',
+			examples: ['!tradecancel <tradeID>', '!tradecancel 73'],
 			args: [
 				{
 					key: 'tradeID',

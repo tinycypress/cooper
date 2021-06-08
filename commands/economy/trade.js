@@ -22,9 +22,8 @@ export default class TradeCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'trade',
 			aliases: ['tr'],
-			description: 'This command lets you trade the items you own',
-			details: `Details of the trade command`,
-			examples: ['trade', '!trade LAXATIVE AVERAGE_EGG 1 5'],
+			description: 'Lets you trade items you own. Quantities for both items defaults to 1.',
+			examples: ['!trade <item1> <item2> <item1 quantity> <item2 quantity>', '!trade laxative average_egg 1 5'],
 			args: [
 				{
 					key: 'offerItemCode',

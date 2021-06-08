@@ -12,8 +12,7 @@ export default class TradeFindCommand extends CoopCommand {
 			memberName: 'conversion',
 			aliases: ['cnv'],
 			description: 'This command lets you find the conversion rate between items based on open trades',
-			details: `Details of the conversion command`,
-			examples: ['conversion', '!conversion laxative'],
+			examples: ['!conversion <item1> <item2>', '!conversion wood average_egg'],
 			args: [
 				{
 					key: 'offerItemCode',
@@ -53,8 +52,9 @@ export default class TradeFindCommand extends CoopCommand {
 			const noMatchesStr = `No conversion data/existing trades including ${offerItemCode} for ${receiveItemCode}.`;
 			return COOP.MESSAGES.selfDestruct(msg, noMatchesStr, 0, 5000);
 		}
+
 		const conversionRate = await TradingHelper.conversionRate(offerItemCode, receiveItemCode);
-		return COOP.MESSAGES.selfDestruct(msg, `1 ${offerItemCode} = ${conversionRate}* _(* Based on open trades)_.`, 0, 20000);
+		return COOP.MESSAGES.selfDestruct(msg, `1 ${offerItemCode} = ${conversionRate} ${receiveItemCode} (Based on open trades)`, 0, 20000);
 
     }
     
