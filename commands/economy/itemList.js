@@ -10,8 +10,7 @@ export default class ItemListCommand extends CoopCommand {
 			memberName: 'itemlist',
 			aliases: ['il', 'list'],
 			description: 'Retrieves a list of usable item codes',
-			details: `Details of the itemlist command`,
-			examples: ['itemlist', '!itemlist'],
+			examples: ['!itemlist'],
 		});
 	}
 
