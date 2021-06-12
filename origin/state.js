@@ -31,8 +31,5 @@ const STATE = {
 
     // Chance/random instance
     CHANCE: new Chance,
-
-    // The economy reserve wallet
-    WALLET: null,
 };
 export default STATE;

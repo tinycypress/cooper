@@ -1,4 +1,3 @@
-import BlockIO from 'block_io';
 import Database from './origin/setup/database';
 
 import client from './origin/setup/client';
@@ -27,9 +26,6 @@ bootstrap();
 export default async function bootstrap() {
     // Globalise the created client (extended Discordjs).
     const botClient = STATE.CLIENT = client();
-
-    // Setup the bot wallet for economy reserves.
-    STATE.WALLET = new BlockIO(process.env.BITCOIN_APIKEY, process.env.WALLET_PIN);
 
     // Connect to PostGres Database and attach event/error handlers.
     await Database.connect();

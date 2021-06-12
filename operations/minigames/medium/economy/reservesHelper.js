@@ -8,26 +8,15 @@ export default class ReservesHelper {
     }
 
     static async balanceText() {
-        let messageText = '';
-        const balance = await this.balance();
-
-        if (balance.status === 'success') {
-            messageText = `Available Balance (BTC): ${balance.data.available_balance}\n` +
-                `Pending Received Balance (BTC): ${balance.data.pending_received_balance}`;
-        } else {
-            messageText = 'Failure accessing reserves balance.'
-        }
-
-        return messageText;
+        return 'currently offline';
     }
 
     static balance() {
-        return STATE.WALLET.get_balance();
+        return 'currently offline';
     }
 
     static async address() {
-        const def = await STATE.WALLET.get_address_by_label({ label: 'default' });
-        return def.data.address;
+        return 'currently offline';
     }
 
 }
