@@ -1,2 +1,2 @@
 worker: npm run startBot
-# web: npm run startWeb
+web: npm run startAPI

@@ -4,7 +4,7 @@
   "description": "get cooped with cooper",
   "scripts": {
     "startBot": "node -r esm ./index.js",
-    "startApi": "node -r esm ./index.js",
+    "startAPI": "node -r esm ./api.js",
     "db": "heroku pg:psql --app cooperchickenbot",
     "dev": "nodemon --exec babel-node ./origin/setup/shallow.js",
     "lint": "eslint ."
