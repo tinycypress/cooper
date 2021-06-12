@@ -4,15 +4,14 @@
   "description": "get cooped with cooper",
   "scripts": {
     "startBot": "node -r esm ./index.js",
+    "startApi": "node -r esm ./index.js",
     "db": "heroku pg:psql --app cooperchickenbot",
     "dev": "nodemon --exec babel-node ./origin/setup/shallow.js",
     "lint": "eslint ."
   },
   "author": "lmf-git",
   "dependencies": {
-    "@discordjs/opus": "^0.5.0",
     "axios": "^0.21.1",
-    "block_io": "^3.0.4",
     "chance": "^1.1.7",
     "cors": "^2.8.5",
     "discord.js": "^12.3.1",
@@ -20,8 +19,6 @@
     "dotenv": "^8.2.0",
     "emoji-regex": "^9.2.0",
     "esm": "^3.2.25",
-    "ffmpeg-static": "^4.3.0",
-    "imgur": "^0.3.1",
     "is-promise": "^4.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
@@ -30,8 +27,7 @@
     "pg-format": "^1.0.4",
     "pg-promise": "^10.7.0",
     "slash-create": "^3.2.3",
-    "sugar": "^2.0.6",
-    "ytdl-core": "^4.8.2"
+    "sugar": "^2.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",

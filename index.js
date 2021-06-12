@@ -1,5 +1,4 @@
 import BlockIO from 'block_io';
-import CDNManager from './origin/setup/cdn';
 import Database from './origin/setup/database';
 
 import client from './origin/setup/client';
@@ -43,9 +42,6 @@ export default async function bootstrap() {
 
     // Register logging, debugging, errors, etc.
     registerLogging(botClient);
-
-    // Start basic CDN
-    await CDNManager.start();
 
     // Set activity.
     botClient.user.setActivity(`!help... STRUCTURE REFORM`, { type: 'WATCHING' });

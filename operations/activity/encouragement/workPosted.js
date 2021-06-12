@@ -1,5 +1,3 @@
-import CDNManager from "../../../origin/setup/cdn";
-
 import COOP from "../../../origin/coop";
 import { CHANNELS } from "../../../origin/config";
 
@@ -20,25 +18,26 @@ export default async function workPostHandler(msg) {
             await COOP.CHANNELS._postToFeed(
                 `${msg.author.username} just posted some work! View it here:\n ${workLink}`
             );
-    
-            msg.attachments.map(async (file) => {
-                const annotationLines = msg.content.split('\n');
-                const name = annotationLines[0] || 'Another The Coop Image!'
+                
+            // TODO: Replace with Coop webapi integration
+            // TODO: Return the created link/image to the server for access/sharing.
+            // msg.attachments.map(async (file) => {
+            //     const annotationLines = msg.content.split('\n');
+            //     const name = annotationLines[0] || 'Another The Coop Image!'
 
-                // Remove the name now it is no longer needed.
-                annotationLines.shift()
+            //     // Remove the name now it is no longer needed.
+            //     annotationLines.shift()
 
-                const description = annotationLines.join('\n') + "\n\n" +
-                    "Do you have Business/Art/Code interests? Join us! https://discord.gg/5cmN8uW";
+            //     const description = annotationLines.join('\n') + "\n\n" +
+            //         "Do you have Business/Art/Code interests? Join us! https://discord.gg/5cmN8uW";
 
-                await CDNManager.upload(
-                    file.url,
-                    name,
-                    description
-                );
+            //     await CDNManager.upload(
+            //         file.url,
+            //         name,
+            //         description
+            //     );
+            // });
 
-                // TODO: Return the created link/image to the server for access/sharing.
-            });
         } catch(e) {
             console.error(e);
         }
