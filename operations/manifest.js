@@ -20,11 +20,12 @@ import ElectionHelper from "./members/hierarchy/election/electionHelper";
 import AboutHelper from "./marketing/about/aboutHelper";
 
 
-import COOP, { SERVER } from "../origin/coop";
+import COOP from "../origin/coop";
 import TodoHelper from "./productivity/todos/todoHelper";
 import { status } from "./marketing/rewards/loyalty";
 import ProspectHelper from "./members/redemption/prospectHelper";
 import serverTick from "./serverTick";
+import TemporaryMessages from "./maintenance/temporaryMessages";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -96,9 +97,12 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 2);
   EventsHelper.runInterval(() => EconomyNotifications.post(), baseTickDur * 1.75);
 
+  // Cleanup temporary messages.
+  EventsHelper.runInterval(() => TemporaryMessages.flush(), baseTickDur / 5);
 
   // Clean up user data, may have missed detection on a leave/kick/ban.
   EventsHelper.runInterval(() => COOP.USERS.cleanupUsers(), baseTickDur * 6);
+
   // Ensure all users registered in memory for functionality.
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
 

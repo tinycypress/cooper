@@ -1,12 +1,23 @@
 import express from 'express';
+import Database from './origin/setup/database';
 
-const app = express();
-const port = process.env.PORT;
+// Run the web api.
+bootstrap();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// Define the web api.
+export default async function bootstrap() {
+  // Connect to PostGres Database and attach event/error handlers.
+  await Database.connect();
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-});
+  const app = express();
+  const port = process.env.PORT;
+  
+  app.get('/', (req, res) => {
+    res.send('Hello World!')
+  });
+  
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+  });
+}
+

@@ -6,7 +6,6 @@ import DatabaseHelper from "../databaseHelper";
 export default class TemporaryMessages {
     remove() {}
     has() {}
-    flush() {}
 
     // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
     // Consider this a correction from Cooper/more recent data.
@@ -32,7 +31,7 @@ export default class TemporaryMessages {
         return result;
     }
 
-    static async deleteByLink(link) {
+    static async unregisterTempMsgByLink(link) {
         const query = {
             name: "delete-temp-message-link",
             text: `DELETE FROM temp_messages WHERE message_link = $1`,
@@ -78,100 +77,31 @@ export default class TemporaryMessages {
     }
 
     // Load and delete expired messages sorted by oldest first.
-    static async processTempMessages() {
+    static async flush() {
         // Load the temporary messages 
         const tempMessages = await this.getExpiredTempMessages();
+        console.log(tempMessages.length);
+        tempMessages.map((tempMsg, index) => {
+            setTimeout(async () => {
+                let confirmedRemoval = false;
+                try {
+                    const msgIDSet = MESSAGES.parselink(tempMsg.message_link);
+    
+                    const channel = CHANNELS._get(msgIDSet.channel);
+                    const msg = await channel.messages.fetch(msgIDSet.message);
 
-        // Build an object of deletions for bulk delete.
-        const deletions = {};
+                    // Attempt to delete and confirm it.
+                    const deletionMsg = await msg.delete();
+                    if (deletionMsg.deleted) confirmedRemoval;
 
-        // Calculate from message links and batch the messages for bulkDeletion.
-        const expiredMsgLinks = tempMessages.map(tempMsg => tempMsg.message_link);
-        expiredMsgLinks.map(expiredMsgLink => {
-            const messageData = MESSAGES.parselink(expiredMsgLink);
-            if (messageData && messageData.channel) {
-                // Start tracking the channel if it wasn't already.
-                if (typeof deletions[messageData.channel] === 'undefined')
-                    deletions[messageData.channel] = [];
+                } catch(e) {
+                    // This is what catches deleted from Discord confirmation.
+                    // e.message also catches bonus errors from msg.delete attempt! :D
+                    if (e.message === 'Unknown Message') confirmedRemoval = true;
+                }
+                if (confirmedRemoval) this.unregisterTempMsgByLink(tempMsg.message_link)
 
-                // Track the message which needs deleting too, include link in result array for confirmation.
-                const deletionData = { 
-                    messageID: messageData.message, 
-                    link: expiredMsgLink 
-                };
-                deletions[messageData.channel].push(deletionData);
-            }
+            }, 5000 * index);
         });
-
-        // Decoupled deletion handled and pass the calculated deletions.
-        this.cleanupTempMessages(deletions);
-    }
-
-    static async cleanupTempMessages(deletions) {
-        const guildID = SERVER._coop().id;
-        const msgUrlBase = `https://discordapp.com/channels/${guildID}`;
-        
-        // Iterate through the deletion data and bulkDelete for each channel.
-        if (deletions) {
-            Object.keys(deletions).map((deleteChanKey, index) => {
-                setTimeout(async () => {
-                    try {
-                        // Load the channel for its bulkDelete method.
-                        const chan = CHANNELS._get(deleteChanKey);
-
-                        // Get the messages from this deletion channel.
-                        const deletionItems = deletions[deleteChanKey];
-    
-                        // Format the data for discord API request.
-                        const deletionMessageIDs = deletionItems.map(item => item.messageID);
-
-                        const existentDeletionMessageIDs = await deletionMessageIDs.filter(async item => {
-                            // If it's in cache, don't check at all.
-                            const cachedMsg = chan.messages.get(item.messageID);
-                            if (cachedMsg && !cachedMsg.deleted)
-                                return true;
-
-                            const stillExist = await chan.messages.fetch(item.messageID);
-                            if (!stillExist) {
-                                // Remove record from temp messages table.
-                                this.deleteByLink(`${msgUrlBase}/${chan.id}/${item.messageID}`);
-                                return false;
-                            }
-                            return true;
-                        });
-                        
-                        // Delete messages from discord.
-                        const successfulDeletions = await chan.bulkDelete(existentDeletionMessageIDs);
-                                                
-                        // On bulkDelete success, remove from our database.
-                        successfulDeletions.map((item, id) => {
-                            // Format the msg link from server ID, channel ID and message ID.
-                            const msgUrl = `${msgUrlBase}/${chan.id}/${id}`;
-        
-                            // Remove record from temp messages table.
-                            this.deleteByLink(msgUrl);
-                        });
-    
-                    } catch(e) {
-    
-                        // If unknown message, it needs to attempt to be removed from database again.
-                        if (e.path && e.path.includes('/messages/') && e.path.includes('/channels/')) {
-                            // Need to do be very cautious this doesn't conflict or fail or even attempt on DMs...
-                            const errorPathParts = e.path.split('/');
-                            const prehandledMsgLink = `${msgUrlBase}/${errorPathParts[2]}/${errorPathParts[4]}`;
-                            
-                            // Delete a single prehandled/obstacle message.
-                            this.deleteByLink(prehandledMsgLink);
-                        }
-    
-                        // Ignore unknown messages.
-                        if (e.message !== 'Unknown Message') {
-                            console.log('Error cleaning up our temporary messages.');
-                            console.error(e);
-                        }
-                    }
-                }, 2222 * index);
-            });
-        }
     }
 }
