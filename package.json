@@ -1,6 +1,6 @@
 {
   "name": "cooper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "get cooped with cooper",
   "scripts": {
     "startBot": "node -r esm ./index.js",
