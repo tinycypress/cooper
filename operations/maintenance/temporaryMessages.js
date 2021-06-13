@@ -80,7 +80,6 @@ export default class TemporaryMessages {
     static async flush() {
         // Load the temporary messages 
         const tempMessages = await this.getExpiredTempMessages();
-        console.log(tempMessages.length);
         tempMessages.map((tempMsg, index) => {
             setTimeout(async () => {
                 let confirmedRemoval = false;
