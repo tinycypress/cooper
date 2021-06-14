@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP from '../../origin/coop';
+import { ITEMS } from '../../origin/coop';
 
 export default class PointsCommand extends CoopCommand {
 
@@ -22,8 +22,8 @@ export default class PointsCommand extends CoopCommand {
 		if (msg.mentions.users.first()) targetUser = msg.mentions.users.first();
 
         try {
-			const points = await COOP.ITEMS.getUserItemQty(targetUser.id, 'COOP_POINT');
-			await msg.channel.send(`${targetUser.username}'s points: ${points}`);
+			const points = await ITEMS.getUserItemQty(targetUser.id, 'COOP_POINT');
+			await msg.channel.send(`${targetUser.username}'s points: ${ITEMS.displayQty(points)}`);
 
         } catch(err) {
             console.error(err);
