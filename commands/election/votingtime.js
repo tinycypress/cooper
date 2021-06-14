@@ -14,8 +14,7 @@ export default class VotingTimeCommand extends CoopCommand {
 			memberName: 'votingtime',
 			aliases: [],
 			description: 'Check voting time remaining',
-			details: ``,
-			examples: ['votingtime']
+			examples: ['!votingtime']
 		});
 	}
 

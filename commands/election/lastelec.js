@@ -13,9 +13,8 @@ export default class LastElectionCommand extends CoopCommand {
 			group: 'election',
 			memberName: 'lastelec',
 			aliases: [],
-			description: 'Check lastelec election date',
-			details: ``,
-			examples: ['lastelec']
+			description: 'Check the date of the last election. To see the date of the next election, use !nextelec',
+			examples: ['!lastelec']
 		});
 	}
 
