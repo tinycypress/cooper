@@ -1,13 +1,8 @@
 import cors from 'cors';
 import express from 'express';
+import APIRouter from './api/apiRouter';
 
 import Database from './origin/setup/database';
-
-import DiscordChallenge from './api/auth/challenge-discord';
-import getBases from './api/services/bases/getBases';
-
-
-
 
 // Run the web api.
 bootstrap();
@@ -23,13 +18,8 @@ export default async function bootstrap() {
   // Disable security, tighten "later".
   app.use(cors({ origin: '*' }));
 
-  // Refactor all this into routes.
-  app.get('/', (req, res) => res.send('Hello World!'));
-
-  app.get('/request-token', DiscordChallenge);
-
-  app.get('/bases', getBases);
-
+  // Attach all the routes to the API.
+  app.use('/', APIRouter);
   
   // Start listening on the app.
   app.listen(process.env.PORT);
