@@ -1,32 +1,29 @@
 import express from 'express';
+import DiscordChallenge from './api/auth/challenge-discord';
+import getBases from './api/services/bases/getBases';
 import Database from './origin/setup/database';
-
-
-// Dev quick copy and paste oauth url:
-// https://discord.com/api/oauth2/authorize?client_id=799695179623432222&redirect_uri=https%3A%2F%2Fapi.thecoop.group%2Fchallenge-discord-identity&response_type=code&scope=identify
 
 // Run the web api.
 bootstrap();
-
-// Try to find the most direct way to make global (hence var here).
-var API_BASE_URL = 'https://cooperchickenbot.herokuapp.com/';
 
 // Define the web api.
 export default async function bootstrap() {
   // Connect to PostGres Database and attach event/error handlers.
   await Database.connect();
 
+  // Instantiate the app.
   const app = express();
 
+
+  // Refactor all this into routes.
   app.get('/', (req, res) => res.send('Hello World!'));
 
-  app.get('/challenge-discord-identity', (req, res) => {
-    console.log(req);
+  app.get('/request-token', DiscordChallenge);
 
-    res.send('Hello Discord!')
-  });
+  app.get('/bases', getBases);
 
   
+  // Start listening on the app.
   app.listen(process.env.PORT);
 }
 
