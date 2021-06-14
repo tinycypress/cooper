@@ -4,9 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { MESSAGES } from '../coop';
-import TemporaryMessages from '../../operations/maintenance/temporaryMessages';
-import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
+import COOP from '../coop';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.

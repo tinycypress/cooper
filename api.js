@@ -1,7 +1,13 @@
+import cors from 'cors';
 import express from 'express';
+
+import Database from './origin/setup/database';
+
 import DiscordChallenge from './api/auth/challenge-discord';
 import getBases from './api/services/bases/getBases';
-import Database from './origin/setup/database';
+
+
+
 
 // Run the web api.
 bootstrap();
@@ -14,6 +20,8 @@ export default async function bootstrap() {
   // Instantiate the app.
   const app = express();
 
+  // Disable security, tighten "later".
+  app.use(cors({ origin: '*' }));
 
   // Refactor all this into routes.
   app.get('/', (req, res) => res.send('Hello World!'));
