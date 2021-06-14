@@ -11,9 +11,8 @@ export default class LeaderboardCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'leaderboard',
 			aliases: ['lb', 'top'],
-			description: 'polls will always be stolen at The Coop by those who demand them.',
-			details: `Details of the points command`,
-			examples: ['points', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
+			description: 'Shows top 15 on points leaderboard. Optional argument can specify the starting rank. To show bottom leaderboard, see !negleaderboard',
+			examples: ['!leaderboard <rank>', '!leaderboard', '!leaderboard 20'],
 			args: [
 				{
 					key: 'position',

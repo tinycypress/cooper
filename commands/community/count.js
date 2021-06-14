@@ -12,8 +12,7 @@ export default class CountCommand extends CoopCommand {
 			memberName: 'count',
 			aliases: ['numusers', 'serversize', 'beaks'],
 			description: 'Get the current member count',
-			details: ``,
-			examples: ['count', 'count example']
+			examples: ['!count']
 		});
 	}
 
@@ -24,7 +23,7 @@ export default class CountCommand extends CoopCommand {
 			// Delete after sixty seconds.
             const emojiText = COOP.MESSAGES.emojiText(EMOJIS.COOP);
             const userCount = SERVER._coop().memberCount || 0;
-            const countText = `${userCount} #beaks presently in The Coop ${emojiText}!`;
+            const countText = `${userCount} beaks currently in The Coop ${emojiText}!`;
 			COOP.MESSAGES.selfDestruct(msg, countText, 0, 20000);
 
 		} catch(e) {

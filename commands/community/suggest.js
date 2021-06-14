@@ -10,9 +10,8 @@ export default class SuggestCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'suggest',
 			aliases: ['suggestion'],
-			description: 'suggests will always be granted at The Coop to those who ask for them.',
-			details: `Details`,
-			examples: ['suggest', 'suggest prefix'],
+			description: 'Allows you to suggest Coop related changes to the #suggest channel.',
+			examples: ['!suggest <suggestion>', '!suggest update The Coop blog biweekly'],
 		});
 	}
 

@@ -9,9 +9,8 @@ export default class TimeCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'time',
 			aliases: ['tim', 'whattime', 'currenttime', 'now'],
-			description: 'Time until next day',
-			details: `Gives the time until the next Coop "day"`,
-			examples: ['time', 'time example']
+			description: 'Displays current time',
+			examples: ['!time']
 		});
 	}
 
