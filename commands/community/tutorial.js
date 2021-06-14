@@ -29,8 +29,7 @@ export default class TutorialCommand extends CoopCommand {
 			memberName: 'tutorial',
 			aliases: ['tut'],
 			description: 'Start The Coop tutorial',
-			details: ``,
-			examples: ['tutorial', 'tutorial example']
+			examples: ['!tutorial']
 		});
 	}
 

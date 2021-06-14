@@ -12,6 +12,7 @@ export default class BansCommand extends CoopCommand {
 			memberName: 'bans',
 			aliases: ['exbeaks', 'exuers', 'exmembers', 'bannedbeaks'],
 			description: 'Get the current banned member count',
+			examples: ['!bans'],
 		});
 	}
 
@@ -24,7 +25,7 @@ export default class BansCommand extends CoopCommand {
 		
             const userCount = SERVER._coop().memberCount || 0;		
 			const userBansNum = (await SERVER._coop().fetchBans()).size || 0;
-            const countText = `${userBansNum} #beaks (${Math.round(userCount / userBansNum * 100)}%) presently banned from The Coop ${emojiText}!`;
+            const countText = `${userBansNum} beaks (${Math.round(userCount / userBansNum * 100)}%) currently banned from The Coop ${emojiText}!`;
 			COOP.MESSAGES.selfDestruct(msg, countText, 0, 20000);
 
 		} catch(e) {

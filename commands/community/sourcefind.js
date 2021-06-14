@@ -11,7 +11,6 @@ export default class SourceFindCommand extends CoopCommand {
 			memberName: 'sourcefind',
 			aliases: ['srcf', 'sourcef'],
 			description: 'Search within the source code.',
-			details: ``,
 			examples: ['!sourcef ITEMS.add()'],
 			args: [
 				{

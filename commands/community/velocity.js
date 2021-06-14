@@ -14,8 +14,7 @@ export default class VelocityCommand extends CoopCommand {
 			memberName: 'velocity',
 			aliases: ['vel'],
 			description: 'Get the current velocity',
-			details: ``,
-			examples: ['velocity', 'velocity example']
+			examples: ['!velocity']
 		});
 	}
 

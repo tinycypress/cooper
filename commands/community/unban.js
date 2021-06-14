@@ -13,14 +13,12 @@ export default class UnbanCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'unban',
 			description: 'Attempt to democratically unban a user.',
-			details: ``,
-			examples: ['unban', 'unban example'],
+			examples: ['!unban <user>', '!unban shinoa#4124'],
 			args: [
 				{
 					key: 'discordID',
 					type: 'string',
 					prompt: 'Full Discord ID of the person you wish to vote on unbanning? (e.g. shinoa#4124)',
-
 				}
 			]
 		});

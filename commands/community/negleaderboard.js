@@ -9,9 +9,8 @@ export default class NegativeLeaderboardCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'negleaderboard',
 			aliases: ['ngl'],
-			description: 'polls will always be stolen at The Coop by those who demand them.',
-			details: `Details of the points command`,
-			examples: ['points', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
+			description: 'Shows bottom 15 on points leaderboard. Optional argument can specify the starting rank. To show top leaderboard, see !leaderboard',
+			examples: ['!negleaderboard <rank>', '!negleaderboard', '!negleaderboard 20'],
 			args: [
 				{
 					key: 'position',
