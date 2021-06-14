@@ -14,7 +14,6 @@ export default class DropCommand extends CoopCommand {
 			memberName: 'drop',
 			aliases: ['d'],
 			description: 'This command lets you drop the items you own',
-			details: `Details of the drop command`,
 			examples: ['!drop <item>', '!drop laxative'],
 			args: [itemCodeArg],
 		});
