@@ -25,9 +25,8 @@ export default class SourceCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'source',
 			aliases: ['src'],
-			description: 'Get the source of a file/folder/cooper.',
-			details: ``,
-			examples: ['source', 'source example'],
+			description: 'Get the source of a file in the discord bot. Optional argument to specify directory.',
+			examples: ['!source <path>', '!source', '!source api/auth'],
 			args: [
 				{
 					key: 'filePath',

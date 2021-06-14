@@ -12,9 +12,8 @@ export default class SacrificeCommand extends CoopCommand {
 			name: 'sacrifice',
 			group: 'community',
 			memberName: 'sacrifice',
-			description: 'Attempt to democratically sacrifice a user.',
-			details: ``,
-			examples: ['sacrifice', 'sacrifice example'],
+			description: 'Democratically sacrifice a user.',
+			examples: ['!sacrifice <user>', '!sacrifice DynamicSquid'],
 			args: [
 				{
 					key: 'target',

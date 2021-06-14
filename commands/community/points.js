@@ -9,9 +9,8 @@ export default class PointsCommand extends CoopCommand {
 			group: 'community',
 			memberName: 'points',
 			aliases: [],
-			description: 'polls will always be stolen at The Coop by those who demand them.',
-			details: `Details of the points command`,
-			examples: ['points', 'an example of how coop-economics functions, trickle down, sunny side up Egg & Reaganonmics. Supply and demand.'],
+			description: 'Displays points of user. Optional argument specifies the target user.',
+			examples: ['!points <user>', '!points', '!points @DynamicSquid'],
 		});
 	}
 
@@ -19,7 +18,8 @@ export default class PointsCommand extends CoopCommand {
 		super.run(msg);
 
 		let targetUser = msg.author;
-		if (msg.mentions.users.first()) targetUser = msg.mentions.users.first();
+		if (msg.mentions.users.first())
+			targetUser = msg.mentions.users.first();
 
         try {
 			const points = await COOP.ITEMS.getUserItemQty(targetUser.id, 'COOP_POINT');
