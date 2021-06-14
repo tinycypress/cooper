@@ -7,7 +7,7 @@ const BasesRouter = Router();
 export const getBases = async (req, res) => res.status(200).json(await BaseHelper.all());
 BasesRouter.get('/', getBases);
 
-export const getBase = async (req, res) => res.status(200).json(await BaseHelper.single(req.params.base));
+export const getBase = async (req, res) => res.status(200).json(await BaseHelper.get(req.params.base));
 BasesRouter.get('/:base', getBase);
 
 // :tile keyword should be reserves for all tiles not just tiles with a base on as currently used.
