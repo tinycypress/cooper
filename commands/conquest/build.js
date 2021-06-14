@@ -7,7 +7,7 @@ export default class BuildCommand extends CoopCommand {
 	constructor(client) {
 		super(client, {
 			name: 'build',
-			group: 'community',
+			group: 'conquest',
 			memberName: 'build',
 			aliases: ['b'],
 			description: 'Build a base/structure.',

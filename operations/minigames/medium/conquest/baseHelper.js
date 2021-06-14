@@ -14,7 +14,7 @@ export default class BaseHelper {
 
     static async get(faceID) {
         const query = {
-            name: "get-all-bases",
+            name: "get-specific-base",
             text: "SELECT * FROM bases WHERE face_id = $1",
             values: [faceID]
         };

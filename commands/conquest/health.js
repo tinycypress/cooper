@@ -6,7 +6,7 @@ export default class HealthCommand extends CoopCommand {
 	constructor(client) {
 		super(client, {
 			name: 'health',
-			group: 'economy',
+			group: 'conquest',
 			memberName: 'health',
 			aliases: ['h', 'hlt', 'hlth'],
 			description: 'polls will always be stolen at The Coop by those who demand them.',

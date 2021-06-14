@@ -24,29 +24,28 @@ export default () => {
 
     // Register command groups.
     client.registry.registerGroups([ 
-            ['info', 'Information'],
-            ['community', 'Community'],
-            ['election', 'Election'],
-            ['sacrifice', 'Sacrifice'],
-            ['util', 'Utility'],
-            ['messages', 'Message'],
-            ['ownership', 'Item ownership related commands'],
-            ['economy', 'Economy'],
-            ['productivity', 'Productivity'],
-            ['skills', 'Skills'],
-            ['misc', 'Miscellaneous'],
-            ['points', 'Points'],
-            ['gamble', 'Gamble'],
-            ['structures', 'Structures'],
-            ['mod', 'Moderation'],
-            ['conquest', 'Conquest']
-        ])
-        
-        // Register default types for args usage.
-        .registerDefaultTypes()
+        ['sacrifice', 'Sacrifice'],
+        ['info', 'Information'],
+        ['community', 'Community'],
+        ['election', 'Election'],
+        ['messages', 'Message'],
+        ['productivity', 'Productivity'],
+        ['mod', 'Moderation'],
+        ['conquest', 'Conquest'],
+        ['ownership', 'Item ownership related commands'],
+        ['skills', 'Skills'],
+        ['economy', 'Economy'],
+        ['points', 'Points'],
+        ['util', 'Utility'],
+        ['misc', 'Miscellaneous'],
+        ['gamble', 'Gamble']
+    ])        
+    
+    // Register default types for args usage.
+    .registerDefaultTypes()
 
-        // Point to path.
-        .registerCommandsIn(path.join(__dirname, '../../commands'));
+    // Point to path.
+    .registerCommandsIn(path.join(__dirname, '../../commands'));
 
 
     // Add handler for reaction added
