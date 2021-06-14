@@ -2,6 +2,7 @@ import DropTable from '../../operations/minigames/medium/economy/items/droptable
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP, { MESSAGES, USABLE } from '../../origin/coop';
+import SkillsHelper from '../../operations/minigames/medium/skills/skillsHelper';
 
 export default class AlchemyCommand extends CoopCommand {
 
@@ -61,14 +62,14 @@ export default class AlchemyCommand extends CoopCommand {
 			return COOP.MESSAGES.selfDestruct(msg, 'Not enough eggs.')
 
 		// Add item to the user.
-		await COOP.ITEMS.add(msg.author.id, drop.item, rewardQty, `Alchemised ${rarity}x${qty}`);
+		await COOP.ITEMS.add(msg.author.id, drop.item, rewardQty, `Alchemically created ${rarity}x${qty}.`);
+		await SkillsHelper.addXP(msg.author.id, 'magic', alcQty);
 
 		// Present feedback text/msg.
 		const emoji = COOP.MESSAGES.emojiCodeText(drop.item);
-		const actionText = `${msg.author.username} alchemises ${emoji}`;
-		const dropText = actionText + `x${rewardQty}`;
+		const actionText = `${msg.author.username} uses alchemy to create ${emoji}x${rewardQty} sacrificing ${alcQty}x${itemCode}, gained ${alcQty} magic xp.`;
 
-		return COOP.CHANNELS.propagate(msg, dropText, 'ACTIONS');
+		return COOP.CHANNELS.propagate(msg, actionText, 'ACTIONS');
     }
     
 }

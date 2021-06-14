@@ -50,6 +50,7 @@ export default class PointsHelper {
             text: `
                 SELECT quantity, owner_id 
                 FROM items
+                WHERE item_code = "COOP_POINT"
                 ORDER BY quantity ASC
                 OFFSET $1
                 LIMIT 15
