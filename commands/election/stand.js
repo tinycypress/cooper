@@ -14,9 +14,8 @@ export default class StandCommand extends CoopCommand {
 			group: 'election',
 			memberName: 'stand',
 			aliases: [],
-			description: 'Offer yourself as a potential leader/commander.',
-			details: ``,
-			examples: ['stand', '!stand {?message?}'],
+			description: 'Offer yourself as a potential leader/commander. Message has to be at least 30 characters and no more than 400.',
+			examples: ['!stand <message>'],
 			args: [
 				{
 					key: 'campaignText',
