@@ -26,9 +26,11 @@ export default async function AccessDiscord({ query }, res) {
 			);
 
 			console.log(tokenResponse);
+			console.log(tokenResponse.data);
 
-			const token = await tokenResponse.json();
-			console.log(token);
+			const authData = tokenResponse.data;
+			
+			console.log(authData);
 
 			// Validate.
 			result.token = token;
