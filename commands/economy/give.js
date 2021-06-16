@@ -15,9 +15,8 @@ export default class GiveCommand extends CoopCommand {
 			group: 'economy',
 			memberName: 'give',
 			aliases: ['g'],
-			description: 'This command lets you give the items you own',
-			details: `Details of the give command`,
-			examples: ['!give <item>', '!give laxative'],
+			description: 'Lets you give the items you own to another user. Quantity argument defaults to 1.',
+			examples: ['!give <user> <item> <quantity>', '!give @Slatxyo laxative', '!give @DynamicSquid average_egg 5'],
 			args: [
 				{
 					key: 'target',
