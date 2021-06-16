@@ -15,7 +15,7 @@ export default async function AccessDiscord({ query }, res) {
 					client_secret: process.env.DISCORD_CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
-					redirect_uri: `https://cooperchickenbot.herokuapp.com/auth/authorise-discord`,
+					redirect_uri: `https://cooperchickenbot.herokuapp.com/auth/access-discord`,
 					scope: 'identify'
 				}),
 				{
