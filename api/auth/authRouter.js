@@ -1,9 +1,8 @@
 import { Router } from "express";
-import DiscordChallenge from "./challenge-discord";
+import AccessDiscord from "./access-discord";
 
 const AuthRouter = Router();
 
-AuthRouter.get('/request-token', DiscordChallenge);
+AuthRouter.get('/access-discord', AccessDiscord);
 
 export default AuthRouter;
-
