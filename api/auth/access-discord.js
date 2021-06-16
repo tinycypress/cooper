@@ -3,19 +3,20 @@ import axios from 'axios';
 
 // https://stackoverflow.com/questions/54387939/how-to-actually-use-the-data-requested-using-discord-oauth2
 // https://discordjs.guide/oauth2/#authorization-code-grant-flow
-export default async function AccessDiscord({ query }, response) {
+export default async function AccessDiscord({ query }, res) {
 	const { code } = query;
+	const result = { success: false, token: null };
 
 	if (code) {
 		try {
-			const oauthResult = await axios.post('https://discord.com/api/oauth2/token', {
+			const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', {
 				method: 'POST',
 				body: new URLSearchParams({
 					client_id: process.env.DISCORD_ID,
 					client_secret: process.env.DISCORD_APPSECRET,
 					code,
 					grant_type: 'authorization_code',
-					redirect_uri: `http://localhost:${port}`,
+					redirect_uri: `http://localhost:3000`,
 					scope: 'identify'
 				}),
 				headers: {
@@ -23,17 +24,25 @@ export default async function AccessDiscord({ query }, response) {
 				},
 			});
 
-			const oauthData = await oauthResult.json();
-			console.log(oauthData);
+			const token = await tokenResponse.json();
+			console.log(token);
+
+			// Validate.
+			result.token = token;
+			result.success = true;
 
 		} catch (error) {
-            // TODO: Add the error that will not be thrown to handle in one catch?
 			// NOTE: An unauthorized token will not throw an error;
 			// it will return a 401 Unauthorized response in the try block above
 			console.error(error);
+			
+            // TODO: Add the error that will not be thrown to handle in one catch?
+
+			result.success = false;
+			result.error = error.message;
 		}
 	}
-
-
-
-});
+	
+	// TODO: Figure out what the user is actually sent at this stage?
+	res.status(200).json(result);
+}
