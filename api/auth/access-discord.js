@@ -11,8 +11,8 @@ export default async function AccessDiscord({ query }, res) {
 		try {
 			const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', 
 				new URLSearchParams({
-					client_id: process.env.DISCORD_ID,
-					client_secret: process.env.DISCORD_APPSECRET,
+					client_id: process.env.DISCORD_APPID,
+					client_secret: process.env.DISCORD_CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
 					redirect_uri: `https://cooperchickenbot.herokuapp.com/auth/authorise-discord`,
@@ -24,6 +24,8 @@ export default async function AccessDiscord({ query }, res) {
 					},
 				}
 			);
+
+			console.log(tokenResponse);
 
 			const token = await tokenResponse.json();
 			console.log(token);
