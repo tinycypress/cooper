@@ -18,6 +18,9 @@ export default async function bootstrap() {
   // Instantiate the app.
   const app = express();
 
+  // Enable JSON data reception.
+  app.use(express.json);
+
   // Disable security, tighten "later".
   app.use(cors({ origin: '*' }));
 
