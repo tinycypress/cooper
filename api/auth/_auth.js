@@ -22,16 +22,20 @@ export default class Auth {
 		return new Strategy(opts, async (jwt_payload, done) => {
 			console.log('trying to authenticate user with following payload:');
 			console.log(jwt_payload);
+			
+			try {
+				const user = await USERS.loadSingle(jwt_payload.sub.id);
+				console.log(user);
+				if (user) return done(null, user);
+				else return done(null, false);
 
-			// const user = await USERS.getMemberByID(jwt_payload.sub);
-			// 	if (err) return done(err, false);
-			// 	if (user) return done(null, user);
-			// 	else return done(null, false);
-			// });
+			} catch(e) {
+				return done(err, false);
+			}
 		})
 	}
 
-	static token(user = { foo: 'bar' }) {
+	static token(user = { foo: 'bar', id: 'foo' }) {
 		return jwt.sign(user, temporaryEncryptionKey);
 	}
 	
