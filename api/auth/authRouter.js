@@ -1,12 +1,10 @@
 import { Router } from "express";
 import AccessDiscord from "./access-discord";
-import AuthoriseDiscord from "./authorise-discord";
 import Auth from "./_auth";
 
 const AuthRouter = Router();
 
 AuthRouter.post('/access-discord', AccessDiscord);
-AuthRouter.get('/authorise-discord', AuthoriseDiscord);
 
 // TODO: Test this and remove it, prove the guard is working for protected data.
 AuthRouter.post('/authedonly', Auth.guard(), (req, res) => 
