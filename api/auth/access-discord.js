@@ -8,6 +8,11 @@ export default async function AccessDiscord({ query }, res) {
 	const { code } = query;
 	const result = { success: false, token: null };
 
+	// TODO: Code is not going to be in query params but as post data
+
+	console.log('post request to access discord received.');
+
+
 	if (code) {
 		try {
 			const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', 

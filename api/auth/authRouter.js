@@ -5,7 +5,7 @@ import Auth from "./_auth";
 
 const AuthRouter = Router();
 
-AuthRouter.get('/access-discord', AccessDiscord);
+AuthRouter.post('/access-discord', AccessDiscord);
 AuthRouter.get('/authorise-discord', AuthoriseDiscord);
 
 // TODO: Test this and remove it, prove the guard is working for protected data.
