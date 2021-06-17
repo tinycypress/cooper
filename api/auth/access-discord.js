@@ -16,7 +16,7 @@ export default async function AccessDiscord({ query }, res) {
 					client_secret: process.env.DISCORD_CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
-					redirect_uri: `https://thecoop.group/discord-oauth`,
+					redirect_uri: `https://thecoop.group/auth/discord-oauth`,
 					scope: 'identify'
 				}),
 				{
