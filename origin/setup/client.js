@@ -24,6 +24,7 @@ export default () => {
 
     // Register command groups.
     client.registry.registerGroups([ 
+        ['website', 'Website'],
         ['sacrifice', 'Sacrifice'],
         ['info', 'Information'],
         ['community', 'Community'],
