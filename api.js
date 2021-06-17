@@ -1,6 +1,9 @@
 import cors from 'cors';
 import express from 'express';
+import passport from 'passport';
+
 import APIRouter from './api/apiRouter';
+import Auth from './api/auth/_auth';
 
 import Database from './origin/setup/database';
 
@@ -17,6 +20,9 @@ export default async function bootstrap() {
 
   // Disable security, tighten "later".
   app.use(cors({ origin: '*' }));
+
+  // Add authentication strategy for protected routes/data.
+  passport.use(Auth.strategy());
 
   // Attach all the routes to the API.
   app.use('/', APIRouter);
