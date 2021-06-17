@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Auth from './_auth';
 
 
 // https://stackoverflow.com/questions/54387939/how-to-actually-use-the-data-requested-using-discord-oauth2
@@ -15,7 +16,7 @@ export default async function AccessDiscord({ query }, res) {
 					client_secret: process.env.DISCORD_CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
-					redirect_uri: `https://cooperchickenbot.herokuapp.com/auth/access-discord`,
+					redirect_uri: `https://thecoop.group/discord-oauth`,
 					scope: 'identify'
 				}),
 				{
@@ -31,6 +32,11 @@ export default async function AccessDiscord({ query }, res) {
 			const authData = tokenResponse.data;
 			
 			console.log(authData);
+
+			// Generate token for debugging.
+			const token = Auth.token();
+
+			console.log(token);
 
 			// Validate.
 			result.token = token;
