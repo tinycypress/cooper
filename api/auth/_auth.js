@@ -14,10 +14,10 @@ export default class Auth {
 
 	static strategy() {
 		const opts = {
-			jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken(),
-			secretOrKey = temporaryEncryptionKey,
-			issuer = 'api.thecoop.group',
-			audience = 'thecoop.group'
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			secretOrKey: temporaryEncryptionKey,
+			issuer: 'api.thecoop.group',
+			audience: 'thecoop.group'
 		};
 		return new Strategy(opts, async (jwt_payload, done) => {
 			console.log('trying to authenticate user with following payload:');
