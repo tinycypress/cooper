@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Strategy } from 'passport-jwt';
 import { USERS } from '../../origin/coop';
 import jwt from 'jsonwebtoken';
 
@@ -33,7 +33,6 @@ export default class Auth {
 			try {
 				const user = await USERS.loadSingle(jwt_payload.sub.id);
 				console.log(user);
-
 				
 				if (user) return done(null, user);
 				else return done(null, false);
@@ -45,6 +44,8 @@ export default class Auth {
 	}
 
 	static token(user = { foo: 'bar', id: 'foo' }) {
+		console.log('signing a token for', user);
+
 		return jwt.sign(user, process.env.DISCORD_TOKEN);
 	}
 	

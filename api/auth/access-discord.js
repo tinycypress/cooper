@@ -1,6 +1,10 @@
 import axios from 'axios';
 import Auth from './_auth';
 
+const whoisMeViaDiscord = accessToken =>
+	axios.get('https://discord.com/api/users/@me', {
+		headers: { authorization: `Bearer ${accessToken}` }
+	});
 
 const authorizeDiscord = (code) => 
 	axios.post('https://discord.com/api/oauth2/token', 
@@ -21,22 +25,30 @@ export default async function AccessDiscord(req, res) {
 	const result = { success: false, token: null };
 	
 	try {
+		// Convert this to singular file and handle both?
+
 		const code = req.body.code || null;
-		console.log('code:', code);
 		if (!code) throw new Error('No code provided');
 
 		const tokenResponse = await authorizeDiscord(code);
-
-		console.log(tokenResponse);
-		console.log(tokenResponse.data);		
-		
-		// TODO: Ensure we prove this is AUTHORIZED them.
-		
-		// Generate token for debugging.
 		const authData = tokenResponse.data;
-		const token = Auth.token();
 
-		console.log(authData);
+		// The access token will be needed once to prove the owner's identity.
+		const discordAPIaccessToken = authData.accessToken || null;
+		if (!discordAPIaccessToken) 
+			throw new Error('Discord did not return access token.');
+
+		// TODO: Ensure we prove this is AUTHORIZED them.
+		const user = await whoisMeViaDiscord(discordAPIaccessToken);
+
+		// Check if user valid and check for identity match...?
+		if (!user) 
+			throw new Error('Discord did not return user data.');
+
+		console.log(user);
+
+		// const token = Auth.token(user);
+		const token = Auth.token(user);
 		
 		// Validate.
 		result.user = {
