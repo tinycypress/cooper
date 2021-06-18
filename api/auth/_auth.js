@@ -57,14 +57,16 @@ export default class Auth {
 			console.log(jwt_payload);
 			
 			try {
-				const user = await USERS.loadSingle(jwt_payload.sub.id);
+				const user = await USERS.loadSingle(jwt_payload.id);
 				console.log(user);
 				
-				if (user) return done(null, user);
-				else return done(null, false);
+				if (!user) 
+					throw new Error('Token does not represent a member of The Coop.');
+				
+				return done(null, user);
 
 			} catch(e) {
-				return done(err, false);
+				return done(e, false);
 			}
 		});
 	}
