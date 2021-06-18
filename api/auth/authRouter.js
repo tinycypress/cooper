@@ -11,8 +11,11 @@ AuthRouter.post('/access-discord', AccessDiscord);
 
 AuthRouter.get('/me', Auth.guard(), (req, res) =>
     res.status(200).json({
-        id: req.user.id,
-        username: req.user.username
+        // Format according to what Nuxt-auth expects... lol.
+        user: {
+            id: req.user.id,
+            username: req.user.username
+        }
     })
 );
 
