@@ -4,16 +4,12 @@ import { USERS } from '../../origin/coop';
 import jwt from 'jsonwebtoken';
 
 const jwtFromRequest = function(req) {
-	console.log('gettting token');
-	console.log(req);
-	console.log('gettting token');
+    let token = null;
 
-	console.log(req.headers);
-	console.log(req.headers.get('Authorization'));
-	console.log(req.headers.get('authorization'));
+	// Detect, access, and parse token.
+    if (req && req.headers.authorization) 
+		token = req.headers.authorization.replace('Bearer ', '');
 
-    var token = null;
-    if (req && req.cookies) token = req.cookies['jwt'];
     return token;
 };
 
