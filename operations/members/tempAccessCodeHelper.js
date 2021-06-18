@@ -28,7 +28,7 @@ export default class TempAccessCodeHelper {
 
         try {
             const result = await Database.query({
-                text: `INSERT INTO temp_login_codes (discord_id, code, expiry) 
+                text: `INSERT INTO temp_login_codes (discord_id, code, expires_at) 
                     VALUES ($1, $2, $3)`,
                 values: [discord_id, code, expiry]
             });

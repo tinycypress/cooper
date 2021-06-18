@@ -1,8 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
-import TimeHelper from '../../operations/timeHelper';
-import { MESSAGES, STATE, USERS } from '../../origin/coop';
-import Database from '../../origin/setup/database';
+import { USERS } from '../../origin/coop';
 
 export default class LoginCommand extends CoopCommand {
 
@@ -25,7 +23,7 @@ export default class LoginCommand extends CoopCommand {
 		// DM the login code to the user
 		USERS._dm(msg.author.id, 
 			`**Your temporary login code (expiring link) is here, use it within the next 5 minutes:**\n\n` +
-			'https://thecoop.group/auth/login?code=' + code
+			'https://thecoop.group/auth/login?method=cooper_dm&code=' + code
 		);
 
 		// Also a way to ensure that most codes are deleted in a more timely manner and
