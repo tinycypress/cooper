@@ -6,20 +6,9 @@ import Auth from './_auth';
 // https://discordjs.guide/oauth2/#authorization-code-grant-flow
 export default async function AccessDiscord(req, res) {
 	const result = { success: false, token: null };
-
-	// TODO: Code is not going to be in query params but as post data
-
-	console.log('post request to access discord received.');
-
-	console.log(req.body);
-
-	// TODO: Figure out what the user is actually sent at this stage?
-	res.status(200).json(result);
-
-	// const code = req.body.code || null;
-	// console.log(code);
-
+	
 	try {
+		const code = req.body.code || null;
 		if (!code) throw new Error('No code provided');
 
 		const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', 
