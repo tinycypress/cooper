@@ -32,5 +32,6 @@ export default async function bootstrap() {
   
   // Start listening on the app.
   app.listen(process.env.PORT);
+  console.log('API listening');
 }
 

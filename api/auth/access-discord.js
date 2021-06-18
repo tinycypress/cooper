@@ -17,7 +17,7 @@ export default async function AccessDiscord(req, res) {
 	console.log(code);
 
 	try {
-		if  (!code) throw new Error('No code provided');
+		if (!code) throw new Error('No code provided');
 
 		const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', 
 			new URLSearchParams({
