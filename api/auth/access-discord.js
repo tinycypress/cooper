@@ -43,16 +43,21 @@ export default async function AccessDiscord(req, res) {
 		if (!discordAPIaccessToken) 
 			throw new Error('Discord did not return access token.');
 
-		// TODO: Ensure we prove this is AUTHORIZED them.
-		const user = await whoisMeViaDiscord(discordAPIaccessToken);
-
 		// Check if user valid and check for identity match...?
+		const whoisDiscordResponse = await whoisMeViaDiscord(discordAPIaccessToken);
+		const user = whoisDiscordResponse.data || null;
+		
+		console.log("user", user);
+
 		if (!user) 
 			throw new Error('Discord did not return user data.');
+		
+		// Check the user is in the coop
 
-		console.log(user);
+		// if (!user) 
+			// throw new Error('Discord user is not a member of The Coop.');
 
-		// const token = Auth.token(user);
+		// TODO: Ensure we prove this is AUTHORIZED them.
 
 		// Generate (sign) a JWT token for specified user. =] Beautiful.
 		const token = Auth.token(user);
