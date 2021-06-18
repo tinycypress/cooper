@@ -20,7 +20,6 @@ export default async function AccessDiscord(result, code) {
 	const coopMember = !!(await USERS.loadSingle(userDiscordID));
 	if (!coopMember)
 		throw new Error('Discord user is not a member of The Coop.');
-
 		
 	// Also pass initial user data.
 	result.user = { id: user.id, username: user.username };
