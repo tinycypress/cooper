@@ -22,6 +22,7 @@ export default async function AccessDiscord(req, res) {
 	
 	try {
 		const code = req.body.code || null;
+		console.log('code:', code);
 		if (!code) throw new Error('No code provided');
 
 		const tokenResponse = await authorizeDiscord(code);
@@ -34,7 +35,7 @@ export default async function AccessDiscord(req, res) {
 		// Generate token for debugging.
 		const authData = tokenResponse.data;
 		const token = Auth.token();
-		
+
 		console.log(authData);
 		
 		// Validate.
