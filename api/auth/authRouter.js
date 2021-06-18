@@ -11,10 +11,11 @@ AuthRouter.post('/access', Access);
 
 // An endpoint mostly related to session/user data during-around authentication.
 AuthRouter.get('/me', Auth.guard(), (req, res) => {
+    console.log('attempt to get user from /me');
     console.log(req.user);
     res.status(200).json({ 
-        id: req.user.discord_id,
-        username: 'sadly_unknown'
+        id: req.user.discord_id, 
+        user: { id: req.user.discord_id } 
     });
 });
 

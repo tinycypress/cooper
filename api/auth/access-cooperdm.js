@@ -22,6 +22,7 @@ export default async function AccessCooperDM(result, code) {
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
 	result.token = Auth.token(request.discord_id);
 	result.success = true;
+	result.user = { id: request.discord_id };
 
 	return result;
 }
