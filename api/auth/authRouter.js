@@ -10,21 +10,8 @@ const AuthRouter = Router();
 AuthRouter.post('/access', Access);
 
 // An endpoint mostly related to session/user data during-around authentication.
-AuthRouter.get('/me', Auth.guard(), (req, res) => {
-    console.log('attempt to get user from /me');
-    console.log(req.user);
-    res.status(200).json({ 
-        id: req.user.discord_id, 
-        user: { id: req.user.discord_id } 
-    });
+AuthRouter.get('/me', Auth.guard(), ({ user }, res) => {
+    res.status(200).json({ user: { id: user.discord_id } });
 });
-
-
-// TODO: ...
-// Stupid... remove from here and nuxt at next available opportunity!!!!!
-AuthRouter.get('/logout', Auth.guard(), (req, res) => {
-    res.status(200).json({ logout: 'success' });
-});
-
 
 export default AuthRouter;
