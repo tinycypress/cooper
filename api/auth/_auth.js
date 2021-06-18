@@ -2,6 +2,7 @@
 import { Strategy } from 'passport-jwt';
 import { USERS } from '../../origin/coop';
 import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
 const jwtFromRequest = function(req) {
     let token = null;
