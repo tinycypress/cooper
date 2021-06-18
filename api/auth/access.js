@@ -13,13 +13,12 @@ export default async function Access(req, res) {
 		const method = req.body.method || 'discord_oauth';
 		if (!method) throw new Error('No method provided');
 
-
 		// Adjust the result based on strategy method specified.
 		if (method === 'cooper_dm') 
-			result = AccessCooperDM(result, code);
+			result = await AccessCooperDM(result, code);
 
 		else if (method === 'discord_oauth') 
-			result = AccessDiscord(result, code);
+			result = await AccessDiscord(result, code);
 
 	} catch (error) {
 		// Log the error at least during early release.
