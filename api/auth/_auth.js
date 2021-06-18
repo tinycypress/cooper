@@ -8,6 +8,7 @@ const jwtFromRequest = function(req) {
 	console.log(req);
 	console.log('gettting token');
 
+	console.log(req.headers);
 	console.log(req.headers.get('Authorization'));
 	console.log(req.headers.get('authorization'));
 
