@@ -13,8 +13,11 @@ export default async function AccessDiscord(req, res) {
 
 	console.log(req.body);
 
-	const code = req.body.code || null;
-	console.log(code);
+	// TODO: Figure out what the user is actually sent at this stage?
+	res.status(200).json(result);
+
+	// const code = req.body.code || null;
+	// console.log(code);
 
 	try {
 		if (!code) throw new Error('No code provided');
