@@ -1,22 +1,45 @@
 
 import { Strategy } from 'passport-jwt';
-import { USERS } from '../../origin/coop';
-import jwt from 'jsonwebtoken';
 import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
-const jwtFromRequest = function(req) {
-    let token = null;
+import { USERS } from '../../origin/coop';
 
-	// Detect, access, and parse token.
-    if (req && req.headers.authorization) 
-		token = req.headers.authorization.replace('Bearer ', '');
-
-	console.log('getting token from req?', token);
-
-    return token;
-};
 
 export default class Auth {
+
+	static jwtFromRequest = req => {
+		let token = null;
+	
+		// Detect, access, and parse token.
+		if (req && req.headers.authorization) 
+			token = req.headers.authorization.replace('Bearer ', '');
+	
+		console.log('getting token from req?', token);
+	
+		return token;
+	};
+
+	static whoisMeViaDiscord = accessToken =>
+		axios.get('https://discord.com/api/users/@me', {
+			headers: { authorization: `Bearer ${accessToken}` }
+		});
+
+	static authorizeDiscord = (code) => 
+		axios.post('https://discord.com/api/oauth2/token', 
+			new URLSearchParams({
+				client_id: process.env.DISCORD_APPID,
+				client_secret: process.env.DISCORD_CLIENT_SECRET,
+				code,
+				grant_type: 'authorization_code',
+				redirect_uri: `https://thecoop.group/auth/discord-oauth`,
+				scope: 'identify'
+			}),
+			{ 
+				headers: {  'Content-Type': 'application/x-www-form-urlencoded' }
+			}
+		);
 
 	static guard() {
 		return passport.authenticate('jwt', { session: false });
@@ -24,7 +47,7 @@ export default class Auth {
 
 	static strategy() {
 		const opts = {
-			jwtFromRequest,
+			jwtFromRequest: this.jwtFromRequest,
 			secretOrKey: process.env.DISCORD_TOKEN,
 			issuer: 'api.thecoop.group',
 			audience: 'thecoop.group'
