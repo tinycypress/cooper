@@ -2,7 +2,7 @@ import axios from 'axios';
 import Auth from './_auth';
 
 
-const authorizeDiscord = async () => 
+const authorizeDiscord = async (code) => 
 	axios.post('https://discord.com/api/oauth2/token', 
 		new URLSearchParams({
 			client_id: process.env.DISCORD_APPID,

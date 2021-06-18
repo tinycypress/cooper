@@ -3,9 +3,6 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { USERS } from '../../origin/coop';
 import jwt from 'jsonwebtoken';
 
-
-const temporaryEncryptionKey = 'sssssssssshhhshshshshsh';
-
 export default class Auth {
 
 	static guard() {
@@ -15,7 +12,7 @@ export default class Auth {
 	static strategy() {
 		const opts = {
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			secretOrKey: temporaryEncryptionKey,
+			secretOrKey: process.env.DISCORD_TOKEN,
 			issuer: 'api.thecoop.group',
 			audience: 'thecoop.group'
 		};
@@ -36,7 +33,7 @@ export default class Auth {
 	}
 
 	static token(user = { foo: 'bar', id: 'foo' }) {
-		return jwt.sign(user, temporaryEncryptionKey);
+		return jwt.sign(user, process.env.DISCORD_TOKEN);
 	}
 	
 }
