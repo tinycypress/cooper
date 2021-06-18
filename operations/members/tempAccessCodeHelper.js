@@ -1,5 +1,7 @@
 import { STATE, TIME } from "../../origin/coop";
 import Database from "../../origin/setup/database";
+import DatabaseHelper from "../databaseHelper";
+
 
 export default class TempAccessCodeHelper {
 
@@ -13,17 +15,34 @@ export default class TempAccessCodeHelper {
         });
     }
 
-    static validate(discord_id, code) {
+    static async validate(code) {
         // Check code is correct
+        console.log('validating cooper dm code', code)
 
-        // Check it has not expired
+        const result = await DatabaseHelper.singleQuery({
+            text: `SELECT * FROM temp_login_codes WHERE code = $1`,
+            values: [code]
+        });
+
+        console.log('validation resu;t');
+        console.log(result);
+
+        if (result) {
+
+            // Check it has not expired
+            // if (result) ...
+            return result;
+        }
+
+
+
 
         // Validate: Return true/false.
-        return true;
+        return false;
     }
 
     static async create(discord_id) {
-        const code = STATE.CHANCE.string({ length: 10, pool: process.env.DISCORD_TOKEN });
+        const code = STATE.CHANCE.string({ length: 50, pool: process.env.DISCORD_TOKEN });
         const expiry = TIME._secs() + this.expiry;
 
         try {
