@@ -36,7 +36,7 @@ export default async function AccessDiscord(req, res) {
 		console.log('authData', authData);
 
 		// The access token will be needed once to prove the owner's identity.
-		const discordAPIaccessToken = authData.accessToken || null;
+		const discordAPIaccessToken = authData.access_token || null;
 
 		console.log('discordAPIaccessToken', discordAPIaccessToken);
 
