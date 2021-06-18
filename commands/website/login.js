@@ -1,5 +1,8 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import { MESSAGES } from '../../origin/coop';
+import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
+import TimeHelper from '../../operations/timeHelper';
+import { MESSAGES, STATE, USERS } from '../../origin/coop';
+import Database from '../../origin/setup/database';
 
 export default class LoginCommand extends CoopCommand {
 
@@ -16,12 +19,19 @@ export default class LoginCommand extends CoopCommand {
 	async run(msg) {
 		super.run(msg);
 
-		// Generate and save a login code for them.
-		MESSAGES.selfDestruct(msg, 'YOUR LOGIN CODE...?');
+		// Generate a saved code the web api to authenticate on link visit.
+		const code = await TempAccessCodeHelper.create(msg.author.id);
 
 		// DM the login code to the user
+		USERS._dm(msg.author.id, 
+			`**Your temporary login code (expiring link) is here, use it within the next 5 minutes:**\n\n` +
+			'<https://yougotpunked.net?code=' + code + '>'
+		);
 
-		// Validate on the page the login code link includes.
+		// TODO: Enhancement When it expires check if it was used/deleted - if not warn them (via editing the msg...?)
+		// setTimeout(() => {
+
+		// }, TempAccessCodeHelper.expiry + 1000);
     }
     
 }
