@@ -7,6 +7,8 @@ import Auth from './api/auth/_auth';
 
 import Database from './origin/setup/database';
 
+import { urlencoded, json } from 'body-parser';
+
 // Run the web api.
 bootstrap();
 
@@ -18,8 +20,9 @@ export default async function bootstrap() {
   // Instantiate the app.
   const app = express();
 
-  // Enable JSON data reception.
-  app.use(express.json);
+  // Enable incoming data parsing.
+  app.use(urlencoded({ extended: false }));
+  app.use(json());
 
   // Disable security, tighten "later".
   app.use(cors({ origin: '*' }));
