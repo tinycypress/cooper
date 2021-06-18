@@ -10,7 +10,7 @@ export default async function Access(req, res) {
 		if (!code) throw new Error('No code provided');
 
 		// Check method is provided.
-		const method = req.body.method || null;
+		const method = req.body.method || 'discord_oauth';
 		if (!method) throw new Error('No method provided');
 
 
