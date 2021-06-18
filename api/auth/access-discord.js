@@ -48,13 +48,12 @@ export default async function AccessDiscord(req, res) {
 		console.log(user);
 
 		// const token = Auth.token(user);
+
+		// Generate (sign) a JWT token for specified user. =] Beautiful.
 		const token = Auth.token(user);
 		
-		// Validate.
-		result.user = {
-			username: 'unknown',
-			status: 'this is a work in progress'
-		}
+		// Modify the response the user deserves.
+		result.user = user;
 		result.token = token;
 		result.success = true;
 
