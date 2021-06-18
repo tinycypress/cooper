@@ -23,7 +23,7 @@ export default class LoginCommand extends CoopCommand {
 		// DM the login code to the user
 		USERS._dm(msg.author.id, 
 			`**Your temporary login code (expiring link) is here, use it within the next 5 minutes:**\n\n` +
-			'https://thecoop.group/auth/login?method=cooper_dm&code=' + code
+			'https://thecoop.group/auth/authorise?method=cooper_dm&code=' + code
 		);
 
 		// Also a way to ensure that most codes are deleted in a more timely manner and
