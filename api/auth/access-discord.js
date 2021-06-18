@@ -28,14 +28,15 @@ export default async function AccessDiscord(req, res) {
 
 		console.log(tokenResponse);
 		console.log(tokenResponse.data);		
-		console.log(authData);
-
+		
 		// TODO: Ensure we prove this is AUTHORIZED them.
 		
 		// Generate token for debugging.
 		const authData = tokenResponse.data;
 		const token = Auth.token();
-
+		
+		console.log(authData);
+		
 		// Validate.
 		result.user = {
 			username: 'unknown',
