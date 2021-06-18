@@ -33,8 +33,13 @@ export default async function AccessDiscord(req, res) {
 		const tokenResponse = await authorizeDiscord(code);
 		const authData = tokenResponse.data;
 
+		console.log('authData', authData);
+
 		// The access token will be needed once to prove the owner's identity.
 		const discordAPIaccessToken = authData.accessToken || null;
+
+		console.log('discordAPIaccessToken', discordAPIaccessToken);
+
 		if (!discordAPIaccessToken) 
 			throw new Error('Discord did not return access token.');
 
