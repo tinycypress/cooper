@@ -29,14 +29,10 @@ export default async function AccessDiscord(req, res) {
 
 			
 		// Also pass initial user data.
-		result.user = { 
-			id: user.id, 
-			username: user.username, 
-			discriminator: user.discriminator 
-		};
+		result.user = { id: user.id, username: user.username };
 
 		// Generate (sign) a JWT token for specified user. =] Beautiful.
-		result.token = Auth.token({ id: user.discord_id, username: user.username });
+		result.token = Auth.token(result.user);
 
 		result.success = true;
 
