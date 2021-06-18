@@ -52,7 +52,7 @@ export default class Auth {
 			issuer: 'api.thecoop.group',
 			audience: 'thecoop.group'
 		};
-		return new Strategy(opts, async function(jwt_payload, done) {
+		return new Strategy(opts, async (jwt_payload, done) => {
 			console.log('trying to authenticate user with following payload:');
 			console.log(jwt_payload);
 			
@@ -66,13 +66,16 @@ export default class Auth {
 			} catch(e) {
 				return done(err, false);
 			}
-		})
+		});
 	}
 
 	static token(user = { foo: 'bar', id: 'foo' }) {
 		console.log('signing a token for', user);
 
-		return jwt.sign(user, process.env.DISCORD_TOKEN);
+		return jwt.sign(user, process.env.DISCORD_TOKEN, {
+			issuer: 'api.thecoop.group',
+			audience: 'thecoop.group'
+		});
 	}
 	
 }

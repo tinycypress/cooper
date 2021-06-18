@@ -28,7 +28,7 @@ export default async function AccessDiscord(req, res) {
 
 		// Check the user is in the coop
 		const coopMember = !!(await USERS.loadSingle(user.id));
-		console.log('coopMember', coopMember);
+		console.log('coopMember', await USERS.loadSingle(user.id)); // Dev only: (cofnirmation).
 		if (!coopMember)
 			throw new Error('Discord user is not a member of The Coop.');
 
