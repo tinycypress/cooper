@@ -30,6 +30,9 @@ export default async function bootstrap() {
   // Add authentication strategy for protected routes/data.
   passport.use(Auth.strategy());
 
+  // Ensure passport is initialised on app.
+  app.use(passport.initialize());
+
   // Attach all the routes to the API.
   app.use('/', APIRouter);
   

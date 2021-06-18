@@ -1,4 +1,4 @@
-import passport from 'passport';
+
 import { Strategy } from 'passport-jwt';
 import { USERS } from '../../origin/coop';
 import jwt from 'jsonwebtoken';
@@ -10,14 +10,12 @@ const jwtFromRequest = function(req) {
     if (req && req.headers.authorization) 
 		token = req.headers.authorization.replace('Bearer ', '');
 
+	console.log('getting token from req?', token);
+
     return token;
 };
 
 export default class Auth {
-
-	static guard() {
-		return passport.authenticate('jwt', { session: false });
-	}
 
 	static strategy() {
 		const opts = {
@@ -26,7 +24,7 @@ export default class Auth {
 			issuer: 'api.thecoop.group',
 			audience: 'thecoop.group'
 		};
-		return new Strategy(opts, async (jwt_payload, done) => {
+		return new Strategy(opts, async function(jwt_payload, done) {
 			console.log('trying to authenticate user with following payload:');
 			console.log(jwt_payload);
 			
