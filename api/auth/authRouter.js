@@ -12,9 +12,13 @@ AuthRouter.post('/access-discord', AccessDiscord);
 AuthRouter.get('/me', Auth.guard(), (req, res) => {
     console.log(req.user);
     res.status(200).json({
-        id: req.user.id,
+        id: req.user.discord_id,
         username: req.user.username
     })
+});
+
+AuthRouter.get('/logout', Auth.guard(), (req, res) => {
+    res.status(200).json({ logout: 'success' });
 });
 
 // AuthRouter.get('/authedonly', Auth.guard(), (req, res) => 
