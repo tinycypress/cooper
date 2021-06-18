@@ -8,6 +8,9 @@ const jwtFromRequest = function(req) {
 	console.log(req);
 	console.log('gettting token');
 
+	console.log(req.headers.get('Authorization'));
+	console.log(req.headers.get('authorization'));
+
     var token = null;
     if (req && req.cookies) token = req.cookies['jwt'];
     return token;
