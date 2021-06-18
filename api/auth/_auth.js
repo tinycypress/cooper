@@ -3,6 +3,16 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { USERS } from '../../origin/coop';
 import jwt from 'jsonwebtoken';
 
+const jwtFromRequest = function(req) {
+	console.log('gettting token');
+	console.log(req);
+	console.log('gettting token');
+
+    var token = null;
+    if (req && req.cookies) token = req.cookies['jwt'];
+    return token;
+};
+
 export default class Auth {
 
 	static guard() {
@@ -11,7 +21,7 @@ export default class Auth {
 
 	static strategy() {
 		const opts = {
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest,
 			secretOrKey: process.env.DISCORD_TOKEN,
 			issuer: 'api.thecoop.group',
 			audience: 'thecoop.group'
@@ -23,6 +33,8 @@ export default class Auth {
 			try {
 				const user = await USERS.loadSingle(jwt_payload.sub.id);
 				console.log(user);
+
+				
 				if (user) return done(null, user);
 				else return done(null, false);
 
