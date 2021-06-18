@@ -9,15 +9,26 @@ AuthRouter.post('/access-discord', AccessDiscord);
 // Add Cooper DM the same way tomorrow!! :D
 // AuthRouter.post('/access-discord', AccessDiscord);
 
-// TODO: Test this and remove it, prove the guard is working for protected data.
-AuthRouter.get('/authedonly', Auth.guard(), (req, res) => 
+AuthRouter.get('/me', Auth.guard(), (req, res) => {
+    console.log(req);
+
+    // Figure out the user from the included token =] mwhahah.
+
+    // TODO: Build this out.
     res.status(200).json({
         girrafe: true,
         member_only: true,
         testing: 'absolutely'
-    })
-);
+    });
+});
 
+// AuthRouter.get('/authedonly', Auth.guard(), (req, res) => 
+//     res.status(200).json({
+//         girrafe: true,
+//         member_only: true,
+//         testing: 'absolutely'
+//     })
+// );
 
 
 export default AuthRouter;
