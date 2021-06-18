@@ -17,6 +17,10 @@ const jwtFromRequest = function(req) {
 
 export default class Auth {
 
+	static guard() {
+		return passport.authenticate('jwt', { session: false });
+	}
+
 	static strategy() {
 		const opts = {
 			jwtFromRequest,
