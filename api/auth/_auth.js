@@ -16,8 +16,6 @@ export default class Auth {
 		if (req && req.headers.authorization) 
 			token = req.headers.authorization.replace('Bearer ', '');
 	
-		console.log('getting token from req?', token);
-	
 		return token;
 	};
 
@@ -49,17 +47,12 @@ export default class Auth {
 		const opts = {
 			jwtFromRequest: this.jwtFromRequest,
 			secretOrKey: process.env.DISCORD_TOKEN,
-			issuer: 'api.thecoop.group',
-			audience: 'thecoop.group'
+			...this.issuerOpts
 		};
-		return new Strategy(opts, async (jwt_payload, done) => {
-			console.log('trying to authenticate user with following payload:');
-			console.log(jwt_payload);
-			
+		return new Strategy(opts, async (jwt_payload, done) => {		
 			try {
-				const user = await USERS.loadSingle(jwt_payload.id);
-				console.log(user);
-				
+				// Check user actually exists.
+				const user = await USERS.loadSingle(jwt_payload.id);				
 				if (!user) 
 					throw new Error('Token does not represent a member of The Coop.');
 				
@@ -71,13 +64,13 @@ export default class Auth {
 		});
 	}
 
-	static token(user = { foo: 'bar', id: 'foo' }) {
-		console.log('signing a token for', user);
+	static issuerOpts = {
+		issuer: 'api.thecoop.group',
+		audience: 'thecoop.group'
+	};
 
-		return jwt.sign(user, process.env.DISCORD_TOKEN, {
-			issuer: 'api.thecoop.group',
-			audience: 'thecoop.group'
-		});
+	static token(user = { foo: 'bar', id: 'foo' }) {
+		return jwt.sign(user, process.env.DISCORD_TOKEN, this.issuerOpts);
 	}
 	
 }

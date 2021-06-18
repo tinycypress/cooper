@@ -1,10 +1,6 @@
 import { USERS } from '../../origin/coop';
 import Auth from './_auth';
 
-
-
-// https://stackoverflow.com/questions/54387939/how-to-actually-use-the-data-requested-using-discord-oauth2
-// https://discordjs.guide/oauth2/#authorization-code-grant-flow
 export default async function AccessDiscord(req, res) {
 	const result = { success: false, token: null };
 	
@@ -28,25 +24,27 @@ export default async function AccessDiscord(req, res) {
 
 		// Check the user is in the coop
 		const coopMember = !!(await USERS.loadSingle(user.id));
-		console.log('coopMember', await USERS.loadSingle(user.id)); // Dev only: (cofnirmation).
 		if (!coopMember)
 			throw new Error('Discord user is not a member of The Coop.');
 
-		// Generate (sign) a JWT token for specified user. =] Beautiful.
-		const token = Auth.token({ id: user.id, username: user.username });
-		
-		// Modify the response the user deserves.
+			
+		// Also pass initial user data.
 		result.user = { 
 			id: user.id, 
 			username: user.username, 
 			discriminator: user.discriminator 
 		};
-		result.token = token;
+
+		// Generate (sign) a JWT token for specified user. =] Beautiful.
+		result.token = Auth.token({ id: user.id, username: user.username });
+
 		result.success = true;
 
 	} catch (error) {
+		// Log the error at least during early release.
 		console.error(error);
 
+		// Return the error for the user.
 		result.success = false;
 		result.error = error.message;
 	}
