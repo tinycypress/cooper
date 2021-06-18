@@ -34,9 +34,6 @@ export default class TempAccessCodeHelper {
             return result;
         }
 
-
-
-
         // Validate: Return true/false.
         return false;
     }
@@ -46,12 +43,11 @@ export default class TempAccessCodeHelper {
         const expiry = TIME._secs() + this.expiry;
 
         try {
-            const result = await Database.query({
+            await Database.query({
                 text: `INSERT INTO temp_login_codes (discord_id, code, expires_at) 
                     VALUES ($1, $2, $3)`,
                 values: [discord_id, code, expiry]
             });
-            console.log(result);
             
         } catch(e) {
             console.log('Error creating temp login code.')

@@ -21,11 +21,7 @@ export default async function AccessDiscord(result, code) {
 	if (!coopMember)
 		throw new Error('Discord user is not a member of The Coop.');
 		
-	// Also pass initial user data.
-	result.user = { id: user.id, username: user.username };
-
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
-	result.token = Auth.token(result.user);
-
+	result.token = Auth.token(userDiscordID);
 	result.success = true;
 }

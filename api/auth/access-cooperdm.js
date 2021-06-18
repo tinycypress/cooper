@@ -1,35 +1,25 @@
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
-import { USERS } from '../../origin/coop';
+import TimeHelper from '../../operations/timeHelper';
 import Auth from './_auth';
 
+
+// TODO: Send them another message confirming their login? (Later problem)
+// TOOD: Post it to actions channel for some logging/visibility (at least during early release).
+
 export default async function AccessCooperDM(result, code) {
-
-	console.log('Trying to authenticate someone with cooper dm method');
-	console.log(code);
-
 	// Check validation result =]
-	const validationResult = await TempAccessCodeHelper.validate(code);
-	console.log('validation result');
-	console.log(validationResult);
+	const matchingRequest = await TempAccessCodeHelper.validate(code);
+	if (!matchingRequest)
+		throw new Error('Cooper DM login request not found.');
 	
+	// Check it hasn't expired.
+	if (TimeHelper._secs() >= matchingRequest.expires_at)
+		throw new Error('Temporary login code expired.');
 	
-
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
-	// const token = Auth.token({ id: user.id, username: user.username });
-	
-	// // Modify the response the user deserves.
-	// result.user = { 
-	// 	id: user.id, 
-	// 	username: user.username, 
-	// 	discriminator: user.discriminator 
-	// };
-	// result.token = token;
-	// result.success = true;
+	result.token = Auth.token(matchingRequest.discord_id);
+	result.success = true;
 
-
-	// TODO: Delete the code row so it cannot be used again (after the user).
-	
+	// Delete all login requests for that user.
+	TempAccessCodeHelper.delete(matchingRequest.discord_id);
 }
-
-	// TODO: Send them another message confirming their login? (Later problem)
-	// TOOD: Post it to actions channel for some logging/visibility (at least during early release).

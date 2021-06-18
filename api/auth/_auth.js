@@ -69,8 +69,17 @@ export default class Auth {
 		audience: 'thecoop.group'
 	};
 
-	static token(user = { foo: 'bar', id: 'foo' }) {
-		return jwt.sign(user, process.env.DISCORD_TOKEN, this.issuerOpts);
+	static token(id) {
+		return jwt.sign(
+			// Palyoad
+			{ id }, 
+
+			// Encryption keky.
+			process.env.DISCORD_TOKEN, 
+
+			// Issuance options, just to be cool lyk dat.
+			this.issuerOpts
+		);
 	}
 	
 }
