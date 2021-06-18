@@ -31,7 +31,7 @@ export default class Auth {
 				client_secret: process.env.DISCORD_CLIENT_SECRET,
 				code,
 				grant_type: 'authorization_code',
-				redirect_uri: `https://thecoop.group/auth/discord-oauth`,
+				redirect_uri: `https://thecoop.group/auth/authorise`,
 				scope: 'identify'
 			}),
 			{ 
