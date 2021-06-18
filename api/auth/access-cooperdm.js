@@ -8,18 +8,20 @@ import Auth from './_auth';
 
 export default async function AccessCooperDM(result, code) {
 	// Check validation result =]
-	const matchingRequest = await TempAccessCodeHelper.validate(code);
-	if (!matchingRequest)
+	const request = await TempAccessCodeHelper.validate(code);
+	if (!request)
 		throw new Error('Cooper DM login request not found.');
 	
 	// Check it hasn't expired.
-	if (TimeHelper._secs() >= matchingRequest.expires_at)
+	if (TimeHelper._secs() >= request.expires_at)
 		throw new Error('Temporary login code expired.');
 	
+	// Delete all login requests for that user.
+	await TempAccessCodeHelper.delete(request.discord_id);
+
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
-	result.token = Auth.token(matchingRequest.discord_id);
+	result.token = Auth.token(request.discord_id);
 	result.success = true;
 
-	// Delete all login requests for that user.
-	TempAccessCodeHelper.delete(matchingRequest.discord_id);
+	return result;
 }

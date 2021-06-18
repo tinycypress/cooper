@@ -2,7 +2,7 @@ import AccessCooperDM from "./access-cooperdm";
 import AccessDiscord from "./access-discord";
 
 export default async function Access(req, res) {
-	const result = { success: false, token: null };
+	let result = { success: false, token: null };
 	
 	try {
 		// Check that an attempt has even been made (basic check).
@@ -13,11 +13,13 @@ export default async function Access(req, res) {
 		const method = req.body.method || null;
 		if (!method) throw new Error('No method provided');
 
-		console.log(code, method);
 
 		// Adjust the result based on strategy method specified.
-		if (method === 'cooper_dm') AccessCooperDM(result, code);
-		if (method === 'discord_oauth') AccessDiscord(result, code);
+		if (method === 'cooper_dm') 
+			result = AccessCooperDM(result, code);
+
+		else if (method === 'discord_oauth') 
+			result = AccessDiscord(result, code);
 
 	} catch (error) {
 		// Log the error at least during early release.
