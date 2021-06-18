@@ -10,7 +10,9 @@ AuthRouter.post('/access-discord', AccessDiscord);
 // AuthRouter.post('/access-discord', AccessDiscord);
 
 AuthRouter.get('/me', Auth.guard(), (req, res) => {
+    
     console.log(req);
+    console.log(req.user);
 
     // Figure out the user from the included token =] mwhahah.
 
