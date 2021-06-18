@@ -23,7 +23,7 @@ export default async function AccessDiscord(req, res) {
 			throw new Error('Discord did not return user data.');
 
 		// Check the user is in the coop
-		const coopMember = !!(await USERS.loadSingle(user.id));
+		const coopMember = !!(await USERS.loadSingle(user.discord_id));
 		if (!coopMember)
 			throw new Error('Discord user is not a member of The Coop.');
 
@@ -36,7 +36,7 @@ export default async function AccessDiscord(req, res) {
 		};
 
 		// Generate (sign) a JWT token for specified user. =] Beautiful.
-		result.token = Auth.token({ id: user.id, username: user.username });
+		result.token = Auth.token({ id: user.discord_id, username: user.username });
 
 		result.success = true;
 
