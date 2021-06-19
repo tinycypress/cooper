@@ -15,9 +15,6 @@ export default async function AccessCooperDM(result, code) {
 	// Check it hasn't expired.
 	if (TimeHelper._secs() >= request.expires_at)
 		throw new Error('Temporary login code expired.');
-	
-	// Delete all login requests for that user.
-	await TempAccessCodeHelper.delete(request.discord_id);
 
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
 	result.token = Auth.token(request.discord_id);
