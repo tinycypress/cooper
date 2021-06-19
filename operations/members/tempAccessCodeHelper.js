@@ -39,7 +39,10 @@ export default class TempAccessCodeHelper {
     }
 
     static async create(discord_id) {
-        const code = STATE.CHANCE.string({ length: 50, pool: process.env.DISCORD_TOKEN });
+        // I removed the special characters because sometimes the codes weren't matching,
+        // this made me suspicious some dots from the token or other characters may not encodeURI/play nicely.
+        const nonUrlBreakingPool = process.env.DISCORD_TOKEN.replace(/[^a-zA-Z0-9 ]/g, "");
+        const code = STATE.CHANCE.string({ length: 50, pool: nonUrlBreakingPool });
         const expiry = TIME._secs() + this.expiry;
 
         try {
