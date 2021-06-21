@@ -140,6 +140,10 @@ export default class UsersHelper {
             console.error(e);
         }
     }
+
+    static _id2username(id) {
+        return this._get(id).user.username;
+    }
     
     static async loadSingle(id) {
         const query = {

@@ -6,6 +6,8 @@ import CooperMorality from './minigames/small/cooperMorality';
 import COOP, { STATE } from "../origin/coop";
 
 import Database from '../origin/setup/database';
+import VisualisationHelper from './minigames/medium/conquest/visualisationHelper';
+import { MessageAttachment } from 'discord.js';
 
 
 
@@ -99,10 +101,8 @@ export default class Chicken {
     static async checkIfNewDay() {
         try {
             // Comparison to internal state may show a way to detect day end too.
-
             const isNewDay = await this.isNewDay();
             if (!isNewDay) return false;
-
 
             // TODO: Improve where server announces new day.
             COOP.CHANNELS._postToFeed('A new day begins!');
@@ -116,6 +116,11 @@ export default class Chicken {
             
             // If election is running, it should announce something at beginning of day, with time remaining.
             await this.setConfig('current_day', '' + COOP.TIME._secs());
+
+            // Send the conquest visuals!
+            await VisualisationHelper.record();
+            CHANNELS._getCode('TALK').send(new MessageAttachment('/tmp/video.webm'));
+
             return true;
             
         } catch(e) {

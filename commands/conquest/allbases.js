@@ -1,7 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 
-import { MESSAGES } from '../../origin/coop';
+import { MESSAGES, USERS } from '../../origin/coop';
 
 export default class AllBasesCommand extends CoopCommand {
 
@@ -17,10 +17,14 @@ export default class AllBasesCommand extends CoopCommand {
 
 	async run(msg) {
 		super.run(msg);
-		
+
 		const bases = await BaseHelper.all();
-		const baseMsgText = `**Bases Overview (${bases.length}):**\n [Tile|Owner|Age]` +
-			bases.map(base => base.face_id + ' | ' + owner.username + ' | ' + base.created_at);
+		const baseMsgText = `**Bases Overview (${bases.length}) [Tile|Owner|Age]:**\n` +
+			bases.map(base => 
+				base.face_id + ' | ' + 
+				USERS._id2username(base.owner_id) + ' | ' + 
+				base.created_at
+			);
 
 		MESSAGES.silentSelfDestruct(msg, baseMsgText);
     }

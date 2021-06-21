@@ -4,9 +4,11 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP from '../coop';
+import COOP, { CHANNELS, USERS } from '../coop';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
+import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
+import { MessageAttachment } from 'discord.js';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -30,10 +32,12 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Add two base commands:
-
         // Add directory...
-        // Add screenshot capability for a new day =]
+        const base = await BaseHelper.get(3);
+        console.log(base);
+
+		const owner = USERS._get(base.owner_id);
+        console.log(owner);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

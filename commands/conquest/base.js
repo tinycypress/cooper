@@ -27,9 +27,8 @@ export default class BaseCommand extends CoopCommand {
 		super.run(msg);
 		
 		const base = await BaseHelper.get(baseID);
-		const owner = USERS._get(base.owner_id);
-		const baseMsgText = `**Tile Details: #${base.face_id}:**\n` +
-			`Owner: ${owner.username}\n` +
+		const baseMsgText = `**Tile Details #${base.face_id}:**\n` +
+			`Owner: ${USERS._id2username(base.owner_id)}\n` +
 			`Age: ${base.created_at}`;
 			
 		MESSAGES.silentSelfDestruct(msg, baseMsgText);
