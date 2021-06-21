@@ -26,6 +26,7 @@ import { status } from "./marketing/rewards/loyalty";
 import ProspectHelper from "./members/redemption/prospectHelper";
 import serverTick from "./serverTick";
 import TemporaryMessages from "./maintenance/temporaryMessages";
+import TempAccessCodeHelper from "./members/tempAccessCodeHelper";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -66,18 +67,14 @@ export const VELOCITY_EVENTS = {
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
 export default function eventsManifest() {
 
-  // TODO: This does not seem sufficient?
   // Spam talk with low probability, low lifespan messages:
+  // TOOD: Add a base spotlight message every so often for a conquest base at random.
   // Skill scores, item circulation, leaderboard, tip, latest trades
   // TODO: Update and create most items role
   // If easter, double egg spawns too.
   // TODO: Add a !bang very, very, rarely.
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
   
-
-
-
-
 
 
 
@@ -99,6 +96,9 @@ export default function eventsManifest() {
 
   // Cleanup temporary messages.
   EventsHelper.runInterval(() => TemporaryMessages.flush(), baseTickDur / 5);
+
+  // Cleanup temporary codes.
+  EventsHelper.runInterval(() => TempAccessCodeHelper.flush(), baseTickDur / 5);
 
   // Clean up user data, may have missed detection on a leave/kick/ban.
   EventsHelper.runInterval(() => COOP.USERS.cleanupUsers(), baseTickDur * 6);

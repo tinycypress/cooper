@@ -19,7 +19,10 @@ export default class AllBasesCommand extends CoopCommand {
 		super.run(msg);
 		
 		const bases = await BaseHelper.all();
-		MESSAGES.silentSelfDestruct(msg, JSON.stringify(bases));
+		const baseMsgText = `**Bases Overview (${bases.length}):**\n [Tile|Owner|Age]` +
+			bases.map(base => base.face_id + ' | ' + owner.username + ' | ' + base.created_at);
+
+		MESSAGES.silentSelfDestruct(msg, baseMsgText);
     }
     
 }

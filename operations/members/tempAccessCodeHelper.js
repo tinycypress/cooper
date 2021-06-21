@@ -15,6 +15,29 @@ export default class TempAccessCodeHelper {
         });
     }
 
+    static async flush() {
+        const query = {
+            text: `DELETE FROM temp_login_codes 
+                WHERE id IN (SELECT id WHERE expires_at <= extract(epoch from now()))`
+        };
+        const result = await Database.query(query);
+        return result;
+    }
+
+    static async getExpired() {
+        const query = {
+            name: "get-expired-codes",
+            text: `SELECT * FROM temp_login_codes 
+                WHERE expires_at <= extract(epoch from now())
+                ORDER BY expires_at ASC
+                LIMIT 40`
+        };
+        
+        const result = await Database.query(query);
+        const tempMessages = DatabaseHelper.many(result);
+        return tempMessages;
+    }
+
     static async validate(code) {
         // Check code is correct
         console.log('validating cooper dm code', code)

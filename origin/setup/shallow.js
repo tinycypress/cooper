@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 // v DEV IMPORT AREA v
 import COOP from '../coop';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
+import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -29,8 +30,10 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        console.log(await BaseHelper.all());
-        console.log(await BaseHelper.get(3));
+        // Add two base commands:
+
+        // Add directory...
+        // Add screenshot capability for a new day =]
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
