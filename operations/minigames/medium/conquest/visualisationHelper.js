@@ -23,13 +23,13 @@ export default class VisualisationHelper {
         });
     }
 
-    static async record(url) {
+    static async record(url, duration = 50000) {
         const response = await axios.post(`${this.screencast_url}?token=${process.env.BROWSERLESS_TOKEN}&--window-size=1920,1080`,
             {
                 "code": "module.exports = async function main({ page, context }) { await page.setViewport({ width: context.width, height: context.height, deviceScaleFactor: 1 }); await page.goto(context.url); await page.waitFor(context.wait);}",
                 "context": {
                     "url": url,
-                    "wait": 50000,
+                    "wait": duration,
                     "width": 1920,
                     "height": 1080
                 }

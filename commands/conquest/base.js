@@ -38,7 +38,7 @@ export default class BaseCommand extends CoopCommand {
 
 		// Sometimes include a video of their base.
 		if (STATE.CHANCE.bool({ likelihood: 25 })) {
-			await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=" + baseID);
+			await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=" + baseID, 10000);
             msg.channel.send(new MessageAttachment('/tmp/video.webm'));
 		}
 
