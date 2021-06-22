@@ -37,12 +37,12 @@ export default class BaseCommand extends CoopCommand {
 			`Age: ${base.created_at}`;
 
 		// Sometimes include a video of their base.
-		if (STATE.CHANCE.bool({ likelihood: 25 })) {
+		if (STATE.CHANCE.bool({ likelihood: 2.5 })) {
+			MESSAGES.silentSelfDestruct(msg, 'Loading a visual for your base, please wait.');
 			await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=" + baseID, 10000);
-            msg.channel.send(new MessageAttachment('/tmp/video.webm'));
+            msg.channel.send(baseMsgText, new MessageAttachment('/tmp/video.webm'));
 		}
-
-		MESSAGES.silentSelfDestruct(msg, baseMsgText);
+		else MESSAGES.silentSelfDestruct(msg, baseMsgText);
     }
     
 }

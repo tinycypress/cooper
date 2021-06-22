@@ -105,7 +105,8 @@ export default class Chicken {
             if (!isNewDay) return false;
 
             // TODO: Improve where server announces new day.
-            COOP.CHANNELS._postToFeed('A new day begins!');
+            const newDayText = 'A new day begins!';
+            COOP.CHANNELS._postToFeed(newDayText);
 
             // Try to attempt a giveaway based on random roll.
             if (STATE.CHANCE.bool({ likelihood: 5 })) 
@@ -119,7 +120,7 @@ export default class Chicken {
 
             // Send the conquest visuals!
             await VisualisationHelper.record("https://www.thecoop.group/conquest/world");
-            CHANNELS._getCode('TALK').send(new MessageAttachment('/tmp/video.webm'));
+            CHANNELS._getCode('TALK').send(newDayText, new MessageAttachment('/tmp/video.webm'));
 
             return true;
             

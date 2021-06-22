@@ -33,11 +33,11 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Add directory...
-        const base = await BaseHelper.get(3);
-        console.log(base);
 
-		const owner = USERS._get(base.owner_id);
-        console.log(owner);
+        const stream = CHANNELS._getCode('STREAM');
+
+        await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=3", 10000);
+        stream.send('TESTING...', new MessageAttachment('/tmp/video.webm'));
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
