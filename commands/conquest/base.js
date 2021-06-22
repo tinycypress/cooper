@@ -1,7 +1,9 @@
+import { MessageAttachment } from 'discord.js';
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
+import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
 
-import { MESSAGES, USERS } from '../../origin/coop';
+import { MESSAGES, STATE, USERS } from '../../origin/coop';
 
 export default class BaseCommand extends CoopCommand {
 
@@ -30,6 +32,12 @@ export default class BaseCommand extends CoopCommand {
 		const baseMsgText = `**Tile Details #${base.face_id}:**\n` +
 			`Owner: ${USERS._id2username(base.owner_id)}\n` +
 			`Age: ${base.created_at}`;
+
+		// Sometimes include a video of their base.
+		if (STATE.CHANCE.bool({ likelihood: 5 })) {
+			await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=" + baseID);
+            msg.channel.send(new MessageAttachment('/tmp/video.webm'));
+		}
 			
 		MESSAGES.silentSelfDestruct(msg, baseMsgText);
     }

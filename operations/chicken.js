@@ -118,7 +118,7 @@ export default class Chicken {
             await this.setConfig('current_day', '' + COOP.TIME._secs());
 
             // Send the conquest visuals!
-            await VisualisationHelper.record();
+            await VisualisationHelper.record("https://www.thecoop.group/conquest/world");
             CHANNELS._getCode('TALK').send(new MessageAttachment('/tmp/video.webm'));
 
             return true;
