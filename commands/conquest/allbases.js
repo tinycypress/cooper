@@ -24,7 +24,7 @@ export default class AllBasesCommand extends CoopCommand {
 				base.face_id + ' | ' + 
 				USERS._id2username(base.owner_id) + ' | ' + 
 				base.created_at
-			);
+			).join('\n');
 
 		MESSAGES.silentSelfDestruct(msg, baseMsgText);
     }
