@@ -37,11 +37,11 @@ export default class BaseCommand extends CoopCommand {
 			`Age: ${base.created_at}`;
 
 		// Sometimes include a video of their base.
-		if (STATE.CHANCE.bool({ likelihood: 2.5 })) {
+		if (STATE.CHANCE.bool({ likelihood: 25 })) {
 			await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=" + baseID);
             msg.channel.send(new MessageAttachment('/tmp/video.webm'));
 		}
-			
+
 		MESSAGES.silentSelfDestruct(msg, baseMsgText);
     }
     
