@@ -1,10 +1,14 @@
 import { Server } from "socket.io";
 import Socket from "./socket";
 
-export default function configure(server) {
-    Socket.ws = new Server(server);
+export default function configureWS(server) {
+  // Create an instance with reference to socket io server.
+  Socket.ws = new Server(server, {
+    serveClient: false
+  });
 
-    Socket.ws.on('connection', (socket) => {
-      console.log('a user connected');
-    });
+  // Handle incoming connections, mainly here for debugging.
+  Socket.ws.on('connection', (socket) => {
+    console.log('a user connected');
+  });
 }
