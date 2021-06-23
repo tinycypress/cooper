@@ -11,5 +11,8 @@ export default function configureWS(server) {
   // Handle incoming connections, mainly here for debugging.
   Socket.ws.on('connection', (socket) => {
     console.log('a user connected');
+
+
+    Socket.ws.emit('Testing?')
   });
 }
