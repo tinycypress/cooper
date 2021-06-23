@@ -12,7 +12,6 @@ export default function configureWS(server) {
   Socket.ws.on('connection', (socket) => {
     console.log('a user connected');
 
-
-    Socket.ws.emit('Testing?')
+    Socket.ws.emit('player_recognised', 'lol');
   });
 }
