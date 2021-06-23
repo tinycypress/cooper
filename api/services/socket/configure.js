@@ -22,7 +22,7 @@ const playerConnected = socket => {
         Math.max(0, Math.abs(getRandNumTestingOnly())),
         Math.max(0, Math.abs(getRandNumTestingOnly())),
         Math.max(0, Math.abs(getRandNumTestingOnly()))
-      ].join(', ')}`,
+      ].join(', ')})`,
     position: { 
       x: getRandNumTestingOnly(), 
       y: getRandNumTestingOnly(), 
