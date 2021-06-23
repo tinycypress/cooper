@@ -12,7 +12,7 @@ const playerConnected = socket => {
   const player = {
     id: socket.id,
     color: `rgb(${[_randRGBComp(), _randRGBComp(), _randRGBComp()].join(', ')})`,
-    position: { x: _randNum(), y: _randNum(), z: 0 }
+    position: { x: _randNum(), y: 0, z: _randNum() }
   };
 
   // Start tracking new player.
