@@ -1,13 +1,16 @@
+import http from 'http';
 import cors from 'cors';
 import express from 'express';
 import passport from 'passport';
 
+import configureWS from './api/services/socket/configure';
+import Database from './origin/setup/database';
+
 import APIRouter from './api/apiRouter';
 import Auth from './api/auth/_auth';
 
-import Database from './origin/setup/database';
-
 import { urlencoded, json } from 'body-parser';
+
 
 // Run the web api.
 bootstrap();
@@ -33,11 +36,17 @@ export default async function bootstrap() {
   // Ensure passport is initialised on app.
   app.use(passport.initialize());
 
+  // Create a separate http server for socket-io attach and regular services.
+  const server = http.createServer(app);
+
   // Attach all the routes to the API.
   app.use('/', APIRouter);
+
+  // Start listening with the websocket handler.
+  configureWS(server);
   
   // Start listening on the app.
-  app.listen(process.env.PORT);
-  console.log('API listening');
+  server.listen(process.env.PORT);
+  console.log('API listening, port: ' + process.env.PORT);
 }
 
