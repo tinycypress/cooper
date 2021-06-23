@@ -8,10 +8,30 @@ export default function configureWS(server) {
     cors: { origin: '*' }
   });
 
+  // Remove players after a few minutes of inactivity?
+  const players = [];
+
   // Handle incoming connections, mainly here for debugging.
   Socket.ws.on('connection', (socket) => {
     console.log('a user connected');
+    const player = {
+      id: socket.id
+    }
 
-    Socket.ws.emit('player_recognised', 'lol');
+    // Start tracking new player.
+    players.push(player);
+
+    // Inform all users someone connected.
+    Socket.ws.emit('player_recognised', {
+      // TODO: Randomise these two properties and check no conflict/identical.
+      color: 'red',
+      position: {
+        x: 0,
+        y: 0
+      }
+    });
   });
+
+  // TODO:
+  // Add an event listener for moving which broadcasts to all other users.
 }
