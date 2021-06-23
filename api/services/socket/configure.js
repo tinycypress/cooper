@@ -4,7 +4,7 @@ import Socket from "./socket";
 // Remove players after a few minutes of inactivity?
 const players = [];
 
-const tileLength = 100;
+const tileLength = 15;
 
 const getRandomColor = () => {
   const letters = '0123456789ABCDEF';
