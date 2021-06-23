@@ -10,7 +10,8 @@ const playerConnected = socket => {
 
     // TODO: Randomise these two properties and check no conflict/identical.
     color: 'red',
-    position: { x: 0, y: 0 }
+    // Pass the z? Solution?
+    position: { x: 0, y: 0, z: 0 }
   }
 
   // Start tracking new player.
