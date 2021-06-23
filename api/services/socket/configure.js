@@ -18,7 +18,11 @@ const getRandNumTestingOnly = () => Math.floor((Math.random() * tileLength) + -t
 const playerConnected = socket => {
   const player = {
     id: socket.id,
-    color: `rgb(${getRandNumTestingOnly()}, ${getRandNumTestingOnly()}, ${getRandNumTestingOnly()})`,
+    color: `rgb(${[
+        Math.max(0, Math.abs(getRandNumTestingOnly())),
+        Math.max(0, Math.abs(getRandNumTestingOnly())),
+        Math.max(0, Math.abs(getRandNumTestingOnly()))
+      ].join(', ')}`,
     position: { 
       x: getRandNumTestingOnly(), 
       y: getRandNumTestingOnly(), 
