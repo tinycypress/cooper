@@ -1,33 +1,18 @@
 import { Server } from "socket.io";
 import Socket from "./socket";
 
+const tileLength = 15;
+const _randNum = () => Math.floor((Math.random() * tileLength) + -tileLength);
+const _randRGBComp = () => Math.max(150, Math.abs(_randNum()));
+
 // Remove players after a few minutes of inactivity?
 const players = [];
-
-const tileLength = 15;
-
-const getRandomColor = () => {
-  const letters = '0123456789abcdef';
-  let color = '0x';
-  for (let i = 0; i < 6; i++) color += letters[Math.floor(Math.random() * 16)];
-  return color;
-}
-
-const getRandNumTestingOnly = () => Math.floor((Math.random() * tileLength) + -tileLength);
 
 const playerConnected = socket => {
   const player = {
     id: socket.id,
-    color: `rgb(${[
-        Math.max(0, Math.abs(getRandNumTestingOnly())),
-        Math.max(0, Math.abs(getRandNumTestingOnly())),
-        Math.max(0, Math.abs(getRandNumTestingOnly()))
-      ].join(', ')})`,
-    position: { 
-      x: getRandNumTestingOnly(), 
-      y: getRandNumTestingOnly(), 
-      z: 0 
-    }
+    color: `rgb(${[_randRGBComp, _randRGBComp, _randRGBComp].join(', ')})`,
+    position: { x: _randNum(), y: _randNum(), z: 0 }
   };
 
   // Start tracking new player.
