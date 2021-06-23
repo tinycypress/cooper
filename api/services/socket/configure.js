@@ -4,15 +4,27 @@ import Socket from "./socket";
 // Remove players after a few minutes of inactivity?
 const players = [];
 
+const tileLength = 100;
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '0x';
+  for (let i = 0; i < 6; i++) color += letters[Math.floor(Math.random() * 16)];
+  return color;
+}
+
+const getRandNumTestingOnly = () => Math.floor((Math.random() * tileLength) + -tileLength);
+
 const playerConnected = socket => {
   const player = {
     id: socket.id,
-
-    // TODO: Randomise these two properties and check no conflict/identical.
-    color: 'red',
-    // Pass the z? Solution?
-    position: { x: 0, y: 0, z: 0 }
-  }
+    color: getRandomColor(),
+    position: { 
+      x: getRandNumTestingOnly(), 
+      y: getRandNumTestingOnly(), 
+      z: 0 
+    }
+  };
 
   // Start tracking new player.
   players.push(player);
