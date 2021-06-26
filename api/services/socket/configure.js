@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import { TIME } from "../../../origin/coop";
 import Socket from "./socket";
 
 const tileLength = 15;
@@ -11,10 +12,14 @@ const players = [];
 const playerConnected = socket => {
   const player = {
     id: socket.id,
-    color: 'red',
-    position: { x: _randNum(), y: 0, z: _randNum() }
+    position: { x: _randNum(), y: 0, z: _randNum() },
+    connected_at: TIME._secs(),
+    last_activity: TIME._secs(),
+    
+    // Struggling to get this to work, Three is pretty strict for some reason. =[... help.
     // color: `rgb(${[_randRGBComp(), _randRGBComp(), _randRGBComp()].join(', ')})`,
-    // position: { x: 0, y: 0, z: 0 }
+    // Placeholder:
+    color: 'red'
   };
 
   // Start tracking new player.
@@ -22,6 +27,17 @@ const playerConnected = socket => {
 
   // Inform all users someone connected.
   Socket.ws.emit('player_recognised', player);
+
+  // Summarise the current world state.
+  const worldState = {
+    current_world_state: 'experiment',
+
+    // Attach the players object, may need pruning/optimising.
+    players
+  };
+
+  // Give the user who just connected all of the current world state data for rendering.
+  Socket.ws.broadcast.to(socket.id).emit('current_world_state', worldState);
 }
 
 export default function configureWS(server) {
