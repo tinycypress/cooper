@@ -12,7 +12,6 @@ const players = {};
 const playerConnected = socket => {
   const player = {
     id: socket.id,
-    socket,
     position: { x: _randNum(), y: 0, z: _randNum() },
     connected_at: TIME._secs(),
     last_activity: TIME._secs(),
@@ -41,7 +40,10 @@ const playerConnected = socket => {
   // console.log(Socket.conn);
 
   // May be as simple as this, alternatively from a helper could do players[id].socket.emit(...)...
-  socket.emit('current_world_state', worldState);
+  console.log(Socket.conn);
+  console.log(Socket.conn.clients);
+  console.log(socket);
+  // socket.emit('current_world_state', worldState);
 }
 
 export default function configureWS(server) {
