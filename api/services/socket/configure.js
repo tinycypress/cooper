@@ -58,4 +58,10 @@ export default function configureWS(server) {
 
   // TODO:
   // Add an event listener for moving which broadcasts to all other users.
+  Socket.conn.on('player_moved', move => {
+    // Player is sending movement data to server that could be sus.
+    // Move but be careful with it/validate/sanitise.
+    console.log('server ws received player movement data to process.');
+    console.log(move);
+  });
 }
