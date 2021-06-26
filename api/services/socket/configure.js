@@ -7,11 +7,12 @@ const _randNum = () => Math.floor((Math.random() * tileLength) + -tileLength);
 const _randRGBComp = () => Math.max(150, Math.abs(_randNum()));
 
 // Remove players after a few minutes of inactivity?
-const players = [];
+const players = {};
 
 const playerConnected = socket => {
   const player = {
     id: socket.id,
+    socket,
     position: { x: _randNum(), y: 0, z: _randNum() },
     connected_at: TIME._secs(),
     last_activity: TIME._secs(),
@@ -23,7 +24,7 @@ const playerConnected = socket => {
   };
 
   // Start tracking new player.
-  players.push(player);
+  players[socket.id] = player;
 
   // Inform all users someone connected.
   Socket.conn.emit('player_recognised', player);
@@ -37,8 +38,10 @@ const playerConnected = socket => {
   };
 
   // Give the user who just connected all of the current world state data for rendering.
-  console.log(Socket.conn);
-  // Socket.conn.ws.broadcast.to(socket.id).emit('current_world_state', worldState);
+  // console.log(Socket.conn);
+
+  // May be as simple as this, alternatively from a helper could do players[id].socket.emit(...)...
+  socket.emit('current_world_state', worldState);
 }
 
 export default function configureWS(server) {
