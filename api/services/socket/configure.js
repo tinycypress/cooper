@@ -37,11 +37,13 @@ const playerConnected = socket => {
   };
 
   // Give the user who just connected all of the current world state data for rendering.
-  // console.log(Socket.conn);
+  socket.emit('world_state_change', worldState);
 
-  // May be as simple as this, alternatively from a helper could do players[id].socket.emit(...)...
-  console.log(socket);
-  socket.emit('current_world_state', worldState);
+  // Add a disconnect handler for this player.
+  socket.on('disconnect', () => {
+    console.log('Player disconnected', socket.id);
+    Socket.conn.emit('player_disconnected', socket.id);
+  });
 }
 
 export default function configureWS(server) {
