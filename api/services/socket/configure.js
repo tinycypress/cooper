@@ -37,8 +37,8 @@ const playerConnected = socket => {
   };
 
   // Give the user who just connected all of the current world state data for rendering.
-  console.log(Socket.conn.ws);
-  Socket.conn.ws.broadcast.to(socket.id).emit('current_world_state', worldState);
+  console.log(Socket.conn);
+  // Socket.conn.ws.broadcast.to(socket.id).emit('current_world_state', worldState);
 }
 
 export default function configureWS(server) {
