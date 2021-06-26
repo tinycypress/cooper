@@ -40,10 +40,8 @@ const playerConnected = socket => {
   // console.log(Socket.conn);
 
   // May be as simple as this, alternatively from a helper could do players[id].socket.emit(...)...
-  console.log(Socket.conn);
-  console.log(Socket.conn.clients);
   console.log(socket);
-  // socket.emit('current_world_state', worldState);
+  socket.emit('current_world_state', worldState);
 }
 
 export default function configureWS(server) {
