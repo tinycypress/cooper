@@ -26,7 +26,7 @@ const playerConnected = socket => {
   players.push(player);
 
   // Inform all users someone connected.
-  Socket.ws.emit('player_recognised', player);
+  Socket.conn.emit('player_recognised', player);
 
   // Summarise the current world state.
   const worldState = {
@@ -37,19 +37,19 @@ const playerConnected = socket => {
   };
 
   // Give the user who just connected all of the current world state data for rendering.
-  console.log(Socket.ws);
-  Socket.ws.to(socket.id).emit('current_world_state', worldState);
+  console.log(Socket.conn.ws);
+  Socket.conn.ws.broadcast.to(socket.id).emit('current_world_state', worldState);
 }
 
 export default function configureWS(server) {
   // Create an instance with reference to socket io server.
-  Socket.ws = new Server(server, {
+  Socket.conn = new Server(server, {
     serveClient: false,
     cors: { origin: '*' }
   });
 
   // Handle incoming connections, mainly here for debugging.
-  Socket.ws.on('connection', playerConnected);
+  Socket.conn.on('connection', playerConnected);
 
   // TODO:
   // Add an event listener for moving which broadcasts to all other users.
