@@ -12,7 +12,7 @@ export const getTileState = async (req, res) => {
 GroundRouter.get('/tile/:tile', getTileState);
 
 
-GroundRouter.get('/', () => {
+GroundRouter.get('/', (req, res) => {
     return res.status(200).json({
         players: Ground.players
     });
