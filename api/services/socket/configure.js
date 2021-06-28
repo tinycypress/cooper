@@ -63,5 +63,7 @@ export default function configureWS(server) {
     // Move but be careful with it/validate/sanitise.
     console.log('server ws received player movement data to process.');
     console.log(move);
+
+    // Emit it to all players... see if they pick it up.
   });
 }
