@@ -27,6 +27,7 @@ export default class GroundHelper {
         const player = {
           id: socket.id,
           position: { x: this._randNum(), y: 0, z: this._randNum() },
+          rotation: { x: this._randNum(), y: 0, z: this._randNum() },
           connected_at: TIME._secs(),
           last_activity: TIME._secs(),
           
@@ -44,29 +45,21 @@ export default class GroundHelper {
       
         // Add a disconnect handler for this player.
         socket.on('disconnect', () => {
-          console.log('Player disconnected', socket.id);
           Socket.conn.emit('player_disconnected', socket.id);
       
           // Remove the player data.
           delete Ground.players[socket.id];
         });
 
-        // TODO:
         // Add an event listener for moving which broadcasts to all other users.
         socket.on('player_moved', GroundHelper.playerMoved);
-
-        socket.on('player_moved', () => {
-            console.log('player moved?');
-        });
     }
 
     static playerMoved(move) {
-        // Player is sending movement data to server that could be sus.
-        // Move but be careful with it/validate/sanitise.
-        console.log('server ws received player movement data to process.');
-        console.log(move);
-   
-        // Emit it to all players... see if they pick it up.
+        // TODO: Validate/limit
+        // ...
+
+        // Broadcast
         Socket.conn.emit('player_moved', move);
     }
 }
