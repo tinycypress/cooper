@@ -1,7 +1,5 @@
 import { Server } from "socket.io";
-import Ground from "../../../operations/minigames/medium/conquest/ground";
 import GroundHelper from "../../../operations/minigames/medium/conquest/groundHelper";
-import { TIME } from "../../../origin/coop";
 import Socket from "./socket";
 
 
