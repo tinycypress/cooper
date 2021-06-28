@@ -50,6 +50,14 @@ export default class GroundHelper {
           // Remove the player data.
           delete Ground.players[socket.id];
         });
+
+        // TODO:
+        // Add an event listener for moving which broadcasts to all other users.
+        socket.on('player_moved', GroundHelper.playerMoved);
+
+        socket.on('player_moved', () => {
+            console.log('player moved?');
+        });
     }
 
     static playerMoved(move) {
