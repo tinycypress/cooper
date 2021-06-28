@@ -3,7 +3,7 @@ import moment from 'moment';
 import ElectionHelper from './members/hierarchy/election/electionHelper';
 import CooperMorality from './minigames/small/cooperMorality';
 
-import COOP, { STATE } from "../origin/coop";
+import { STATE, CHANNELS, TIME } from "../origin/coop";
 
 import Database from '../origin/setup/database';
 import VisualisationHelper from './minigames/medium/conquest/visualisationHelper';
@@ -91,7 +91,7 @@ export default class Chicken {
     // TODO: Consider adding observable for checkIfNewDay (provide events)
     static async isNewDay() {
         const currentDaySecs = await this.getCurrentDaySecs();
-        const nowSecs = COOP.TIME._secs();
+        const nowSecs = TIME._secs();
         const dayDurSecs = (60 * 60) * 24
         const isNewDay = nowSecs >= currentDaySecs + dayDurSecs;
 
@@ -106,7 +106,7 @@ export default class Chicken {
 
             // TODO: Improve where server announces new day.
             const newDayText = 'A new day begins!';
-            COOP.CHANNELS._postToFeed(newDayText);
+            CHANNELS._postToFeed(newDayText);
 
             // Try to attempt a giveaway based on random roll.
             if (STATE.CHANCE.bool({ likelihood: 5 })) 
@@ -116,7 +116,7 @@ export default class Chicken {
             ElectionHelper.checkProgress();
             
             // If election is running, it should announce something at beginning of day, with time remaining.
-            await this.setConfig('current_day', '' + COOP.TIME._secs());
+            await this.setConfig('current_day', '' + TIME._secs());
 
             // Send the conquest visuals!
             await VisualisationHelper.record("https://www.thecoop.group/conquest/world");
