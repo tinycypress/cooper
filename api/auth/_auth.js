@@ -90,7 +90,7 @@ export default class Auth {
 		return data;
 	}
 
-	static token(id) {
+	static token(id, username) {
 		return jwt.sign(
 			// Palyoad
 			{ id, username }, 
