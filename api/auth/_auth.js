@@ -92,7 +92,7 @@ export default class Auth {
 
 	static token(id, username) {
 		return jwt.sign(
-			// Palyoad
+			// Payload
 			{ id, username }, 
 
 			// Encryption keky.
