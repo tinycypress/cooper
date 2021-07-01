@@ -40,22 +40,15 @@ export default class TempAccessCodeHelper {
 
     static async validate(code) {
         // Check code is correct
-        console.log('validating cooper dm code', code)
-
         const result = await DatabaseHelper.singleQuery({
             text: `SELECT * FROM temp_login_codes WHERE code = $1`,
             values: [code]
         });
 
-        console.log('validation resu;t');
-        console.log(result);
+        // Check it has not expired - there's already a cron on this.
+        // if (result) ...
 
-        if (result) {
-
-            // Check it has not expired
-            // if (result) ...
-            return result;
-        }
+        if (result) return result;
 
         // Validate: Return true/false.
         return false;

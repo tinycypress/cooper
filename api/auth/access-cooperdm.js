@@ -1,5 +1,6 @@
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
 import TimeHelper from '../../operations/timeHelper';
+import { USERS } from '../../origin/coop';
 import Auth from './_auth';
 
 
@@ -16,14 +17,14 @@ export default async function AccessCooperDM(result, code) {
 	if (TimeHelper._secs() >= request.expires_at)
 		throw new Error('Temporary login code expired.');
 
-	console.log(request);
+	const user = await USERS.loadSingle(request.discord_id);
 
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
-	result.token = Auth.token(request.discord_id, request.username);
+	result.token = Auth.token(request.discord_id, user.username);
 	result.success = true;
 	result.user = { 
 		id: request.discord_id,
-		username: request.username
+		username: user.username
 	};
 
 	return result;
