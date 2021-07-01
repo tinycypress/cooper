@@ -87,7 +87,7 @@ export default class Auth {
 			);
 		}
 	
-		return token;
+		return data;
 	}
 
 	static token(id) {
