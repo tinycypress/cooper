@@ -216,12 +216,22 @@ export default class UsersHelper {
     static async cleanupUsers() {
         const allUsers = await this.load();
         allUsers.map((user, index) => {
+            const delay = 666 * index;
             const member = this._getMemberByID(user.discord_id);
-            if (!member) setTimeout(() => this.removeFromDatabase({
-                user: {
-                    id: user.discord_id
-                }
-            }), 666 * index);
+
+            // If the member has left, clean up.
+            if (!member) 
+                setTimeout(() => this.removeFromDatabase({
+                    user: { id: user.discord_id }
+                }), delay);
+
+                
+            // If the username has changed, update it.
+            if (user.username !== member.user.username)
+                setTimeout(
+                    () => this.updateField(user.id, 'username', member.user.username),
+                    delay
+                );
         });
     }
 

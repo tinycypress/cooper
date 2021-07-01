@@ -24,7 +24,10 @@ export default async function AccessDiscord(result, code) {
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
 	result.token = Auth.token(userDiscordID);
 	result.success = true;
-	result.user = { id: user.id };
+	result.user = { 
+		id: user.id,
+		username: user.username
+	};
 
 	// Return for passing back to user.
 	return result;

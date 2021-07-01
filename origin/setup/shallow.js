@@ -34,10 +34,6 @@ const shallowBot = async () => {
 
         // Add directory...
 
-        // const stream = CHANNELS._getCode('STREAM');
-
-        // await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=3", 10000);
-        // stream.send('TESTING...', new MessageAttachment('/tmp/video.webm'));
 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.

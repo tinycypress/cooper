@@ -76,9 +76,6 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
   
 
-
-
-
   // Core tick handler for more granularity over timing.
   EventsHelper.runInterval(() => serverTick(), 30000);
 

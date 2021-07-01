@@ -72,10 +72,9 @@ export default class Auth {
 	static decode(token) {
 		let data = null;
 		
-		const deheaderedToken = token.replace('Bearer ', '');
-	
 		// Detect, access, and parse token.
-		if (deheaderedToken) 
+		if (token) 
+			const deheaderedToken = token.replace('Bearer ', '');
 			data = jwt.verify(
 				// JWT token to decode.
 				deheaderedToken,

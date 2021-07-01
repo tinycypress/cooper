@@ -46,8 +46,6 @@ export default class GroundHelper {
         const token = socket.handshake.auth.token;
         console.log(Auth.decode(token));
 
-        console.log('server side auth token', token);
-
         // Start tracking new player.
         Ground.players[socket.id] = player;
       
