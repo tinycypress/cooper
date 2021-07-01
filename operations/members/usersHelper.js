@@ -86,11 +86,11 @@ export default class UsersHelper {
         return await Database.query(query);
     }
 
-    static async addToDatabase(userID, joindate) {
+    static async addToDatabase(userID, username, joindate) {
         const query = {
             name: "add-user",
-            text: "INSERT INTO users(discord_id, join_date) VALUES ($1, $2)",
-            values: [userID, joindate]
+            text: "INSERT INTO users(discord_id, username, join_date) VALUES ($1, $2, $3)",
+            values: [userID, username, joindate]
         };
         return await Database.query(query);
     }
@@ -255,7 +255,7 @@ export default class UsersHelper {
             
             try {
                 // Insert and respond to successful/failed insertion.
-                const dbRes = await this.addToDatabase(member.user.id, member.joinedTimestamp);
+                const dbRes = await this.addToDatabase(member.user.id, member.user.username, member.joinedTimestamp);
                 if (dbRes.rowCount === 1)
                     setTimeout(() => COOP.CHANNELS._postToFeed(
                         `<@${member.user.id}> is officially recognised by The Coop ${coopEmoji}!`

@@ -69,7 +69,7 @@ export default class RedemptionHelper {
                 // Add to database if not already in it.
                 const savedUser = await COOP.USERS.loadSingle(targetMember.user.id);
                 if (!savedUser)
-                    await COOP.USERS.addToDatabase(targetMember.user.id, targetMember.joinedDate);
+                    await COOP.USERS.addToDatabase(targetMember.user.id, targetMember.user.username, targetMember.joinedDate);
 
                 // Inform the user.
                 try {
