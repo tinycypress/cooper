@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, USERS } from '../coop';
+import COOP, { CHANNELS, SERVER, USERS } from '../coop';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
 import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
@@ -34,10 +34,11 @@ const shallowBot = async () => {
 
         // Add directory...
 
-        const stream = CHANNELS._getCode('STREAM');
+        // const stream = CHANNELS._getCode('STREAM');
 
-        await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=3", 10000);
-        stream.send('TESTING...', new MessageAttachment('/tmp/video.webm'));
+        // await VisualisationHelper.record("https://www.thecoop.group/conquest/world?tile=3", 10000);
+        // stream.send('TESTING...', new MessageAttachment('/tmp/video.webm'));
+
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

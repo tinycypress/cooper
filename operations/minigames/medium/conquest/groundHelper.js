@@ -2,6 +2,7 @@ import Socket from "../../../../api/services/socket/socket";
 import { TIME } from "../../../../origin/coop";
 import Ground from "./ground";
 
+let guestNum = 0;
 
 export default class GroundHelper {
 
@@ -34,8 +35,13 @@ export default class GroundHelper {
           // Struggling to get this to work, Three is pretty strict for some reason. =[... help.
           // color: `rgb(${[_randRGBComp(), _randRGBComp(), _randRGBComp()].join(', ')})`,
           // Placeholder:
-          color: 'red'
+          color: 'red',
+
+          username: 'guest' + guestNum++
         };
+
+        const token = socket.handshake.auth.token;
+        console.log('server side auth token');
 
         // Start tracking new player.
         Ground.players[socket.id] = player;
