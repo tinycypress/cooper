@@ -4,9 +4,6 @@ import Ground from "./ground";
 import Auth from '../../../../api/auth/_auth';
 
 
-
-let guestNum = 0;
-
 export default class GroundHelper {
 
     static async all() {
@@ -40,11 +37,12 @@ export default class GroundHelper {
           // Placeholder:
           color: 'red',
 
-          username: 'guest' + guestNum++
+          username: socket.id
         };
         
         // Parse username from token if authenticated.
         const token = Auth.decode(socket.handshake.auth.token);
+        console.log('decoded token for player connection: ', token);
         if (token) player.username = token.username;
 
         // Start tracking new player.
