@@ -73,7 +73,7 @@ export default class Auth {
 		let data = null;
 		
 		// Detect, access, and parse token.
-		if (token) 
+		if (token)  {
 			const deheaderedToken = token.replace('Bearer ', '');
 			data = jwt.verify(
 				// JWT token to decode.
@@ -85,6 +85,7 @@ export default class Auth {
 				// Issuance options, just to be cool lyk dat.
 				this.issuerOpts
 			);
+		}
 	
 		return token;
 	}
