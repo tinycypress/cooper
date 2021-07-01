@@ -16,6 +16,8 @@ export default async function AccessCooperDM(result, code) {
 	if (TimeHelper._secs() >= request.expires_at)
 		throw new Error('Temporary login code expired.');
 
+	console.log(request);
+
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
 	result.token = Auth.token(request.discord_id, request.username);
 	result.success = true;
