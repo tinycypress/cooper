@@ -11,7 +11,12 @@ AuthRouter.post('/access', Access);
 
 // An endpoint mostly related to session/user data during-around authentication.
 AuthRouter.get('/me', Auth.guard(), ({ user }, res) => {
-    res.status(200).json({ user: { id: user.discord_id } });
+    res.status(200).json({ 
+        user: { 
+            id: user.discord_id,
+            username: user.username
+        }
+    });
 });
 
 export default AuthRouter;
