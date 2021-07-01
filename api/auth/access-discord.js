@@ -22,7 +22,7 @@ export default async function AccessDiscord(result, code) {
 		throw new Error('Discord user is not a member of The Coop.');
 		
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
-	result.token = Auth.token(userDiscordID);
+	result.token = Auth.token(userDiscordID, user.username);
 	result.success = true;
 	result.user = { 
 		id: user.id,

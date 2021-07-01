@@ -93,7 +93,7 @@ export default class Auth {
 	static token(id) {
 		return jwt.sign(
 			// Palyoad
-			{ id }, 
+			{ id, username }, 
 
 			// Encryption keky.
 			process.env.DISCORD_TOKEN, 
