@@ -42,7 +42,6 @@ export default class GroundHelper {
 
           username: 'guest' + guestNum++
         };
-
         
         const token = socket.handshake.auth.token;
         console.log(Auth.decode(token));

@@ -70,16 +70,24 @@ export default class Auth {
 	};
 
 	static decode(token) {
-		return jwt.verify(
-			// JWT token to decode.
-			token,
-
-			// Encryption key.
-			process.env.DISCORD_TOKEN, 
-
-			// Issuance options, just to be cool lyk dat.
-			this.issuerOpts
-		);
+		let data = null;
+		
+		const deheaderedToken = token.replace('Bearer ', '');
+	
+		// Detect, access, and parse token.
+		if (deheaderedToken) 
+			data = jwt.verify(
+				// JWT token to decode.
+				deheaderedToken,
+	
+				// Encryption key.
+				process.env.DISCORD_TOKEN, 
+	
+				// Issuance options, just to be cool lyk dat.
+				this.issuerOpts
+			);
+	
+		return token;
 	}
 
 	static token(id) {
