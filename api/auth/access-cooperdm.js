@@ -19,10 +19,6 @@ export default async function AccessCooperDM(result, code) {
 
 	const user = await USERS.loadSingle(request.discord_id);
 
-	console.log('user being accessed via cooper dm req:')
-
-	console.log(user, request);
-
 	// Generate (sign) a JWT token for specified user. =] Beautiful.
 	result.token = Auth.token(request.discord_id, user.username);
 	result.success = true;
