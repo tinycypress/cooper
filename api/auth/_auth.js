@@ -69,6 +69,19 @@ export default class Auth {
 		audience: 'thecoop.group'
 	};
 
+	static decode(token) {
+		return jwt.verify(
+			// JWT token to decode.
+			token,
+
+			// Encryption key.
+			process.env.DISCORD_TOKEN, 
+
+			// Issuance options, just to be cool lyk dat.
+			this.issuerOpts
+		);
+	}
+
 	static token(id) {
 		return jwt.sign(
 			// Palyoad

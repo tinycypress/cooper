@@ -1,6 +1,9 @@
 import Socket from "../../../../api/services/socket/socket";
 import { TIME } from "../../../../origin/coop";
 import Ground from "./ground";
+import Auth from '../../../../api/auth/_auth';
+
+
 
 let guestNum = 0;
 
@@ -40,8 +43,11 @@ export default class GroundHelper {
           username: 'guest' + guestNum++
         };
 
+        
         const token = socket.handshake.auth.token;
-        console.log('server side auth token');
+        console.log(Auth.decode(token));
+
+        console.log('server side auth token', token);
 
         // Start tracking new player.
         Ground.players[socket.id] = player;
