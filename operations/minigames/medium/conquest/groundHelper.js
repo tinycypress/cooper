@@ -43,8 +43,9 @@ export default class GroundHelper {
           username: 'guest' + guestNum++
         };
         
-        const token = socket.handshake.auth.token;
-        console.log(Auth.decode(token));
+        // Parse username from token if authenticated.
+        const token = Auth.decode(socket.handshake.auth.token);
+        if (token) player.username = token.username;
 
         // Start tracking new player.
         Ground.players[socket.id] = player;
