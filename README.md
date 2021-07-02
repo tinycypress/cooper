@@ -1,4 +1,5 @@
 # Cooper (The Coop's Discord Bot)
+http://thecoop.group/
 
 To run:
 
