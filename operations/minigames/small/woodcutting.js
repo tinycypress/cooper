@@ -77,7 +77,7 @@ export default class WoodcuttingMinigame {
                 // Add the experience.
                 SkillsHelper.addXP(user.id, 'woodcutting', 2);
                 
-                const actionText = `<@${user.username}> broke an axe trying to cut wood, ${userAxesNum - 1} remaining!`;
+                const actionText = `${user.username} broke an axe trying to cut wood, ${userAxesNum - 1} remaining!`;
                 const damageText = `${brokenDamage} points (${ptsDmgText}) but gained 2xp in woodcutting for trying.`;
                 MESSAGES.silentSelfDestruct(msg, `${actionText} ${damageText}`, 0, 10000);
             }
