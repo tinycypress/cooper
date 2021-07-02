@@ -5,7 +5,7 @@ import Chicken from "../../../chicken";
 
 import CHANNELS from '../../../../origin/config/channels.json';
 
-import COOP, { MESSAGES, ROLES, USERS } from '../../../../origin/coop';
+import { MESSAGES, ROLES, USERS, TIME } from '../../../../origin/coop';
 
 import DatabaseHelper from '../../../databaseHelper';
 import Database from '../../../../origin/setup/database';
@@ -141,17 +141,17 @@ export default class ElectionHelper {
             await Chicken.setConfig('last_election', parseInt(Date.now() / 1000));
             
             // Update the election message
-            const readableElecLeft = COOP.TIME.humaniseSecs((await this.votingPeriodLeftSecs()));
+            const readableElecLeft = TIME.humaniseSecs((await this.votingPeriodLeftSecs()));
             const startElecText = `The election is currently ongoing! Time remaining: ${readableElecLeft}`;
             await this.editElectionInfoMsg(startElecText);
 
             // Inform all members so they can fairly stand.
-            const electionText = `our latest ${COOP.CHANNELS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
-                `For further information on our elections refer to our forth amendment in ${COOP.CHANNELS.textRef('CONSTITUTION')}\n\n` +
+            const electionText = `our latest ${CHANNELS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
+                `For further information on our elections refer to our forth amendment in ${CHANNELS.textRef('CONSTITUTION')}\n\n` +
                 `To stand for election, send in any channel this message: \n\n !stand ((and your campaign message here, brackets - () - not needed)) \n\n` +
                 `Time remaining: ${readableElecLeft}.`;
 
-            await COOP.CHANNELS._postToFeed(`@everyone, ${electionText}`);
+            await CHANNELS._postToFeed(`@everyone, ${electionText}`);
 
             // TODO: Finish this method and output a formatted election message.
             // COOP.USERS._dmAll((username) => `${username}, ${electionText}`);
@@ -173,7 +173,7 @@ export default class ElectionHelper {
     static async commentateElectionProgress() {
         // Check time since last election commentation message (prevent spam).
         const lastElecMsgSecs = parseInt(await Chicken.getConfigVal('last_elecupdatemsg_secs'));
-        const nowSecs = COOP.TIME._secs();
+        const nowSecs = TIME._secs();
         const diff = nowSecs - lastElecMsgSecs;
         const hourSecs = 3600;
 
@@ -198,7 +198,7 @@ export default class ElectionHelper {
         const votes = await this.fetchAllVotes();
 
         const votingPeriodSecs = await this.votingPeriodLeftSecs();
-        const readableElecLeft = COOP.TIME.humaniseSecs(votingPeriodSecs);
+        const readableElecLeft = TIME.humaniseSecs(votingPeriodSecs);
 
         const hierarchy = this.calcHierarchy(votes);
         const maxNumLeaders = this.getMaxNumLeaders();
@@ -217,7 +217,7 @@ export default class ElectionHelper {
             `\n\n`;
         
         // Ensure Cooper knows when the last time this was updated (sent).
-        Chicken.setConfig('last_elecupdatemsg_secs', COOP.TIME._secs());
+        Chicken.setConfig('last_elecupdatemsg_secs', TIME._secs());
 
         // Inform the community and update records.
         await this.editElectionInfoMsg(electionProgressText);
@@ -259,15 +259,15 @@ export default class ElectionHelper {
 
                 `**Next Election:** ${nextElecFmt}.`;
             
-            COOP.CHANNELS._postToFeed(declareText);
+            CHANNELS._postToFeed(declareText);
             await this.editElectionInfoMsg(declareText);
 
             // Handle election items.
             await this.resetHierarchyItems(hierarchy);
 
             // Add the election items.
-            COOP.ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1, 'Election victory (commander)');
-            hierarchy.leaders.map(leader => COOP.ITEMS.add(leader.id, 'LEADERS_SWORD', 1, 'Election victory (leader)'));
+            ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1, 'Election victory (commander)');
+            hierarchy.leaders.map(leader => ITEMS.add(leader.id, 'LEADERS_SWORD', 1, 'Election victory (leader)'));
 
         } catch(e) {
             console.log('Something went wrong ending the election...');
@@ -306,18 +306,16 @@ export default class ElectionHelper {
         
                 // Add former commander to ex commander!
                 if (!ROLES._has(exCommander, 'FORMER_COMMANDER')) {
-                    COOP.CHANNELS._postToFeed(`${exCommander.user.username} is recognised as a former commander and allowed access into the former commanders' secret channel!`);
+                    CHANNELS._postToFeed(`${exCommander.user.username} is recognised as a former commander and allowed access into the former commanders' secret channel!`);
                     await ROLES._add(exCommander.user.id, 'FORMER_COMMANDER');
     
                     // Update last served data for the former commander.
                     // last_served
                 }
             } else {
-                COOP.CHANNELS._postToFeed(`${exCommander.user.username} is re-elected as Commander for another term!`);
+                CHANNELS._postToFeed(`${exCommander.user.username} is re-elected as Commander for another term!`);
             }
 
-
-    
             return true;
 
         } catch(e) {
@@ -329,8 +327,8 @@ export default class ElectionHelper {
     static async resetHierarchyItems(hierarchy) {
         try {
             // Load hierarchy of users (role-based hierarchy).
-            const leaderItems = await COOP.ITEMS.getUsersWithItem('LEADERS_SWORD');
-            const commanderItems = await COOP.ITEMS.getUsersWithItem('ELECTION_CROWN');        
+            const leaderItems = await ITEMS.getUsersWithItem('LEADERS_SWORD');
+            const commanderItems = await ITEMS.getUsersWithItem('ELECTION_CROWN');        
 
             // Remove all of the swords from the old leaders.            
             leaderItems.map(async exLeader => {
@@ -342,7 +340,7 @@ export default class ElectionHelper {
                 });
                 // If it isn't a relected leader, remove role.
                 if (!leaderReElected)
-                    COOP.ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD', 1, 'Election reset');
+                    ITEMS.subtract(exLeader.owner_id, 'LEADERS_SWORD', 1, 'Election reset');
             });
 
             // Remove commander crown if not re-elected.
@@ -359,29 +357,29 @@ export default class ElectionHelper {
     static async ensureItemSeriousness() {
         try {
             // Load hierarchy on basis of items.
-            const leaderItems = await COOP.ITEMS.getUsersWithItem('LEADERS_SWORD');
-            const commanderItem = await COOP.ITEMS.getUserWithItem('ELECTION_CROWN');
+            const leaderItems = await ITEMS.getUsersWithItem('LEADERS_SWORD');
+            const commanderItem = await ITEMS.getUserWithItem('ELECTION_CROWN');
             const swordOwners = leaderItems.map(item => item.owner_id);
 
             // Load users by roles for comparison/checking.
             const roleHierarchy = this._roleHierarchy();
-            
+
             // Any leader who has role but not leaders_sword -> role removed.
             roleHierarchy.leaders.map(leader => {
                 // Check each role item for existence in leader items ownership data.
                 if (!swordOwners.includes(leader.user.id) && ROLES._has(leader, 'LEADER'))
                     ROLES._remove(leader.user.id, 'LEADER');
             });
-            
+
             // Any commander who has role but not election_crown -> role removed.
-            if (roleHierarchy.commander) {
+            if (roleHierarchy.commander && commanderItem) {
                 const isUsurper = commanderItem.owner_id !== roleHierarchy.commander.user.id;
                 if (isUsurper && ROLES._has(roleHierarchy.commander, 'COMMANDER'))
                     ROLES._remove(roleHierarchy.commander.user.id, 'COMMANDER');
             }
         
             // Get leaders by loading members via IDs
-            const rightfulLeaders = COOP.USERS._filter(user => swordOwners.includes(user.id));
+            const rightfulLeaders = USERS._filter(user => swordOwners.includes(user.id));
 
             // Any leader who has leaders_sword but not role -> leaders_sword added.
             rightfulLeaders.map(leader => {
@@ -390,7 +388,7 @@ export default class ElectionHelper {
             });
 
             // Any commander who has election_crown but not role -> election_crown added.
-            const rightfulCommander = COOP.USERS._get(commanderItem.owner_id);
+            const rightfulCommander = USERS._get(commanderItem.owner_id);
             if (!ROLES._has(rightfulCommander, 'COMMANDER'))
                 ROLES._add(rightfulCommander.user.id, 'COMMANDER');
 
@@ -472,7 +470,7 @@ export default class ElectionHelper {
         if (reaction.message.channel.id !== CHANNELS.ELECTION.id) return false;
 
         // Ignore Cooper's prompt emoji.
-        if (COOP.USERS.isCooper(user.id)) return false;
+        if (USERS.isCooper(user.id)) return false;
 
         // Check if reaction is crown (indicates vote)
         if (reaction.emoji.name !== '👑') return false;
@@ -486,7 +484,7 @@ export default class ElectionHelper {
             if (candidate) {
                 // Check if already voted
                 const vote = await this.getVoteByVoterID(user.id);
-                const candidateUser = (await COOP.USERS._getMemberByID(candidate.candidate_id)).user;
+                const candidateUser = (await USERS._getMemberByID(candidate.candidate_id)).user;
 
                 // Add vote to database
                 await this.addVote(user.id, candidate.candidate_id);
@@ -497,7 +495,7 @@ export default class ElectionHelper {
                     await this.commentateElectionProgress();
             
                     // Acknowledge vote in feed.
-                    COOP.CHANNELS._postToFeed(`${user.username} cast their vote for ${candidateUser.username}!`);
+                    CHANNELS._postToFeed(`${user.username} cast their vote for ${candidateUser.username}!`);
                 }
             }
         } catch(e) {
@@ -537,7 +535,7 @@ export default class ElectionHelper {
 
         // Preload each candidate message.
         let campaigns = await Promise.allSettled(preloadMsgIDSets.map((idSet, index) => {
-            const guild = COOP.SERVER._coop();
+            const guild = SERVER._coop();
             return new Promise((resolve) => {
                 setTimeout(async () => {
                     try {
@@ -590,7 +588,7 @@ export default class ElectionHelper {
                 let embedUserID = idMatches[0];
                 embedUserID = embedUserID.replace('<@', '');
                 embedUserID = embedUserID.replace('>', '');
-                if (embedUserID) candidate = COOP.USERS._getMemberByID(embedUserID).user;
+                if (embedUserID) candidate = USERS._getMemberByID(embedUserID).user;
             }
 
             // Add to the overall data.
@@ -719,7 +717,7 @@ export default class ElectionHelper {
 
     static async humanRemainingNext() {
         const diff = await this.nextElecSecs() - parseInt(Date.now() / 1000)
-        const humanRemaining = COOP.TIME.humaniseSecs(diff);
+        const humanRemaining = TIME.humaniseSecs(diff);
         return humanRemaining;
     }
 
