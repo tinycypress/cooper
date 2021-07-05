@@ -27,8 +27,8 @@ export default class GroundHelper {
     static playerConnected = socket => {
         const player = {
           id: socket.id,
-          position: { x: this._randNum(), y: this._randNum(), z: 0 },
-          rotation: { x: this._randNum(), y: 0, z: 0 },
+          position: { x: this._randNum(), y: 0, z: this._randNum() },
+          rotation: { x: 0, y: 0, z: 0 },
           connected_at: TIME._secs(),
           last_activity: TIME._secs(),
           
@@ -42,7 +42,6 @@ export default class GroundHelper {
         
         // Parse username from token if authenticated.
         const token = Auth.decode(socket.handshake.auth.token);
-        console.log('decoded token for player connection: ', token);
         if (token) player.username = token.username;
 
         // Start tracking new player.
