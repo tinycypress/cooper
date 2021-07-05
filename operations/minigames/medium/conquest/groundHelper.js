@@ -27,7 +27,7 @@ export default class GroundHelper {
     static playerConnected = socket => {
         const player = {
           id: socket.id,
-          position: { x: this._randNum(), y: 0, z: this._randNum() },
+          position: { x: 0, y: 0, z: 0 },
           rotation: { x: 0, y: 0, z: 0 },
           connected_at: TIME._secs(),
           last_activity: TIME._secs(),
