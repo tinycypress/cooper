@@ -1,7 +1,7 @@
 import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP from '../../origin/coop';
+import COOP, { ROLES } from '../../origin/coop';
 import { CHANNELS } from '../../origin/config';
 
 
@@ -36,6 +36,10 @@ export default class StandCommand extends CoopCommand {
 		else if (campaignText.includes('@')) {
 			return COOP.MESSAGES.selfDestruct(msg, "Warning: @ is not allowed. Stand on your own or don't stand at all", 0, 5000);
 		}
+
+		// Prevent prospects from getting elected.
+		if (ROLES._idHasCode(msg.author.id, 'PROSPECT'))
+			return COOP.MESSAGES.selfDestruct(msg, 'Prospects cannot stand for election.', 0, 5000);
 
 		try {
 			// Prevent bad campaign texts.
