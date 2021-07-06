@@ -33,6 +33,10 @@ export default class SacrificeCommand extends CoopCommand {
 				return MESSAGES.silentSelfDestruct(msg, invalidText);
 			}
 
+			// Prevent prospects from proposing to sacrifice a member.
+			if (ROLES._idHasCode(msg.author.id, 'PROSPECT'))
+				return MESSAGES.selfDestruct(msg, 'Prospects cannot propose sacrifices.', 0, 5000);
+
 			// If the user of the command is leader/commander - instant sacrifice.
 			const instantSacrificers = ROLES._getUsersWithRoleCodes(['LEADER', 'COMMANDER']);
 			const hasInstantPower = instantSacrificers.some(isU => isU.id === msg.author.id);
