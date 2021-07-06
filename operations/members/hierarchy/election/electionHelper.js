@@ -474,6 +474,10 @@ export default class ElectionHelper {
         // Check if reaction is crown (indicates vote)
         if (reaction.emoji.name !== '👑') return false;
 
+        // Prevent PROSPECTS from electing people.
+        if (ROLES._idHasCode(user.id, 'PROSPECT'))
+            return MESSAGES.selfDestruct(reaction.message, `${user.username} you can't vote as a PROSPECT. :dagger:`);
+
         try {
             // Check if reaction message is a campaign message and get author.
             const msgLink = MESSAGES.link(reaction.message);

@@ -7,7 +7,7 @@ import COOP, { ROLES } from '../../../origin/coop';
 import TemporaryMessages from '../../maintenance/temporaryMessages';
 
 
-export const SACRIFICE_RATIO_PERC = .03;
+export const SACRIFICE_RATIO_PERC = .05;
 export const KEEP_RATIO_PERC = .02;
 
 export default class SacrificeHelper {
@@ -24,8 +24,6 @@ export default class SacrificeHelper {
         // Guards passed.
         return true;
     }
-
-
 
     static isBackDagger(reaction, user) {
         const emoji = reaction.emoji.name;
@@ -79,6 +77,10 @@ export default class SacrificeHelper {
                 // Warn.
                 return COOP.MESSAGES.selfDestruct(reaction.message, `${user.username} you can't vote for/against yourself. :dagger:`);
             }
+
+            // Prevent PROSPECTS from kicking people out.
+            if (ROLES._idHasCode(user.id, 'PROSPECT'))
+                return COOP.MESSAGES.selfDestruct(reaction.message, `${user.username} you can't vote as a PROSPECT. :dagger:`);
 
             // If member left, don't do anything.
             if (!targetMember) return false;
