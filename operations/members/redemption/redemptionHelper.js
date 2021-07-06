@@ -41,7 +41,7 @@ export default class RedemptionHelper {
             if (COOP.USERS.hasRoleID(targetMember, ROLES.MEMBER.id)) return false;
 
             // Prevent PROSPECTS from letting people in.
-            if (ROLES._idHasCode(user.id, 'PROSPECT'))
+            if (COOP.ROLES._idHasCode(user.id, 'PROSPECT'))
                 return COOP.MESSAGES.selfDestruct(reaction.message, `${user.username} you can't vote as a PROSPECT. :dagger:`);
 
             // Calculate the number of required votes for the redemption poll.
