@@ -68,6 +68,9 @@ export default class SacrificeHelper {
             const targetMember = await COOP.USERS.fetchMemberByID(guild, sacrificeeID);
             const isProspect = ROLES._idHasCode(sacrificeeID, 'PROSPECT');
 
+            // Prevent trying to sacrifice someone that was already sacrificed.
+            if (!targetMember)
+                return COOP.MESSAGES.selfDestruct(reaction.message, `Member with id ${sacrificeeID} seems not to be present for sacrificing.`);
 
             // If target member is self, remove vote.
             if (user.id === sacrificeeID) {

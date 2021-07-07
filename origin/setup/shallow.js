@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, SERVER, USERS } from '../coop';
+import COOP, { CHANNELS, MESSAGES, SERVER, USERS } from '../coop';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
 import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
