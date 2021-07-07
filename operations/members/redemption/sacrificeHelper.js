@@ -101,13 +101,13 @@ export default class SacrificeHelper {
 
 
             // Process votes with feedback for currently unprotected user.
-            const rawKeepVotes = reqKeepVotes - keepVotes;
-            if (rawKeepVotes > 0) {
-                const remainingProtectVotes = Math.max(0, rawKeepVotes);
+            const missingKeepVotes = reqKeepVotes - keepVotes;
+            if (missingKeepVotes > 0) {
+                const remainingProtectVotes = Math.max(0, missingKeepVotes);
                 const remainingSacrificeVotes = Math.max(0, reqSacrificeVotes - sacrificeVotes);   
 
                 // Check if enough votes to sacrifice.
-                if (remainingSacrificeVotes === 0) {
+                if (remainingSacrificeVotes <= 0) {
                     // Notify when user is voted out.
                     await COOP.CHANNELS._postToFeed(
                         (isProspect ? 'Prospect ' : '') + `<@${sacrificeeID}> was sacrificed!`);
@@ -127,7 +127,7 @@ export default class SacrificeHelper {
 
                 
             // Intercept latest vote granted protection to user.
-            } else if (rawKeepVotes === 0 && reaction.emoji.name === EMOJIS.SACRIFICE_SHIELD) {
+            } else if (missingKeepVotes <= 0 && reaction.emoji.name === EMOJIS.SACRIFICE_SHIELD) {
                 let savedText = `<@${sacrificeeID}> was protected from sacrifice by votes!`;
                 if (isProspect) {
                     savedText = `Prospect <@${targetMember.id}> survives sacrifice and is no longer marked as PROSPECT!`
