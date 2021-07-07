@@ -33,8 +33,6 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Add directory...
-        const commanderItem = await COOP.ITEMS.getUserWithItem('ELECTION_CROWN');
-        console.log(commanderItem);
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });

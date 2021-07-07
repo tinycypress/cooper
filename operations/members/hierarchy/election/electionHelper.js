@@ -387,9 +387,11 @@ export default class ElectionHelper {
             });
 
             // Any commander who has election_crown but not role -> election_crown added.
-            const rightfulCommander = USERS._get(commanderItem.owner_id);
-            if (!ROLES._has(rightfulCommander, 'COMMANDER'))
-                ROLES._add(rightfulCommander.user.id, 'COMMANDER');
+            if (commanderItem) {
+                const rightfulCommander = USERS._get(commanderItem.owner_id);
+                if (!ROLES._has(rightfulCommander, 'COMMANDER'))
+                    ROLES._add(rightfulCommander.user.id, 'COMMANDER');
+            }
 
         } catch(e) {
             console.log('Error ensuring item seriousness.');
