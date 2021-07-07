@@ -79,8 +79,10 @@ export default class SacrificeHelper {
             }
 
             // Prevent PROSPECTS from kicking people out.
-            if (ROLES._idHasCode(user.id, 'PROSPECT'))
+            if (ROLES._idHasCode(user.id, 'PROSPECT')) {
+                reaction.users.remove(user.id);
                 return COOP.MESSAGES.selfDestruct(reaction.message, `${user.username} you can't vote as a PROSPECT. :dagger:`);
+            }
 
             // If member left, don't do anything.
             if (!targetMember) return false;
