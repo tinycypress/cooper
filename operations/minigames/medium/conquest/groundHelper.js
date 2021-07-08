@@ -66,6 +66,8 @@ export default class GroundHelper {
         // TODO: Validate/limit
         // ...
 
+        // TODO: Update local player data? :think:
+
         // Broadcast
         Socket.conn.emit('player_moved', move);
     }
