@@ -6,7 +6,7 @@ import { RAW_EMOJIS, ROLES, CHANNELS } from '../../../origin/config';
 
 export const STARTING_ROLES = [
     'MEMBER', 'BEGINNER', 'SUBSCRIBER', 'SOCIAL',
-    'PROSPECT', 'ANNOUNCEMENTS', 'MISC', 'PROJECTS'
+    'PROSPECT', 'ANNOUNCEMENTS', 'PROJECTS'
 ];
 
 export default class RedemptionHelper {
@@ -89,7 +89,6 @@ export default class RedemptionHelper {
 
                 // Give intro roles
                 const introRolesResult = await COOP.ROLES._addCodes(targetMember.user.id, STARTING_ROLES);
-                console.log(introRolesResult);
                 
                 // Inform community.
                 COOP.CHANNELS._codes(['ENTRY', 'TALK'], 
