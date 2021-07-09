@@ -82,7 +82,7 @@ export default class MiningMinigame {
                 // Add the experience.
                 SkillsHelper.addXP(user.id, 'mining', 2);
 
-                const actionText = `<@${user.id}> broke a pickaxe trying to mine, ${userPickaxesNum - 1} remaining!`;
+                const actionText = `${user.username} broke a pickaxe trying to mine, ${userPickaxesNum - 1} remaining!`;
                 const damageText = `${brokenPickDamage} points (${ptsDmgText}) but gained mining 2xp for trying!.`;
                 MESSAGES.silentSelfDestruct(msg, `${actionText} ${damageText}`, 0, 10000);
             }
