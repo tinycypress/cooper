@@ -118,12 +118,17 @@ export default class ItemsHelper {
         // Get the total of that item now.
         const total = await this.count(itemCode);
 
-        // Delete the user's row if it contains exactly zero, but do not forgive negative (debt) values.
-        if (itemRow.quantity === 0) await this.delete(userID, itemCode)
+        // Extract latest/assumed qty.
+        let qty = 0;
+        if (itemRow && typeof itemRow.quantity !== null)
+            qty = itemRow.quantity;
+        
+        // Delete EXACT 0 but not < 0, don't keep unnecessary default rows for item ownership.
+        if (qty === 0) await this.delete(userID, itemCode)
         
         // Record the change, with quantity cast to a negative number.
         await this.saveTransaction(userID, itemCode, -subQuantity, total, takeReason);
-        return itemRow.quantity;
+        return qty;
     }
 
     static async getUserItem(userID, itemCode) {
