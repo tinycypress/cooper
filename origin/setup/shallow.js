@@ -9,6 +9,7 @@ import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
 import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
 import { MessageAttachment } from 'discord.js';
+import ItemsHelper from '../../operations/minigames/medium/economy/items/itemsHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -31,8 +32,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
