@@ -45,5 +45,5 @@ export default async function bootstrap() {
     registerLogging(botClient);
 
     // Set activity.
-    botClient.user.setActivity(`!help... STRUCTURE REFORM`, { type: 'WATCHING' });
+    botClient.user.setActivity(`!help... Simping for her rn`, { type: 'WATCHING' });
 }
