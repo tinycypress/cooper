@@ -5,7 +5,7 @@ import Chicken from "../../../chicken";
 
 import CHANNELS from '../../../../origin/config/channels.json';
 
-import { CHANNELS as CHANS, MESSAGES, ROLES, USERS, ITEMS, TIME } from '../../../../origin/coop';
+import { CHANNELS as CHANS, MESSAGES, ROLES, USERS, ITEMS, TIME, STATE } from '../../../../origin/coop';
 
 import DatabaseHelper from '../../../databaseHelper';
 import Database from '../../../../origin/setup/database';
@@ -403,7 +403,7 @@ export default class ElectionHelper {
 
     static async checkProgress() {
         // A variable used for tracking election before/after (start).
-        let electionStarted = false;
+        let electionJustStarted = false;
         
         try {
             // Load the current state of election from database.
@@ -413,23 +413,27 @@ export default class ElectionHelper {
             // Election needs to be started?
             if (isVotingPeriod && !isElecOn) {
                 await this.startElection();
-                electionStarted = true;
+                electionJustStarted = true;
             }
             
             // Code to only run until after the first time after election start, not before.
-            if (!electionStarted) {
+            if (!electionJustStarted) {
 
                 // Commentate election and detect conclusion of.
                 if (isElecOn) {
                     // Election needs to be declared?
-                    if (!isVotingPeriod && isElecOn) await this.endElection();
+                    if (!isVotingPeriod && isElecOn) 
+                        await this.endElection();
             
                     // Election needs to announce update?
-                    if (isVotingPeriod && isElecOn) await this.commentateElectionProgress();
+                    const tenPercentRoll = STATE.CHANCE.bool({ likelihood: 10 });
+                    if (isVotingPeriod && isElecOn && tenPercentRoll) 
+                        await this.commentateElectionProgress();
                 }
                 
                 // If election isn't running (sometimes) update about next election secs.
-                if (!isElecOn) await this.countdownFeedback();
+                if (!isElecOn) 
+                    await this.countdownFeedback();
             }
 
         } catch(e) {

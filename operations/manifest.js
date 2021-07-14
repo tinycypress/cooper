@@ -67,23 +67,21 @@ export const VELOCITY_EVENTS = {
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
 export default function eventsManifest() {
 
-  // Spam talk with low probability, low lifespan messages:
-  // TOOD: Add a base spotlight message every so often for a conquest base at random.
-  // Skill scores, item circulation, leaderboard, tip, latest trades
-  // TODO: Update and create most items role
-  // If easter, double egg spawns too.
-  // TODO: Add a !bang very, very, rarely.
-  EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);
+  // [WORKING DISABLED]
+  // Check Todo helper items late! PUNISH!
+  // EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);
   
+  // [WORKING DISABLED]
+  // New day events/calendar events.
+  // EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
+
+  // Marketing // [WORKING DISABLED]
+  // EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
+
+  EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);  
 
   // Core tick handler for more granularity over timing.
   EventsHelper.runInterval(() => serverTick(), 30000);
-
-  // Check Todo helper items late! PUNISH!
-  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);
-
-  // New day events/calendar events.
-  EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
 
   // Check member of the week historical_points, see if needed... like election style
   EventsHelper.runInterval(() => COOP.POINTS.updateMOTW(), baseTickDur * 5);
@@ -103,16 +101,11 @@ export default function eventsManifest() {
   // Ensure all users registered in memory for functionality.
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
 
-  // Marketing
-  EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
-
-
   // Election related
   ElectionHelper.setupIntervals();
   
   // Above is unfinished
   EventsHelper.runInterval(() => SuggestionsHelper.check(), baseTickDur * 4);
-
 
   // Sacrifice, moderation related.
   EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 25, baseTickDur * 10);
@@ -146,5 +139,5 @@ export default function eventsManifest() {
     COOP.CHANNELS._postToFeed('Ruuuuuu' + 'u'.repeat(COOP.STATE.CHANCE.natural({ min: 1, max: 20 })));
   }, 2.5, baseTickDur * 10);
 
-  EventsHelper.chanceRunInterval(() => { COOP.CHANNELS._postToFeed('._.') }, 7, baseTickDur * 3.5);
+  EventsHelper.chanceRunInterval(() => { COOP.CHANNELS._postToFeed('._.') }, 1, baseTickDur * 3.5);
 }
