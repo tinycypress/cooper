@@ -11,12 +11,17 @@ export default async function memberJoined(member) {
 
     // React with coop emoji... because.
     MESSAGES.delayReact(welcomeMessage, EMOJIS.COOP, 333);
+    MESSAGES.delayReact(welcomeMessage, '👋', 666);
 
     // Send direct message and channel message about next steps.
-    await member.send(
+    const dmWelcomeMessage = await member.send(
       'Welcome to The Coop! View your welcome message and next steps here: ' + 
       MESSAGES.link(welcomeMessage)
     );
+
+    // Add some nice emojis to dm welcome message.
+    MESSAGES.delayReact(dmWelcomeMessage, EMOJIS.COOP, 333);
+    MESSAGES.delayReact(dmWelcomeMessage, '👋', 666);
 
     // Notify community:
     const joinAnnouncementText = `**Someone new joined "${member.user.username}": ${CHANNELS.textRef('ENTRY')}!**`;
