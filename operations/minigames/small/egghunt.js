@@ -294,13 +294,14 @@ export default class EggHuntMinigame {
 
                     // TODO: If Cooper is evil, chance of destroying it immediately after.
 
-
                     // Schedule the deletion/cleanup of the dropped egg.
                     TemporaryMessages.add(eggMsg, eggLifespan, 'EGG_HUNT', { rarity });
                     MESSAGES.delayDelete(eggMsg, eggLifespan * 1000);
 
                     // If an annotation for the egg drop was provided, use it.
-                    if (dropText) CHANNELS._tempSend('TALK', dropText, 0, 60000);
+                    const fivePercentRoll = STATE.CHANCE.bool({ likelihood: 5 });
+                    if (dropText && fivePercentRoll) 
+                        CHANNELS._tempSend('TALK', dropText, 0, 60000);
 
                 } catch(e) {
                     console.error(e);
