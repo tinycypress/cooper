@@ -1,20 +1,26 @@
-import COOP from '../../../origin/coop';
+import { EMOJIS } from '../../../origin/config';
+import { CHANNELS, MESSAGES } from '../../../origin/coop';
 
 export default async function memberJoined(member) {
 
   try {
-    const welcomeMessage = await COOP.CHANNELS._postToChannelCode('ENTRY', 
-      `**Welcome, <@${member.user.id}> to The Coop**, I am Cooper.` +
-      ` We are an referral/invite only community, please introduce yourself. ${COOP.CHANNELS.textRef('INTRO')}`
-    ); 
+    const welcomeMessage = await CHANNELS._postToChannelCode('ENTRY', 
+      `Hey <@${member.user.id}>, welcome to **The Coop** :coop:.` +
+      ` We are an referral/invite only community, please introduce yourself. ${CHANNELS.textRef('INTRO')}`
+    );
+
+    // React with coop emoji... because.
+    MESSAGES.delayReact(welcomeMessage, EMOJIS.COOP, 333);
 
     // Send direct message and channel message about next steps.
     await member.send(
       'Welcome to The Coop! View your welcome message and next steps here: ' + 
-      COOP.MESSAGES.link(welcomeMessage));
+      MESSAGES.link(welcomeMessage)
+    );
 
     // Notify community:
-    COOP.CHANNELS._codes(['FEED', 'TALK'], `**Someone new joined "${member.user.username}": ${COOP.CHANNELS.textRef('ENTRY')}!**`);
+    const joinAnnouncementText = `**Someone new joined "${member.user.username}": ${CHANNELS.textRef('ENTRY')}!**`;
+    CHANNELS._codes(['TALK', 'WELCOME'], joinAnnouncementText);
 
   } catch(e) {
     console.error(e)
