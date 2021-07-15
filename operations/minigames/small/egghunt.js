@@ -268,7 +268,7 @@ export default class EggHuntMinigame {
             
             // Sometimes tell the-barn that an egg was collected and where.
             const fivePercentRoll = STATE.CHANCE.bool({ likelihood: 2.5 });
-            if (dropText && fivePercentRoll) 
+            if (fivePercentRoll) 
                 CHANNELS._tempSend('TALK', activityFeedMsgText, 333, 5000);
 
         } catch(e) {
