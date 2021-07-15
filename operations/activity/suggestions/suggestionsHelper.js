@@ -1,26 +1,18 @@
-import { EMOJIS, CHANNELS } from "../../../origin/config";
-import COOP from "../../../origin/coop";
+import { EMOJIS, CHANNELS as CHANNELS_CONFIG } from "../../../origin/config";
+import { SERVER, CHANNELS, USERS, MESSAGES } from "../../../origin/coop";
 
 
 // TODO: Make sure when adding to roadmap, talk, and feed that the votes are displayed to indicate mandate!
 export default class SuggestionsHelper {
 
     static onMessage(msg) {
-        if (msg.channel.id === CHANNELS.SUGGESTIONS.id && !msg.author.bot) 
-            COOP.CHANNELS._postToFeed(`New suggestion: <#${CHANNELS.SUGGESTIONS.id}>`);
-    }
-
-    static async onReaction() {
-        console.log('Suggestion reaction');
-    }
-
-    static async onAdd() {
-        // Validate a suggestion when it is originally added, part of house cleaning.   
+        if (msg.channel.id === CHANNELS_CONFIG.SUGGESTIONS.id && !msg.author.bot) 
+            CHANNELS._postToFeed(`New suggestion: <#${CHANNELS_CONFIG.SUGGESTIONS.id}>`);
     }
 
     static async check() {
         // Get last 25 suggestions to check through.
-        const suggestionsParts = Array.from(await COOP.CHANNELS._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
+        const suggestionsParts = Array.from(await CHANNELS._getCode('SUGGESTIONS').messages.fetch({ limit: 50 }));
         let processedOne = false;
 
         // Process latest ONE suggestion.
@@ -61,13 +53,13 @@ export default class SuggestionsHelper {
     static tied(suggestion, votes, index) {
         setTimeout(() => {
             try {
-                const link = COOP.MESSAGES.link(suggestion);
+                const link = MESSAGES.link(suggestion);
                 const tiedText = `Tied suggestion detected, please break the deadlock: \n\n ${link} \n\n` +
                     `${EMOJIS.POLL_FOR.repeat(votes.for)}${EMOJIS.POLL_AGAINST.repeat(votes.against)}`;
     
                 ['TALK', 'FEED'].forEach((channelKey, channelIndex) => {
                     setTimeout(
-                        () => COOP.CHANNELS._postToChannelCode(channelKey, tiedText), 
+                        () => CHANNELS._postToChannelCode(channelKey, tiedText), 
                         channelIndex * 666
                     );
                 });
@@ -82,14 +74,14 @@ export default class SuggestionsHelper {
         setTimeout(async () => {
             try {
                 // If not a cooper message, we know who to notify.
-                if (!COOP.USERS.isCooperMsg(suggestion)) {
+                if (!USERS.isCooperMsg(suggestion)) {
                     const warningText = `Suggestion removed, please use !poll [text] to make suggestions. \n` +
                         `Your suggestion was: ${suggestion.content}`;
-                    await COOP.USERS.directMSG(COOP.SERVER._coop(), suggestion.author.id, warningText);
+                    await USERS.directMSG(SERVER._coop(), suggestion.author.id, warningText);
                 }
 
                 // Delete the message with a delay to avoid rate limiting.
-                COOP.MESSAGES.delayDelete(suggestion, 3333 * index);
+                MESSAGES.delayDelete(suggestion, 3333 * index);
 
             } catch(e) {
                 console.log('Error during invalidation of suggestion');
@@ -109,7 +101,7 @@ export default class SuggestionsHelper {
             roadmap: false
         };
 
-        if (COOP.USERS.isCooperMsg(msg)) {
+        if (USERS.isCooperMsg(msg)) {
             msg.reactions.cache.map(reaction => {
                 if (reaction.emoji.name === EMOJIS.POLL_FOR) votes.for = reaction.count;
                 if (reaction.emoji.name === EMOJIS.POLL_AGAINST) votes.against = reaction.count;
@@ -133,22 +125,17 @@ export default class SuggestionsHelper {
                 // TODO: ^
                 // console.log(suggestion.mentions);
 
-                const rejectedText = `Suggestion passed, proposal: ${suggestion.content}\n` +
+                const passedText = `Suggestion passed, proposal: ${suggestion.content}\n` +
                     `${EMOJIS.POLL_FOR.repeat(votes.for)}${EMOJIS.POLL_AGAINST.repeat(votes.against)}`;
                 
-                // Inform the server of rejected suggestion.
-                ['TALK', 'FEED'].map((channelKey, channelIndex) => {
-                    setTimeout(
-                        () => COOP.CHANNELS._postToChannelCode(channelKey, rejectedText), 
-                        channelIndex * 666
-                    );
-                });
+                // Inform the server of passed suggestion.
+                CHANNELS._codes(['TALK', 'FEED', 'ROADMAP'], passedText);
 
                 // Post to roadmap if necessary
-                if (votes.roadmap) COOP.CHANNELS._postToChannelCode('ROADMAP', suggestion.content);
+                // if (votes.roadmap) CHANNELS._postToChannelCode('ROADMAP', suggestion.content);
 
                 // Delete the message with a delay to avoid rate limiting.
-                COOP.MESSAGES.delayDelete(suggestion, 3333 * index);
+                MESSAGES.delayDelete(suggestion, 3333 * index);
             } catch(e) {
                 console.log('Reject suggestion handling error');
                 console.error(e);
@@ -165,17 +152,26 @@ export default class SuggestionsHelper {
                 // Inform the server of rejected suggestion.
                 ['TALK', 'FEED'].forEach((channelKey, channelIndex) => {
                     setTimeout(
-                        () => COOP.CHANNELS._postToChannelCode(channelKey, rejectedText), 
+                        () => CHANNELS._postToChannelCode(channelKey, rejectedText), 
                         channelIndex * 666
                     );
                 });
 
                 // Delete the message with a delay to avoid rate limiting.
-                COOP.MESSAGES.delayDelete(suggestion, 3333 * index);
+                MESSAGES.delayDelete(suggestion, 3333 * index);
             } catch(e) {
                 console.log('Reject suggestion handling error');
                 console.error(e);
             }
         }, index * 5000);
     }
+
+    // static async onReaction() {
+    //     // console.log('Suggestion reaction');
+    // }
+
+    // static async onAdd() {
+    //     // Validate a suggestion when it is originally added, part of house cleaning.   
+    // }
+
 }
