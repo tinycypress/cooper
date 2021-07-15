@@ -265,7 +265,12 @@ export default class EggHuntMinigame {
 
             // Provide record of event.
             CHANNELS._postToChannelCode('ACTIONS', activityFeedMsgText);
-            CHANNELS._tempSend('TALK', activityFeedMsgText, 333, 5000);
+            
+            // Sometimes tell the-barn that an egg was collected and where.
+            const fivePercentRoll = STATE.CHANCE.bool({ likelihood: 2.5 });
+            if (dropText && fivePercentRoll) 
+                CHANNELS._tempSend('TALK', activityFeedMsgText, 333, 5000);
+
         } catch(e) {
             console.error(e);
         }
