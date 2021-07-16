@@ -4,9 +4,11 @@ import { CHANNELS, MESSAGES } from '../../../origin/coop';
 export default async function memberJoined(member) {
 
   try {
+    
+    const coop = MESSAGES.emojiText('COOP');
     const welcomeMessage = await CHANNELS._postToChannelCode('ENTRY', 
-      `Hey <@${member.user.id}>, welcome to **The Coop** :coop:.` +
-      ` We are an referral/invite only community, please introduce yourself. ${CHANNELS.textRef('INTRO')}`
+      `Hey <@${member.user.id}>, welcome to **The Coop** ${coop}.` +
+      ` We are an referral/invite only community, **__please introduce yourself .__** ${CHANNELS.textRef('INTRO')}`
     );
 
     // React with coop emoji... because.

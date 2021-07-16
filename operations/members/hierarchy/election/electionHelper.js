@@ -231,12 +231,14 @@ export default class ElectionHelper {
             // Remove roles from previous hierarchy.
             await this.resetHierarchyRoles(hierarchy);
 
-            // Add roles to winners.
-            ROLES._add(hierarchy.commander.id, 'COMMANDER');
+            // Add roles to winning commander.
+            if (hierarchy.commander)
+                ROLES._add(hierarchy.commander.id, 'COMMANDER');
+
+            // Add role to winning leaders.
             Promise.all(hierarchy.leaders.map(async (leader, index) => {
                 await new Promise(r => setTimeout(r, 333 * index));
-                await ROLES._add(leader.id, 'LEADER');
-                return true;
+                return await ROLES._add(leader.id, 'LEADER');
             }));
 
             // Cleanup database records fresh for next run.
@@ -248,7 +250,6 @@ export default class ElectionHelper {
             const nextElecFmt = await this.nextElecFmt();
 
             // Announce the winners!
-            // TODO: Add the silent pings into this for leaders/commander.
             const declareText = `**Latest <#${CHANNELS.ELECTION.id}> ends with these results!**\n\n` +
 
                 `**New ${ROLES._textRef('COMMANDER')}:**\n${hierarchy.commander.username}\n\n` +
@@ -264,9 +265,14 @@ export default class ElectionHelper {
             // Handle election items.
             await this.resetHierarchyItems(hierarchy);
 
-            // Add the election items.
-            ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1, 'Election victory (commander)');
-            hierarchy.leaders.map(leader => ITEMS.add(leader.id, 'LEADERS_SWORD', 1, 'Election victory (leader)'));
+            // Add the election crown to elected commander.
+            if (hierarchy.commander)
+                ITEMS.add(hierarchy.commander.id, 'ELECTION_CROWN', 1, 'Election victory (commander)');
+
+            // Add the leader swords to elected leaders
+            hierarchy.leaders.map(leader => 
+                ITEMS.add(leader.id, 'LEADERS_SWORD', 1, 'Election victory (leader)')
+            );
 
         } catch(e) {
             console.log('Something went wrong ending the election...');
@@ -298,21 +304,24 @@ export default class ElectionHelper {
                 return true;
             }));
 
-            // Check if Commander is re-elected
-            if (exCommander.user.id !== hierarchy.commander.id) {
-                // Remove the former commander role.
-                await ROLES._remove(exCommander.user.id, 'COMMANDER');
+            // Only check if there is a new and old commander.
+            if (hierarchy.commander && exCommander) {
+                // Check if Commander is re-elected
+                if (exCommander.user.id !== hierarchy.commander.id) {
+                    // Remove the former commander role.
+                    await ROLES._remove(exCommander.user.id, 'COMMANDER');
+            
+                    // Add former commander to ex commander!
+                    if (!ROLES._has(exCommander, 'FORMER_COMMANDER')) {
+                        CHANS._postToFeed(`${exCommander.user.username} is recognised as a former commander and allowed access into the former commanders' secret channel!`);
+                        await ROLES._add(exCommander.user.id, 'FORMER_COMMANDER');
         
-                // Add former commander to ex commander!
-                if (!ROLES._has(exCommander, 'FORMER_COMMANDER')) {
-                    CHANS._postToFeed(`${exCommander.user.username} is recognised as a former commander and allowed access into the former commanders' secret channel!`);
-                    await ROLES._add(exCommander.user.id, 'FORMER_COMMANDER');
-    
-                    // Update last served data for the former commander.
-                    // last_served
+                        // Update last served data for the former commander.
+                        // last_served
+                    }
+                } else {
+                    CHANS._postToFeed(`${exCommander.user.username} is re-elected as Commander for another term!`);
                 }
-            } else {
-                CHANS._postToFeed(`${exCommander.user.username} is re-elected as Commander for another term!`);
             }
 
             return true;
@@ -343,9 +352,11 @@ export default class ElectionHelper {
             });
 
             // Remove commander crown if not re-elected.
-            const exCommanderID = commanderItems[0].owner_id;
-            if (exCommanderID !== hierarchy.commander.id) 
-                ITEMS.subtract(commanderItems[0].owner_id, 'ELECTION_CROWN', 1, 'Election reset');
+            if (typeof commanderItems[0] !== 'undefined' && hierarchy.commander) {
+                const exCommanderID = commanderItems[0].owner_id;
+                if (exCommanderID !== hierarchy.commander.id) 
+                    ITEMS.subtract(commanderItems[0].owner_id, 'ELECTION_CROWN', 1, 'Election reset');
+            }
 
         } catch(e) {
             console.log('Error reseting hierarchy items');
