@@ -299,7 +299,7 @@ export default class ElectionHelper {
             }));
 
             // Check if Commander is re-elected
-            if (exCommander.user.id !== hierarchy.commander.id) {
+            if (exCommander && hierarchy.commander && exCommander.user.id !== hierarchy.commander.id) {
                 // Remove the former commander role.
                 await ROLES._remove(exCommander.user.id, 'COMMANDER');
         
