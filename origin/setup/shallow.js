@@ -4,12 +4,14 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, MESSAGES, SERVER, USERS } from '../coop';
+import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, USERS } from '../coop';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
 import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
 import { MessageAttachment } from 'discord.js';
 import ItemsHelper from '../../operations/minigames/medium/economy/items/itemsHelper';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
+import memberJoined from '../../operations/activity/welcome/joined';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -32,6 +34,7 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
