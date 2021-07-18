@@ -25,7 +25,7 @@ export default async function memberJoined(member) {
     const coop = MESSAGES.emojiText(EMOJIS.COOP);
     const welcomeMessage = await CHANNELS._postToChannelCode('ENTRY', 
       `Hey <@${member.user.id}>! Please introduce yourself in ${CHANNELS.textRef('INTRO')} so the community can fully approve you into the server :smile:!\n` +
-      `Be aware that you can only send one ${CHANNELS.textRef('INTRO')} message!` +
+      `Be aware that you can only send one ${CHANNELS.textRef('INTRO')} message - make it good!` +
       `Here in ${CHANNELS.textRef('ENTRY')} you get the chance to talk to the community while waiting to get accepted :D! `
     );
     

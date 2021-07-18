@@ -34,14 +34,15 @@ export default async (msg) => {
 
       // Post message in feed
       const introText = `${username} posted an introduction in ${CHANNELS.textRef('INTRO')}! 👋`;
-      await CHANNELS._codes(['TALK', 'ENTRY', 'FEED'], introText);
-
+      await CHANNELS._codes(['TALK'], introText);   
+      
       // Send embed to approval channel for redeeming non-members via introduction.
       if (!USERS.hasRoleID(memberSubject, ROLES.MEMBER.id)) {
         await CHANNELS._postToChannelCode('ENTRY', MESSAGES.embed({
           url: MESSAGES.link(msg),
-          title: `${username}, is being considered for approval.`,
-          description: `Vote for/against ${username} using reaction emojis on their ${CHANNELS.textRef('INTRO')} post.`,
+          title: `${username}'s entry is being voted upon!`,
+          description: `Please read ${CHANNELS.textRef('INTRO')} and submit your vote! \n` +
+            `_In ${CHANNELS.textRef('ENTRY')} you get the chance to talk to ${username} and get to know them more before voting._`,
           thumbnail: USERS.avatar(memberSubject.user)
         }));
       }

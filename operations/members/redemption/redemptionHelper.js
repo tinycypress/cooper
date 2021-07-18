@@ -65,11 +65,9 @@ export default class RedemptionHelper {
             
             const votingStatusTitle = `<@${targetUser.id}>'s entry was voted upon!`;
             const votingStatusText = votingStatusTitle +
-                `\nStill required: ` +
+                `\n# Votes still required: ` +
                 `Entry ${RAW_EMOJIS.VOTE_FOR}: ${Math.max(0, reqForVotes - forVotes)} | ` +
                 `Removal ${RAW_EMOJIS.VOTE_AGAINST}: ${Math.max(0, reqAgainstVotes - againstVotes)}`;
-            
-
             
             // Handle user approved.
             if (forVotes >= reqForVotes) {
@@ -88,21 +86,21 @@ export default class RedemptionHelper {
                 }
 
                 // Give intro roles
-                const introRolesResult = await COOP.ROLES._addCodes(targetMember.user.id, STARTING_ROLES);
+                await COOP.ROLES._addCodes(targetMember.user.id, STARTING_ROLES);
                 
                 // Inform community.
-                COOP.CHANNELS._codes(['ENTRY', 'TALK'], 
-                    `${targetUser.username} approved based on votes!` +
+                COOP.CHANNELS._codes(['TALK'], 
+                    `Congratulations <@${targetUser.id}>! The community has approved your entry into the server!\n` +
+                    `Feel free to select ${CHANNELS.textRef('ROLES')} to view more working areas :smile:\n` +
+                    `Have fun! \n\n` +
                     `${forVotes ? `\n\n${RAW_EMOJIS.VOTE_FOR.repeat(forVotes)}` : ''}` +
                     `${againstVotes ? `\n\n${RAW_EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
                 );
 
-               
-
             // Handle user rejected.
             } else if (againstVotes >= reqAgainstVotes) {
                 // Inform community.
-                COOP.CHANNELS._codes(['ENTRY', 'TALK'], `${targetUser.username} was voted out, removed and banned.`);
+                COOP.CHANNELS._codes(['ENTRY'], `${targetUser.username} was voted out, removed and banned. Ouch.`);
 
                 // Inform the user.
                 try {
