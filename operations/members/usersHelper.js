@@ -227,7 +227,7 @@ export default class UsersHelper {
 
                 
             // If the username has changed, update it.
-            else (user.username !== member.user.username)
+            else if (user.username !== member.user.username)
                 setTimeout(
                     () => this.updateField(user.id, 'username', member.user.username),
                     delay
