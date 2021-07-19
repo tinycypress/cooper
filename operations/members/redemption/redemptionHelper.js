@@ -91,7 +91,7 @@ export default class RedemptionHelper {
                 // Inform community.
                 COOP.CHANNELS._codes(['TALK'], 
                     `Congratulations <@${targetUser.id}>! The community has approved your entry into the server!\n` +
-                    `Feel free to select ${CHANNELS.textRef('ROLES')} to view more working areas :smile:\n` +
+                    `Feel free to select ${COOP.CHANNELS.textRef('ROLES')} to view more working areas :smile:\n` +
                     `Have fun! \n\n` +
                     `${forVotes ? `\n\n${RAW_EMOJIS.VOTE_FOR.repeat(forVotes)}` : ''}` +
                     `${againstVotes ? `\n\n${RAW_EMOJIS.VOTE_AGAINST.repeat(againstVotes)}` : ''}`
