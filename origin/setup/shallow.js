@@ -5,13 +5,6 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, USERS } from '../coop';
-import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
-import TempAccessCodeHelper from '../../operations/members/tempAccessCodeHelper';
-import VisualisationHelper from '../../operations/minigames/medium/conquest/visualisationHelper';
-import { MessageAttachment } from 'discord.js';
-import ItemsHelper from '../../operations/minigames/medium/economy/items/itemsHelper';
-import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
-import memberJoined from '../../operations/activity/welcome/joined';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -35,6 +28,13 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // TODO:
+        // https://developer.algorand.org/docs/features/asa
+        // operations/minigames/medium/economy/blockchain/_wipCreateAccounts.js
+        // operations/minigames/medium/economy/blockchain/_wipAssetExample.js
+        // operations/minigames/medium/economy/blockchain/_wipAssetOptin.js
+        // operations/minigames/medium/economy/blockchain/_wipRevoke.js
+        // CHANNELS._send('TALK', 'Blockchain testing via shallow bot.');
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
