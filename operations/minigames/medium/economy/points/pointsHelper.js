@@ -173,6 +173,13 @@ export default class PointsHelper {
             await COOP.ITEMS.add(highestChange.userID, 'COOP_POINT', 30);
             updateText += `_Given 50${cpDisplay} for MOTW reward._`;
 
+            // Add the runners up
+            updateText += '\n\nRunners up:' +
+                [percChanges[1], percChanges[2], percChanges[3]]
+                    .map(runnerUp =>
+                        `- <@${runnerUp.userID}> (${runnerUp.percChange}%)\n`
+                    )
+
 
             // TODO: Give them 1-2 weeks of sacrifice protection too
 

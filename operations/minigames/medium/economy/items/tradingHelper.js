@@ -15,7 +15,8 @@ export default class TradingHelper {
 
         // Post latest/most recent 5-10 trades in talk.
         const lastTrades = await this.all();
-        CHANNELS._tempSend('TALK', '**Latest active trades**:\n' + this.manyTradeItemsStr(lastTrades), 0, 30000);
+        if (lastTrades.length > 0)
+            CHANNELS._tempSend('TALK', '**Latest active trades**:\n' + this.manyTradeItemsStr(lastTrades), 0, 30000);
 
         return editResult;
     }

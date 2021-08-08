@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, USERS } from '../coop';
 import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
+import { EMOJIS } from '../config';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -29,7 +30,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        test();
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

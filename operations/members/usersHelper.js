@@ -46,7 +46,12 @@ export default class UsersHelper {
 
     static directMSG = (guild, userID, msg) => {
         const member = COOP.USERS.getMemberByID(guild, userID);
-        if (member) member.send(msg);
+        if (member) 
+            member
+                .send(msg)
+                .catch(() => {
+                    // Buried the error because there's no nice way to do it... besides logging as a statistic.
+                });
     };
 
     static _dm(userID, msg) {
@@ -54,8 +59,17 @@ export default class UsersHelper {
         this.directMSG(guild, userID, msg);
     }
 
-    // TODO: Implement for election, maybe limit to announcement notifications.
-    // static _dmAll(msg) {}
+    static async _dmAll(msg) {
+        return new Promise(async resolve => {
+            const users = await this.load();
+            users.map((user, index) => {
+                setTimeout(() => {
+                    this._dm(user.discord_id, msg);
+                    if (users.length - 1 === index) resolve(true);
+                }, 1500 * index);
+            });
+        });
+    }
 
     static getOnlineMembers = (guild) => guild.members.cache.filter(member => member.presence.status === 'online');
     
