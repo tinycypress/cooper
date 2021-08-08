@@ -32,41 +32,11 @@ export default class MiscMessageHandlers {
             if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react('☁️');
         }
 
-        // Bruh-roulette.
-        const twentyPercRoll = STATE.CHANCE.bool({ likelihood: 20 });
-        const isBruh = msg.content.toLowerCase().indexOf('bruh') > -1;
-        const isBreh = msg.content.toLowerCase().indexOf('breh') > -1;
-        const isBrah = msg.content.toLowerCase().indexOf('brah') > -1;
-
-        // TODO: Account for bruuuh
-        if ((isBreh || isBruh || isBrah) && !COOP.USERS.isCooperMsg(msg)) {
-            let type = 'bruh';
-            if (isBreh) type = 'breh';
-            if (isBrah) type = 'brah';
-            const updatedPoints = await COOP.ITEMS.add(msg.author.id, 'COOP_POINT', twentyPercRoll ? 1 : -1, 'b-roulette');
-            setTimeout(async () => {
-                const feedbackMsg = await msg.say(
-                    `${twentyPercRoll ? '+1' : '-1'} point, ${type}. ` +
-                    `${msg.author.username} ${twentyPercRoll ? 'won' : 'lost'} ${type}-roulette. (${updatedPoints})!`
-                );
-
-                COOP.MESSAGES.delayDelete(feedbackMsg, 15000);
-
-                setTimeout(() => {
-                    if (STATE.CHANCE.bool({ likelihood: 1.5 })) {
-                        COOP.CHANNELS._postToFeed(`Well, that's unfortunate... ${msg.author.username} was kicked for saying ${type}.`);
-                        COOP.USERS._dm(msg.author.id, `You hit the 1.5% chance of being kicked for saying ${type}.`);
-                        msg.member.kick();
-                    }
-                }, 1222);
-            }, 666);
+        if (msg.author.id === '420314059968217088') {
+            if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react('🐬');
         }
 
         if (msg.content.toLowerCase() === 'i-' && !COOP.USERS.isCooperMsg(msg) && twentyPercRoll) msg.say('U-? Finish your sentence!');
-
-
-        // If sefy facepalm's add recursive facepalm.
-        if (msg.content.indexOf('🤦‍♂️') > -1 && msg.author.id === '208938112720568320') msg.react('🤦‍♂️');
 
         const target = msg.mentions.users.first();
         if (target) {
