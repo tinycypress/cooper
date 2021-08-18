@@ -5,7 +5,7 @@ import Chicken from "../../../chicken";
 
 import CHANNELS from '../../../../origin/config/channels.json';
 
-import { CHANNELS as CHANS, MESSAGES, ROLES, USERS, ITEMS, TIME, STATE } from '../../../../origin/coop';
+import { CHANNELS as CHANS, SERVER, MESSAGES, ROLES, USERS, ITEMS, TIME, STATE } from '../../../../origin/coop';
 
 import DatabaseHelper from '../../../databaseHelper';
 import Database from '../../../../origin/setup/database';

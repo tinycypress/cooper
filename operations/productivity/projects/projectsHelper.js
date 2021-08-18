@@ -1,18 +1,3 @@
-// import { CHANNELS } from "../../../origin/coop";
-
-export const PROJECT_ARGS_MSG_ORDER = [
-    'name', 'deadline', 'description', 'visibility'
-];
-
-// Default deadline to 1 week in seconds
-const weekSecs = ((60 * 60) * 24) * 7;
-export const DEFAULT_PROJECT_OPTS = {
-    name: 'unknown',
-    description: 'unknown',
-    deadline: weekSecs,
-    visibility: 'PRIVATE'
-};
-
 export default class ProjectsHelper {
 
     // TODO: Create !newproject command to help feed the suggestion correct format.
@@ -32,6 +17,10 @@ export default class ProjectsHelper {
 
         // Add the channel to the database.
     }
+
+    static isSuggestionProjectReq(msg) {
+        
+    }
 }
 
 
@@ -39,3 +28,18 @@ export default class ProjectsHelper {
 // GOLD_COIN payments for egg drops/minigames consideration of channel
 // GOLD_COIN payments for visibilty
 // GOLD_COIN to prevent being archived / deleted
+
+
+
+// export const PROJECT_ARGS_MSG_ORDER = [
+//     'name', 'deadline', 'description', 'visibility'
+// ];
+
+// Default deadline to 1 week in seconds
+// const weekSecs = ((60 * 60) * 24) * 7;
+// export const DEFAULT_PROJECT_OPTS = {
+//     name: 'unknown',
+//     description: 'unknown',
+//     deadline: weekSecs,
+//     visibility: 'PRIVATE'
+// };

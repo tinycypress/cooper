@@ -36,7 +36,8 @@ export default class MiscMessageHandlers {
             if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react('🐬');
         }
 
-        if (msg.content.toLowerCase() === 'i-' && !COOP.USERS.isCooperMsg(msg) && twentyPercRoll) msg.say('U-? Finish your sentence!');
+        if (msg.content.toLowerCase() === 'i-' && !COOP.USERS.isCooperMsg(msg) && STATE.CHANCE.bool({ likelihood: 25 })) 
+            msg.say('U-? Finish your sentence!');
 
         const target = msg.mentions.users.first();
         if (target) {
@@ -74,7 +75,7 @@ export default class MiscMessageHandlers {
             }
         }
 
-        if (twentyPercRoll) {
+        if (STATE.CHANCE.bool({ likelihood: 25 })) {
             if (msg.content.toLowerCase().indexOf('marx') > -1) msg.react('☭');
             if (msg.content.toLowerCase().indexOf('socialism') > -1) msg.react('☭');
             if (msg.content.toLowerCase().indexOf('redistribute') > -1) msg.react('☭');
