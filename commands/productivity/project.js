@@ -48,6 +48,7 @@ export default class ProjectCommand extends CoopCommand {
 
 		// TODO: Create the project in suggestions for democratic approval.
 
+		return MESSAGES.silentSelfDestruct(msg, "!project command work in progress.");
 
 		// Add a TODO for this user.
 		// const result = await TodoHelper.add(msg.author.id, {
