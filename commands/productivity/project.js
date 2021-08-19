@@ -68,3 +68,26 @@ export default class ProjectCommand extends CoopCommand {
 }
 
 
+
+
+// // Take human readable due time.
+// const dueDate = TIME.parseHuman(deadline);
+
+// // Convert category to lower case for better matches.
+// visibility = visibility.toLowerCase();
+
+// // Invalid input time feedback
+// if (isNaN(dueDate))
+// 	return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${deadline} is invalid duration for a project deadline`);
+
+// // Limit complexity to giving them the correct format to use... pick up slack in !suggest for it
+// const tempFmtText = `<@${msg.author.id}>, generating the following message for creating your project channel:`;
+
+// const projectData = { name, deadline, description, visibility };
+// const suggestionText = `!suggest CREATE_PROJECT\n` +
+// 	PROJECT_ARGS_MSG_ORDER.map(arg => 
+// 		`${MESSAGES.titleCase(arg)}: ${projectData[arg]}`
+// 	).join(' | ');
+
+// const suggestHelpMsg = await MESSAGES.silentSelfDestruct(msg, tempFmtText, 0, 20000);
+// MESSAGES.delayEdit(suggestHelpMsg, suggestionText, 2000);
