@@ -47,16 +47,13 @@ export default class UsersHelper {
     static directMSG = (guild, userID, msg) => {
         const member = COOP.USERS.getMemberByID(guild, userID);
         if (member) 
-            member
-                .send(msg)
-                .catch(() => {
-                    // Buried the error because there's no nice way to do it... besides logging as a statistic.
-                });
+            // Buried the error because there's no nice way to do it... besides logging as a statistic.
+            return member.send(msg).catch(() => {/** Bury error */ });
     };
 
     static _dm(userID, msg) {
         const guild = SERVER._coop();
-        this.directMSG(guild, userID, msg);
+        return this.directMSG(guild, userID, msg);
     }
 
     static async _dmAll(msg) {

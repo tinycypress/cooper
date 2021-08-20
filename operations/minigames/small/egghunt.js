@@ -231,7 +231,8 @@ export default class EggHuntMinigame {
             else location = `"${reaction.message.channel.name}" channel`;
 
             // Setup the text for feedback messages.
-            const actionText = `<${emoji}>🧺 Egg Hunt! ${user.username}`;
+            // const actionText = `<${emoji}>🧺 Egg Hunt! ${user.username}`;
+            const actionText = `Egg Hunt! ${user.username}`;
             let acknowledgementMsgText =`${actionText} ${rewardPolarity}${reward} points!`.trim();
             let activityFeedMsgText = `${user.username} collected an egg in ${location}! <${emoji}>`.trim();
 
@@ -252,7 +253,7 @@ export default class EggHuntMinigame {
                 const basketEmojiText = MESSAGES.emojiText(RAW_EMOJIS.BASKET);
                 MESSAGES.delayEdit(
                     reaction.message, 
-                    `${emojiText}${basketEmojiText}💨\n\n${acknowledgementMsgText}`, 
+                    `${emojiText}${basketEmojiText}💨\ ${acknowledgementMsgText}`, 
                     333
                 );
                 MESSAGES.delayDelete(reaction.message, 15000);

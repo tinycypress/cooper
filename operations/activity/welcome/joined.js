@@ -1,12 +1,18 @@
 import { EMOJIS } from '../../../origin/config';
-import { CHANNELS, MESSAGES } from '../../../origin/coop';
+import { CHANNELS, MESSAGES, USERS } from '../../../origin/coop';
 
 export default async function memberJoined(member) {
 
   try {
     // Send direct message and channel message about next steps.
-    const dmWelcomeMessage = await member.send(
-      `Welcome to **The Coop!** Please introduce yourself in ${CHANNELS.textRef('INTRO')} so the community can fully approve you into the server :smile:!`
+
+    
+    const dmWelcomeMessage = await USERS._dm(
+      member.user.id,
+      `Welcome to **The Coop!** Please introduce yourself in ${CHANNELS.textRef('INTRO')} so the community can fully approve you into the server :smile:!\n\n` +
+      `_You may find the "!help" command informative, it offers some useful hints. To use it send Cooper (me) or in the server a message saying "!help" - all of our commands follow this format._\n\n` +
+      'Find our social media accounts here if you\'d like to support us there!\n' +
+      'https://discord.com/channels/723660447508725802/841126959298773052/864617510624428033'
     );
 
     // TODO: Should ask them to follow our social
