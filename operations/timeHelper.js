@@ -1,6 +1,8 @@
 import moment from 'moment';
 import Sugar from 'sugar';
 
+Sugar.extend();
+
 export default class TimeHelper {
 
     // Take human readable due time.
@@ -22,5 +24,10 @@ export default class TimeHelper {
     static _secs() {
         const presentSecs = Math.round(Date.now() / 1000);
         return presentSecs;
+    }
+
+    static weeksUntilStr(dateStr) {
+        const date = this.parseHuman(deadline);
+		return Math.abs(date.weeksUntil());
     }
 }

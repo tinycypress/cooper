@@ -175,6 +175,12 @@ export default class ItemsHelper {
         return count;
     }
 
+    static async perBeakRelativePrice(code, percPrice, min = 0.01) {
+        const avg = await this.perBeak('GOLD_COIN');
+		const price = Math.max(min, (avg * percPrice).toFixed(2));
+        return price;
+    }
+    
     static async perBeak(itemCode) {
         const userCount = SERVER._coop().memberCount || 0;
         const total = await this.count(itemCode);

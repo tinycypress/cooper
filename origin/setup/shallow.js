@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, USERS } from '../coop';
+import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
 import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
 import { EMOJIS } from '../config';
 // ^ DEV IMPORT AREA ^
@@ -29,6 +29,7 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
 
 
         // TODO:

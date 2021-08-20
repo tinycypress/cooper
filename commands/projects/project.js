@@ -2,7 +2,7 @@ import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { authorConfirmationPrompt } from '../../operations/common/ui';
 import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
 import { RAW_EMOJIS, EMOJIS } from '../../origin/config';
-import { MESSAGES, TIME, USERS, CHANNELS } from '../../origin/coop';
+import { MESSAGES, ITEMS, TIME, USERS, CHANNELS } from '../../origin/coop';
 
 export default class ProjectCommand extends CoopCommand {
 
@@ -39,12 +39,18 @@ export default class ProjectCommand extends CoopCommand {
 		// TODO: Check title is valid.
 		// TODO: Check the project does not already exist.
 
+		// Calculate the price.
+		const basePrice = await ITEMS.perBeakRelativePrice('GOLD_COIN', 0.05);
+		const numWeeks = Math.max(1, TIME.weeksUntilStr(deadline));
+		const price = basePrice * numWeeks;
+
 		// Acknowledge 
 		const confirmText = '**Create !project?** Details:\n\n' +
 
 			'Title: ' + title + '\n' +
 			'Owner: ' + msg.author.username + '\n' +
-			'Deadline: ' + deadline + '\n\n' +
+			'Deadline: ' + deadline + '\n' +
+			'Price: ' + price + '(0.01% avg coin qty a week)\n\n'
 
 			'_Please react with tick to propose the project\'s creation!_';
 
