@@ -27,7 +27,7 @@ export default class TimeHelper {
     }
 
     static weeksUntilStr(dateStr) {
-        const date = this.parseHuman(deadline);
+        const date = this.parseHuman(dateStr);
 		return Math.abs(date.weeksUntil());
     }
 }
