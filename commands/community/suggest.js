@@ -33,7 +33,6 @@ export default class SuggestCommand extends CoopCommand {
 				// If needs an owner to give the project channel to.
 			}
 
-
 			// Add reactions for people to use.
 			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
 			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
@@ -43,7 +42,7 @@ export default class SuggestCommand extends CoopCommand {
 				COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.ROADMAP, 999);
 		
 			// Send poll tracking link.
-			USERS._dm(msg.author.direct, 
+			USERS._dm(msg.author.id, 
 				'I started your poll, track its progress with this link: ' + 
 				COOP.MESSAGES.link(pollAcknowledgement) + 
 				+ " \n\n\n " + " _ " + msg.content
