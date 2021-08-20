@@ -7,6 +7,8 @@ import dotenv from 'dotenv';
 import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
 import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
 import { EMOJIS } from '../config';
+import SuggestionsHelper from '../../operations/activity/suggestions/suggestionsHelper';
+import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -29,6 +31,9 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+        const projectMsg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/723710770591957075/878085921457717308');
+        ProjectsHelper.passed(projectMsg);
 
 
 

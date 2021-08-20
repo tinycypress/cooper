@@ -16,6 +16,7 @@ import CleanupHandler from "./messages/cleanupHandler";
 import LinkPreviewFilter from './messages/linkPreviewFilter';
 
 import COOP, { USABLE, STATE } from "../../origin/coop";
+import SuggestionsHelper from "./suggestions/suggestionsHelper";
 
 
 
@@ -24,6 +25,7 @@ export default async function reactAddedHandler(reaction, user) {
 
     try {      
         // Approve/promote/sacrifice reaction (vote) handlers.
+        SuggestionsHelper.onReaction(reaction, user);
         SacrificeHelper.onReaction(reaction, user);
         RedemptionHelper.onReaction(reaction, user);
         ElectionHelper.onReaction(reaction, user);
@@ -41,7 +43,6 @@ export default async function reactAddedHandler(reaction, user) {
         WoodcuttingMinigame.onReaction(reaction, user);
         InstantFurnaceMinigame.onReaction(reaction, user);
         EasterMinigame.onReaction(reaction, user);
-
 
         // Allow elected people to cleanup Cooper messages.
         CleanupHandler.onReaction(reaction, user);

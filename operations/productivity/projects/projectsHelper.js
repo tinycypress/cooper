@@ -1,13 +1,32 @@
-import { TIME } from "../../../origin/coop";
+import { CHANNELS, TIME } from "../../../origin/coop";
 
 export default class ProjectsHelper {
+
+
+    static async passed(suggestion) {
+        CHANNELS._codes(['STREAM'], 'PASSED! SHOULD CREATE PROJECT!!!!!!');
+
+        const owner = null;
+        const title = /Title: ([^\r\n]*)/gm.exec(suggestion.content)['1'] || null;
+        const deadline = /Deadline: ([^\r\n]*)/gm.exec(suggestion.content)['1'] || null;
+        const price = /Price: ((\d+(?:\.\d+)?))/gm.exec(suggestion.content)['1'] || null;
+
+        console.log(title);
+        console.log(deadline);
+        console.log(price);
+
+        // this.create('testing-project-name', 'owner');
+    }
 
     // TODO: Create !newproject command to help feed the suggestion correct format.
     // NOTE: Allow user to use an emoji on cooper to create new project?
 
-    static async createChannel() {
+    static async create(name, owner, deadline) {
         // Create the channel under projects.
-        // CHANNELS._create()
+        const channel = await CHANNELS._create('test-project-name', {
+
+        });
+        console.log(channel);
 
         // Set the owner and their permissons
 

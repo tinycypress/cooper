@@ -1,6 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import COOP, { USERS } from '../../origin/coop';
 import { EMOJIS } from '../../origin/config';
+import SuggestionsHelper from '../../operations/activity/suggestions/suggestionsHelper';
 
 export default class SuggestCommand extends CoopCommand {
 
@@ -27,15 +28,13 @@ export default class SuggestCommand extends CoopCommand {
 			const cleanedContent = msg.content.replace('!suggestion', '').replace('!suggest', '');
 			const pollAcknowledgement = await COOP.CHANNELS._postToChannelCode('SUGGESTIONS', cleanedContent);
 
-
 			// Detect attempts to suggest PROJECT_CHANNEL
 			if (msg.content.toLowerCase().includes('project channel')) {
 				// If needs an owner to give the project channel to.
 			}
 
 			// Add reactions for people to use.
-			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_FOR, 333);
-			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
+			SuggestionsHelper.activateSuggestion(pollAcknowledgement);
 
 			// Add intended for roadmap, add roadmap reaction for adding to roadmap.
 			if (msg.content.toLowerCase().indexOf('roadmap') > -1)
