@@ -49,10 +49,10 @@ export default class ProjectCommand extends CoopCommand {
 		const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
 		const createProjectText = '**Create !project?** Details:\n\n' +
 
-			'Title: ' + title + '\n' +
-			'Owner: ' + msg.author.username + '\n' +
+			'Title: __' + title + '__\n' +
+			'Owner: ' + `<@${msg.author.id}>` + '\n' +
 			'Deadline: ' + deadline + '\n' +
-			'Price: ' + emoji + ' ' + price + '(0.01% avg coin qty a week)\n\n'
+			'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n'
 
 
 		const confirmText = createProjectText + '_Please react with tick to propose the project\'s creation!_';

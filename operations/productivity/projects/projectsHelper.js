@@ -2,7 +2,6 @@ import { CHANNELS, TIME } from "../../../origin/coop";
 
 export default class ProjectsHelper {
 
-
     static async passed(suggestion) {
         CHANNELS._codes(['STREAM'], 'PASSED! SHOULD CREATE PROJECT!!!!!!');
 
@@ -17,9 +16,6 @@ export default class ProjectsHelper {
 
         // this.create('testing-project-name', 'owner');
     }
-
-    // TODO: Create !newproject command to help feed the suggestion correct format.
-    // NOTE: Allow user to use an emoji on cooper to create new project?
 
     static async create(name, owner, deadline) {
         // Create the channel under projects.
