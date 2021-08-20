@@ -188,7 +188,7 @@ export async function didUseGuard(user, itemCode, qty = 1, msgRef, reactEmoji = 
         if (didUseItem) return true;
         else {
             // Send the error.
-            const insufficientText = `${user.username} you're unable to use ${itemCode}, you own none.`;
+            const insufficientText = `${user.username} you're unable to use ${qty}x${itemCode}, you don't have enough.`;
             const errorMsg = await MESSAGES.selfDestruct(msgRef, insufficientText, 0, 3000);
 
             if (reactEmoji)

@@ -1,5 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { authorConfirmationPrompt } from '../../operations/common/ui';
+import UsableItemHelper from '../../operations/minigames/medium/economy/items/usableItemHelper';
 import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
 import { RAW_EMOJIS, EMOJIS } from '../../origin/config';
 import { MESSAGES, ITEMS, TIME, USERS, CHANNELS } from '../../origin/coop';
@@ -54,9 +55,18 @@ export default class ProjectCommand extends CoopCommand {
 
 			'_Please react with tick to propose the project\'s creation!_';
 
+		// Check the user can afford to pay the price!
+		const userCoinQty = await ITEMS.getUserItemQty(msg.author.id, 'GOLD_COIN');
+		if (userCoinQty < price)
+			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, you cannot afford the project price (${price}xGOLD_COIN).`);
+
 		// Use the confirmation from the coin flip feature! :D
 		const confirmMsg = await authorConfirmationPrompt(msg, confirmText, msg.author.id);
 		if (!confirmMsg) return false;
+
+		// Check the user did pay.
+		const didPay = await UsableItemHelper.use(msg.author.id, 'GOLD_COIN', price);
+		if (!didPay) return MESSAGES.silentSelfDestruct(msg, `Project proposal cancelled, payment failure.`);
 		
 		// Proceed to list the channel for approval.
 		MESSAGES.silentSelfDestruct(msg, title + '\'s project channel is being voted on!');
