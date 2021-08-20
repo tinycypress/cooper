@@ -8,14 +8,15 @@ export default class SuggestionsHelper {
 
     static onMessage(msg) {
         // Activate it with Cooper's reactions.
-        if (msg.channel.id === CHANNELS_CONFIG.SUGGESTIONS.id && !msg.author.bot)
+        if (MESSAGES.msgInChannelCode(msg, 'SUGGESTIONS') && !msg.author.bot)
             this.activateSuggestion(msg);
     }
 
     // Make sure not to apply to the initial suggestions message lol...
     static onReaction(reaction, user) {
+        console.log(user);
         const msg = reaction.messages;
-        if (msg.channel.id === CHANNELS_CONFIG.SUGGESTIONS.id && msg.author.bot)
+        if (MESSAGES.msgInChannelCode(msg, 'SUGGESTIONS') && !user.bot)
             SuggestionsHelper.checkSingle(reaction.message);            
     }
 

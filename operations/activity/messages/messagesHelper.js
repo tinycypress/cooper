@@ -1,7 +1,7 @@
-import createEmbed from "./embedHelper";
-
 import { MESSAGES, CHANNELS, SERVER }  from "../../../origin/coop";
-import { EMOJIS } from "../../../origin/config";
+import { EMOJIS, CHANNELS as CHANNELS_CONFIG } from "../../../origin/config";
+
+import createEmbed from "./embedHelper";
 import { silentOpts } from "../../channelHelper";
 import TemporaryMessages from "../../maintenance/temporaryMessages";
 
@@ -11,6 +11,10 @@ export default class MessagesHelper {
         return { 
             embed: createEmbed(embedConf) 
         };
+    }
+
+    static msgInChannelCode(msg, channelCode){ 
+        return msg.channel.id === CHANNELS_CONFIG[channelCode]?.id;
     }
 
     static parselink(link) {

@@ -64,7 +64,7 @@ export default class ProjectCommand extends CoopCommand {
 
 		// Use the confirmation from the coin flip feature! :D
 		const confirmMsg = await authorConfirmationPrompt(msg, confirmText, msg.author.id);
-		if (!confirmMsg) return false;
+		if (!confirmMsg) return null;
 
 		// Check the user did pay.
 		const didPay = await UsableItemHelper.use(msg.author.id, 'GOLD_COIN', price, 'Proposing project');
