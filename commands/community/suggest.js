@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP from '../../origin/coop';
+import COOP, { USERS } from '../../origin/coop';
 import { EMOJIS } from '../../origin/config';
 
 export default class SuggestCommand extends CoopCommand {
@@ -39,12 +39,11 @@ export default class SuggestCommand extends CoopCommand {
 			COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.POLL_AGAINST, 666);
 
 			// Add intended for roadmap, add roadmap reaction for adding to roadmap.
-			if (msg.content.toLowerCase().indexOf('roadmap') > -1) {
+			if (msg.content.toLowerCase().indexOf('roadmap') > -1)
 				COOP.MESSAGES.delayReact(pollAcknowledgement, EMOJIS.ROADMAP, 999);
-			}
 		
 			// Send poll tracking link.
-			await msg.direct(
+			USERS._dm(msg.author.direct, 
 				'I started your poll, track its progress with this link: ' + 
 				COOP.MESSAGES.link(pollAcknowledgement) + 
 				+ " \n\n\n " + " _ " + msg.content

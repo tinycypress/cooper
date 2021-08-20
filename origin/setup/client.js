@@ -25,13 +25,18 @@ export default () => {
     // Register command groups.
     client.registry.registerGroups([ 
         ['website', 'Website'],
-        ['sacrifice', 'Sacrifice'],
         ['info', 'Information'],
+        
         ['community', 'Community'],
+        ['sacrifice', 'Sacrifice'],
         ['election', 'Election'],
         ['messages', 'Message'],
+        
+        ['projects', 'Projects'],
         ['productivity', 'Productivity'],
+
         ['mod', 'Moderation'],
+
         ['conquest', 'Conquest'],
         ['ownership', 'Item ownership related commands'],
         ['skills', 'Skills'],
