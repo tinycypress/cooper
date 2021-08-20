@@ -70,15 +70,15 @@ export async function useManyGuard(user, msg, itemManifest) {
         }));
 
         // Check all sufficient and either pass guard or provide error feedback.
-        console.log('used all', hasAll.every(item => item.used));
         if (hasAll.every(item => item.used)) {
             return true;
 
         } else {
-            // TODO: Definitely improve error
-
+            
             // Ensure sufficient qty guard passes.
-            // const notEnoughText = `${user.username} do not own enough ${itemCode}. ${itemQty}/${qty}`
+            // const notEnoughText = `${user.username} does not own enough ${itemCode}. ${itemQty}/${qty}`
+            
+            // TODO: Definitely improve error
             const notEnoughText = 'Not enough of those items... I got data. ;)'
             MESSAGES.selfDestruct(msg, notEnoughText, 0, 10000);
 

@@ -1,4 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import { authorConfirmationPrompt } from '../../operations/common/ui';
 import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
 import { MESSAGES, TIME } from '../../origin/coop';
 
@@ -35,7 +36,7 @@ export default class ProjectCommand extends CoopCommand {
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${due} is an invalid duration for a project deadline.`);
 
 		// Check title is valid.
-		
+
 
 		// Acknowledge 
 		const confirmText = '**Create !project?** Details:\n\n' +
