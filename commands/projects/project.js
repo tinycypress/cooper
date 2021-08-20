@@ -46,14 +46,14 @@ export default class ProjectCommand extends CoopCommand {
 		const price = basePrice * numWeeks;
 
 		// Acknowledge 
-		const confirmText = '**Create !project?** Details:\n\n' +
+		const createProjectText = '**Create !project?** Details:\n\n' +
 
 			'Title: ' + title + '\n' +
 			'Owner: ' + msg.author.username + '\n' +
 			'Deadline: ' + deadline + '\n' +
 			'Price: ' + price + '(0.01% avg coin qty a week)\n\n'
 
-			'_Please react with tick to propose the project\'s creation!_';
+		const confirmText = createProjectText + '_Please react with tick to propose the project\'s creation!_';
 
 		// Check the user can afford to pay the price!
 		const userCoinQty = await ITEMS.getUserItemQty(msg.author.id, 'GOLD_COIN');
@@ -72,7 +72,7 @@ export default class ProjectCommand extends CoopCommand {
 		MESSAGES.silentSelfDestruct(msg, title + '\'s project channel is being voted on!');
 
 		// Create the project in suggestions for democratic approval.
-		const projectSuggestionMsg = await CHANNELS._postToChannelCode('SUGGESTIONS', cleanedContent);
+		const projectSuggestionMsg = await CHANNELS._postToChannelCode('SUGGESTIONS', createProjectText);
 
 		// Add reactions for people to use.
 		MESSAGES.delayReact(projectSuggestionMsg, EMOJIS.POLL_FOR, 333);
