@@ -46,12 +46,14 @@ export default class ProjectCommand extends CoopCommand {
 		const price = basePrice * numWeeks;
 
 		// Acknowledge 
+		const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
 		const createProjectText = '**Create !project?** Details:\n\n' +
 
 			'Title: ' + title + '\n' +
 			'Owner: ' + msg.author.username + '\n' +
 			'Deadline: ' + deadline + '\n' +
-			'Price: ' + price + '(0.01% avg coin qty a week)\n\n'
+			'Price: ' + emoji + ' ' + price + '(0.01% avg coin qty a week)\n\n'
+
 
 		const confirmText = createProjectText + '_Please react with tick to propose the project\'s creation!_';
 
@@ -65,7 +67,7 @@ export default class ProjectCommand extends CoopCommand {
 		if (!confirmMsg) return false;
 
 		// Check the user did pay.
-		const didPay = await UsableItemHelper.use(msg.author.id, 'GOLD_COIN', price);
+		const didPay = await UsableItemHelper.use(msg.author.id, 'GOLD_COIN', price, 'Proposing project');
 		if (!didPay) return MESSAGES.silentSelfDestruct(msg, `Project proposal cancelled, payment failure.`);
 		
 		// Proceed to list the channel for approval.
@@ -83,7 +85,7 @@ export default class ProjectCommand extends CoopCommand {
 		
 		// Send poll tracking link.
 		USERS._dm(msg.author.id, 
-			title + '\'s project channel is being voted on!' + 
+			title + '\'s project channel is being voted on:\n' + 
 			MESSAGES.link(projectSuggestionMsg)
 		);
     }

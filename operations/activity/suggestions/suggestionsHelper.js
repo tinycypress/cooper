@@ -1,4 +1,4 @@
-import { EMOJIS, CHANNELS as CHANNELS_CONFIG } from "../../../origin/config";
+import { EMOJIS, CHANNELS as CHANNELS_CONFIG, RAW_EMOJIS } from "../../../origin/config";
 import { SERVER, CHANNELS, USERS, MESSAGES } from "../../../origin/coop";
 
 
@@ -26,7 +26,9 @@ export default class SuggestionsHelper {
 
                 // Calculate if completed based on time/duration.
                 const considerDuration = ((60 * 60) * 72) * 1000;
-                const isCompleted = considerDuration + suggestion.createdTimestamp <= Date.now();
+                let isCompleted = considerDuration + suggestion.createdTimestamp <= Date.now();
+
+                // TODO: Override completion delay if very popular.
                 
                 // If this suggestion is completed, attempt to process it.
                 if (isCompleted) {
@@ -98,7 +100,8 @@ export default class SuggestionsHelper {
             rejected: false,
             tied: false,
             invalid: false,
-            roadmap: false
+            roadmap: false,
+            project: false
         };
 
         if (USERS.isCooperMsg(msg)) {
@@ -106,6 +109,7 @@ export default class SuggestionsHelper {
                 if (reaction.emoji.name === EMOJIS.POLL_FOR) votes.for = reaction.count;
                 if (reaction.emoji.name === EMOJIS.POLL_AGAINST) votes.against = reaction.count;
                 if (reaction.emoji.name === EMOJIS.ROADMAP) votes.roadmap = true;
+                if (reaction.emoji.name === RAW_EMOJIS.PROJECT) votes.project = true;
             });
         } else votes.invalid = true;
 
@@ -113,6 +117,9 @@ export default class SuggestionsHelper {
             if (votes.for > votes.against) votes.passed = true;
             if (votes.for < votes.against) votes.rejected = true;
             if (votes.for === votes.against) votes.tied = true;
+
+            // TODO: If not enough people voted in the time limit, default to failure.
+            
         }
 
         return votes;
@@ -121,8 +128,7 @@ export default class SuggestionsHelper {
     static async pass(suggestion, votes, index) {
         setTimeout(() => {
             try {
-                // Reward the person who posted the suggestion for contributing to the community
-                // TODO: ^
+                // TODO: Reward the person who posted the suggestion for contributing to the community
                 // console.log(suggestion.mentions);
 
                 const passedText = `Suggestion passed, proposal: ${suggestion.content}\n` +
@@ -131,11 +137,12 @@ export default class SuggestionsHelper {
                 // Inform the server of passed suggestion.
                 CHANNELS._codes(['TALK', 'FEED', 'ROADMAP'], passedText);
 
-                // Post to roadmap if necessary
-                // if (votes.roadmap) CHANNELS._postToChannelCode('ROADMAP', suggestion.content);
-
                 // Delete the message with a delay to avoid rate limiting.
                 MESSAGES.delayDelete(suggestion, 3333 * index);
+
+                // TODO: Check if the suggestion is a project creation proposal.
+                if (votes.project) console.log('SHOULD CREATE PROJECT!!!!!!');
+
             } catch(e) {
                 console.log('Reject suggestion handling error');
                 console.error(e);
