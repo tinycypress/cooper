@@ -1,4 +1,4 @@
-import { EMOJIS, CHANNELS as CHANNELS_CONFIG, RAW_EMOJIS } from "../../../origin/config";
+import { EMOJIS, RAW_EMOJIS } from "../../../origin/config";
 import { SERVER, CHANNELS, USERS, MESSAGES } from "../../../origin/coop";
 import ProjectsHelper from "../../productivity/projects/projectsHelper";
 
@@ -8,16 +8,17 @@ export default class SuggestionsHelper {
 
     static onMessage(msg) {
         // Activate it with Cooper's reactions.
-        if (MESSAGES.msgInChannelCode(msg, 'SUGGESTIONS') && !msg.author.bot)
+        if (CHANNELS.checkIsByCode(msg.channel.id, 'SUGGESTIONS') && !msg.author.bot)
             this.activateSuggestion(msg);
     }
 
     // Make sure not to apply to the initial suggestions message lol...
     static onReaction(reaction, user) {
+        const msg = reaction.message;
         console.log(user);
-        const msg = reaction.messages;
-        if (MESSAGES.msgInChannelCode(msg, 'SUGGESTIONS') && !user.bot)
-            SuggestionsHelper.checkSingle(reaction.message);            
+    
+        if (CHANNELS.checkIsByCode(msg.channel.id, 'SUGGESTIONS') && !user.bot)
+            SuggestionsHelper.checkSingle(msg);   
     }
 
     static async check() {

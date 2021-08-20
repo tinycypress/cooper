@@ -13,10 +13,6 @@ export default class MessagesHelper {
         };
     }
 
-    static msgInChannelCode(msg, channelCode){ 
-        return msg.channel.id === CHANNELS_CONFIG[channelCode]?.id;
-    }
-
     static parselink(link) {
         let result = null;
 
