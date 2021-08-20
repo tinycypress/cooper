@@ -21,7 +21,7 @@ export default class ProjectCommand extends CoopCommand {
 					type: 'string'
 				},
 				{
-					key: 'due',
+					key: 'deadline',
 					prompt: 'Project deadline future time? Ex. next Tuesday, 3pm Wednesday, in 30 minutes, in half a year... etc',
 					type: 'string'
 				},

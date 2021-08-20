@@ -35,7 +35,7 @@ export default class ProjectsHelper {
 		const dueSecs = Math.round(dueDate.getTime() / 1000);
 
 		// Prevent too long of a deadline.
-		if (dueSecs >= TIME._secs() + 3.154e+7) return false
+		if (dueSecs >= TIME._secs() + 3.154e+7) return false;
 
         // Valid
         return true;

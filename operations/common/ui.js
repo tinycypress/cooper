@@ -42,7 +42,11 @@ export const authorConfirmationPrompt = async function(msgOrChannelRef, text, us
 		proceedfeedbackReactFilter, 
 		{ max: 1, time: fuseMs }
 	);
-	const firstReaction = promptReactions.first().emoji.name;
-	if (firstReaction === confirmEmoji) return true;
-    else return false;
+
+	const firstReaction = promptReactions.first();
+	if (firstReaction) {
+		if (firstReaction.emoji.name === confirmEmoji) return true;
+	}
+     
+	return false;
 }
