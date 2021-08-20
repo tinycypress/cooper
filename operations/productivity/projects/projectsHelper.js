@@ -1,3 +1,5 @@
+import { TIME } from "../../../origin/coop";
+
 export default class ProjectsHelper {
 
     // TODO: Create !newproject command to help feed the suggestion correct format.
@@ -20,6 +22,23 @@ export default class ProjectsHelper {
 
     static isSuggestionProjectReq(msg) {
         
+    }
+
+    static isValidDeadline(deadline) {
+        // Take human readable due time.
+		const dueDate = TIME.parseHuman(deadline);
+
+		// Invalid input time feedback
+		if (isNaN(dueDate)) return false;
+
+		// Calculate unix secs for due/deadline.
+		const dueSecs = Math.round(dueDate.getTime() / 1000);
+
+		// Prevent too long of a deadline.
+		if (dueSecs >= TIME._secs() + 3.154e+7) return false
+
+        // Valid
+        return true;
     }
 }
 
