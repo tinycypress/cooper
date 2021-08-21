@@ -32,6 +32,7 @@ export default () => {
         ['election', 'Election'],
         ['messages', 'Message'],
         
+        ['advertise', 'Advertise'],
         ['projects', 'Projects'],
         ['productivity', 'Productivity'],
 
