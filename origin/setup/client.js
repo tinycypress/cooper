@@ -33,13 +33,14 @@ export default () => {
         ['messages', 'Message'],
         
         ['advertise', 'Advertise'],
+        ['blog', 'Blog'],
         ['projects', 'Projects'],
         ['productivity', 'Productivity'],
 
         ['mod', 'Moderation'],
 
         ['conquest', 'Conquest'],
-        ['ownership', 'Item ownership related commands'],
+        ['ownership', 'Item ownership/economy shares'],
         ['skills', 'Skills'],
         ['economy', 'Economy'],
         ['points', 'Points'],
