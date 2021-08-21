@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
 import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
-import { EMOJIS } from '../config';
+import { EMOJIS, RAW_EMOJIS } from '../config';
 import SuggestionsHelper from '../../operations/activity/suggestions/suggestionsHelper';
 import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
 // ^ DEV IMPORT AREA ^
@@ -32,10 +32,10 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        const projectMsg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/723710770591957075/878426043390783548');
-        ProjectsHelper.passed(projectMsg);
 
-        // https://discord.com/channels/723660447508725802/723710770591957075/878424232822968410
+        // Save a channel to database as a piece of blog content.
+
+        
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa
