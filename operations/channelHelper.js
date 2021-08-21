@@ -196,7 +196,7 @@ export default class ChannelHelper {
         return channel.delete();
     }
 
-    static async _create(name, options) {
+    static _create(name, options) {
         return SERVER._coop().channels.create(name, options);
     }
 

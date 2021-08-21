@@ -142,9 +142,9 @@ export default class SuggestionsHelper {
                 // TODO: Reward the person who posted the suggestion for contributing to the community
                 // console.log(suggestion.mentions);
 
-                // TODO: Check if the suggestion is a project creation proposal.
+                // Check if the suggestion is a project creation proposal.
                 if (votes.project) 
-                    ProjectsHelper.passed(suggestion, votes)
+                    ProjectsHelper.passed(suggestion)
                     
                 else {
                     const passedText = `Suggestion passed, proposal: ${suggestion.content}\n` +

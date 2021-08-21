@@ -32,8 +32,8 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // const projectMsg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/723710770591957075/878085921457717308');
-        // ProjectsHelper.passed(projectMsg);
+        const projectMsg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/723710770591957075/878426043390783548');
+        ProjectsHelper.passed(projectMsg);
 
         // https://discord.com/channels/723660447508725802/723710770591957075/878424232822968410
 
