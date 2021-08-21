@@ -14,9 +14,7 @@ export default class SuggestionsHelper {
 
     // Make sure not to apply to the initial suggestions message lol...
     static onReaction(reaction, user) {
-        const msg = reaction.message;
-        console.log(user);
-    
+        const msg = reaction.message;    
         if (CHANNELS.checkIsByCode(msg.channel.id, 'SUGGESTIONS') && !user.bot)
             SuggestionsHelper.checkSingle(msg);   
     }
