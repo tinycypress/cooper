@@ -18,4 +18,10 @@ APIRouter.use('/blog', BlogRouter);
     APIRouter.use('/bases', BasesRouter);
     APIRouter.use('/ground', GroundRouter);
 
+APIRouter.get('/projects', (req, res) => {
+    res.status(200).json([
+        { placeholder: true }
+    ])
+});
+
 export default APIRouter;
