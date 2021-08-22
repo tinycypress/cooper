@@ -39,7 +39,7 @@ const shallowBot = async () => {
         // - Make unsubscribe work from website
         // --- Subcribe endpoint needed in this repo.
 
-
+        console.log(await SubscriptionHelper.getByEmail('contact@lmfielding.com'));
 
 
         // TODO:

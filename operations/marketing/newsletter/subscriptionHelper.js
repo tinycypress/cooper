@@ -1,6 +1,11 @@
 import COOP from '../../../origin/coop';
-import Database from '../../../origin/setup/database';
 import { EMOJIS } from '../../../origin/config';
+
+import Database from '../../../origin/setup/database';
+import DatabaseHelper from '../../../operations/databaseHelper';
+
+
+
 
 export default class SubscriptionHelper {
    
@@ -95,7 +100,7 @@ export default class SubscriptionHelper {
     }
 
     static async getByEmail(email) {
-        return Database.query({
+        return DatabaseHelper.singleQuery({
             name: 'get-subscription-by-email',
             text: `SELECT * FROM propaganda_subscriptions WHERE email = $1`,
             values: [email]
@@ -115,7 +120,7 @@ export default class SubscriptionHelper {
 
             // If email was already known, modify the record (anon -> tied to known user)
             if (currentSubscription && !currentSubscription.owner_id) {
-                await this.upgradeAnonSubscription(currentSubscription.id, userID);
+                const upgradedSubscriptions = await this.upgradeAnonSubscription(currentSubscription.id, userID);
                 subscription.success = true;
             }
 
