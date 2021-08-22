@@ -1,4 +1,5 @@
 import COOP from '../../../origin/coop';
+import Database from '../../../origin/setup/database';
 import { EMOJIS } from '../../../origin/config';
 
 export default class SubscriptionHelper {
@@ -73,6 +74,25 @@ export default class SubscriptionHelper {
         }
     }
 
+    // Send newsletter
+    // Send message in talk and feed with link
+    // Update website/latest article version
+    static release() {}
+
+    // Get members email list but also potential non-members subscribers.
+    static getCompleteList() {
+    }
+
+    static create(email, owner = null, level = 1) {
+        return Database.query({
+            name: 'create-subscription',
+            text: `INSERT INTO propaganda_subscriptions
+                (email, level, owner_id, subscribed_at) 
+                VALUES($1, $2, $3, $4)`,
+            values: [email, level, owner, TIME._secs()]
+        });
+    }
+
     static getEmailFromMessage(msg) {
         let email = null;
 
@@ -82,19 +102,33 @@ export default class SubscriptionHelper {
         return email;
     }
 
+    static async getByEmail(email) {
+        return Database.query({
+            name: 'get-subscription-by-email',
+            text: `SELECT * FROM propaganda_subscriptions WHERE email = $1`,
+            values: [email]
+        });
+    }
+
     static async subscribe(userID, email) {
         const subscription = {
             newLead: false,
             success: false
-        }
+        };
 
         try {
             // Check current value in that column of database.
-            const user = await COOP.USERS.loadSingle(userID);
-            if (!user.email) subscription.newLead = true;
+            const subscription = await this.getByEmail(email);
 
-            // Add email to member list.
-            await this._setEmail(userID, email);
+            // If email was already known, modify the record (anon -> tied to known user)
+            if (subscription && !subscription.owner_id)
+                this.upgradeAnonSubscription(subscription.id, userID);
+
+            // If email was not already known, create a new subscription.
+            if (!subscription) {
+                subscription.newLead = true;
+                this.create(email, userID, 1);
+            }
 
             subscription.success = true;
         } catch(e) {
@@ -103,27 +137,31 @@ export default class SubscriptionHelper {
         return subscription;
     }
 
-    static async _setEmail(userID, emailOrStatus) {
-        await COOP.USERS.updateField(userID, 'email', emailOrStatus)
+    // If email was already known, modify the record (anon -> tied to known user)
+    static async upgradeAnonSubscription(subscriptionID, userID) {
+        const query = {
+            name: "upgrade-anon-subscription",
+            text: 'UPDATE propaganda_subscriptions SET owner_id = $2 WHERE id = $1',
+            values: [subscriptionID, userID]
+        };
+        const response = await Database.query(query);
+        return response;    
     }
-
-    static guestSubscribe() {}
 
     // Set user's email to "UNSUBSCRIBED", remember to filter out later. >.>
-    static unsubscribe(userID) {
-        this._setEmail(userID, 'UNSUBSCRIBED');
+    static unsubscribeByOwner(userID) {
+        return Database.query({
+            name: 'unsubscribe-by-owner',
+            text: `DELETE FROM propaganda_subscriptions WHERE owner_id = $1`,
+            values: [userID]
+        });
     }
 
-    static guestUnsubscribe() {
-        // Remove email from guest subscribers list.
-    }
-
-    // Send newsletter
-    // Send message in talk and feed with link
-    // Update website/latest article version
-    static release() {}
-
-    // Get members email list but also potential non-members subscribers.
-    static getCompleteList() {
+    static unsubscribeByEmail(email) {
+        return Database.query({
+            name: 'unsubscribe-by-email',
+            text: `DELETE FROM propaganda_subscriptions WHERE email = $1`,
+            values: [email]
+        });
     }
 }

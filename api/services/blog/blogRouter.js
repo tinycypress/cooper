@@ -1,5 +1,5 @@
 import { Router } from "express";
-import BlogHelper from "../../operations/marketing/blog/blogHelper";
+import BlogHelper from "../../../operations/marketing/blog/blogHelper";
 
 const BlogRouter = Router();
 

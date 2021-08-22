@@ -1,6 +1,5 @@
 import { Router } from "express";
 import Access from "./access";
-import AccessDiscord from "./access-discord";
 import Auth from "./_auth";
 
 const AuthRouter = Router();

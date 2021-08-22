@@ -21,7 +21,7 @@ export default class UnsubscribeCommand extends CoopCommand {
 		super.run(msg);
 
         try {
-			await SubscriptionHelper.unsubscribe(msg.author.id);
+			await SubscriptionHelper.unsubscribeByOwner(msg.author.id);
 			// TODO: Beg them a lil bit more and ask for feedback.
 			setTimeout(() => msg.say(`${msg.author.username} unsubscribed.`), 666);
 
