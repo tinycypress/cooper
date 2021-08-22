@@ -7,7 +7,7 @@ MembersRouter.get('/hierarchy', async (req, res) => {
     const hierarchy = await ElectionHelper.loadHierarchy();
 
     // Add the next 10 members who weren't already included.
-    hierachy.other_users = [];
+    hierarchy.other_users = [];
 
     res.status(200).json(hierarchy);
 });
