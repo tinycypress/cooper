@@ -39,6 +39,7 @@ const shallowBot = async () => {
 
         console.log(await SubscriptionHelper.getByEmail('contact@lmfielding.com'));
 
+        
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa
