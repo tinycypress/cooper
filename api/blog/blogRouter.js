@@ -8,7 +8,7 @@ BlogRouter.get('/', async (req, res) => {
     res.status(200).json({ posts });
 });
 
-BlogRouter.get('/:slug', (req, res) => {
+BlogRouter.get('/:slug', async (req, res) => {
     const post = await BlogHelper.loadPostBySlug(req.params.slug);
     res.status(200).json(post);
 });
