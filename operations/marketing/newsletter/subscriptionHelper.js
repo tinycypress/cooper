@@ -75,14 +75,18 @@ export default class SubscriptionHelper {
     }
 
     static async create(email, owner = null, level = 1) {
-        const result = await Database.query({
+        let result = false;
+        const creation = await Database.query({
             name: 'create-subscription',
             text: `INSERT INTO propaganda_subscriptions
                 (email, level, owner_id, subscribed_at) 
                 VALUES($1, $2, $3, $4)`,
             values: [email, level, owner, TIME._secs()]
         });
-        return result?.rowCount === 1;
+        if (typeof creation.rowCount !== 'undefined') {
+            if (creation.rowCount === 1) result = true;
+        }
+        return result;
     }
 
     static getEmailFromMessage(msg) {
