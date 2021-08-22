@@ -125,10 +125,9 @@ export default class SubscriptionHelper {
             if (!currentSubscription) {
                 subscription.newLead = true;
 
-                const newSubscription = await this.create(email, userID, 1);
-                console.log('newSubscription', newSubscription);
-
-                subscription.success = true;
+                const didCreateSubscription = (await this.create(email, userID, 1))?.rowCount === 1;
+                if (didCreateSubscription)
+                    subscription.success = true;
             }
 
         } catch(e) {
