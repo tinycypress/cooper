@@ -33,6 +33,7 @@ const shallowBot = async () => {
         // - Make !subscribe work.
         // Confirm runs
         // Server error = No
+        // { newLead: false, success: false }
         // No acknowledgement
 
 
