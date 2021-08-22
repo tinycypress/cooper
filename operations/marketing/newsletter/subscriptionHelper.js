@@ -4,6 +4,15 @@ import { EMOJIS } from '../../../origin/config';
 
 export default class SubscriptionHelper {
    
+    // Send newsletter
+    // Send message in talk and feed with link
+    // Update website/latest article version
+    static release() {}
+
+    // Get members email list but also potential non-members subscribers.
+    static getCompleteList() {
+    }
+
     // Check if email address is within message, if so... add it for them.
     static async onMessage(msg) {
         if (msg.channel.type === 'dm' && !COOP.USERS.isCooperMsg(msg)) {
@@ -44,23 +53,25 @@ export default class SubscriptionHelper {
                                 // Add their email to database.
                                 const subscription = await this.subscribe(msg.author.id, email);
                                 
-                                // Reward them, but not if their email address was set to an unsubscribed default.
-                                if (subscription.newLead && subscription.success) {
-                                    const username = msg.author.username;
-                                    const rewardText = `Thank you for subscribing ${username}. `;
-                                    const rewardAmountText = `+25 points, +5 AXE, +5 PICKAXE rewarded!`;
+                                // // Reward them, but not if their email address was set to an unsubscribed default.
+                                // if (subscription.newLead && subscription.success) {
+                                //     const username = msg.author.username;
+                                //     const rewardText = `Thank you for subscribing ${username}. `;
+                                //     const rewardAmountText = `+25 points, +5 AXE, +5 PICKAXE rewarded!`;
 
-                                    COOP.ITEMS.add(msg.author.id, 'COOP_POINT', 25, 'Email subscription reward');
-                                    COOP.ITEMS.add(msg.author.id, 'AXE', 5, 'Email subscription reward');
-                                    COOP.ITEMS.add(msg.author.id, 'PICK_AXE', 5, 'Email subscription reward');
+                                //     COOP.ITEMS.add(msg.author.id, 'COOP_POINT', 25, 'Email subscription reward');
+                                //     COOP.ITEMS.add(msg.author.id, 'AXE', 5, 'Email subscription reward');
+                                //     COOP.ITEMS.add(msg.author.id, 'PICK_AXE', 5, 'Email subscription reward');
 
-                                    setTimeout(async () => {
-                                        COOP.CHANNELS._postToFeed(rewardText + rewardAmountText);
-                                        confirmMsg.say(rewardText + rewardAmountText);
-                                    }, 3000);
+                                //     setTimeout(async () => {
+                                //         COOP.CHANNELS._postToFeed(rewardText + rewardAmountText);
+                                //         confirmMsg.say(rewardText + rewardAmountText);
+                                //     }, 3000);
 
-                                // Provide update feedback too!
-                                } else if (subscription.success) confirmMsg.say('Your email address was updated.');
+                                // // Provide update feedback too!
+                                // } else if (subscription.success) confirmMsg.say('Your email address was updated.');
+                                
+                                if (subscription.success) confirmMsg.say('Your email address was updated.');
 
                                 
                             } else confirmMsg.reply('You declined to confirm, personal data not saved.');
@@ -72,15 +83,6 @@ export default class SubscriptionHelper {
                 }, 1333);
             }
         }
-    }
-
-    // Send newsletter
-    // Send message in talk and feed with link
-    // Update website/latest article version
-    static release() {}
-
-    // Get members email list but also potential non-members subscribers.
-    static getCompleteList() {
     }
 
     static create(email, owner = null, level = 1) {
