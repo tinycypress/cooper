@@ -57,9 +57,6 @@ export default class SubscriptionHelper {
                     // Add their email to database.
                     const subscription = await this.subscribe(msg.author.id, email);
 
-                    // TODO: Problem could be here.
-                    console.log(subscription);
-
                     // Handle new subscription.
                     if (subscription.success && subscription.newLead) 
                         confirmMsg.reply('Thank you for subscribing via email.');
@@ -77,14 +74,15 @@ export default class SubscriptionHelper {
         }
     }
 
-    static create(email, owner = null, level = 1) {
-        return Database.query({
+    static async create(email, owner = null, level = 1) {
+        const result = await Database.query({
             name: 'create-subscription',
             text: `INSERT INTO propaganda_subscriptions
                 (email, level, owner_id, subscribed_at) 
                 VALUES($1, $2, $3, $4)`,
             values: [email, level, owner, TIME._secs()]
         });
+        return result?.rowCount === 1;
     }
 
     static getEmailFromMessage(msg) {
@@ -113,21 +111,19 @@ export default class SubscriptionHelper {
         try {
             // Check current value in that column of database.
             const currentSubscription = await this.getByEmail(email);
-            console.log('currentSubscription', currentSubscription);
 
             // If email was already known, modify the record (anon -> tied to known user)
             if (currentSubscription && !currentSubscription.owner_id) {
-                const upgradedSubscriptions = await this.upgradeAnonSubscription(currentSubscription.id, userID);
-                subscription.success = true;
+                const didUpgrade = await this.upgradeAnonSubscription(currentSubscription.id, userID);
+                if (didUpgrade) subscription.success = true;
             }
 
             // If email was not already known, create a new subscription.
             if (!currentSubscription) {
                 subscription.newLead = true;
 
-                const didCreateSubscription = (await this.create(email, userID, 1))?.rowCount === 1;
-                if (didCreateSubscription)
-                    subscription.success = true;
+                const didSubscribe = await this.create(email, userID, 1);
+                if (didSubscribe) subscription.success = true;
             }
 
         } catch(e) {
@@ -144,7 +140,7 @@ export default class SubscriptionHelper {
             values: [subscriptionID, userID]
         };
         const response = await Database.query(query);
-        return response;    
+        return response?.rowCount === 1;
     }
 
     // Set user's email to "UNSUBSCRIBED", remember to filter out later. >.>
