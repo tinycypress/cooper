@@ -24,7 +24,7 @@ BlogRouter.post('/subscribe', async (req, res) => {
         const existing = await SubscriptionHelper.getByEmail(req.body.email);
         if (existing) throw new Error('Email subscription already exists.');
 
-        const didCreate = await SubscriptionHelper.create(email, null, 1);
+        const didCreate = await SubscriptionHelper.create(req.body.email, null, 1);
         if (didCreate) result.success = true;
 
     } catch(e) {

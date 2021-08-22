@@ -29,6 +29,10 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+
+        const sub = await SubscriptionHelper.getByEmail('contact@lmfielding.com');
+        console.log(sub);
+
         // - Make unsub/subscribe from website work (guest)
         // - Make unsubscribe work from website
 
