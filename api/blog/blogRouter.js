@@ -5,7 +5,7 @@ const BlogRouter = Router();
 
 BlogRouter.get('/', async (req, res) => {
     const posts = await BlogHelper.loadHeadlines();
-    res.status(200).json({ posts });
+    res.status(200).json(posts);
 });
 
 BlogRouter.get('/:slug', async (req, res) => {
