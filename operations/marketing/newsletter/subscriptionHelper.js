@@ -55,6 +55,9 @@ export default class SubscriptionHelper {
                     // Add their email to database.
                     const subscription = await this.subscribe(msg.author.id, email);
 
+                    // TODO: Problem could be here.
+                    console.log(subscription);
+
                     // Handle new subscription.
                     if (subscription.success && subscription.newLead) 
                         confirmMsg.reply('Thank you for subscribing via email.');

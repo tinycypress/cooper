@@ -29,6 +29,28 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+
+        // - Make !subscribe work.
+        // Confirm runs
+        // Server error = No
+        // No acknowledgement
+
+
+        // - Make !unsubscribe work
+
+
+
+
+
+        // - Make subscribe from website work (guest)
+        // --- Subcribe endpoint needed in this repo.
+
+        // - Make unsubscribe work from website
+        // --- Subcribe endpoint needed in this repo.
+
+
+
+
         // TODO:
         // https://developer.algorand.org/docs/features/asa
         // operations/minigames/medium/economy/blockchain/_wipCreateAccounts.js
