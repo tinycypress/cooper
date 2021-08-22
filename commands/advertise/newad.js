@@ -36,7 +36,7 @@ export default class NewAdCommand extends CoopCommand {
 		super.run(msg);
 
 		// // Check deadline is valid.
-		// if (!ProjectsHelper.isValidDeadline(deadline))
+		// if (!TIME.isValidDeadline(deadline))
 		// 	return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${deadline} is an invalid duration for a project deadline.`);
 
 		// // TODO: Check title is valid.

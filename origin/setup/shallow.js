@@ -9,6 +9,7 @@ import test from '../../operations/minigames/medium/economy/blockchain/_testingA
 import { EMOJIS, RAW_EMOJIS } from '../config';
 import SuggestionsHelper from '../../operations/activity/suggestions/suggestionsHelper';
 import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
+import BlogHelper from '../../operations/marketing/blog/blogHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -32,10 +33,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
-        // Save a channel to database as a piece of blog content.
-
-        
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

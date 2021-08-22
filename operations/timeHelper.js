@@ -30,4 +30,21 @@ export default class TimeHelper {
         const date = this.parseHuman(dateStr);
 		return Math.abs(date.weeksUntil());
     }
+
+    static isValidDeadline(deadlineStr) {
+        // Take human readable due time.
+		const dueDate = this.parseHuman(deadlineStr);
+
+		// Invalid input time feedback
+		if (isNaN(dueDate)) return false;
+
+		// Calculate unix secs for due/deadline.
+		const dueSecs = Math.round(dueDate.getTime() / 1000);
+
+		// Prevent too long of a deadline.
+		if (dueSecs >= this._secs() + 3.154e+7) return false;
+
+        // Valid
+        return true;
+    }
 }

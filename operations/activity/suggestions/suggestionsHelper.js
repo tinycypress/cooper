@@ -1,5 +1,6 @@
 import { EMOJIS, RAW_EMOJIS } from "../../../origin/config";
 import { SERVER, CHANNELS, USERS, MESSAGES } from "../../../origin/coop";
+import BlogHelper from "../../marketing/blog/blogHelper";
 import ProjectsHelper from "../../productivity/projects/projectsHelper";
 
 
@@ -110,7 +111,8 @@ export default class SuggestionsHelper {
             tied: false,
             invalid: false,
             roadmap: false,
-            project: false
+            project: false,
+            post_draft: false
         };
 
         if (USERS.isCooperMsg(msg)) {
@@ -119,6 +121,7 @@ export default class SuggestionsHelper {
                 if (reaction.emoji.name === EMOJIS.POLL_AGAINST) votes.against = reaction.count;
                 if (reaction.emoji.name === EMOJIS.ROADMAP) votes.roadmap = true;
                 if (reaction.emoji.name === RAW_EMOJIS.PROJECT) votes.project = true;
+                if (reaction.emoji.name === RAW_EMOJIS.POST) votes.post_draft = true;
             });
         } else votes.invalid = true;
 
@@ -143,6 +146,10 @@ export default class SuggestionsHelper {
                 // Check if the suggestion is a project creation proposal.
                 if (votes.project) 
                     ProjectsHelper.passed(suggestion)
+
+                // Check if the suggestion is a blog post draft creation proposal.
+                else if (votes.post_draft) 
+                    BlogHelper.passed(suggestion)
                     
                 else {
                     const passedText = `Suggestion passed, proposal: ${suggestion.content}\n` +

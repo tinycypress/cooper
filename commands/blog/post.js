@@ -1,7 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import { authorConfirmationPrompt } from '../../operations/common/ui';
 import UsableItemHelper from '../../operations/minigames/medium/economy/items/usableItemHelper';
-import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
 import { RAW_EMOJIS, EMOJIS } from '../../origin/config';
 import { MESSAGES, ITEMS, TIME, USERS, CHANNELS } from '../../origin/coop';
 
@@ -34,7 +33,7 @@ export default class PostCommand extends CoopCommand {
 		super.run(msg);
 
 		// Check deadline is valid.
-		if (!ProjectsHelper.isValidDeadline(deadline))
+		if (!TIME.isValidDeadline(deadline))
 			return MESSAGES.silentSelfDestruct(msg, `<@${msg.author.id}>, ${deadline} is an invalid duration for a post deadline.`);
 
 		// TODO: Check title is valid.

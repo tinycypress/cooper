@@ -23,6 +23,8 @@ export default class PostPreviewCommand extends CoopCommand {
 	async run(msg, { titleOrID }) {
 		super.run(msg);
 		MESSAGES.silentSelfDestruct(msg, 'Post preview is currently a work in progress.');
+
+		// TOOD: Calculate and return the content or send to a coop website preview link... better.
     }
 }
 

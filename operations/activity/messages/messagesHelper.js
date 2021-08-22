@@ -13,6 +13,14 @@ export default class MessagesHelper {
         };
     }
 
+    static getRegexMatch(regex, str) {
+        let match = null;
+        const result = regex.exec(str);
+        if (result && result[1])
+            match = result[1];
+        return match;
+    }
+
     static parselink(link) {
         let result = null;
 
