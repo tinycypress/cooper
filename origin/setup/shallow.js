@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, ITEMS, MESSAGES, SERVER, TIME, USERS } from '../coop';
 import SubscriptionHelper from '../../operations/marketing/newsletter/subscriptionHelper';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper';
+import RolesHelper from '../../operations/members/hierarchy/roles/rolesHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -29,12 +31,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
-        const sub = await SubscriptionHelper.getByEmail('contact@lmfielding.com');
-        console.log(sub);
-
-        // - Make unsub/subscribe from website work (guest)
-        // - Make unsubscribe work from website
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

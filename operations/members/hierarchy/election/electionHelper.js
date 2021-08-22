@@ -129,6 +129,9 @@ export default class ElectionHelper {
 
         // Ensure leadership and commander based on items so they are treated seriously.
         EventsHelper.runInterval(() => this.ensureItemSeriousness(), baseTickDur * 3);
+
+        // Ensure leadership and commander based on items so they are treated seriously.
+        EventsHelper.runInterval(() => this.trackHierarchy(), baseTickDur * 5);
     }
 
 
@@ -732,7 +735,8 @@ export default class ElectionHelper {
     static _roleHierarchy() {
         const hierarchy = {
             commander: ROLES._getUserWithCode('COMMANDER'),
-            leaders: ROLES._getUsersWithRoleCodes(['LEADER'])
+            leaders: ROLES._getUsersWithRoleCodes(['LEADER']),
+            motw: ROLES._getUserWithCode('MEMBEROFWEEK')
         };
         return hierarchy;
     }
@@ -769,4 +773,103 @@ export default class ElectionHelper {
         // TODO: Post the occassional reminder too...
     }
 
+    static async loadHierarchy() {
+        const hierarchy = {
+            commander: await this.loadHierarchySingleType('COMMANDER') || null,
+            leaders: await this.loadHierarchyEntitiesByType('LEADER') || [],
+            motw: await this.loadHierarchySingleType('MEMBEROFWEEK') || null
+        }
+        return hierarchy;
+    }
+
+    static loadHierarchySingleType(type) {
+        return DatabaseHelper.singleQuery({
+            text: "SELECT * FROM hierarchy WHERE type = $1",
+            values: [type]
+        });
+    }
+
+    static loadHierarchyEntitiesByType(type) {
+        return DatabaseHelper.manyQuery({
+            text: "SELECT * FROM hierarchy WHERE type = $1",
+            values: [type]
+        });
+    }
+
+    static removeIDFromTrackedHierarchy(userID) {
+        return Database.query({ 
+            text: "DELETE FROM hierarchy WHERE discord_id = $1",
+            values: [userID] 
+        })
+    }
+
+    static trackHierarchicalEntity(userID, username, avatar, type) {
+        const image = USERS.avatar({ id: userID, avatar });
+        return Database.query({ 
+            text: "INSERT INTO hierarchy(discord_id, username, image, type) VALUES ($1, $2, $3, $4)",
+            values: [userID, username, image, type]
+        });
+    }
+
+    static async trackHierarchy() {
+        const savedHierarchy = await this.loadHierarchy();
+        const roleHierarchy = this._roleHierarchy();
+
+        // Check if saved commander lost role.
+        if (savedHierarchy.commander) {
+            const prevCommanderID = savedHierarchy.commander.discord_id;
+            const isPrevCommanderStill = ROLES._idHasCode(prevCommanderID, 'COMMANDER');
+            
+            // Remove stale commander from tracking.
+            if (!isPrevCommanderStill)
+                this.removeIDFromTrackedHierarchy(prevCommanderID);
+        
+        // There wasn't a tracked commander, has this changed?
+        } else {
+            if (roleHierarchy.commander) {
+                const commander = roleHierarchy.commander.user;
+                this.trackHierarchicalEntity(commander.id, commander.username, commander.avatar, 'COMMANDER');
+            }
+        }
+
+        // Check if saved leaders are still leaders.
+        savedHierarchy.leaders.map(savedLeader => {
+            if (!ROLES._idHasCode(savedLeader.discord_id, 'LEADER'))
+                this.removeIDFromTrackedHierarchy(savedLeader.discord_id);
+        });
+
+        // Check if role based leaders need to be tracked.
+        roleHierarchy.leaders.map(roleLeader => {
+            let untracked = true;
+            savedHierarchy.leaders.map(savedLeader => {
+                if (roleLeader.user.id === savedLeader.discord_id)
+                    untracked = false;
+            });
+
+            if (untracked)
+                this.trackHierarchicalEntity(
+                    roleLeader.user.id, 
+                    roleLeader.user.username, 
+                    roleLeader.user.avatar,
+                    'LEADER'
+                );
+        });
+
+        // Check if saved MOTW lost role.
+        if (savedHierarchy.motw) {
+            const prevMOTWID = savedHierarchy.motw.discord_id;
+            const isMOTWStill = ROLES._idHasCode(prevMOTWID, 'MEMBEROFWEEK');
+            
+            // Remove stale MOTW from tracking.
+            if (!isMOTWStill)
+                this.removeIDFromTrackedHierarchy(prevMOTWID);
+        
+        // There wasn't a tracked MOTW, has this changed?
+        } else {
+            if (roleHierarchy.motw) {
+                const motw = roleHierarchy.motw.user;
+                this.trackHierarchicalEntity(motw.id, motw.username, motw.avatar, 'MEMBEROFWEEK');
+            }
+        }
+    }
 }

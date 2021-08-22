@@ -1,18 +1,15 @@
 import { Router } from "express";
+import ElectionHelper from "../../../operations/members/hierarchy/election/electionHelper";
 
 const MembersRouter = Router();
 
 MembersRouter.get('/hierarchy', async (req, res) => {
-    // const posts = await BlogHelper.loadHeadlines();
+    const hierarchy = await ElectionHelper.loadHierarchy();
 
-    res.status(200).json({
-        hierarchy: {
-            commander: null,
-            leaders: [],
-            motw: null,
-            other_users: []
-        }
-    });
+    // Add the next 10 members who weren't already included.
+    hierachy.other_users = [];
+
+    res.status(200).json(hierarchy);
 });
 
 export default MembersRouter;
