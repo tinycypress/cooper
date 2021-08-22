@@ -138,13 +138,17 @@ export default class SubscriptionHelper {
 
     // If email was already known, modify the record (anon -> tied to known user)
     static async upgradeAnonSubscription(subscriptionID, userID) {
+        let result = false;
         const query = {
             name: "upgrade-anon-subscription",
             text: 'UPDATE propaganda_subscriptions SET owner_id = $2 WHERE id = $1',
             values: [subscriptionID, userID]
         };
         const response = await Database.query(query);
-        return response?.rowCount === 1;
+        if (typeof response.rowCount !== 'undefined') {
+            if (response.rowCount === 1) result = true;
+        }
+        return result;
     }
 
     // Set user's email to "UNSUBSCRIBED", remember to filter out later. >.>
