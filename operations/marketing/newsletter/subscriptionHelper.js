@@ -161,7 +161,7 @@ export default class SubscriptionHelper {
         });
     }
 
-    static unsubscribeByEmail(email) {
+    static async unsubscribeByEmail(email) {
         let result = false;
         const query = {
             name: 'unsubscribe-by-email',
