@@ -10,7 +10,7 @@ BlogRouter.get('/', async (req, res) => {
 
 BlogRouter.get('/:slug', (req, res) => {
     const post = await BlogHelper.loadPostBySlug(req.params.slug);
-    res.status(200).json(post)
+    res.status(200).json(post);
 });
 
 export default BlogRouter;
