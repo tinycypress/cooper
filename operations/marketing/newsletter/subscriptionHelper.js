@@ -111,6 +111,7 @@ export default class SubscriptionHelper {
         try {
             // Check current value in that column of database.
             const currentSubscription = await this.getByEmail(email);
+            console.log('currentSubscription', currentSubscription);
 
             // If email was already known, modify the record (anon -> tied to known user)
             if (currentSubscription && !currentSubscription.owner_id) {
@@ -121,7 +122,10 @@ export default class SubscriptionHelper {
             // If email was not already known, create a new subscription.
             if (!currentSubscription) {
                 subscription.newLead = true;
-                await this.create(email, userID, 1);
+
+                const newSubscription = await this.create(email, userID, 1);
+                console.log('newSubscription', newSubscription);
+
                 subscription.success = true;
             }
 
@@ -159,22 +163,3 @@ export default class SubscriptionHelper {
         });
     }
 }
-
-
-// // Reward them, but not if their email address was set to an unsubscribed default.
-// if (subscription.newLead && subscription.success) {
-//     const username = msg.author.username;
-//     const rewardText = `Thank you for subscribing ${username}. `;
-//     const rewardAmountText = `+25 points, +5 AXE, +5 PICKAXE rewarded!`;
-
-//     COOP.ITEMS.add(msg.author.id, 'COOP_POINT', 25, 'Email subscription reward');
-//     COOP.ITEMS.add(msg.author.id, 'AXE', 5, 'Email subscription reward');
-//     COOP.ITEMS.add(msg.author.id, 'PICK_AXE', 5, 'Email subscription reward');
-
-//     setTimeout(async () => {
-//         COOP.CHANNELS._postToFeed(rewardText + rewardAmountText);
-//         confirmMsg.say(rewardText + rewardAmountText);
-//     }, 3000);
-
-// // Provide update feedback too!
-// } else if (subscription.success) confirmMsg.say('Your email address was updated.');

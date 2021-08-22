@@ -26,7 +26,7 @@ export default class UnsubscribeCommand extends CoopCommand {
 			setTimeout(() => msg.say(`${msg.author.username} unsubscribed.`), 666);
 
         } catch(err) {
-            await msg.reply('Unable to unsubscribe you, contact a leader.');
+            await msg.reply('Unable to unsubscribe you, contact commander/leader(s).');
         }
     }
     

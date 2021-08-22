@@ -29,19 +29,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
         // - Make !subscribe work.
-        // Confirm runs
-        // Server error = No
-        // { newLead: false, success: false }
-        // No acknowledgement
-
 
         // - Make !unsubscribe work
-
-
-
-
 
         // - Make subscribe from website work (guest)
         // --- Subcribe endpoint needed in this repo.
