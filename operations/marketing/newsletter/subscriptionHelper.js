@@ -113,16 +113,18 @@ export default class SubscriptionHelper {
             const currentSubscription = await this.getByEmail(email);
 
             // If email was already known, modify the record (anon -> tied to known user)
-            if (currentSubscription && !currentSubscription.owner_id)
-                this.upgradeAnonSubscription(subscription.id, userID);
+            if (currentSubscription && !currentSubscription.owner_id) {
+                await this.upgradeAnonSubscription(currentSubscription.id, userID);
+                subscription.success = true;
+            }
 
             // If email was not already known, create a new subscription.
             if (!currentSubscription) {
                 subscription.newLead = true;
-                this.create(email, userID, 1);
+                await this.create(email, userID, 1);
+                subscription.success = true;
             }
 
-            subscription.success = true;
         } catch(e) {
             console.error(e);
         }
