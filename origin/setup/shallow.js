@@ -29,8 +29,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // - Make !subscribe work.
-
         // - Make !unsubscribe work
 
         // - Make subscribe from website work (guest)

@@ -1,11 +1,8 @@
-import COOP from '../../../origin/coop';
+import { USERS, TIME, MESSAGES } from '../../../origin/coop';
 import { EMOJIS } from '../../../origin/config';
 
 import Database from '../../../origin/setup/database';
 import DatabaseHelper from '../../../operations/databaseHelper';
-
-
-
 
 export default class SubscriptionHelper {
    
@@ -24,7 +21,7 @@ export default class SubscriptionHelper {
         if (msg.channel.type !== 'dm') return null;
 
         // Ignore Cooper for this.
-        if (COOP.USERS.isCooperMsg(msg)) return null;
+        if (USERS.isCooperMsg(msg)) return null;
 
         const email = this.getEmailFromMessage(msg);
         if (email) {
@@ -39,14 +36,14 @@ export default class SubscriptionHelper {
             const confirmMsg = await msg.say(confirmEmailText);
 
             // Avoid rate limiting/hammering network.
-            COOP.MESSAGES.delayReact(confirmMsg, EMOJIS.POLL_FOR, 333);
-            COOP.MESSAGES.delayReact(confirmMsg, EMOJIS.POLL_AGAINST, 666);
+            MESSAGES.delayReact(confirmMsg, EMOJIS.POLL_FOR, 333);
+            MESSAGES.delayReact(confirmMsg, EMOJIS.POLL_AGAINST, 666);
 
             setTimeout(async () => {
                 try {
                     // Await approval for addition.
                     const collected = await confirmMsg.awaitReactions((reaction, user) => (
-                            !COOP.USERS.isCooper(user.id) &&
+                            !USERS.isCooper(user.id) &&
                             [EMOJIS.POLL_FOR, EMOJIS.POLL_AGAINST].includes(reaction.emoji.name)
                         ), 
                         { max: 1, time: 60000, errors: ['time'] }
