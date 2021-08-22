@@ -21,24 +21,18 @@ BlogRouter.post('/subscribe', async (req, res) => {
     };
 
     try {
-        console.log('Subscribe!');
-        console.log(req);
+        const existing = await SubscriptionHelper.getByEmail(req.body.email);
+        if (existing) throw new Error('Email subscription already exists.');
 
-        // const existing = await SubscriptionHelper.getByEmail(req.body.email);
-        // if (existing) throw new Error('Email subscription already exists.');
-
-        // const didCreate = await SubscriptionHelper.create(email, null, 1);
-        // if (didCreate) result.success = true;
+        const didCreate = await SubscriptionHelper.create(email, null, 1);
+        if (didCreate) result.success = true;
 
     } catch(e) {
         console.log('Error subscribing via website.');
         console.error(e);
     }
 
-    return res.status(200).json({
-        testing: true,
-        result
-    });
+    return res.status(200).json(result);
 });
 
 
@@ -47,26 +41,19 @@ BlogRouter.post('/unsubscribe', async (req, res) => {
         success: false
     };
 
-    console.log('Unsubscribe!');
-    console.log(req);
-
     try {
-        // const existing = await SubscriptionHelper.getByEmail(req.body.email);
-    
-        // if (!existing) throw new Error('Not a valid subscription.');
-
-        // const didCreate = await SubscriptionHelper.create(email, null, 1);
-        // if (didCreate) result.success = true;
+        const existing = await SubscriptionHelper.getByEmail(req.body.email);
+        if (!existing) throw new Error('Not a valid subscription.');
+        
+        const didUnsubscribe = await SubscriptionHelper.unsubscribeByEmail(req.body.email);
+        if (didUnsubscribe) result.success = true;
 
     } catch(e) {
         console.log('Error subscribing via website.');
         console.error(e);
     }
 
-    return res.status(200).json({
-        testing: true,
-        result
-    });
+    return res.status(200).json(result);
 });
 
 export default BlogRouter;

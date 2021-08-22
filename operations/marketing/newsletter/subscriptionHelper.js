@@ -3,6 +3,7 @@ import { EMOJIS } from '../../../origin/config';
 
 import Database from '../../../origin/setup/database';
 import DatabaseHelper from '../../../operations/databaseHelper';
+import { result } from 'lodash';
 
 export default class SubscriptionHelper {
    
@@ -161,10 +162,16 @@ export default class SubscriptionHelper {
     }
 
     static unsubscribeByEmail(email) {
-        return Database.query({
+        let result = false;
+        const query = {
             name: 'unsubscribe-by-email',
             text: `DELETE FROM propaganda_subscriptions WHERE email = $1`,
             values: [email]
-        });
+        };
+        const response = await Database.query(query);
+        if (typeof response.rowCount !== 'undefined') {
+            if (response.rowCount === 1) result = true;
+        }
+        return result;
     }
 }
