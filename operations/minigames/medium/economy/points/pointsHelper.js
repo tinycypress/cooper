@@ -104,12 +104,13 @@ export default class PointsHelper {
     
             // Load player points and historical points.
             const users = await COOP.USERS.load();
-            const updateData = [];
+            const pointUpdateManifest = [];
+
             const percChanges = await Promise.all(users.map(async (user) => {
                 const result = await this.getPercChange(user.discord_id);
-    
+
                 if (result.points !== result.lastWeekPoints)
-                    updateData.push({ 
+                    pointUpdateManifest.push({ 
                         id: result.userID, 
                         points: result.points 
                     });
@@ -185,14 +186,13 @@ export default class PointsHelper {
 
             // TODO: Give them some random eggs and items.
 
-    
             // Inform the community.
             COOP.CHANNELS._codes(['FEED', 'TALK'], updateText, {
                 allowedMentions: { users: [], roles: [] }
             });
             
             // Make sure all historical_points are updated.
-            updateData.map(({ id, points }) => COOP.USERS.updateField(id, 'historical_points', points));
+            pointUpdateManifest.map(({ id, points }) => COOP.USERS.updateField(id, 'historical_points', points));
     
             // Ensure Cooper knows when the last time this was updated (sent).
             // Track member of week by historical_points DB COL and check every week.

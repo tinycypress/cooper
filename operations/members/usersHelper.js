@@ -8,7 +8,11 @@ import Database from "../../origin/setup/database";
 export default class UsersHelper {
     
     static avatar(user) {
-        const avatarURL = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+        let avatarURL = null;
+
+        if (user.avatar)
+            avatarURL = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+
         return avatarURL;
     }
 
@@ -125,6 +129,24 @@ export default class UsersHelper {
         return DatabaseHelper.many(result);
     }
 
+    static async loadSortedHistoricalPoints(offset = 0, limit = 15) {
+        const query = {
+            name: 'get-users-sorted-historical-points',
+            text: `
+                SELECT * FROM users 
+                ORDER BY historical_points DESC
+                OFFSET $1
+                LIMIT $2
+            `.trim(),
+            values: [offset, limit]
+        };
+
+        const result = await Database.query(query);
+        const rows = DatabaseHelper.many(result);
+
+        return rows;
+    }
+
     static async updateField(id, field, value) {
         const query = {
             text: `UPDATE users SET ${field} = $1 WHERE discord_id = $2`,
@@ -237,13 +259,23 @@ export default class UsersHelper {
                     user: { id: user.discord_id }
                 }), delay);
 
-                
-            // If the username has changed, update it.
-            else if (user.username !== member.user.username)
-                setTimeout(
-                    () => this.updateField(user.id, 'username', member.user.username),
-                    delay
-                );
+            else {
+                // If the username has changed, update it.
+                if (user.username !== member.user.username) {
+                    setTimeout(() => 
+                        this.updateField(user.discord_id, 'username', member.user.username),
+                        delay
+                    );
+                }
+
+                // Check if avatar has been updated.
+                const latestImage = this.avatar(member.user);
+                if (latestImage !== user.image)
+                    setTimeout(() => 
+                        this.updateField(user.discord_id, 'image', latestImage),
+                        delay
+                    );
+            }
         });
     }
 
