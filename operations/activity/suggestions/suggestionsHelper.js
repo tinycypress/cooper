@@ -2,6 +2,7 @@ import { EMOJIS, RAW_EMOJIS } from "../../../origin/config";
 import { SERVER, CHANNELS, USERS, MESSAGES } from "../../../origin/coop";
 import BlogHelper from "../../marketing/blog/blogHelper";
 import ProjectsHelper from "../../productivity/projects/projectsHelper";
+import VotingHelper from "../redemption/votingHelper";
 
 
 // TODO: Make sure when adding to roadmap, talk, and feed that the votes are displayed to indicate mandate!
@@ -35,30 +36,39 @@ export default class SuggestionsHelper {
         });
     }
 
-    static async checkSingle(suggestion, index = 1) {
+    static checkSingle(suggestion, index = 1) {
+        // Suggestion may have already been processed and deleted.
+        if (!suggestion) return false;
+
         // Calculate if completed based on time/duration.
         const considerDuration = ((60 * 60) * 72) * 1000;
         let isCompleted = considerDuration + suggestion.createdTimestamp <= Date.now();
 
-        // TODO: Override completion delay if very popular.
-        
-        // If this suggestion is completed, attempt to process it.
-        if (!isCompleted) return false;
-
         // Calculate the decision of this suggestion based on reaction votes.
         const votes = this.parseVotes(suggestion);
 
+        // Override completion delay if very popular (over 4% voted overwhelmingly and 2x for versus against votes).
+        const popularThreshold = VotingHelper.getNumRequired(0.04);
+        if (votes.for > popularThreshold + (votes.against * 2))
+            isCompleted = true;
+
+        // If this suggestion is completed, attempt to process it.
+        if (!isCompleted) return false;
+
         // Handle the will of the people.
         if (votes.rejected) this.reject(suggestion, votes, index);
-        if (votes.passed) this.pass(suggestion, votes, index);
+        if (votes.passing) this.pass(suggestion, votes, index);
         if (votes.tied) this.tied(suggestion, votes, index);
 
         // Invalidate votes do not count as a vote processed.
         if (votes.invalid) this.invalidate(suggestion, index);
 
         // Prevent processing more, one action per iteration is enough.
-        if (votes.tied || votes.passed || votes.rejected) 
-        return true;
+        if (votes.tied || votes.passing || votes.rejected) 
+            return true;
+
+        // Default to assuming failure.
+        return false;
     }
 
     // Post a link in feed and talk to try to break the deadlock.
@@ -106,7 +116,7 @@ export default class SuggestionsHelper {
         const votes = {
             for: 0,
             against: 0,
-            passed: false,
+            passing: false,
             rejected: false,
             tied: false,
             invalid: false,
@@ -126,7 +136,7 @@ export default class SuggestionsHelper {
         } else votes.invalid = true;
 
         if (!votes.invalid) {
-            if (votes.for > votes.against) votes.passed = true;
+            if (votes.for > votes.against) votes.passing = true;
             if (votes.for < votes.against) votes.rejected = true;
             if (votes.for === votes.against) votes.tied = true;
 

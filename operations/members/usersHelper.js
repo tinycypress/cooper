@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-import COOP, { SERVER, STATE } from '../../origin/coop';
-import { ROLES } from '../../origin/config';
+import { SERVER, STATE, CHANNELS, USERS, MESSAGES, ROLES } from '../../origin/coop';
+import { ROLES as ROLES_CONFIG } from '../../origin/config';
 import DatabaseHelper from "../databaseHelper";
 import Database from "../../origin/setup/database";
 
@@ -50,7 +50,7 @@ export default class UsersHelper {
     }
 
     static directMSG = (guild, userID, msg) => {
-        const member = COOP.USERS.getMemberByID(guild, userID);
+        const member = USERS.getMemberByID(guild, userID);
         if (member) 
             // Buried the error because there's no nice way to do it... besides logging as a statistic.
             return member.send(msg).catch(() => {/** Bury error */ });
@@ -241,8 +241,8 @@ export default class UsersHelper {
     static getHierarchy() {
         const guild = SERVER._coop();
         return {
-            commander: this.getMembersByRoleID(guild, ROLES.COMMANDER.id).first(),
-            leaders: this.getMembersByRoleID(guild, ROLES.LEADER.id),
+            commander: this.getMembersByRoleID(guild, ROLES_CONFIG.COMMANDER.id).first(),
+            leaders: this.getMembersByRoleID(guild, ROLES_CONFIG.LEADER.id),
             memberCount: guild.memberCount
         };
     }
@@ -277,11 +277,25 @@ export default class UsersHelper {
                     );
             }
         });
+
+
+        // Remove all users without member role that have been here for more than 3 days.
+        this._cache().map((member) => {
+            const hasRole = RolesHelper._has(member, 'MEMBER');
+            const stayDurationSecs = (Date.now() - member.joinedTimestamp) / 1000;
+            const stayDurationHours = stayDurationSecs / 3600;
+            const stayDurationDays = stayDurationHours / 24;
+            if (stayDurationDays > 3 && !hasRole) {
+                const banReason = `${member.user.username} was not banned due to not being approved within 3 days.`;
+                CHANNELS._postToChannelCode('TALK', banReason)
+                member.ban({ days: 7, reason: banReason });
+            }
+        })
     }
 
     static async populateUsers() {
         // Constant/aesthetic only reference.
-        const coopEmoji = COOP.MESSAGES.emojiCodeText('COOP');
+        const coopEmoji = MESSAGES.emojiCodeText('COOP');
 
         // Load all recognised users.
         const dbUsers = await this.load();
@@ -290,22 +304,22 @@ export default class UsersHelper {
         const includedIDs = _.map(dbUsers, "discord_id");
         
         // Find the missing/unrecognised users (MEMBER role only).
-        const allWithout = Array.from(COOP.ROLES._allWith('MEMBER')
+        const unrecognisedMembers = Array.from(ROLES._allWith('MEMBER')
             .filter(member => !includedIDs.includes(member.user.id)));
 
         // Attempt to recognise each unrecognised user.
-        allWithout.forEach(async (memberSet, index) => {
+        unrecognisedMembers.forEach(async (memberSet, index) => {
             const member = memberSet[1];
             
-            try {
+            try {                
                 // Insert and respond to successful/failed insertion.
                 const dbRes = await this.addToDatabase(member.user.id, member.user.username, member.joinedTimestamp);
                 if (dbRes.rowCount === 1)
-                    setTimeout(() => COOP.CHANNELS._postToFeed(
+                    setTimeout(() => CHANNELS._postToFeed(
                         `<@${member.user.id}> is officially recognised by The Coop ${coopEmoji}!`
                     ), 1000 * index);
                 else
-                    setTimeout(() => COOP.CHANNELS._postToFeed(
+                    setTimeout(() => CHANNELS._postToFeed(
                         `<@${member.user.id}> failed to be recognised by The Coop ${coopEmoji}...?`
                     ), 1000 * index);
 
