@@ -10,7 +10,7 @@ BlogRouter.get('/', async (req, res) => {
 });
 
 BlogRouter.get('/build', async (req, res) => {
-    const posts = await BlogHelper.loadHeadlines();
+    const posts = await BlogHelper.loadAllForBuild();
     res.status(200).json(posts);
 });
 
