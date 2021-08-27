@@ -22,6 +22,9 @@ export default class BlogHelper {
 
     static async publish(title, slug, content, authorID) {
         try {
+            // Access the autohr username.
+            const author = await USERS.loadSingle(authorID);
+
             // Add the channel to the database.
             const query = {
                 name: "publish-post",
@@ -29,12 +32,13 @@ export default class BlogHelper {
                         title, slug,
                         content,
                         author_id,
+                        author_username,
                         date
                     )
-                    VALUES($1, $2, $3, $4, $5)`,
+                    VALUES($1, $2, $3, $4, $5, $6)`,
                 values: [
                     title, slug,
-                    content, authorID,
+                    content, authorID, author.username,
                     TIME._secs()
                 ]
             };
@@ -66,6 +70,12 @@ export default class BlogHelper {
     static loadHeadlines() {
         return DatabaseHelper.manyQuery({
             name: "load-headlines", text: `SELECT title, slug, id, author_id, date FROM blog_posts`
+        });
+    }
+
+    static loadAllForBuild() {
+        return DatabaseHelper.manyQuery({
+            name: "load-posts-build-intent", text: `SELECT * FROM blog_posts`
         });
     }
 

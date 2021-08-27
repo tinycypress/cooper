@@ -9,6 +9,13 @@ BlogRouter.get('/', async (req, res) => {
     res.status(200).json(posts);
 });
 
+BlogRouter.get('/build', async (req, res) => {
+    const posts = await BlogHelper.loadHeadlines();
+    res.status(200).json(posts);
+});
+
+
+
 BlogRouter.get('/:slug', async (req, res) => {
     const post = await BlogHelper.loadPostBySlug(req.params.slug);
     res.status(200).json(post);
