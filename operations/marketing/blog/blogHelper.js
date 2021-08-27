@@ -80,7 +80,7 @@ export default class BlogHelper {
     }
 
     static loadPostByID(id) {
-        return DatabaseHelper.manyQuery({
+        return DatabaseHelper.singleQuery({
             name: "load-post-id", 
             text: `SELECT * FROM blog_posts WHERE id = $1`,
             values: [id]
@@ -88,7 +88,7 @@ export default class BlogHelper {
     }
 
     static loadPostBySlug(slug) {
-        return DatabaseHelper.manyQuery({
+        return DatabaseHelper.singleQuery({
             name: "load-post-slug", 
             text: `SELECT * FROM blog_posts WHERE slug = $1`,
             values: [slug]
