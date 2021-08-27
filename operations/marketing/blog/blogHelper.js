@@ -5,6 +5,8 @@ import { CHANNELS, MESSAGES, TIME, USERS } from "../../../origin/coop";
 import Database from "../../../origin/setup/database";
 import DatabaseHelper from "../../databaseHelper";
 
+import axios from 'axios';
+
 export default class BlogHelper {
 
     static async passed(suggestion) {
@@ -92,12 +94,23 @@ export default class BlogHelper {
         })
     }
 
+    static async buildDraft(draftChannel) {
+        const messages = await draftChannel.messages.fetch({});
+        const content = messages.map(msg => {
+            let subContent = msg.content;
+            msg.attachments.map(attachment => {
+                subContent += `\n\n ![${attachment.name}](${attachment.url})`;
+            })
+            return subContent;
+        }).join('\n\n');
+        return content;
+    }
+
     static async fulfilDraft(draft) {
         try {
             // Save a channel to database as a piece of blog content.
             const chan = CHANNELS._get(draft.channel_id);
-            const messages = await chan.messages.fetch({});
-            const content = messages.map(msg => msg.content).join('\n\n');
+            const content = await this.buildDraft(chan);
 
             const slug = draft.title.toLowerCase()
                 .replace(/[^\w ]+/g,'')
@@ -114,11 +127,10 @@ export default class BlogHelper {
 
             // Inform the owner the draft has been published.
             USERS._dm(draft.owner_id, `Draft "${draft.title}" was just published!\n\n` + 
-                'It will be live here when processed: https://www.thecoop.group/blog/' + draft);
+                'It will be live here when processed: https://www.thecoop.group/blog/' + slug);
 
-            // TODO:
             // Trigger Netlify rebuild of static site.
-
+            axios.post('https://api.netlify.com/build_hooks/61295f9514147c115d2db4e9?trigger_branch=master&trigger_title=built-by-cooper-post-blog');
 
         } catch(e) {
             console.log('Error turning blog post channel into a blog post.');

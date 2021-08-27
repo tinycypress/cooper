@@ -14,7 +14,8 @@ export default class PostPreviewCommand extends CoopCommand {
 				{
 					key: 'titleOrID',
 					prompt: 'Post title/ID?',
-					type: 'string'
+					type: 'string',
+					default: ''
 				}
 			]
 		});
@@ -23,6 +24,9 @@ export default class PostPreviewCommand extends CoopCommand {
 	async run(msg, { titleOrID }) {
 		super.run(msg);
 		MESSAGES.silentSelfDestruct(msg, 'Post preview is currently a work in progress.');
+
+
+		// Check for default and see if the current channel is a blog post.
 
 		// TOOD: Calculate and return the content or send to a coop website preview link... better.
     }

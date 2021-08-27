@@ -4,11 +4,9 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { MESSAGES, USERS } from '../coop';
-import VotingHelper from '../../operations/activity/redemption/votingHelper';
-import SuggestionsHelper from '../../operations/activity/suggestions/suggestionsHelper';
-import RolesHelper from '../../operations/members/hierarchy/roles/rolesHelper';
-
+import COOP, { CHANNELS, MESSAGES, USERS } from '../coop';
+import BlogHelper from '../../operations/marketing/blog/blogHelper';
+import axios from 'axios';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -31,28 +29,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
-        // Allow popular suggestions to pass faster.
-        const sugg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/723710770591957075/880194301026533377');
-        SuggestionsHelper.checkSingle(sugg);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         // TODO:
