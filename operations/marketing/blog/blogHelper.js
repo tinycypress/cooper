@@ -69,7 +69,7 @@ export default class BlogHelper {
 
     static loadHeadlines() {
         return DatabaseHelper.manyQuery({
-            name: "load-headlines", text: `SELECT title, slug, id, author_id, date FROM blog_posts`
+            name: "load-headlines", text: `SELECT title, slug, id, author_id, author_username date FROM blog_posts`
         });
     }
 
