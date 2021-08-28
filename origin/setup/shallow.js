@@ -5,9 +5,7 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, MESSAGES, USERS } from '../coop';
-import BlogHelper from '../../operations/marketing/blog/blogHelper';
-import axios from 'axios';
-import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
+import NewsHelper from '../../operations/social/newsHelper';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -30,11 +28,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
-        // const projects = await ProjectsHelper.all();
-        // console.log(projects);
-
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

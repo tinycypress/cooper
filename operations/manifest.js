@@ -27,6 +27,7 @@ import ProspectHelper from "./members/redemption/prospectHelper";
 import serverTick from "./serverTick";
 import TemporaryMessages from "./maintenance/temporaryMessages";
 import TempAccessCodeHelper from "./members/tempAccessCodeHelper";
+import NewsHelper from "./social/newsHelper";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -110,6 +111,11 @@ export default function eventsManifest() {
   // Sacrifice, moderation related.
   EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 25, baseTickDur * 10);
   EventsHelper.chanceRunInterval(() => ProspectHelper.randomReady(), 20, baseTickDur * 14);
+
+
+  // Social
+  EventsHelper.chanceRunInterval(() => NewsHelper.mailboy(), 5, baseTickDur * 10);
+
 
 
   EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 15, baseTickDur * 4);
