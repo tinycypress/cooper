@@ -30,6 +30,7 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+  
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

@@ -281,7 +281,7 @@ export default class UsersHelper {
 
         // Remove all users without member role that have been here for more than 3 days.
         this._cache().map((member) => {
-            const hasRole = RolesHelper._has(member, 'MEMBER');
+            const hasRole = ROLES._has(member, 'MEMBER');
             const stayDurationSecs = (Date.now() - member.joinedTimestamp) / 1000;
             const stayDurationHours = stayDurationSecs / 3600;
             const stayDurationDays = stayDurationHours / 24;
