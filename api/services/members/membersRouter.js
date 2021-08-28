@@ -17,4 +17,10 @@ MembersRouter.get('/hierarchy', async (req, res) => {
     res.status(200).json(hierarchy);
 });
 
+
+MembersRouter.get('/:discordID', async (req, res) => {
+    const user = await USERS.loadSingle(req.params.discordID);
+    return res.status(200).json(user);
+});
+
 export default MembersRouter;
