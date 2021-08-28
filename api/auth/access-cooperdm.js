@@ -4,9 +4,6 @@ import { USERS } from '../../origin/coop';
 import Auth from './_auth';
 
 
-// TODO: Send them another message confirming their login? (Later problem)
-// TOOD: Post it to actions channel for some logging/visibility (at least during early release).
-
 export default async function AccessCooperDM(result, code) {
 	// Check validation result =]
 	const request = await TempAccessCodeHelper.validate(code);

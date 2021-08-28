@@ -2,6 +2,7 @@ import { Permissions } from "discord.js";
 import { EMOJIS, CATEGORIES } from "../../../origin/config";
 import { CHANNELS, MESSAGES, TIME } from "../../../origin/coop";
 import Database from "../../../origin/setup/database";
+import DatabaseHelper from "../../databaseHelper";
 
 
 
@@ -15,6 +16,7 @@ export default class ProjectsHelper {
         const title = MESSAGES.getRegexMatch(/Title: __([^\r\n]*)__/gm, suggestion.content);
         const deadline = MESSAGES.getRegexMatch(/Deadline: ([^\r\n]*)/gm, suggestion.content);
         
+        // TODO: Create with slug.
         const channel = await this.create(title, owner, deadline);
 
         // Is this necessary??
@@ -70,35 +72,14 @@ export default class ProjectsHelper {
         }
     }
 
-    static isSuggestionProjectReq(msg) {
-        
+
+    static async all() {
+        const query = {
+            name: "get-all-projects",
+            text: `SELECT * FROM projects`
+        };
+        const result = await DatabaseHelper.manyQuery(query);
+        return result;
     }
 
-
 }
-
-
-
-// Revenue opportunities:
-// GOLD_COIN payments for egg drops/minigames consideration of channel
-// GOLD_COIN payments for visibilty
-// GOLD_COIN to prevent being archived / deleted
-
-// export const PROJECT_ARGS_MSG_ORDER = [
-//     'name', 'deadline', 'description', 'visibility'
-// ];
-
-// Default deadline to 1 week in seconds
-// const weekSecs = ((60 * 60) * 24) * 7;
-// export const DEFAULT_PROJECT_OPTS = {
-//     name: 'unknown',
-//     description: 'unknown',
-//     deadline: weekSecs,
-//     visibility: 'PRIVATE'
-// };
-
-// Price is irrelevant now, already paid.
-// const price = getRegexMatch(/Price: <:gold_coin:796486327117807616> (\d+(?:\.\d+)?)/gm, suggestion.content);
-
-// Apply meta info to the channel
-// Mentions of access or PUBLIC keyword
