@@ -43,6 +43,9 @@ export default class AboutHelper {
         ACADEMY_AGENCY: {
             '🏢': (react, user) => COOP.ROLES.toggle(user.id, 'AGENCY'),
             '📝': (react, user) => COOP.ROLES.toggle(user.id, 'ACADEMY')
+        },
+        GUIDE: {
+            '📖': (react, user) => COOP.ROLES.toggle(user.id, 'GUIDE'),
         }
     }
 
@@ -51,7 +54,8 @@ export default class AboutHelper {
         ...Object.keys(this.sectionEmojis.FOCUS),
         ...Object.keys(this.sectionEmojis.GAMES),
         ...Object.keys(this.sectionEmojis.COMMUNITY),
-        ...Object.keys(this.sectionEmojis.ACADEMY_AGENCY)
+        ...Object.keys(this.sectionEmojis.ACADEMY_AGENCY),
+        ...Object.keys(this.sectionEmojis.GUIDE),
     ]
 
     static async onReaction(reaction, user) {
@@ -81,7 +85,8 @@ export default class AboutHelper {
             KEY_MESSAGES.about_ourfocus_msg,
             KEY_MESSAGES.about_optout_msg,
             KEY_MESSAGES.about_gamesopt_msg,
-            KEY_MESSAGES.about_academyagency_msg
+            KEY_MESSAGES.about_academyagency_msg,
+            KEY_MESSAGES.about_guide_msg,
         ];
         return await COOP.MESSAGES.preloadMsgLinks(links);
     }

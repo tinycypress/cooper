@@ -4,6 +4,8 @@ import { SERVER, STATE, CHANNELS, USERS, MESSAGES, ROLES } from '../../origin/co
 import { ROLES as ROLES_CONFIG } from '../../origin/config';
 import DatabaseHelper from "../databaseHelper";
 import Database from "../../origin/setup/database";
+import RedemptionHelper from './redemption/redemptionHelper';
+import UserRoles from './hierarchy/roles/userRoles';
 
 export default class UsersHelper {
     
@@ -249,6 +251,9 @@ export default class UsersHelper {
 
     static async cleanupUsers() {
         const allUsers = await this.load();
+        const allRoles = await UserRoles.all();
+        const userRoles = {};
+
         allUsers.map((user, index) => {
             const delay = 666 * index;
             const member = this._getMemberByID(user.discord_id);
@@ -278,19 +283,38 @@ export default class UsersHelper {
             }
         });
 
+        allRoles.map(({ discord_id, role_id, role_code }) => {
+            if (typeof userRoles[discord_id] === 'undefined') 
+                userRoles[discord_id] = [];
 
-        // Remove all users without member role that have been here for more than 3 days.
+            userRoles[discord_id].push({ role_code, role_id });
+        });
+
+        const trackedRoles = Object.keys(ROLES_CONFIG).map(roleKey => ROLES_CONFIG[roleKey].id);
+
         this._cache().map((member) => {
-            const hasRole = ROLES._has(member, 'MEMBER');
-            const stayDurationSecs = (Date.now() - member.joinedTimestamp) / 1000;
-            const stayDurationHours = stayDurationSecs / 3600;
-            const stayDurationDays = stayDurationHours / 24;
-            if (stayDurationDays > 3 && !hasRole) {
-                const banReason = `${member.user.username} was not banned due to not being approved within 3 days.`;
-                CHANNELS._postToChannelCode('TALK', banReason)
-                member.ban({ days: 7, reason: banReason });
-            }
-        })
+            const savedRoles = userRoles[member.user.id] || [];
+
+            // Update the user's persisted roles.
+            member.roles.cache.map(role => {
+                // Skip everything not mentioned in ROLES
+                if (!trackedRoles.includes(role.id)) return false;
+
+                // Check if user's role is recognised by server yet.
+                const isRolePersisted = savedRoles.find(memberRole => memberRole.role_id === role.id);
+                if (!isRolePersisted)
+                    UserRoles.add(member.user.id, ROLES._getCoopRoleCodeByID(role.id), role.id);
+            });
+
+            // Check if user lost a role on the server.    
+            savedRoles.map(savedRole => {
+                if (!ROLES._has(member, savedRole.role_code))
+                    UserRoles.remove(member.user.id, savedRole.role_id);
+            });
+
+            // Check if member was not processed in time and thus unwelcome.
+            RedemptionHelper.handleNewbOutstayedWelcome(member);
+        });
     }
 
     static async populateUsers() {
@@ -330,5 +354,31 @@ export default class UsersHelper {
         });
     }
 
+    static async loadSingleForStaticGeneration(discordID) {
+        const query = {
+            text: `SELECT 
+                    discord_id,
+                    (SELECT array_agg(role_code) FROM user_roles where discord_id = $1 GROUP BY discord_id) AS roles 
+                FROM users WHERE discord_id = $1`,
+            values: [discordID]
+        };
+        const result = await DatabaseHelper.singleQuery(query);        
+        return result;
+    }
 
+    static async loadAllForStaticGeneration() {
+        const query = {
+            text: `SELECT discord_id, roles.role_list 
+                FROM users
+                JOIN (
+                    SELECT array_agg(ur.role_code) AS role_list, discord_id
+                    FROM user_roles ur
+                    GROUP BY ur.discord_id
+                ) roles USING (discord_id)
+            `
+        };
+        const result = await Database.query(query);        
+        const rows = await DatabaseHelper.many(result);
+        return rows;
+    }
 }

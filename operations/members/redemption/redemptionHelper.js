@@ -1,7 +1,7 @@
 import VotingHelper from "../../activity/redemption/votingHelper";
 
-import COOP, { STATE } from "../../../origin/coop";
-import { RAW_EMOJIS, ROLES, CHANNELS } from '../../../origin/config';
+import COOP, { STATE, CHANNELS } from "../../../origin/coop";
+import { RAW_EMOJIS, ROLES, CHANNELS as CHANNELS_CONFIG } from '../../../origin/config';
 
 
 export const STARTING_ROLES = [
@@ -18,7 +18,7 @@ export default class RedemptionHelper {
 
         if (user.bot) return false;
         if (!isVoteEmoji) return false;
-        if (channelID !== CHANNELS.INTRO.id) return false;
+        if (channelID !== CHANNELS_CONFIG.INTRO.id) return false;
 
         // Process the vote
         this.processVote(reaction, user);
@@ -132,4 +132,18 @@ export default class RedemptionHelper {
             // Catch cannot send to user and notify them in approval channel, Cooper is HIGHLY recommended. ;)
         }
     }
+
+    static handleNewbOutstayedWelcome(member) {
+        // Remove all users without member role that have been here for more than 3 days.
+        const hasRole = COOP.ROLES._has(member, 'MEMBER');
+        const stayDurationSecs = (Date.now() - member.joinedTimestamp) / 1000;
+        const stayDurationHours = stayDurationSecs / 3600;
+        const stayDurationDays = stayDurationHours / 24;
+        if (stayDurationDays > 3 && !hasRole) {
+            const banReason = `${member.user.username} was not banned due to not being approved within 3 days.`;
+            CHANNELS._postToChannelCode('TALK', banReason)
+            member.ban({ days: 7, reason: banReason });
+        }
+    }
+
 }

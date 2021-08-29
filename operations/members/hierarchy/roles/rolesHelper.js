@@ -44,6 +44,19 @@ export default class RolesHelper {
         return codes.map(code => ROLES_CONFIG[code].id);
     }
 
+    static _getCoopRoleCodeByID(roleID) {
+        let defaultCode = 'UNKNOWN_COOP_ROLE_CODE';
+        let code = defaultCode;
+        Object.keys(ROLES_CONFIG).map(roleKey => {
+            const coopRoleID = ROLES_CONFIG[roleKey].id || null;
+            if (coopRoleID === roleID) code = roleKey;
+        });
+        if (code === defaultCode)
+            throw new Error(roleID + ' ' + defaultCode);
+
+        return code;
+    }
+
     static _getCodes(roleCodes = []) {
         let roles = [];
         const guild = SERVER._coop();

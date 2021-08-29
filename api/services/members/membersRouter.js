@@ -17,6 +17,20 @@ MembersRouter.get('/hierarchy', async (req, res) => {
     res.status(200).json(hierarchy);
 });
 
+
+MembersRouter.get('/build', async (req, res) => {
+    const users = await USERS.loadAllForStaticGeneration();
+    return res.status(200).json(users);
+});
+
+
+MembersRouter.get('/build-single', async (req, res) => {
+    // TODO: Enhance this with roles
+    const user = await USERS.loadSingle(req.params.discordID);
+    return res.status(200).json(user);
+});
+
+
 MembersRouter.get('/', async (req, res) => {
     const users = await USERS.load();
     return res.status(200).json(users);
