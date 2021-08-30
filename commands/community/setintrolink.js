@@ -24,6 +24,7 @@ export default class SetIntroLinkCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
+			// Check link is valid
 			// Check link exists
 			// Check author is command user
 			// Update in database
