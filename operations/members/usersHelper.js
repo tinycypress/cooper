@@ -113,11 +113,11 @@ export default class UsersHelper {
         return await Database.query(query);
     }
 
-    static async setIntro(member, link, time) {
+    static async setIntro(userID, introContent, link, time) {
         const query = {
             name: "set-user-intro",
-            text: 'UPDATE users SET intro_time = $1, intro_link = $2 WHERE discord_id = $3 RETURNING intro_link, intro_time',
-            values: [time, link, member.user.id],
+            text: 'UPDATE users SET intro_time = $1, intro_link = $2, intro_content = $3 WHERE discord_id = $4 RETURNING intro_link, intro_time',
+            values: [time, link, introContent, userID],
         };
         return await Database.query(query);
     }
@@ -393,7 +393,7 @@ export default class UsersHelper {
                 const introMsg = await MESSAGES.getByLink(sUser.intro_link);
                 // Sanitise.
                 if (introMsg && introMsg.content && introMsg.content !== sUser.intro_content) {
-                    await this.updateField(sUser.discord_id, 'intro_content', introMsg.content);
+                    await this.setIntro(sUser.discord_id, introMsg.content, sUser.intro_link, TIME._secs());
                     return { id: sUser.discord_id, status: 'DIFFERENT - UPDATED' };
                 }
 

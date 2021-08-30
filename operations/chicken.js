@@ -104,10 +104,6 @@ export default class Chicken {
             const isNewDay = await this.isNewDay();
             if (!isNewDay) return false;
 
-            // TODO: Improve where server announces new day.
-            const newDayText = 'A new day begins!';
-            CHANNELS._postToFeed(newDayText);
-
             // Try to attempt a giveaway based on random roll.
             if (STATE.CHANCE.bool({ likelihood: 5 })) 
                 CooperMorality.giveaway();
@@ -115,12 +111,14 @@ export default class Chicken {
             // Check the most important things at the beginning of a new day.
             ElectionHelper.checkProgress();
             
-            // If election is running, it should announce something at beginning of day, with time remaining.
+            // Update the current day record.
             await this.setConfig('current_day', '' + TIME._secs());
 
             // Send the conquest visuals!
-            await VisualisationHelper.record("https://www.thecoop.group/conquest/world");
-            CHANNELS._getCode('TALK').send(newDayText, new MessageAttachment('/tmp/video.webm'));
+            // await VisualisationHelper.record("https://www.thecoop.group/conquest/world");
+            // CHANNELS._getCode('TALK').send(newDayText, new MessageAttachment('/tmp/video.webm'));
+
+            CHANNELS._getCode('TALK').send('New day! What information should go here? :think:');
 
             return true;
             

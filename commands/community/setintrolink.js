@@ -1,4 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import { MESSAGES } from '../../origin/coop';
 
 export default class SetIntroLinkCommand extends CoopCommand {
 
@@ -27,7 +28,7 @@ export default class SetIntroLinkCommand extends CoopCommand {
 			// Check author is command user
 			// Update in database
 			// Check author is a member
-			
+			MESSAGES.selfDestruct(msg, 'Work in progress...');
 
 		} catch(e) {
 			console.log('setintrolink failed.');
