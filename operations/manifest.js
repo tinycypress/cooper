@@ -20,7 +20,7 @@ import ElectionHelper from "./members/hierarchy/election/electionHelper";
 import AboutHelper from "./marketing/about/aboutHelper";
 
 
-import COOP from "../origin/coop";
+import COOP, { USERS } from "../origin/coop";
 import TodoHelper from "./productivity/todos/todoHelper";
 import { status } from "./marketing/rewards/loyalty";
 import ProspectHelper from "./members/redemption/prospectHelper";
@@ -70,14 +70,20 @@ export default function eventsManifest() {
 
   // [WORKING DISABLED]
   // Check Todo helper items late! PUNISH!
-  // EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);
+  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);
   
   // [WORKING DISABLED]
   // New day events/calendar events.
-  // EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
+  EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
 
   // Marketing // [WORKING DISABLED]
-  // EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
+  EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
+
+
+
+  // TODO: Reintegrate the above, slow them down a bit?
+
+
 
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);  
 
@@ -101,6 +107,8 @@ export default function eventsManifest() {
 
   // Ensure all users registered in memory for functionality.
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
+  // Update person with richest role.
+  EventsHelper.runInterval(() => USERS.update(), baseTickDur * 5);
 
   // Election related
   ElectionHelper.setupIntervals();
@@ -114,7 +122,7 @@ export default function eventsManifest() {
 
 
   // Social
-  EventsHelper.chanceRunInterval(() => NewsHelper.mailboy(), 5, baseTickDur * 10);
+  EventsHelper.chanceRunInterval(() => NewsHelper.mailboy(), 10, baseTickDur * 8);
 
 
 

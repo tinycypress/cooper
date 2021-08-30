@@ -34,6 +34,9 @@ const shallowBot = async () => {
 
         // Make sure intro content is returned
 
+        await USERS.updateSavedIntros();
+
+
         // TODO:
         // https://developer.algorand.org/docs/features/asa
         // operations/minigames/medium/economy/blockchain/_wipCreateAccounts.js

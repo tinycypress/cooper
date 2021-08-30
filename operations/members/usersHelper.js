@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { SERVER, STATE, CHANNELS, USERS, MESSAGES, ROLES } from '../../origin/coop';
+import { SERVER, STATE, CHANNELS, USERS, MESSAGES, ROLES, TIME } from '../../origin/coop';
 import { ROLES as ROLES_CONFIG } from '../../origin/config';
 import DatabaseHelper from "../databaseHelper";
 import Database from "../../origin/setup/database";
@@ -104,11 +104,11 @@ export default class UsersHelper {
         return await Database.query(query);
     }
 
-    static async addToDatabase(userID, username, joindate) {
+    static async addToDatabase(userID, username, joindate, intro_time = null, intro_link = null, intro_content = null) {
         const query = {
             name: "add-user",
-            text: "INSERT INTO users(discord_id, username, join_date) VALUES ($1, $2, $3)",
-            values: [userID, username, joindate]
+            text: "INSERT INTO users(discord_id, username, join_date, intro_time, intro_link) VALUES ($1, $2, $3, $4, $5)",
+            values: [userID, username, joindate, intro_time, intro_link, intro_content]
         };
         return await Database.query(query);
     }
@@ -380,5 +380,33 @@ export default class UsersHelper {
         const result = await Database.query(query);        
         const rows = await DatabaseHelper.many(result);
         return rows;
+    }
+
+    static async updateSavedIntros() {
+        const savedUsers = await this.load();
+        const savedUsersWithIntroLink = savedUsers.filter(sUser => sUser.intro_link);
+        const result = await Promise.all(savedUsersWithIntroLink.map(async (sUser, index) => {
+            try {
+                // Don't bombard Discord API, pl0x.
+                await new Promise(resolve => setTimeout(resolve, 5000 * index));
+
+                const introMsg = await MESSAGES.getByLink(sUser.intro_link);
+                // Sanitise.
+                if (introMsg && introMsg.content && introMsg.content !== sUser.intro_content) {
+                    await this.updateField(sUser.discord_id, 'intro_content', introMsg.content);
+                    return { id: sUser.discord_id, status: 'DIFFERENT - UPDATED' };
+                }
+
+
+            } catch(e) {
+                console.log('Error updating an intro.');
+                console.error(e);   
+                return { id: sUser.discord_id, status: 'FAILED' };
+            }
+            return { id: sUser.discord_id, status: 'INTRO_MESSAGE_NOT_FOUND' };
+        }));
+
+        console.log('Finished handling intro updates', result);
+        return result;
     }
 }

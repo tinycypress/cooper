@@ -1,6 +1,6 @@
 import VotingHelper from "../../activity/redemption/votingHelper";
 
-import COOP, { STATE, CHANNELS } from "../../../origin/coop";
+import COOP, { STATE, CHANNELS, MESSAGES } from "../../../origin/coop";
 import { RAW_EMOJIS, ROLES, CHANNELS as CHANNELS_CONFIG } from '../../../origin/config';
 
 
@@ -73,8 +73,19 @@ export default class RedemptionHelper {
             if (forVotes >= reqForVotes) {
                 // Add to database if not already in it.
                 const savedUser = await COOP.USERS.loadSingle(targetMember.user.id);
-                if (!savedUser)
-                    await COOP.USERS.addToDatabase(targetMember.user.id, targetMember.user.username, targetMember.joinedDate);
+                if (!savedUser) {
+                    
+                    await COOP.USERS.addToDatabase(
+                        targetMember.user.id, 
+                        targetMember.user.username, 
+                        targetMember.joinedDate,
+                        reaction.message.msg.createdTimestamp,
+                        MESSAGES.link(reaction.message),
+
+                        // TODO: Sanitise.
+                        reaction.message.content
+                    );
+                }
 
                 // Inform the user.
                 try {
@@ -127,6 +138,7 @@ export default class RedemptionHelper {
             }
                 
         } catch(e) {
+            console.log('Approval failed.');
             console.error(e);
 
             // Catch cannot send to user and notify them in approval channel, Cooper is HIGHLY recommended. ;)
