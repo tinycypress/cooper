@@ -1,5 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import { MESSAGES } from '../../origin/coop';
+import { MESSAGES, TIME, USERS } from '../../origin/coop';
 
 export default class SetIntroLinkCommand extends CoopCommand {
 
@@ -8,28 +8,42 @@ export default class SetIntroLinkCommand extends CoopCommand {
 			name: 'setintrolink',
 			group: 'community',
 			memberName: 'setintrolink',
-			description: 'setintrolink a user.',
-			examples: ['!setintrolink https://disc...'],
+			description: 'Sets the intro link and content for a user.',
+			examples: ['!setintrolink LMF https://disc...'],
 			args: [
+				{
+					key: 'user',
+					type: 'user',
+					prompt: 'User the intro belongs to:'
+				},
 				{
 					key: 'link',
 					type: 'string',
-					prompt: 'Link to your intro message'
+					prompt: 'Link to your intro message:'
 				}
 			]
 		});
 	}
 
-	async run(msg, { link }) {
+	async run(msg, { user, link }) {
 		super.run(msg);
 
 		try {
 			// Check link is valid
-			// Check link exists
+			const introMsg = await MESSAGES.getByLink(link);
+			if (!introMsg) 
+				return MESSAGES.silentSelfDestruct(msg, 'Intro link does not exist.', 0, 5000);
+
 			// Check author is command user
+			if (introMsg.author.id !== user.id) 
+				return MESSAGES.silentSelfDestruct(msg, 'Intro link does not belong to that user.', 0, 5000);
+
 			// Update in database
-			// Check author is a member
-			MESSAGES.selfDestruct(msg, 'Work in progress...');
+			if (introMsg.content)
+				USERS.setIntro(user.id, introMsg.content, link, introMsg.createdTimestamp);
+
+			// Indicate success.
+			MESSAGES.silentSelfDestruct(msg, 'Intro link and content were updated for ' + user.username, 0, 10000);
 
 		} catch(e) {
 			console.log('setintrolink failed.');
