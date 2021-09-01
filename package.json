@@ -10,6 +10,9 @@
     "lint": "eslint ."
   },
   "author": "lmf-git",
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "algosdk": "^1.11.0",
     "axios": "^0.21.1",
