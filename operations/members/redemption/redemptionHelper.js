@@ -79,7 +79,7 @@ export default class RedemptionHelper {
                         targetMember.user.id, 
                         targetMember.user.username, 
                         targetMember.joinedDate,
-                        reaction.message.msg.createdTimestamp,
+                        reaction.message.createdTimestamp,
                         MESSAGES.link(reaction.message),
 
                         // TODO: Sanitise.

@@ -11,15 +11,19 @@ import { STATE } from './origin/coop';
 
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
-    if (e.message.includes('No video id found')) return false;
-
-    if (e.message === 'Client has encountered a connection error and is not queryable') {
-        console.log('Exiting to restart database.');
-        return process.exit();
-    }
-    
     console.error(e);
-    console.error(e.message, e.reason);
+
+    const errorMsg = e.message || null;
+    if (errorMsg) {
+        if (e.message.includes('No video id found')) return false;
+    
+        if (e.message === 'Client has encountered a connection error and is not queryable') {
+            console.log('Exiting to restart database.');
+            return process.exit();
+        }
+        
+        console.error(e.message, e.reason);
+    }
     
     console.log('UNHANDLED REJECTION ABOVE');
 });

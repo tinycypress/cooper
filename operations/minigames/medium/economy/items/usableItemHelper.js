@@ -11,7 +11,7 @@ import EggHuntMinigame from '../../../small/egghunt';
 import ReactionHelper from '../../../../activity/messages/reactionHelper';
 
 import { EMOJIS, RAW_EMOJIS } from "../../../../../origin/config";
-import COOP, { STATE, CHICKEN as Chicken } from "../../../../../origin/coop";
+import COOP, { STATE, CHICKEN as Chicken, ROLES } from "../../../../../origin/coop";
 import ElectionHelper from "../../../../members/hierarchy/election/electionHelper";
 import GoldCoinHandler from "./handlers/goldCoinHandler";
 import MineHandler from "./handlers/mineHandler";
@@ -124,7 +124,13 @@ export default class UsableItemHelper {
             // Find item code via emoji/emoji ID (trimmed) string in comparison to emojis.json.
             const emojiID = COOP.MESSAGES.getEmojiIdentifier(reaction.message);
             const itemCode = COOP.ITEMS.emojiToItemCode(emojiID);
-                
+
+            // Prevent non-members from picking things up.
+            if (!ROLES._idHasCode(user.id, 'MEMBER'))
+                return COOP.MESSAGES.selfDestruct(reaction.message,
+                    `${user.username} you can't pick that up, only members (role) can pick up items.`
+                );
+
             // If invalid item code or not usable, don't allow pick up event.
             if (!itemCode || !this.isUsable(itemCode))
                 // TODO: Maybe use reply functionality to point to message they tried to pick up?
