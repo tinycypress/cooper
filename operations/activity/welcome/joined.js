@@ -26,7 +26,7 @@ export default async function memberJoined(member) {
     CHANNELS._codes(['TALK'], joinAnnouncementText);
 
     // Add the welcome to the channel dedicated to people joining!
-    CHANNELS._codes(['WELCOME'], `**${member.user.username}** has flown into The Coop!`);
+    // CHANNELS._codes(['WELCOME'], `**${member.user.username}** has flown into The Coop!`);
 
     const coop = MESSAGES.emojiText(EMOJIS.COOP);
     const welcomeMessage = await CHANNELS._postToChannelCode('ENTRY', 

@@ -1,7 +1,5 @@
 import MessageNotifications from "./information/messageNotifications";
 
-import workPostHandler from "./encouragement/workPosted";
-import achievementPostedHandler from "./encouragement/achievementPosted";
 import introPostedHandler from "./welcome/introPosted";
 
 import MessageSpamHelper from "./messages/messageSpamHelper";
@@ -18,12 +16,6 @@ import KeyInfoPosted from "./messages/keyinfoPosted";
 export default async function messageAddedHandler(msg) {  
     // Block Cooper from all he shouldn't be involved with.
     // Try to optimise channel specific ones/guard orders.
-
-    // Encourage posters in show work channel.
-    workPostHandler(msg);
-
-    // Encourage achievement posters
-    achievementPostedHandler(msg);
 
     // Encourage intro posts with a wave and coop emoji
     introPostedHandler(msg);

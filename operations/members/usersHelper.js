@@ -107,7 +107,7 @@ export default class UsersHelper {
     static async addToDatabase(userID, username, joindate, intro_time = null, intro_link = null, intro_content = null) {
         const query = {
             name: "add-user",
-            text: "INSERT INTO users(discord_id, username, join_date, intro_time, intro_link) VALUES ($1, $2, $3, $4, $5)",
+            text: "INSERT INTO users(discord_id, username, join_date, intro_time, intro_link, intro_content) VALUES ($1, $2, $3, $4, $5, $6)",
             values: [userID, username, joindate, intro_time, intro_link, intro_content]
         };
         return await Database.query(query);

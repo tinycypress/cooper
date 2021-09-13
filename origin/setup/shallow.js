@@ -9,6 +9,7 @@ import { ROLES as ROLES_CONFIG } from '../config';
 
 import UserRoles from '../../operations/members/hierarchy/roles/userRoles';
 import DatabaseHelper from '../../operations/databaseHelper';
+import RegisterSlashCommand from './slashregisterscript';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -32,9 +33,39 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Make sure intro content is returned
 
-        await USERS.updateSavedIntros();
+        const channels = [
+            '724630911282577454',
+            '723660447508725806',
+            '731660320514506826',
+            '724212582633963540',
+            '723710770591957075',
+            '762748248959483906',
+            '816022755790815263',
+            '748649755965522031',
+            '779330384169009164',
+            '779330344272396299',
+            '779330299103674368',
+            '841126959298773052',
+            '762472730980515870',
+            '730592584509947946',
+            '779341376630292521',
+            '779341495504339014',
+            '796493571971874836',
+            '796156573771759676',
+            '796553158331596821',
+            '796823730483363860',
+            '724362429353558026',
+            '796516850702876702',
+            '822204573409083392',
+            '779330299103674368',
+            '779330384169009164'
+        ]
+
+        channels.map(chanID => {
+            const chan = CHANNELS._get(chanID);
+            if (!chan) console.log(chanID);
+        });
 
 
         // TODO:

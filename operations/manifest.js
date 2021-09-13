@@ -107,8 +107,9 @@ export default function eventsManifest() {
 
   // Ensure all users registered in memory for functionality.
   EventsHelper.runInterval(() => COOP.USERS.populateUsers(), baseTickDur * 4);
+
   // Update person with richest role.
-  EventsHelper.runInterval(() => USERS.update(), baseTickDur * 5);
+  EventsHelper.runInterval(() => USERS.updateSavedIntros(), baseTickDur * 5);
 
   // Election related
   ElectionHelper.setupIntervals();

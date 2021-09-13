@@ -213,10 +213,8 @@ export default class ChannelHelper {
     static fetchRandomTextChannel(guild) {       
         let result = null;
 
-        // TODO: Refactor into drop table, where it can be reused.
-
         // List of channels to not post to, maybe should reuse somewhere.
-        const filteredChannels = ['ENTRY', 'INTRO', 'LEADERS', 'STREAM_ACTUAL'];
+        const filteredChannels = ['ENTRY', 'INTRO', 'LEADERS', 'STREAM_NOMIC'];
 
         // Prevent egg and crate drops in unverified channels.
         const filteredKeys = Object.keys(CHANNELS_CONFIG)

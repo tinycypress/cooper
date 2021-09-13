@@ -62,7 +62,6 @@ export default class ToFailCommand extends CoopCommand {
 		// TODO: Calculate how much time was remaining
 		
 		// TODO: Add stars to success message and some kind of reaction event for stars now..? Validate DONE
-		// Posted to ${CHANNELS.textRef('SUCCESS')}
 		const failedTodoText = `<@${msg.author.id}>, marked todo #${todoID} as failed:\n\n` +
 			`"${todo.title}"`;
 

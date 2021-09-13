@@ -148,7 +148,7 @@ export default class ElectionHelper {
 
             // Inform all members so they can fairly stand.
             const electionText = `our latest ${CHANS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
-                `For further information on our elections refer to our forth amendment in ${CHANS.textRef('CONSTITUTION')}\n\n` +
+                `For further information on our elections refer to our forth amendment in ${CHANS.textRef('ABOUT')}\n\n` +
                 `To stand for election, send in any channel this message: \n\n !stand ((and your campaign message here, brackets - () - not needed)) \n\n` +
                 `Time remaining: ${readableElecLeft}.`;
 
