@@ -358,12 +358,12 @@ export default class UsersHelper {
         const query = {
             text: `SELECT *, roles.role_list 
                 FROM users
-                WHERE discord_id = $1
                 JOIN (
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
                     FROM user_roles ur
                     GROUP BY ur.discord_id
                 ) roles USING (discord_id)
+                WHERE discord_id = $1
             `,
             values: [discordID]
         };
