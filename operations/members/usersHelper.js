@@ -356,10 +356,15 @@ export default class UsersHelper {
 
     static async loadSingleForStaticGeneration(discordID) {
         const query = {
-            text: `SELECT 
-                    discord_id,
-                    (SELECT array_agg(role_code) FROM user_roles where discord_id = $1 GROUP BY discord_id) AS roles 
-                FROM users WHERE discord_id = $1`,
+            text: `SELECT *, roles.role_list 
+                FROM users
+                WHERE discord_id = $1
+                JOIN (
+                    SELECT array_agg(ur.role_code) AS role_list, discord_id
+                    FROM user_roles ur
+                    GROUP BY ur.discord_id
+                ) roles USING (discord_id)
+            `,
             values: [discordID]
         };
         const result = await DatabaseHelper.singleQuery(query);        
@@ -368,7 +373,7 @@ export default class UsersHelper {
 
     static async loadAllForStaticGeneration() {
         const query = {
-            text: `SELECT discord_id, roles.role_list 
+            text: `SELECT *, roles.role_list 
                 FROM users
                 JOIN (
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
