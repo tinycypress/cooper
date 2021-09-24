@@ -380,7 +380,7 @@ export default class UsersHelper {
                     FROM user_roles ur
                     GROUP BY ur.discord_id
                 ) roles USING (discord_id)
-                ORDER BY historical_points DESC
+                ORDER BY historical_points
             `
         };
         const result = await Database.query(query);        
