@@ -375,6 +375,7 @@ export default class UsersHelper {
         const query = {
             text: `SELECT *, roles.role_list 
                 FROM users
+                ORDER BY historical_points DESC
                 JOIN (
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
                     FROM user_roles ur
