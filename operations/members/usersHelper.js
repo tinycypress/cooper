@@ -379,8 +379,8 @@ export default class UsersHelper {
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
                     FROM user_roles ur
                     GROUP BY ur.discord_id
+                    ORDER BY users.historical_points DESC
                 ) roles USING (discord_id)
-                ORDER BY historical_points
             `
         };
         const result = await Database.query(query);        
