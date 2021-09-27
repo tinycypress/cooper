@@ -1,4 +1,5 @@
 import { Router } from "express";
+import DatabaseHelper from "../../../operations/databaseHelper";
 import ElectionHelper from "../../../operations/members/hierarchy/election/electionHelper";
 import { USERS } from '../../../origin/coop';
 
@@ -30,7 +31,6 @@ MembersRouter.get('/build-single/:discordID', async (req, res) => {
     return res.status(200).json(user);
 });
 
-
 MembersRouter.get('/', async (req, res) => {
     const users = await USERS.load();
     return res.status(200).json(users);
@@ -42,12 +42,8 @@ MembersRouter.get('/:discordID', async (req, res) => {
 });
 
 MembersRouter.get('/search/:needle', async (req, res) => {
-    // req.params.needle
-
-    return res.status(200).json([
-        { name: 'superwoman_artistic', type: 'test subject' },
-        { name: 'artistic_swooper', type: 'guinea pig' },
-    ]);
+    const results = await USERS.searchByUsername(req.params.needle);
+    return res.status(200).json(results);
 });
 
 export default MembersRouter;

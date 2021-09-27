@@ -33,8 +33,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        console.log('test'.includes('t'));
 
+        const result = await USERS.searchByUsername('LMF');
+        console.log(result);
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

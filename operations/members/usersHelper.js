@@ -354,6 +354,20 @@ export default class UsersHelper {
         });
     }
 
+    static async searchByUsername(username) {
+        const results = await DatabaseHelper.manyQuery({
+            text: `SELECT *, roles.role_list FROM users
+                JOIN (
+                    SELECT array_agg(ur.role_code) AS role_list, discord_id
+                    FROM user_roles ur
+                    GROUP BY ur.discord_id
+                ) roles USING (discord_id) WHERE username LIKE $1
+            `,
+            values: [username]
+        });
+        return results;
+    }
+
     static async loadSingleForStaticGeneration(discordID) {
         const query = {
             text: `SELECT *, roles.role_list 
