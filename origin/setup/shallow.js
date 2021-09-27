@@ -4,12 +4,14 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, MESSAGES, ROLES, USERS } from '../coop';
+import COOP, { CHANNELS, MESSAGES, ROLES, SERVER, TIME, USERS } from '../coop';
 import { ROLES as ROLES_CONFIG } from '../config';
 
 import UserRoles from '../../operations/members/hierarchy/roles/userRoles';
 import DatabaseHelper from '../../operations/databaseHelper';
 import RegisterSlashCommand from './slashregisterscript';
+import BlogHelper from '../../operations/marketing/blog/blogHelper';
+import Chicken from '../../operations/chicken';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -32,10 +34,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
-        const result = await USERS.searchByUsername('LMF');
-        console.log(result);
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

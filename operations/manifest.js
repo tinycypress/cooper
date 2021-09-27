@@ -20,7 +20,7 @@ import ElectionHelper from "./members/hierarchy/election/electionHelper";
 import AboutHelper from "./marketing/about/aboutHelper";
 
 
-import COOP, { USERS } from "../origin/coop";
+import COOP, { SERVER, USERS } from "../origin/coop";
 import TodoHelper from "./productivity/todos/todoHelper";
 import { status } from "./marketing/rewards/loyalty";
 import ProspectHelper from "./members/redemption/prospectHelper";
@@ -125,9 +125,10 @@ export default function eventsManifest() {
   // Social
   EventsHelper.chanceRunInterval(() => NewsHelper.mailboy(), 10, baseTickDur * 8);
 
+  // Ensure website rebuilt every week.
+  EventsHelper.runInterval(() => SERVER.webRebuildHandler(), baseTickDur * 8);
 
-
-  EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 15, baseTickDur * 4);
+  EventsHelper.chanceRunInterval(() => EconomyHelper.circulation(), 15, baseTickDur * 6);
 
   EventsHelper.runInterval(() => CooperMorality.evaluate(), baseTickDur * 4.5);
 

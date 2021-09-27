@@ -1,7 +1,9 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import { authorConfirmationPrompt } from '../../operations/common/ui';
+import BlogHelper from '../../operations/marketing/blog/blogHelper';
 import { MESSAGES } from '../../origin/coop';
 
-export default class PostPreviewCommand extends CoopCommand {
+export default class PostPublishCommand extends CoopCommand {
 
 	constructor(client) {
 		super(client, {
@@ -9,28 +11,45 @@ export default class PostPreviewCommand extends CoopCommand {
 			group: 'blog',
 			memberName: 'publish',
 			description: 'Attempts to publish a blog post draft.',
-			examples: ['!publish', '!publish 1337'],
+			examples: ['!publish (from within draft post channel)', '!publish CHANNEL_ID'],
 			args: [
 				{
-					key: 'id',
-					prompt: 'Draft post ID',
-					type: 'string'
+					key: 'channelID',
+					prompt: 'Blog post draft\'s channel ID',
+					type: 'string',
+					default: ''
 				}
 			]
 		});
 	}
 
-	async run(msg, { id }) {
+	// I think we should only let commander/leaders APPROVE posts but ALL MEMBERS allowed to submit.
+	async run(msg, { channelID }) {
 		super.run(msg);
         
-        // If ID is null... try to see if the current one will work.
-        
-		// I think we should only let commander/leaders APPROVE posts but ALL MEMBERS allowed to submit.
-        // Check user is the owner of the blog post draft.
-        
-		// Calculate and return the content or send to a coop website preview link... better.
+		try {
+			// Try to infer the draft channel ID from current channel.
+			if (!channelID) channelID =	msg.channel.id;
 
-		MESSAGES.silentSelfDestruct(msg, 'Post preview is currently a work in progress.');
+			// If ID is null... try to see if the current one will work.
+			const draft = await BlogHelper.loadDraftByChannelID(channelID);
+			if (!draft)
+				return MESSAGES.silentSelfDestruct(msg, 'Could not find blog post draft.');
+
+			// Check user is the owner of the blog post draft.
+			if (msg.author.id !== draft.owner_id)
+				return MESSAGES.silentSelfDestruct(msg, 'You cannot manage that blog post draft.');
+
+			const confirmMsg = await authorConfirmationPrompt(msg, 'Really publish ' + draft.slug + '?', msg.author.id);
+			if (!confirmMsg) return null;
+
+			// Fulfil the draft.
+			BlogHelper.fulfilDraft(draft);
+			
+		} catch(e) {
+			console.log('Failed to publish blog post draft.');
+			console.error
+		}
     }
 }
 
