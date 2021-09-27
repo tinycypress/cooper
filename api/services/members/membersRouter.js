@@ -41,4 +41,13 @@ MembersRouter.get('/:discordID', async (req, res) => {
     return res.status(200).json(user);
 });
 
+MembersRouter.get('/search/:needle', async (req, res) => {
+    // req.params.needle
+
+    return res.status(200).json([
+        { name: 'superwoman_artistic', type: 'test subject' },
+        { name: 'artistic_swooper', type: 'guinea pig' },
+    ]);
+});
+
 export default MembersRouter;
