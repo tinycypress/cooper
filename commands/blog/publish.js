@@ -40,7 +40,7 @@ export default class PostPublishCommand extends CoopCommand {
 			if (msg.author.id !== draft.owner_id)
 				return MESSAGES.silentSelfDestruct(msg, 'You cannot manage that blog post draft.');
 
-			const confirmMsg = await authorConfirmationPrompt(msg, 'Really publish ' + draft.slug + '?', msg.author.id);
+			const confirmMsg = await authorConfirmationPrompt(msg, 'Really publish ' + draft.title + '?', msg.author.id);
 			if (!confirmMsg) return null;
 
 			// Fulfil the draft.

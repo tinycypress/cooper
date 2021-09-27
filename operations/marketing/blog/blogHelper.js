@@ -146,8 +146,6 @@ export default class BlogHelper {
             USERS._dm(draft.owner_id, `Draft "${draft.title}" was just published!\n\n` + 
                 'It will be live here when processed: https://www.thecoop.group/blog/' + slug);
 
-
-
         } catch(e) {
             console.log('Error turning blog post channel into a blog post.');
             console.error(e);
