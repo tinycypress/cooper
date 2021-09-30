@@ -19,7 +19,7 @@ export default class TodoHelper {
     
                 `\n_Tip: Type and send !todo to create your todo task!_`;
 
-            CHANNELS._tempSend('TODOS', dueText, 333, 60000);
+            CHANNELS._send('TODOS', dueText);
         }
     }
 
