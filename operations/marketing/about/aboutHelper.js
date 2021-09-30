@@ -90,22 +90,5 @@ export default class AboutHelper {
         ];
         return await COOP.MESSAGES.preloadMsgLinks(links);
     }
-
-
-    static async addAboutStats() {
-        // Edit latest member message.
-        const last = await COOP.USERS.getLastUser();
-        const lastMember = COOP.USERS._getMemberByID(last.discord_id);
-
-        const latestMemberText = `**Latest Member**\n${lastMember.user.username} was our latest member!`;
-        if (STATE.CHANCE.bool({ likelihood: 5 }))
-            CHANNELS._send('TALK', latestMemberText);
-        
-        // post leaderboard to economy
-        const leaderboardMsgLink = await CHICKEN.getConfigVal('about_leaderboard_msg');
-        const leaderboardRows = await COOP.POINTS.getLeaderboard(0);
-        const leaderboardMsgText = await COOP.POINTS.renderLeaderboard(leaderboardRows);
-        await COOP.MESSAGES.editByLink(leaderboardMsgLink, leaderboardMsgText);
-    }
-
+    
 }

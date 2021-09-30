@@ -33,35 +33,35 @@ export const baseTickDur = 60 * 25 * 1000;
 
 // Interval basis for checking events that depend on community velocity value.
 export const VELOCITY_EVENTS = {
-  CHESTPOP: { 
-    since: 0, 
-    handler: () => ChestPop.run(), 
-    interval: (baseTickDur * 2) * 9 
-  },
+  // CHESTPOP: { 
+  //   since: 0, 
+  //   handler: () => ChestPop.run(), 
+  //   interval: (baseTickDur * 2) * 9 
+  // },
   INSTANT_FURNACE: { 
     since: 0, 
     handler: () => InstantFurnace.run(), 
-    interval: baseTickDur * 7.5 
+    interval: baseTickDur * 15
   },
   MINING: { 
     since: 0, 
     handler: () => Mining.run(), 
-    interval: baseTickDur * 6 
+    interval: baseTickDur * 10
   },
   WOODCUTTING: { 
     since: 0, 
     handler: () => Woodcutting.run(), 
-    interval: baseTickDur * 5 
+    interval: baseTickDur * 10
   },
   EGGHUNT: { 
     since: 0, 
     handler: () => EggHunt.run(), 
-    interval: baseTickDur / 2
+    interval: baseTickDur / 4
   },
   CRATEDROP: { 
     since: 0, 
     handler: () => CrateDrop.run(), 
-    interval: baseTickDur * 7
+    interval: baseTickDur * 25
   },
 };
 
@@ -79,11 +79,7 @@ export default function eventsManifest() {
   // Marketing // [WORKING DISABLED]
   EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
 
-
-
   // TODO: Reintegrate the above, slow them down a bit?
-
-
 
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);  
 
@@ -92,8 +88,7 @@ export default function eventsManifest() {
 
   // Check member of the week historical_points, see if needed... like election style
   EventsHelper.runInterval(() => COOP.POINTS.updateMOTW(), baseTickDur * 5);
-  EventsHelper.runInterval(() => AboutHelper.addAboutStats(), baseTickDur * 3.5);
-  EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 2);
+  EventsHelper.runInterval(() => MessageNotifications.process(), baseTickDur * 5);
   EventsHelper.runInterval(() => EconomyNotifications.post(), baseTickDur * 1.75);
 
   // Cleanup temporary messages.
