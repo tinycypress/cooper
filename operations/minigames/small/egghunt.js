@@ -2,6 +2,7 @@ import { map as _map, values as _values } from 'lodash';
 import { RAW_EMOJIS, EMOJIS } from '../../../origin/config';
 import COOP, { STATE, CHANNELS, ITEMS, MESSAGES, USERS } from '../../../origin/coop';
 import TemporaryMessages from '../../maintenance/temporaryMessages';
+import { isRegisteredUserGuard } from '../medium/economy/itemCmdGuards';
 
 
 import DropTable from '../medium/economy/items/droptable';
@@ -61,6 +62,9 @@ export default class EggHuntMinigame {
             // TODO: This isn't secure enough, need to check it's a coop emoji
             // SOLUTION: reaction.emoji.guild.id === COOP.id
             const isPanEmoji = reaction.emoji.name === 'frying_pan';
+
+            // Check user is in the database:
+            if (!isRegisteredUserGuard(reaction.message, user)) return false;
 
             if (isEggCollectible && isPanEmoji) this.fry(reaction, user);
             if (isEggCollectible && isBombEmoji) this.explode(reaction, user);

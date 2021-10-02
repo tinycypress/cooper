@@ -1,6 +1,21 @@
 import { MESSAGES, USERS, SERVER, ITEMS, USABLE } from '../../../../origin/coop';
 
 
+export function isRegisteredUserGuard(msgRef, user) {
+    // Check if user is registered.
+    const registeredUser = await USERS.loadSingle(user.id);
+    if (!registeredUser) {
+        const errorText = `${user.username}, is not yet registered in the economy.`;
+        MESSAGES.selfDestruct(msgRef, errorText, 0, 5000);
+
+        // Indicate that the code guard failed.
+        return false;
+    }
+
+    // Indicate that the code guard passed.
+    return true;
+}
+
 export function usableItemCodeGuard(msgRef, itemCode, username) {
     // Check if this item code can be given.
     if (!USABLE.isUsable(itemCode) || itemCode === null) {

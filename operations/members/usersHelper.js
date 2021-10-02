@@ -426,7 +426,6 @@ export default class UsersHelper {
             return { id: sUser.discord_id, status: 'INTRO_MESSAGE_NOT_FOUND' };
         }));
 
-        console.log('Finished handling intro updates', result);
         return result;
     }
 }
