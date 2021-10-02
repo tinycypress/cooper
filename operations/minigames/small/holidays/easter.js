@@ -44,27 +44,6 @@ export default class EasterMinigame {
         // Only spawn on easter
         if (this.isEaster()) 
             COOP.ITEMS.drop(COOP.CHANNELS._getCode('TALK'), 'EASTER_EGG', 30);
-
-            // TODO: Announce current easter and mass drop for 2 hours.
-            // setInterval(() => {
-            //     // listenReactions(EasterMinigame.onReaction);
-            //     EasterMinigame.run();
-    
-            //     for (let i = 0; i < 10; i++) {
-            //         const likelihood = i * 5;
-            //         const randomDelayMax = STATE.CHANCE.natural({ min: 5000, max: 60000 });
-            //         if (STATE.CHANCE.bool({ likelihood })) {
-            //             setTimeout(() => EasterMinigame.run(), randomDelayMax * i);
-            //         }
-            //     }
-    
-        
-            //     // Format and output text.
-            //     const emojiText = COOP.MESSAGES.emojiCodeText('EASTER_EGG');
-            //     const talk = COOP.CHANNELS._getCode('TALK');
-            //     const keyInfo = COOP.CHANNELS._getCode('KEY_INFO');
-            //     COOP.MESSAGES.selfDestruct(keyInfo, `${emojiText.repeat(3)} May drop one in talk now... ;) <#${talk.id}>`, 0, 30000);
-            // }, (2 * (60)) * 1000);    
     }
 
 

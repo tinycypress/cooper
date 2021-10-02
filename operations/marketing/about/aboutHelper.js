@@ -20,7 +20,6 @@ export default class AboutHelper {
     
     static sectionEmojis = {
         ANNOUNCEMENTS: {
-            '❗': announcementOpts.keyInfoToggle, // Done
             '📢': announcementOpts.announcementSubToggle, // Done
             '📰': announcementOpts.newsletterToggle, // More complex unfinished
             '☠️': announcementOpts.privacyBomb, // Most complex unfinished (need to add confirm)

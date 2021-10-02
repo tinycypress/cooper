@@ -1,7 +1,7 @@
 import { MESSAGES, USERS, SERVER, ITEMS, USABLE } from '../../../../origin/coop';
 
 
-export function isRegisteredUserGuard(msgRef, user) {
+export async function isRegisteredUserGuard(msgRef, user) {
     // Check if user is registered.
     const registeredUser = await USERS.loadSingle(user.id);
     if (!registeredUser) {

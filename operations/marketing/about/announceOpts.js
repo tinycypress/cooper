@@ -3,10 +3,6 @@ import COOP, { USERS } from "../../../origin/coop";
 
 export default class AnnouncementOpts {
 
-    // See if user can be accessed via reaction?
-    static keyInfoToggle(reaction, user) {
-        COOP.ROLES.toggle(user.id, 'KEY_INFO');
-    }
     
     static newsletterToggle() {
         // console.log('newsletterToggle', reaction.message.id, user.username);

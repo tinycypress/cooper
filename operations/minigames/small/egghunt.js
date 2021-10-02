@@ -45,7 +45,7 @@ export default class EggHuntMinigame {
     }
 
 
-    static onReaction(reaction, user) {
+    static async onReaction(reaction, user) {
         try {
             // Prevent Cooper from collecting his own eggs.
             if (USERS.isCooper(user.id)) return false;
@@ -64,7 +64,7 @@ export default class EggHuntMinigame {
             const isPanEmoji = reaction.emoji.name === 'frying_pan';
 
             // Check user is in the database:
-            if (!isRegisteredUserGuard(reaction.message, user)) return false;
+            if (!await isRegisteredUserGuard(reaction.message, user)) return false;
 
             if (isEggCollectible && isPanEmoji) this.fry(reaction, user);
             if (isEggCollectible && isBombEmoji) this.explode(reaction, user);
