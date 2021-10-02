@@ -6,6 +6,15 @@ export const COMPETITION_DUR = 1000 * 3600 * 24 * 7;
 
 export default class CompetitionHelper {
 
+    static async get(code) {
+        const competitions = await DatabaseHelper.manyQuery({
+            name: "load-competition",
+            text: `SELECT * FROM events WHERE event_code = $1`,
+            values: [code]
+        });
+        return competitions;
+    }
+
     static async load() {
         const competitions = await DatabaseHelper.manyQuery({
             name: "load-competitions",
