@@ -41,6 +41,15 @@ export default class CompetitionHelper {
         });
     }
 
+
+    static async setDescription(code, description) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-competition-description",
+            text: 'UPDATE events SET description = $2 WHERE event_code = $1',
+            values: [code, description]
+        });
+    }
+
     static async setMessageID(code, msg) {
         return await DatabaseHelper.singleQuery({
             name: "set-competition-message",

@@ -1,5 +1,7 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import COOP, { SERVER } from '../../origin/coop';
+import CompetitionHelper from '../../operations/social/competitionHelper';
+import { CHANNELS } from '../../origin/config';
+import { MESSAGES, ROLES } from '../../origin/coop';
 
 export default class CompetitionDescriptionCommand extends CoopCommand {
 
@@ -30,14 +32,22 @@ export default class CompetitionDescriptionCommand extends CoopCommand {
 		super.run(msg);
 
 		try {
-			// Check if user is leader or commander
-			console.log(msg.author);
+			// Check if user is leader or commander.
+			if (!ROLES._idHasCode(msg.author.id, 'COMMANDER') && !ROLES._idHasCode(msg.author.id, 'LEADER'))
+				return MESSAGES.silentSelfDestruct(msg, 'Only the Commander or Leaders can use this command.');
 
-			// Check if valid competition
+			// Check if valid competition code.
 			const COMP_KEYS = ['art_competition', 'business_competition', 'technology_competition'];
-			console.log(COMP_KEYS)
+			if (COMP_KEYS.includes(competition_event_code.toLowerCase()))
+				return MESSAGES.silentSelfDestruct(msg, `Competition event code must be one of these codes: ${COMP_KEYS.join(', ')}.`);
 
-			// Set it
+			// Set it to the message content and database.
+			const compMsg = await MESSAGES.getByLink(CHANNELS[competition_event_code.toUpperCase()]);
+			await compMsg.edit(description);
+
+			// Set description 
+			await CompetitionHelper.setDescription(competition_event_code, description);
+
 		} catch (e) {
 			console.error(e);
 		}
