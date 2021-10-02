@@ -28,7 +28,6 @@ export default class ChannelHelper {
         return this._send(recordChan, text);
     }
 
-
     static getByID(guild, id) {
         return guild.channels.cache.get(id);
     }
@@ -104,7 +103,6 @@ export default class ChannelHelper {
         const prodServer = SERVER.getByCode(STATE.CLIENT, 'PROD');
         const feedChannel = this.getByCode(prodServer, name);
 
-        
         return new Promise((resolve, reject) => {
             let request = null;
             setTimeout(() => {

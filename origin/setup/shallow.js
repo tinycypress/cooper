@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop';
-import CompetitionHelper from '../../operations/social/competitionHelper';
+import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper';
 import EventsHelper from '../../operations/eventsHelper';
 
 // ^ DEV IMPORT AREA ^
@@ -31,14 +31,21 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
         // COMPETITIONS
         // Code
         // Art
         // Business
 
-        
+        // id: 2,
+        // event_code: 'technology_competition',
+        // last_occurred: '1633197189510',
+        // active: true,
+        // description: null
 
+        EventsHelper.update('technology_competition', Date.now() - COMPETITION_DUR * 4);
+        CompetitionHelper.track();
+        
+        
         // Track competitions (due or not)
         // Announce and show channel when active
         // Allow people to register for competition
