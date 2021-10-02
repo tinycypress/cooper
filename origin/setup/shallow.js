@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, MESSAGES, ROLES, SERVER, TIME, USERS } from '../coop';
-import { ITEMS, ROLES as ROLES_CONFIG } from '../config';
 
 import UserRoles from '../../operations/members/hierarchy/roles/userRoles';
 import DatabaseHelper from '../../operations/databaseHelper';
