@@ -23,8 +23,7 @@ export default class CompetitionDescriptionCommand extends CoopCommand {
 					prompt: 'Input the competition\'s description',
 					type: 'string',
 				},
-			],
-			ownerOnly: true
+			]
 		});
 	}
 
@@ -40,7 +39,7 @@ export default class CompetitionDescriptionCommand extends CoopCommand {
 
 			// Check if valid competition code.
 			const COMP_KEYS = ['art_competition', 'business_competition', 'technology_competition'];
-			if (COMP_KEYS.includes(competition_event_code.toLowerCase()))
+			if (!COMP_KEYS.includes(competition_event_code.toLowerCase()))
 				return MESSAGES.silentSelfDestruct(msg, `Competition event code must be one of these codes: ${COMP_KEYS.join(', ')}.`);
 
 			// Set it to the message content and database.
