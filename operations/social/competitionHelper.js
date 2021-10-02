@@ -50,7 +50,6 @@ export default class CompetitionHelper {
         });
     }
 
-
     static async setDescription(code, description) {
         return await DatabaseHelper.singleQuery({
             name: "set-competition-description",
@@ -76,8 +75,6 @@ export default class CompetitionHelper {
 
         competitions.map(async comp => {
             const compLastOccurred = parseInt(comp.last_occurred);
-
-            console.log(comp);
 
             // Check if active competition has expired.
             if (comp.active) {

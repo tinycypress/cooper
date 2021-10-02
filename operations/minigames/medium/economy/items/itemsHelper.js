@@ -25,8 +25,6 @@ export default class ItemsHelper {
         return matches.map(x => x.replace(/\s/g, '_'));
     }
 
-
-
     static beautifyItemCode(itemCode) {
         const lowerName = itemCode.replace("_", " ").toLowerCase();
         const nameCapitalized = lowerName.charAt(0).toUpperCase() + lowerName.slice(1);
@@ -73,8 +71,6 @@ export default class ItemsHelper {
             }
         }
 
-
-
         return successInert;
     }
 
@@ -93,8 +89,6 @@ export default class ItemsHelper {
         
         const result = await Database.query(query);
         const newQty = DatabaseHelper.singleField(result, 'quantity', 0)
-
-        
 
         // Get the total of that item now.
         const total = await this.count(itemCode);
