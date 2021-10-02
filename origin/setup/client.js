@@ -10,7 +10,8 @@ import reactAddedHandler from "../../operations/activity/reactionAdded";
 
 
 export default () => {
-    const client = new Client({ owner: '799692429442809937' });
+    // TODO: Set owner dynamically to user id of person with commander role (more democratic).
+    const client = new Client({ owner: '786671654721683517' });
 
     const creator = new SlashCreator({
         applicationID: process.env.DISCORD_APPID,

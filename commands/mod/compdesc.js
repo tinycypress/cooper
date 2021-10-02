@@ -31,8 +31,11 @@ export default class CompetitionDescriptionCommand extends CoopCommand {
 
 		try {
 			// Check if user is leader or commander
+			console.log(msg.author);
 
 			// Check if valid competition
+			const COMP_KEYS = ['art_competition', 'business_competition', 'technology_competition'];
+			console.log(COMP_KEYS)
 
 			// Set it
 		} catch (e) {

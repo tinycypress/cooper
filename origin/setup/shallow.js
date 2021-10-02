@@ -42,10 +42,15 @@ const shallowBot = async () => {
         // active: true,
         // description: null
 
-        EventsHelper.update('technology_competition', Date.now() - COMPETITION_DUR * 4);
-        CompetitionHelper.track();
+        // EventsHelper.update('art_competition', Date.now() - COMPETITION_DUR * 4);
+        // EventsHelper.update('business_competition', Date.now() - COMPETITION_DUR * 4);
+        // EventsHelper.update('technology_competition', Date.now() - COMPETITION_DUR * 4);
+        // CompetitionHelper.track();
+
+        // const comps = await CompetitionHelper.load();
+        // console.log(comps);
         
-        
+
         // Track competitions (due or not)
         // Announce and show channel when active
         // Allow people to register for competition
