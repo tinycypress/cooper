@@ -6,6 +6,7 @@ const numberEnding = number => (number > 1) ? 's' : '';
 
 export default class EventsHelper {
    
+
     static async read(eventCode) {
         let value = null;
 
@@ -20,8 +21,16 @@ export default class EventsHelper {
 
         return value;
     }
-    
 
+    static async create(eventCode) {
+        const query = {
+            name: "create-recurring-event",
+            text: "INSERT INTO events (event_code, last_occurred) VALUES ($1, $2)",
+            values: [eventCode, Date.now()]
+        };
+        return await Database.query(query);
+    }
+    
     static async update(eventCode, time) {
         const query = {
             name: "update-event",

@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop';
+import CompetitionHelper from '../../operations/social/competitionHelper';
+import EventsHelper from '../../operations/eventsHelper';
 
 // ^ DEV IMPORT AREA ^
 
@@ -29,7 +31,20 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // COOP.ITEMS.add('786671654721683517', 'RABBIT', 1);
+
+        // COMPETITIONS
+        // Code
+        // Art
+        // Business
+
+        
+
+        // Track competitions (due or not)
+        // Announce and show channel when active
+        // Allow people to register for competition
+        // Allow posting of entries
+        // Declare winner and hide channel when ended
+
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

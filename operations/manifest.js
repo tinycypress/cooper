@@ -28,6 +28,7 @@ import serverTick from "./serverTick";
 import TemporaryMessages from "./maintenance/temporaryMessages";
 import TempAccessCodeHelper from "./members/tempAccessCodeHelper";
 import NewsHelper from "./social/newsHelper";
+import CompetitionHelper from "./social/competitionHelper";
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -68,18 +69,16 @@ export const VELOCITY_EVENTS = {
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
 export default function eventsManifest() {
 
-  // [WORKING DISABLED]
   // Check Todo helper items late! PUNISH!
-  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur / 3);
+  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur * 10);
   
-  // [WORKING DISABLED]
   // New day events/calendar events.
   EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
 
-  // Marketing // [WORKING DISABLED]
-  EventsHelper.chanceRunInterval(status, 10, baseTickDur * 5.25);
+  // Track the competitions, start/end if necessary.
+  EventsHelper.runInterval(() => CompetitionHelper.track(), baseTickDur * 8);
 
-  // TODO: Reintegrate the above, slow them down a bit?
+  EventsHelper.chanceRunInterval(status, 10, baseTickDur * 50);
 
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);  
 
