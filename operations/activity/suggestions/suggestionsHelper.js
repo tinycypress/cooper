@@ -166,7 +166,7 @@ export default class SuggestionsHelper {
                         `${EMOJIS.POLL_FOR.repeat(votes.for)}${EMOJIS.POLL_AGAINST.repeat(votes.against)}`;
                 
                     // Inform the server of passed suggestion.
-                    CHANNELS._codes(['TALK', 'FEED', 'ROADMAP'], passedText);
+                    CHANNELS._send('ROADMAP', passedText);
                 }
 
                 // Delete the message with a delay to avoid rate limiting.

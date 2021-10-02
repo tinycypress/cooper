@@ -57,9 +57,6 @@ export default async (msg) => {
         MESSAGES.delayReact(msg, RAW_EMOJIS.VOTE_AGAINST, 999);
       }
 
-      // Add helpful emoji reaction suggestions to the message.
-      MESSAGES.delayReact(msg, '👋', 333);
-
   } catch(e) {
     console.error(e)
   }
