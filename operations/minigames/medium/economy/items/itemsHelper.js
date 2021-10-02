@@ -324,12 +324,7 @@ export default class ItemsHelper {
     }
 
     static codeToFlake(code) {
-        let flake = null;
-
-        const item = ITEMS[code] || null;
-        if (item) flake = item.EMOJI.flake;
-
-        return flake;
+        return EMOJIS[code] || null;
     }
 
     static async getRichest() {
