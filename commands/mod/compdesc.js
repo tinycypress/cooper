@@ -31,6 +31,8 @@ export default class CompetitionDescriptionCommand extends CoopCommand {
 	async run(msg, { competition_event_code, description }) {
 		super.run(msg);
 
+		console.log(competition_event_code, description);
+
 		try {
 			// Check if user is leader or commander.
 			if (!ROLES._idHasCode(msg.author.id, 'COMMANDER') && !ROLES._idHasCode(msg.author.id, 'LEADER'))
