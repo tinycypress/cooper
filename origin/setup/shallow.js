@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, MESSAGES, ROLES, SERVER, TIME, USERS } from '../coop';
-import { ROLES as ROLES_CONFIG } from '../config';
+import { ITEMS, ROLES as ROLES_CONFIG } from '../config';
 
 import UserRoles from '../../operations/members/hierarchy/roles/userRoles';
 import DatabaseHelper from '../../operations/databaseHelper';
@@ -34,6 +34,9 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
+
+
+        // COOP.ITEMS.add('786671654721683517', 'RABBIT', 1);
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa
