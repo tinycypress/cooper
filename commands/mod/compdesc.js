@@ -1,7 +1,6 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
 import CompetitionHelper from '../../operations/social/competitionHelper';
-import { CHANNELS } from '../../origin/config';
-import { MESSAGES, ROLES } from '../../origin/coop';
+import { MESSAGES, ROLES, CHANNELS } from '../../origin/coop';
 
 export default class CompetitionDescriptionCommand extends CoopCommand {
 
@@ -42,8 +41,12 @@ export default class CompetitionDescriptionCommand extends CoopCommand {
 			if (!COMP_KEYS.includes(competition_event_code.toLowerCase()))
 				return MESSAGES.silentSelfDestruct(msg, `Competition event code must be one of these codes: ${COMP_KEYS.join(', ')}.`);
 
+			// Competition details
+			const comp = await CompetitionHelper.get(competition_event_code.toLowerCase());
+
 			// Set it to the message content and database.
-			const compMsg = await MESSAGES.getByLink(CHANNELS[competition_event_code.toUpperCase()]);
+			const chan = CHANNELS._getCode(competition_event_code.toUpperCase());
+			const compMsg = chan.messages.fetch(comp.message_id);
 			await compMsg.edit(description);
 
 			// Set description 
