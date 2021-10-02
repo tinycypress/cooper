@@ -29,8 +29,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
-
         // COOP.ITEMS.add('786671654721683517', 'RABBIT', 1);
 
         // TODO:
