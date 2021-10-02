@@ -1,5 +1,4 @@
 import { Router } from "express";
-import DatabaseHelper from "../../../operations/databaseHelper";
 import ElectionHelper from "../../../operations/members/hierarchy/election/electionHelper";
 import { USERS } from '../../../origin/coop';
 

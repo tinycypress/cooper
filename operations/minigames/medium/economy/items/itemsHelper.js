@@ -120,7 +120,8 @@ export default class ItemsHelper {
 
         // Extract latest/assumed qty.
         let qty = 0;
-        if (itemRow && typeof itemRow.quantity !== null)
+        const rowQuantity = itemRow.quantity || null;
+        if (itemRow && rowQuantity)
             qty = itemRow.quantity;
         
         // Delete EXACT 0 but not < 0, don't keep unnecessary default rows for item ownership.

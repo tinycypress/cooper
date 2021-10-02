@@ -61,7 +61,8 @@ export default class ProjectsHelper {
                     TIME._secs(), unixSecsDeadline
                 ]
             };
-            const result = await Database.query(query);
+            
+            await Database.query(query);
 
             return channel;
 

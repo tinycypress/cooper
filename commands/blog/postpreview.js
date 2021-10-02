@@ -27,6 +27,7 @@ export default class PostPreviewCommand extends CoopCommand {
 
 
 		// Check for default and see if the current channel is a blog post.
+		console.log(titleOrID);
 
 		// TOOD: Calculate and return the content or send to a coop website preview link... better.
     }

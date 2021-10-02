@@ -1,4 +1,4 @@
-import COOP, { STATE } from "../../../../origin/coop";
+import COOP from "../../../../origin/coop";
 
 export default class ReservesHelper {
 

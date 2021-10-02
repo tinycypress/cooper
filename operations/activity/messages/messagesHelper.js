@@ -1,5 +1,5 @@
 import { MESSAGES, CHANNELS, SERVER }  from "../../../origin/coop";
-import { EMOJIS, CHANNELS as CHANNELS_CONFIG } from "../../../origin/config";
+import { EMOJIS } from "../../../origin/config";
 
 import createEmbed from "./embedHelper";
 import { silentOpts } from "../../channelHelper";

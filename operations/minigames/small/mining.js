@@ -4,7 +4,7 @@ import SkillsHelper from "../medium/skills/skillsHelper";
 
 import UsableItemHelper from "../medium/economy/items/usableItemHelper";
 
-import { STATE, REACTIONS, SERVER, ITEMS, MESSAGES, USERS, CHANNELS } from "../../../origin/coop";
+import { STATE, REACTIONS, ITEMS, MESSAGES, USERS, CHANNELS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import Statistics from "../../activity/information/statistics";
 import TemporaryMessages from "../../maintenance/temporaryMessages";

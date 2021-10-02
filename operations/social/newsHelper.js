@@ -15,15 +15,15 @@ export default class NewsHelper {
         let query;
         let channelCode;
 
-        if (STATE.CHANCE.bool({ likelihood: 20 })) {
+        if (STATE.CHANCE.bool({ likelihood: 21 })) {
             query = 'creativity';
             channelCode = 'ART_CHAT';
 
-        } else if (STATE.CHANCE.bool({ likelihood: 20 })) {
+        } else if (STATE.CHANCE.bool({ likelihood: 22 })) {
             query = 'economics';
             channelCode = 'BUSINESS_CHAT';
 
-        } else if (STATE.CHANCE.bool({ likelihood: 20 })) {
+        } else if (STATE.CHANCE.bool({ likelihood: 23 })) {
             query = 'technology';
             channelCode = 'CODING_CHAT';
 

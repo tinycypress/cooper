@@ -2,7 +2,7 @@ import EconomyNotifications from "../../activity/information/economyNotification
 
 import SkillsHelper from "../medium/skills/skillsHelper";
 
-import { STATE, REACTIONS, SERVER, USABLE, ITEMS, MESSAGES, USERS, CHANNELS } from "../../../origin/coop";
+import { STATE, REACTIONS, USABLE, ITEMS, MESSAGES, USERS, CHANNELS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import Statistics from "../../activity/information/statistics";
 import TemporaryMessages from "../../maintenance/temporaryMessages";

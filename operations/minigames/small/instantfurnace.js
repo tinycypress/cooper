@@ -1,4 +1,4 @@
-import { STATE, SERVER, USABLE, MESSAGES, CHANNELS, USERS, ITEMS } from "../../../origin/coop";
+import { STATE, USABLE, MESSAGES, CHANNELS, USERS, ITEMS } from "../../../origin/coop";
 import { EMOJIS } from "../../../origin/config";
 import TemporaryMessages from "../../maintenance/temporaryMessages";
 

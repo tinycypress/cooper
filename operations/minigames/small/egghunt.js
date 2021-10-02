@@ -257,7 +257,7 @@ export default class EggHuntMinigame {
                 const basketEmojiText = MESSAGES.emojiText(RAW_EMOJIS.BASKET);
                 MESSAGES.delayEdit(
                     reaction.message, 
-                    `${emojiText}${basketEmojiText}💨\ ${acknowledgementMsgText}`, 
+                    `${emojiText}${basketEmojiText}💨 ${acknowledgementMsgText}`, 
                     333
                 );
                 MESSAGES.delayDelete(reaction.message, 15000);

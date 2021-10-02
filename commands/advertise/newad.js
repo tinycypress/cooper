@@ -1,11 +1,11 @@
-import { RAW_EMOJIS, EMOJIS } from '../../origin/config';
-import { MESSAGES, ITEMS, TIME, USERS, CHANNELS } from '../../origin/coop';
+// import { RAW_EMOJIS, EMOJIS } from '../../origin/config';
+// import { MESSAGES, ITEMS, TIME, USERS, CHANNELS } from '../../origin/coop';
 
-import UsableItemHelper from '../../operations/minigames/medium/economy/items/usableItemHelper';
-import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
+// import UsableItemHelper from '../../operations/minigames/medium/economy/items/usableItemHelper';
+// import ProjectsHelper from '../../operations/productivity/projects/projectsHelper';
+// import { authorConfirmationPrompt } from '../../operations/common/ui';
 
 import CoopCommand from '../../operations/activity/messages/coopCommand';
-import { authorConfirmationPrompt } from '../../operations/common/ui';
 
 export default class NewAdCommand extends CoopCommand {
 
