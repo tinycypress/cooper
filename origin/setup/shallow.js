@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop';
-import CONFIG from '../config';
 
 // ^ DEV IMPORT AREA ^
 

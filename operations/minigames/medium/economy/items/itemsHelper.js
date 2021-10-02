@@ -1,7 +1,7 @@
 import EmojiHelper from "./emojiHelper";
 
 import COOP, { USABLE, SERVER, TIME, STATE } from "../../../../../origin/coop";
-import { ITEMS, EMOJIS, RAW_EMOJIS } from '../../../../../origin/config';
+import { EMOJIS, RAW_EMOJIS } from '../../../../../origin/config';
 import DatabaseHelper from "../../../../databaseHelper";
 import Database from '../../../../../origin/setup/database';
 
