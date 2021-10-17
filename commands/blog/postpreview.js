@@ -1,6 +1,8 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import DatabaseHelper from '../../operations/databaseHelper';
 import BlogHelper from '../../operations/marketing/blog/blogHelper';
-import { MESSAGES } from '../../origin/coop';
+import { CHANNELS, MESSAGES } from '../../origin/coop';
+import Database from '../../origin/setup/database';
 
 export default class PostPreviewCommand extends CoopCommand {
 
@@ -24,7 +26,17 @@ export default class PostPreviewCommand extends CoopCommand {
 			MESSAGES.silentSelfDestruct(msg, 'Must use !postpreview command on a post draft channel!');
 
 		// Add content to the table so it shows up to date.
-		MESSAGES.silentSelfDestruct(msg, `**${draft.title} preview: \n<${previewLink}>`);
+		const chan = CHANNELS._get(draft.channel_id);
+		const content = await BlogHelper.buildDraft(chan);
+
+		Database.query({
+			name: "update-draft-content",
+			text: `UPDATE post_drafts SET content = $1 WHERE channel_id = $2 VALUES($1, $2)`,
+			values: [content, draft.channel_id]
+		});
+
+		// Send the link
+		MESSAGES.silentSelfDestruct(msg, `**${draft.title}** preview: \n<${previewLink}>`);
     }
 }
 
