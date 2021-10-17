@@ -33,7 +33,7 @@ export default class PostPreviewCommand extends CoopCommand {
 
 		await Database.query({
 			name: "update-draft-content",
-			text: `UPDATE post_drafts SET content = $1 WHERE channel_id = $2 VALUES($1, $2)`,
+			text: `UPDATE post_drafts SET content = $1 WHERE channel_id = $2`,
 			values: [content, draft.channel_id]
 		});
 
