@@ -1,4 +1,5 @@
 import CoopCommand from '../../operations/activity/messages/coopCommand';
+import BlogHelper from '../../operations/marketing/blog/blogHelper';
 import { MESSAGES } from '../../origin/coop';
 
 export default class PostPreviewCommand extends CoopCommand {
@@ -9,27 +10,21 @@ export default class PostPreviewCommand extends CoopCommand {
 			group: 'blog',
 			memberName: 'postpreview',
 			description: 'Preview the finished post version of a post channel. [The "result"].',
-			examples: ['postpreview', 'postpreview example?'],
-			args: [
-				{
-					key: 'titleOrID',
-					prompt: 'Post title/ID?',
-					type: 'string',
-					default: ''
-				}
-			]
+			examples: ['!postpreview [on blog post draft channel]', 'postpreview example?']
 		});
 	}
 
-	async run(msg, { titleOrID }) {
+	async run(msg) {
 		super.run(msg);
-		MESSAGES.silentSelfDestruct(msg, 'Post preview is currently a work in progress.');
 
+		const draft = await BlogHelper.loadDraftByChannelID(msg.channel.id);
+		const previewLink = `https://thecoop.group/blog/draft/${msg.channel.id}`
 
-		// Check for default and see if the current channel is a blog post.
-		console.log(titleOrID);
+		if (!draft)
+			MESSAGES.silentSelfDestruct(msg, 'Must use !postpreview command on a post draft channel!');
 
-		// TOOD: Calculate and return the content or send to a coop website preview link... better.
+		// Add content to the table so it shows up to date.
+		MESSAGES.silentSelfDestruct(msg, `**${draft.title} preview: \n<${previewLink}>`);
     }
 }
 

@@ -20,7 +20,7 @@ BlogRouter.get('/:slug', async (req, res) => {
 });
 
 BlogRouter.get('/draft/:draftslug', async (req, res) => {
-    const post = await BlogHelper.loadPostBySlug(req.params.draftslug);
+    const post = await BlogHelper.loadDraftByChannelID(req.params.draftslug);
     res.status(200).json(post);
 });
 
