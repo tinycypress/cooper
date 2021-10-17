@@ -33,11 +33,8 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Make post previewable
-        const drafts = await BlogHelper.loadDrafts();
-        console.log(drafts);
-
-
-        
+        // const drafts = await BlogHelper.loadDrafts();
+        // console.log(drafts);
 
         // COMPETITIONS
         // Code
@@ -63,11 +60,6 @@ const shallowBot = async () => {
         // Allow people to register for competition
         // Allow posting of entries
         // Declare winner and hide channel when ended
-
-
-
-
-
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

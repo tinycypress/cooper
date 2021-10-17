@@ -29,7 +29,9 @@ export default class PostPreviewCommand extends CoopCommand {
 		const chan = CHANNELS._get(draft.channel_id);
 		const content = await BlogHelper.buildDraft(chan);
 
-		Database.query({
+		console.log(content);
+
+		await Database.query({
 			name: "update-draft-content",
 			text: `UPDATE post_drafts SET content = $1 WHERE channel_id = $2 VALUES($1, $2)`,
 			values: [content, draft.channel_id]
