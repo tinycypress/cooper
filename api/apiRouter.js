@@ -16,8 +16,8 @@ APIRouter.use('/auth', AuthRouter);
 APIRouter.use('/blog', BlogRouter);
 APIRouter.use('/bases', BasesRouter);
 APIRouter.use('/ground', GroundRouter);
-APIRouter.get('/economy', EconomyRouter);
+APIRouter.use('/economy', EconomyRouter);
 APIRouter.use('/members', MembersRouter);
-APIRouter.get('/projects', ProjectsRouter);
+APIRouter.use('/projects', ProjectsRouter);
 
 export default APIRouter;
