@@ -11,16 +11,13 @@ import EconomyRouter from "./services/economy/economyRouter";
 const APIRouter = Router();
 
 APIRouter.get('/', (req, res) => res.status(200).send(200));
+
 APIRouter.use('/auth', AuthRouter);
-
-APIRouter.use('/members', MembersRouter);
 APIRouter.use('/blog', BlogRouter);
-
 APIRouter.use('/bases', BasesRouter);
 APIRouter.use('/ground', GroundRouter);
-
-APIRouter.get('/projects', ProjectsRouter);
-
 APIRouter.get('/economy', EconomyRouter);
+APIRouter.use('/members', MembersRouter);
+APIRouter.get('/projects', ProjectsRouter);
 
 export default APIRouter;
