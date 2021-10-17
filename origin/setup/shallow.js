@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import COOP, { CHANNELS } from '../coop';
 import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper';
 import EventsHelper from '../../operations/eventsHelper';
+import BlogHelper from '../../operations/marketing/blog/blogHelper';
 
 // ^ DEV IMPORT AREA ^
 
@@ -32,13 +33,11 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
         // Make post previewable
+        const drafts = await BlogHelper.loadDrafts();
+        console.log(drafts);
 
 
-
-
-
-
-
+        
 
         // COMPETITIONS
         // Code

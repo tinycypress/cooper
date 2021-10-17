@@ -14,13 +14,15 @@ BlogRouter.get('/build', async (req, res) => {
     res.status(200).json(posts);
 });
 
-
-
 BlogRouter.get('/:slug', async (req, res) => {
     const post = await BlogHelper.loadPostBySlug(req.params.slug);
     res.status(200).json(post);
 });
 
+BlogRouter.get('/draft/:draftslug', async (req, res) => {
+    const post = await BlogHelper.loadPostBySlug(req.params.draftslug);
+    res.status(200).json(post);
+});
 
 BlogRouter.post('/subscribe', async (req, res) => {
     const result = {
