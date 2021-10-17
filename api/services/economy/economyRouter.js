@@ -4,6 +4,12 @@ import { POINTS } from "../../../origin/coop";
 
 const EconomyRouter = Router();
 
+EconomyRouter.get('/', async (req, res) => {
+    res.status(200).json({
+        "ECONOMY": "TESTING"
+    });
+});
+
 EconomyRouter.get('/leaderboard', async (req, res) => {
     const leaderboardRows = await POINTS.getLeaderboard(0);
     res.status(200).json(leaderboardRows);
