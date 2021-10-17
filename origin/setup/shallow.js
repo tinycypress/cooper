@@ -45,7 +45,7 @@ const shallowBot = async () => {
         // EventsHelper.update('art_competition', Date.now() - COMPETITION_DUR * 4);
         // EventsHelper.update('business_competition', Date.now() - COMPETITION_DUR * 4);
         // EventsHelper.update('technology_competition', Date.now() - COMPETITION_DUR * 4);
-        // CompetitionHelper.track();
+        CompetitionHelper.track();
 
         // const comps = await CompetitionHelper.load();
         // console.log(comps);
@@ -55,7 +55,6 @@ const shallowBot = async () => {
         // Allow people to register for competition
         // Allow posting of entries
         // Declare winner and hide channel when ended
-        
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

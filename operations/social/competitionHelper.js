@@ -37,7 +37,6 @@ export default class CompetitionHelper {
         await EventsHelper.update(code, Date.now());
         await this.setActive(code, false);
         
-        
         console.log(code + ' end');
         CHANNELS._send(code.toUpperCase(), code + ' end');
     }
