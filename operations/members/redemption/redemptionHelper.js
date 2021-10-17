@@ -133,7 +133,7 @@ export default class RedemptionHelper {
                 const lastVotetime = STATE.LAST_ENTRY_VOTE_TIME;
                 if (!lastVotetime || lastVotetime < currentTime - 5000) {
                     STATE.LAST_ENTRY_VOTE_TIME = currentTime;
-                    COOP.CHANNELS._codes(['ENTRY', 'TALK'], votingStatusText);
+                    COOP.CHANNELS._codes(['ENTRY'], votingStatusText);
                 }
             }
                 
@@ -153,7 +153,7 @@ export default class RedemptionHelper {
         const stayDurationDays = stayDurationHours / 24;
         if (stayDurationDays > 3 && !hasRole) {
             const banReason = `${member.user.username} was not banned due to not being approved within 3 days.`;
-            CHANNELS._postToChannelCode('TALK', banReason)
+            CHANNELS._postToChannelCode('ACTIVITY', banReason)
             member.ban({ days: 7, reason: banReason });
         }
     }

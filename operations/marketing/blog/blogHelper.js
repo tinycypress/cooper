@@ -114,6 +114,9 @@ export default class BlogHelper {
     static async buildDraft(draftChannel) {
         const messages = await draftChannel.messages.fetch({});
         const content = messages.map(msg => {
+            // Ignore Cooper messages.
+            if (USERS.isCooperMsg(msg)) return null;
+
             let subContent = msg.content;
             msg.attachments.map(attachment => {
                 subContent += `\n\n ![${attachment.name}](${attachment.url})`;
