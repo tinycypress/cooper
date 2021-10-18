@@ -20,7 +20,7 @@ export default class PostPreviewCommand extends CoopCommand {
 		super.run(msg);
 
 		const draft = await BlogHelper.loadDraftByChannelID(msg.channel.id);
-		const previewLink = `https://thecoop.group/blog/draft/${msg.channel.id}`
+		const previewLink = `https://thecoop.group/blog/preview?channel_id=${msg.channel.id}`;
 
 		if (!draft)
 			MESSAGES.silentSelfDestruct(msg, 'Must use !postpreview command on a post draft channel!');
