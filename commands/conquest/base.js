@@ -36,10 +36,8 @@ export default class BaseCommand extends CoopCommand {
 
 		const baseMsgText = `**Tile Details #${base.face_id}:**\n` +
 			`Owner: ${USERS._id2username(base.owner_id)}\n` +
-			`Age: ${base.created_at}\n\n
-
-			${link}
-		`;
+			`Age: ${base.created_at}\n\n` +
+			`<${link}>`;
 
 		// Sometimes include a video of their base.
 		if (STATE.CHANCE.bool({ likelihood: 2.5 })) {

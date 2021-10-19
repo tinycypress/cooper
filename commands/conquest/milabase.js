@@ -36,10 +36,8 @@ export default class MilaBaseCommand extends CoopCommand {
 
 		const baseMsgText = `**Tile Details #${base.face_id}:**\n` +
 			`Owner: ${USERS._id2username(base.owner_id)}\n` +
-			`Age: ${base.created_at}\n\n
-
-			${link}
-		`;
+			`Age: ${base.created_at}\n\n` +
+			`<${link}>`;
 
 		// Sometimes include a video of their base.
 		MESSAGES.silentSelfDestruct(msg, 'Loading a visual for your base, please wait.');
