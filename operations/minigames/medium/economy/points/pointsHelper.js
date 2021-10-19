@@ -99,6 +99,8 @@ export default class PointsHelper {
             const lastMOTWCheck = parseInt(await Chicken.getConfigVal('last_motwcheck_secs'));
             const hour = 3600;
             const week = hour * 24 * 7;
+
+            
             const fresh = COOP.TIME._secs() <= lastMOTWCheck + week;
             if (fresh) return false;
     
@@ -106,6 +108,7 @@ export default class PointsHelper {
             const users = await COOP.USERS.load();
             const pointUpdateManifest = [];
 
+            
             const percChanges = await Promise.all(users.map(async (user) => {
                 const result = await this.getPercChange(user.discord_id);
 
@@ -117,7 +120,7 @@ export default class PointsHelper {
     
                 return result;
             }));
-    
+
             // Sort the points changes by highest (positive) perc change first.
             percChanges.sort((a, b) => {
                 if (a.percChange === Infinity) return 1;
@@ -125,12 +128,12 @@ export default class PointsHelper {
                 if (a.percChange >= b.percChange) return -1;
                 if (a.percChange === b.percChange) return 0;
             });
-    
+
             const membersOfWeek = COOP.ROLES._allWith('MEMBEROFWEEK');
-    
+
             // Check if that winner has the role already.
             const highestChange = percChanges[0];
-    
+
             // Remove other member of the week.
             let hadAlready = false;
             let prevWinner = null;
@@ -144,13 +147,13 @@ export default class PointsHelper {
                     return true
                 }
             });
-            
+
             // Build update text for check/status.
             let updateText = `**MOTW check ran!**\n`;
-    
+
+            // Declare they won again.
             if (hadAlready) {
-                // Declare they won again.
-                updateText = `**MOTW check ran and <@${highestChange.userID}> wins again!**\n\n`
+                updateText = `**MOTW check ran and <@${highestChange.userID}> wins again!**\n\n`;
             } else {
                 // Give the winner the role.
                 COOP.ROLES._add(highestChange.userID, 'MEMBEROFWEEK');
@@ -162,38 +165,34 @@ export default class PointsHelper {
                     updateText = `**MOTW check ran and <@${highestChange.userID}> seizes the role!**\n\n`;
                 }
             }
-    
+
             // Add reasoning.
             updateText += `<@${highestChange.userID}> was selected by MOTW as the best/most promising member this week!\n\n`;
-    
-            // TODO: Show 3/4 runners up.
-    
-    
-            // Give the winner the reward.
-            const cpDisplay = COOP.MESSAGES.emojiCodeText('COOP_POINT');
-            await COOP.ITEMS.add(highestChange.userID, 'COOP_POINT', 30);
-            updateText += `_Given 50${cpDisplay} for MOTW reward._`;
 
-            // Add the runners up
+            // Give the winner the reward.
+            if (hadAlready) {
+                const cpDisplay = COOP.MESSAGES.emojiCodeText('COOP_POINT');
+                await COOP.ITEMS.add(highestChange.userID, 'COOP_POINT', 30);
+                updateText += `_Given 50${cpDisplay} for MOTW reward._`;
+            }
+
+            // Add the runners up.
             updateText += '\n\nRunners up:\n' +
                 [percChanges[1], percChanges[2], percChanges[3]]
                     .map(runnerUp =>
-                        `- <@${runnerUp.userID}> (${runnerUp.percChange}%)`
-                    ).join('\n')
-
+                        `- <@${runnerUp.userID}> (${Math.round(runnerUp.percChange)}%)`
+                    ).join('\n');
 
             // TODO: Give them 1-2 weeks of sacrifice protection too
-
+            // TODO: Show 3/4 runners up.
             // TODO: Give them some random eggs and items.
 
             // Inform the community.
-            COOP.CHANNELS._codes(['FEED', 'TALK'], updateText, {
-                allowedMentions: { users: [], roles: [] }
-            });
-            
+            COOP.CHANNELS._codes(['FEED', 'TALK'], updateText, { allowedMentions: { users: [], roles: [] } });
+
             // Make sure all historical_points are updated.
             pointUpdateManifest.map(({ id, points }) => COOP.USERS.updateField(id, 'historical_points', points));
-    
+
             // Ensure Cooper knows when the last time this was updated (sent).
             // Track member of week by historical_points DB COL and check every week.
             Chicken.setConfig('last_motwcheck_secs', COOP.TIME._secs());
