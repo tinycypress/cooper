@@ -5,13 +5,13 @@ import VisualisationHelper from '../../operations/minigames/medium/conquest/visu
 
 import { MESSAGES, STATE, USERS } from '../../origin/coop';
 
-export default class BaseCommand extends CoopCommand {
+export default class MilaBaseCommand extends CoopCommand {
 
 	constructor(client) {
 		super(client, {
-			name: 'base',
+			name: 'milabase',
 			group: 'community',
-			memberName: 'base',
+			memberName: 'milabase',
 			description: 'base a base/structure.',
 			examples: ['base', 'base example'],
 			args: [
@@ -42,12 +42,9 @@ export default class BaseCommand extends CoopCommand {
 		`;
 
 		// Sometimes include a video of their base.
-		if (STATE.CHANCE.bool({ likelihood: 2.5 })) {
-			MESSAGES.silentSelfDestruct(msg, 'Loading a visual for your base, please wait.');
-			await VisualisationHelper.record(link, 10000);
-			msg.channel.send(baseMsgText, new MessageAttachment('/tmp/video.webm'));
-		}
-		else MESSAGES.silentSelfDestruct(msg, baseMsgText);
+		MESSAGES.silentSelfDestruct(msg, 'Loading a visual for your base, please wait.');
+		await VisualisationHelper.record(link, 10000);
+		msg.channel.send(baseMsgText, new MessageAttachment('/tmp/video.webm'));
     }
     
 }

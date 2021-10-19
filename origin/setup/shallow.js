@@ -8,6 +8,7 @@ import COOP, { CHANNELS } from '../coop';
 import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper';
 import EventsHelper from '../../operations/eventsHelper';
 import BlogHelper from '../../operations/marketing/blog/blogHelper';
+import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
 
 // ^ DEV IMPORT AREA ^
 
@@ -32,9 +33,11 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Make post previewable
-        // const drafts = await BlogHelper.loadDrafts();
-        // console.log(drafts);
+
+        // BaseHelper.add(26, '287062661483724810');
+        // const milasBase = await BaseHelper.get(26);
+        // console.log(milasBase);
+
 
         // COMPETITIONS
         // Code
