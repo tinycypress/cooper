@@ -11,7 +11,7 @@ export default class TradeAcceptCommand extends CoopCommand {
 			name: 'tradeaccept',
 			group: 'economy',
 			memberName: 'tradeaccept',
-			aliases: [],
+			aliases: ['ta'],
 			description: 'Lets you accept an open trade. Use !tradefind to view current open trades.',
 			examples: ['!tradeaccept <tradeID>', '!tradeaccept 173'],
 			args: [

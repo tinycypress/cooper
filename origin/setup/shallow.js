@@ -4,11 +4,14 @@ import dotenv from 'dotenv';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS } from '../coop';
+import COOP, { CHANNELS, USERS } from '../coop';
 import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper';
 import EventsHelper from '../../operations/eventsHelper';
 import BlogHelper from '../../operations/marketing/blog/blogHelper';
 import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper';
+import DatabaseHelper from '../../operations/databaseHelper';
+import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
+import PointsHelper from '../../operations/minigames/medium/economy/points/pointsHelper';
 
 // ^ DEV IMPORT AREA ^
 
@@ -32,11 +35,6 @@ const shallowBot = async () => {
     COOP.STATE.CLIENT.on('ready', async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
-
-
-        // BaseHelper.add(26, '287062661483724810');
-        // const milasBase = await BaseHelper.get(26);
-        // console.log(milasBase);
 
 
         // COMPETITIONS

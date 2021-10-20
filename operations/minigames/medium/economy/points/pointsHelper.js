@@ -15,8 +15,10 @@ export default class PointsHelper {
         const query = {
             name: 'get-leaderboard',
             text: `
-                SELECT quantity, owner_id 
+                SELECT quantity, owner_id, username
                 FROM items 
+                    INNER JOIN users 
+                    ON items.owner_id = discord_id
                 WHERE item_code = 'COOP_POINT'
                 ORDER BY quantity DESC
                 OFFSET $1
@@ -37,6 +39,7 @@ export default class PointsHelper {
             text: `
                 SELECT quantity, owner_id
                 FROM users 
+                
                 WHERE quantity > 0 AND item_code = 'COOP_POINT'
             `.trim(),
         };

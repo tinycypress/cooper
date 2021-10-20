@@ -14,18 +14,28 @@ export default class BuildCommand extends CoopCommand {
 			details: ``,
 			examples: ['build', 'build example'],
 			args: [
-				{
-					key: 'structureCode',
-					type: 'string',
-					prompt: 'Which structure code to build?',
-					default: ''
-				}
+				// {
+				// 	key: 'structureCode',
+				// 	type: 'string',
+				// 	prompt: 'Which structure code to build?',
+				// 	default: ''
+				// },
+				// {
+				// 	key: 'tileNum',
+				// 	type: 'string',
+				// 	prompt: 'Tile number to build base at?',
+				// 	default: ''
+				// }
 			]
 		});
 	}
 
 	async run(msg) {
 		super.run(msg);
+
+		// Get player's current tile
+
+		// Check if there is a base already there.
 
 		const cp = MESSAGES.emojiCodeText('COOP_POINT');
 		const steel = MESSAGES.emojiCodeText('STEEL_BAR');
@@ -44,7 +54,7 @@ export default class BuildCommand extends CoopCommand {
 		);
 
 
-		// Start building the server.
+		// Start building the base.
 
 		
     }

@@ -35,7 +35,7 @@ export default class GiveCommand extends CoopCommand {
 					prompt: 'How many of this item do you want to give?',
 					type: 'float',
 					default: 1
-				},
+				}
 			],
 		});
 	}
@@ -43,10 +43,7 @@ export default class GiveCommand extends CoopCommand {
 	async run(msg, { itemCode, target, qty }) {
 		super.run(msg);
 
-
 		// TODO: Allow them to run this even if arguments aren't in the right order!
-
-
 		try {
 			// Interpret, parse, and format item code.
 			itemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);

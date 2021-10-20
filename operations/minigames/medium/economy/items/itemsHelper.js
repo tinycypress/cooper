@@ -322,16 +322,12 @@ export default class ItemsHelper {
     }
 
     static async getRichest() {
-        const query = {
+        return await DatabaseHelper.singleQuery({
             name: "get-richest",
             text: `SELECT owner_id, SUM(quantity) as total FROM items 
                 WHERE item_code = 'GOLD_COIN'
                 GROUP BY owner_id ORDER BY total DESC LIMIT 1`
-        };
-        const result = await Database.query(query);
-        const richest = DatabaseHelper.single(result);
-
-        return richest;
+        });
     }
 
 
