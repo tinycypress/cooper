@@ -54,7 +54,7 @@ export default class SharesCommand extends CoopCommand {
 			overallOwnershipData.sort((a, b) => (a.share < b.share) ? 1 : -1);
 
 			// Crop the list to the first ten.
-			overallOwnershipData = overallOwnershipData.slice(0, 10);
+			overallOwnershipData = overallOwnershipData.slice(0, 25);
 
 			let sharesText = `**Item ownership shares/market %:**\n\n` +
 				overallOwnershipData.map(val => {
@@ -65,7 +65,7 @@ export default class SharesCommand extends CoopCommand {
 				}).join(', ') + '.';
 
 			sharesText += '\n\n' + 
-				'_Only showing the first 15 shares due to content length limit, will soon be shown on our website!!!_';
+				'_Only showing the first 25 shares due to content length limit, will soon be shown on our website!!!_';
 
 			// Output share of requested item (if valid)
 			return MESSAGES.silentSelfDestruct(msg, sharesText);
