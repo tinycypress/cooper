@@ -144,8 +144,14 @@ export default class RolesHelper {
     }
 
     static _has(member, roleCode) {
-        const roleID = ROLES_CONFIG[roleCode].id;
-        return member.roles.cache.has(roleID);
+        try {
+            const roleID = ROLES_CONFIG[roleCode].id;
+            return member.roles.cache.has(roleID);
+        } catch(e) {
+            console.log('Error reading code from member', member, roleCode);
+            console.error(e);
+            return false;
+        }
     }
 
     static _getUsersWithRoleCodes(roleCodes) {

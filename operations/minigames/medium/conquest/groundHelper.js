@@ -6,14 +6,6 @@ import Auth from '../../../../api/auth/_auth';
 
 export default class GroundHelper {
 
-    static async all() {
-        return {};
-    }
-
-    static async get(tileID) {
-        return {};
-    }
-
     static tileLength = 15;
 
     static _randNum() {
@@ -27,17 +19,13 @@ export default class GroundHelper {
     static playerConnected = socket => {
         const player = {
           id: socket.id,
-          position: { x: 0, y: 0, z: 0 },
-          rotation: { x: 0, y: 0, z: 0 },
           connected_at: TIME._secs(),
           last_activity: TIME._secs(),
-          
-          // Struggling to get this to work, Three is pretty strict for some reason. =[... help.
-          // color: `rgb(${[_randRGBComp(), _randRGBComp(), _randRGBComp()].join(', ')})`,
-          // Placeholder:
+          username: socket.id,
           color: 'red',
 
-          username: socket.id
+          position: { x: 0, y: 0, z: 0 },
+          rotation: { x: 0, y: 0, z: 0 }
         };
         
         // Parse username from token if authenticated.
@@ -63,12 +51,6 @@ export default class GroundHelper {
     }
 
     static playerMoved(move) {
-        // TODO: Validate/limit
-        // ...
-
-        // TODO: Update local player data? :think:
-
-        // Broadcast
         Socket.conn.emit('player_moved', move);
     }
 }
