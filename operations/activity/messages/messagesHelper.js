@@ -142,20 +142,22 @@ export default class MessagesHelper {
 
     static delayReact(msg, emoji, delay = 666) {
         return new Promise((resolve, reject) => {
-            if (typeof msg.react === 'function') 
-                setTimeout(() => { 
-                    msg.react(emoji)
-                        .then(react => resolve(react))
-                        .catch(e => {
-                            // Ignore already deleted messages.
-                            if (e.message !== 'Unknown Message') {
-                                console.error(e);
-                                reject(e);
-                            } else {
-                                resolve(false);
-                            }
-                        });
-                }, delay);
+            // Ignore a message that has been deleted/etc.
+            if (typeof msg === 'undefined') return resolve(false);
+
+            setTimeout(() => { 
+                msg.react(emoji)
+                    .then(react => resolve(react))
+                    .catch(e => {
+                        // Ignore already deleted messages.
+                        if (e.message !== 'Unknown Message') {
+                            console.error(e);
+                            reject(e);
+                        } else {
+                            resolve(false);
+                        }
+                    });
+            }, delay);
         });
     }
 

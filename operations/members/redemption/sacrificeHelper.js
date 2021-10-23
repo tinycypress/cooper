@@ -3,7 +3,7 @@ import VotingHelper from '../../activity/redemption/votingHelper';
 import { KEY_MESSAGES, EMOJIS, CHANNELS } from '../../../origin/config';
 import CooperMorality from '../../minigames/small/cooperMorality';
 
-import COOP, { ROLES } from '../../../origin/coop';
+import COOP, { MESSAGES, ROLES } from '../../../origin/coop';
 import TemporaryMessages from '../../maintenance/temporaryMessages';
 
 
@@ -116,16 +116,34 @@ export default class SacrificeHelper {
                         (isProspect ? 'Prospect ' : '') + `<@${sacrificeeID}> was sacrificed!`);
                     await targetMember.ban();
 
+                    // User was sacrificed - clear sacrifice message.
+                    MESSAGES.delayDelete(reaction.message, 500);
+
                 } else {
-                    // Provide feedback for user who is not currently protected or sacrificed.
-                    COOP.CHANNELS.codeShout(reaction.message,
-                        `**Remaining votes to sacrifice ${targetMember.user.username}**` +
+                    const sacrificeUpdatetitle = `**Remaining votes to sacrifice ${targetMember.user.username}**`;
+                    const sacrificeText = (
+                        sacrificeUpdatetitle +
                         `\n\n` +
                         `Protect: ${EMOJIS.SACRIFICE_SHIELD} ${remainingProtectVotes} ${EMOJIS.SACRIFICE_SHIELD}` +
-                        `| Sacrifice: ${EMOJIS.DAGGER} ${remainingSacrificeVotes} ${EMOJIS.DAGGER}`, 
-                        'FEED',
-                        true
+                        `| Sacrifice: ${EMOJIS.DAGGER} ${remainingSacrificeVotes} ${EMOJIS.DAGGER}`
                     );
+
+                    // Track whether to post an sacrifice info message or update existing one.
+                    let updatingMsgInstead = false;
+
+                    // Check if the message is already within the past 5 feed messages (if so update it and reduce spam).
+                    const feed = CHANNELS._getCode('FEED');
+                    const latestMsgs = await feed.messages.fetch({ limit: 10 });
+                    latestMsgs.map(m => {
+                        if (m.content.includes(sacrificeUpdatetitle)) {
+                            m.edit(sacrificeText);
+                            updatingMsgInstead = true;
+                        }
+                    });
+
+                    // Provide feedback for user who is not currently protected or sacrificed.
+                    if (!updatingMsgInstead)
+                        COOP.CHANNELS._send('FEED', sacrificeText);
                 }
 
                 
@@ -137,13 +155,15 @@ export default class SacrificeHelper {
                     ROLES._remove(sacrificeeID, 'PROSPECT');
                 }
                 await COOP.CHANNELS._postToFeed(savedText);
+
+                // User survived clear sacrifice message.
+                MESSAGES.delayDelete(reaction.message, 500);
             } 
 
         } catch(e) {
             console.error(e);
         }
     }
-
 
     static async processBackDagger(reaction) {
         const guild = COOP.SERVER.getByCode(COOP.STATE.CLIENT, 'PROD');
