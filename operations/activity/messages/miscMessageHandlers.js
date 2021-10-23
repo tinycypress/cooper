@@ -11,18 +11,10 @@ export default class MiscMessageHandlers {
         // Check if someone is trying to troll with the egg.
         EggHuntMinigame.antiTroll(msg);
 
-
-
-        // If message added by Ktrn that is only emojis, react to it.
-        // TODO: Does not respond to messages contain EXTERNAL server emojis due to isOnlyEmojisOrIDs shortcoming.
-        if (msg.author.id === '652820176726917130' && COOP.MESSAGES.isOnlyEmojisOrIDs(msg.content)) {
-            if (STATE.CHANCE.bool({ likelihood: 25 }))
-                setTimeout(() => { msg.react('🐇'); }, 666);
-            
-            if (STATE.CHANCE.bool({ likelihood: 25 }))
-                setTimeout(() => { msg.react('🐰'); }, 666);
+        
+        if (msg.author.id === '287062661483724810' && STATE.CHANCE.bool({ likelihood: 1.5 })) {
+            COOP.MESSAGES.delayReact(msg, '🥚', 666);
         }
-
 
         if (msg.author.id === '237600741471027201') {
             if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react(':owl:');

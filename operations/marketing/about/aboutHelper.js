@@ -5,7 +5,7 @@ import gameOpts from "./gameOpts";
 import { CHANNELS as CHANNELS_CONFIG, KEY_MESSAGES } from '../../../origin/config';
 import COOP, { CHICKEN, CHANNELS } from "../../../origin/coop";
 import STATE from "../../../origin/state";
-
+// https://discord.com/channels/723660447508725802/762472730980515870/901556815509205102
 
 export default class AboutHelper {
 
@@ -45,6 +45,13 @@ export default class AboutHelper {
         },
         GUIDE: {
             '📖': (react, user) => COOP.ROLES.toggle(user.id, 'GUIDE'),
+        },
+        STOCKS: {
+            '📈': (react, user) => {
+                COOP.ROLES.toggle(user.id, 'STOCKS');
+
+                // If adding role, welcome them to the stocks room (chat channel).
+            },
         }
     }
 
@@ -78,16 +85,12 @@ export default class AboutHelper {
         if (resultCallback) resultCallback(reaction, user);
     }
 
+
+    // TODO: Move this somewhere more important and preload ALL key messages.
     static async preloadMesssages() {
-        const links = [
-            KEY_MESSAGES.about_notifications_msg,
-            KEY_MESSAGES.about_ourfocus_msg,
-            KEY_MESSAGES.about_optout_msg,
-            KEY_MESSAGES.about_gamesopt_msg,
-            KEY_MESSAGES.about_academyagency_msg,
-            KEY_MESSAGES.about_guide_msg,
-        ];
-        return await COOP.MESSAGES.preloadMsgLinks(links);
+        return await COOP.MESSAGES.preloadMsgLinks(
+            Object.keys(KEY_MESSAGES).map(key => KEY_MESSAGES[key])
+        );
     }
     
 }

@@ -3,7 +3,6 @@ import MessageNotifications from './activity/information/messageNotifications';
 import COOP, { STATE, SERVER } from '../origin/coop';
 import { CHANNELS as CHANNELS_CONFIG } from '../origin/config';
 
-
 export const silentOpts = { allowedMentions: { users: [], roles: [] }};
 
 export default class ChannelHelper {

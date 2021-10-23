@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, MESSAGES, USERS } from '../coop';
+import { CHANNELS as CHANNELS_CONFIG } from '../config';
+
 import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper';
 import EventsHelper from '../../operations/eventsHelper';
 import BlogHelper from '../../operations/marketing/blog/blogHelper';
@@ -13,6 +15,7 @@ import DatabaseHelper from '../../operations/databaseHelper';
 import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
 import PointsHelper from '../../operations/minigames/medium/economy/points/pointsHelper';
 import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
+
 
 // ^ DEV IMPORT AREA ^
 
