@@ -132,7 +132,7 @@ export default class SacrificeHelper {
                     let updatingMsgInstead = false;
 
                     // Check if the message is already within the past 5 feed messages (if so update it and reduce spam).
-                    const feed = CHANNELS._getCode('FEED');
+                    const feed = COOP.CHANNELS._getCode('FEED');
                     const latestMsgs = await feed.messages.fetch({ limit: 10 });
                     latestMsgs.map(m => {
                         if (m.content.includes(sacrificeUpdatetitle)) {

@@ -62,19 +62,13 @@ export default class RedemptionHelper {
                 if (reactionType.emoji.name === RAW_EMOJIS.VOTE_FOR) forVotes = Math.max(0, reactionType.count - 1);
                 if (reactionType.emoji.name === RAW_EMOJIS.VOTE_AGAINST) againstVotes = Math.max(0, reactionType.count - 1);
             });
-            
-            const votingStatusTitle = `<@${targetUser.id}>'s entry was voted upon!`;
-            const votingStatusText = votingStatusTitle +
-                `\n# Votes still required: ` +
-                `Entry ${RAW_EMOJIS.VOTE_FOR}: ${Math.max(0, reqForVotes - forVotes)} | ` +
-                `Removal ${RAW_EMOJIS.VOTE_AGAINST}: ${Math.max(0, reqAgainstVotes - againstVotes)}`;
+        
             
             // Handle user approved.
             if (forVotes >= reqForVotes) {
                 // Add to database if not already in it.
                 const savedUser = await COOP.USERS.loadSingle(targetMember.user.id);
                 if (!savedUser) {
-                    
                     await COOP.USERS.addToDatabase(
                         targetMember.user.id, 
                         targetMember.user.username, 
@@ -127,14 +121,28 @@ export default class RedemptionHelper {
 
             } else {
                 // TODO: This way of preventing certain kinds of feedback spam should be refactored and reused everywhere.
+                const votingStatusTitle = `<@${targetUser.id}>'s entry was voted upon!`;
+                const votingStatusText = votingStatusTitle +
+                    `\n# Votes still required: ` +
+                    `Entry ${RAW_EMOJIS.VOTE_FOR}: ${Math.max(0, reqForVotes - forVotes)} | ` +
+                    `Removal ${RAW_EMOJIS.VOTE_AGAINST}: ${Math.max(0, reqAgainstVotes - againstVotes)}`;
 
-                // Notify the relevant channels (throttle based on last entry vote time).
-                const currentTime = +new Date();
-                const lastVotetime = STATE.LAST_ENTRY_VOTE_TIME;
-                if (!lastVotetime || lastVotetime < currentTime - 5000) {
-                    STATE.LAST_ENTRY_VOTE_TIME = currentTime;
-                    COOP.CHANNELS._codes(['ENTRY'], votingStatusText);
-                }
+                // Track whether to post an sacrifice info message or update existing one.
+                let updatingMsgInstead = false;
+
+                // Check if the message is already within the past 5 feed messages (if so update it and reduce spam).
+                const feed = COOP.CHANNELS._getCode('ENTRY');
+                const latestMsgs = await feed.messages.fetch({ limit: 10 });
+                latestMsgs.map(m => {
+                    if (m.content.includes(votingStatusTitle)) {
+                        m.edit(votingStatusText);
+                        updatingMsgInstead = true;
+                    }
+                });
+
+                // Provide feedback for user who is not currently protected or sacrificed.
+                if (!updatingMsgInstead)
+                    COOP.CHANNELS._send('ENTRY', votingStatusText);
             }
                 
         } catch(e) {
