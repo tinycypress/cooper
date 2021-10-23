@@ -62,6 +62,7 @@ export default class AboutHelper {
         ...Object.keys(this.sectionEmojis.COMMUNITY),
         ...Object.keys(this.sectionEmojis.ACADEMY_AGENCY),
         ...Object.keys(this.sectionEmojis.GUIDE),
+        ...Object.keys(this.sectionEmojis.STOCKS)
     ]
 
     static async onReaction(reaction, user) {

@@ -15,6 +15,7 @@ import DatabaseHelper from '../../operations/databaseHelper';
 import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand';
 import PointsHelper from '../../operations/minigames/medium/economy/points/pointsHelper';
 import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper';
+import AboutHelper from '../../operations/marketing/about/aboutHelper';
 
 
 // ^ DEV IMPORT AREA ^
@@ -74,6 +75,8 @@ const shallowBot = async () => {
         // operations/minigames/medium/economy/blockchain/_wipAssetOptin.js
         // operations/minigames/medium/economy/blockchain/_wipRevoke.js
         // CHANNELS._send('TALK', 'Blockchain testing via shallow bot.');
+
+        // AboutHelper.preloadMesssages();
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
     });
