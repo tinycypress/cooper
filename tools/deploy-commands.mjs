@@ -23,10 +23,7 @@ commandFolders.map(async f => {
         const command = await import(`../newcommands/${f.name}/${file}`);
 
         // Add to meta for slash command registration.
-        slashCommands.push({ 
-            name: command.name,
-            description: command.description
-        });
+        slashCommands.push(command.data.toJSON());
     }
 });
 
@@ -39,6 +36,11 @@ try {
 
     await rest.put(
         Routes.applicationGuildCommands(BOTS.COOPER.id, SERVERS.PROD.id),
+        { body: slashCommands },
+    );
+
+    await rest.put(
+        Routes.applicationCommands(BOTS.COOPER.id),
         { body: slashCommands },
     );
     

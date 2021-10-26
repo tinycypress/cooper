@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-export const name = 'ping';
+export const name = 'lol';
 
-export const description = 'The ping command!';
+export const description = 'The lol command!';
     
 export const execute = async (interaction) => {
-    console.log('Ping executing');
-    await interaction.reply('Pong!');
+    console.log('lol executing');
+    await interaction.reply('lol!');
 };
 
 export const data = new SlashCommandBuilder()
