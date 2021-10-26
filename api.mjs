@@ -9,7 +9,8 @@ import Database from './origin/setup/database.mjs';
 import APIRouter from './api/apiRouter.mjs';
 import Auth from './api/auth/_auth.mjs';
 
-import { urlencoded, json } from 'body-parser';
+import bodyParser from 'body-parser';
+const { urlencoded, json } = bodyParser;
 
 // Run the web api.
 bootstrap();
