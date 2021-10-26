@@ -1,1 +1,0 @@
-// Create the redemption offer embed message.
