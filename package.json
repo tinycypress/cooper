@@ -8,7 +8,9 @@
     "startAPI": "node --experimental-json-modules ./api.mjs",
     "db": "heroku pg:psql --app cooperchickenbot",
     "dev": "nodemon --exec 'node --experimental-json-modules' ./origin/setup/shallow.mjs",
-    "lint": "eslint ."
+    "lint": "eslint .",
+
+    "deploy-commands": "node --experimental-json-modules ./tools/deploy-commands.mjs"
   },
   "author": "lmf-git",
   "engines": {

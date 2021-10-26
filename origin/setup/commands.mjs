@@ -1,15 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { REST } from '@discordjs/rest';
 import { Collection } from "discord.js";
-import { Routes } from 'discord-api-types/v9';
 
-import SERVERS from '../config/servers.json';
-import BOTS from '../config/bots.json';
-
-export default async function setupCommands(client) {
-    const slashCommands = [];
-    
+export default async function setupCommands(client) {    
     // Start locally loading the commands.
     client.commands = new Collection();
     
@@ -26,31 +19,8 @@ export default async function setupCommands(client) {
     
             // Register the command locally.
             client.commands.set(command.name, command);
-    
-            // Add to meta for slash command registration.
-            slashCommands.push({ 
-                name: command.name,
-                description: command.description
-            });
         }
     });
-
-    // Register the slash commands with the Discord rest API.
-    const rest = new REST({ version: '9' })
-        .setToken(process.env.DISCORD_TOKEN);
-
-    try {
-        console.log('Started refreshing application (/) commands.');
-    
-        const slashRegisterResp = await rest.put(
-            Routes.applicationGuildCommands(BOTS.COOPER.id, SERVERS.PROD.id),
-            { body: slashCommands },
-        );
-        
-    } catch (error) {
-        console.error(error);
-    }
-
 
     // https://discordjs.guide/creating-your-bot/command-handling.html#reading-command-files
 
