@@ -12,7 +12,7 @@ dotenv.config();
 const slashCommands = [];
 
 // Parse throuh the command files
-const commandsDir = path.resolve('./newcommands/');
+const commandsDir = path.resolve('./commands/');
 const commandFolders = fs.readdirSync(commandsDir,  { withFileTypes: true }).filter(de => de.isDirectory());
 commandFolders.map(async f => {
     const cmdFolderPath = commandsDir + '/' + f.name + '/';
@@ -20,7 +20,7 @@ commandFolders.map(async f => {
 
     for (const file of commandFiles) {
         // Dynamically import the command via path.
-        const command = await import(`../newcommands/${f.name}/${file}`);
+        const command = await import(`../commands/${f.name}/${file}`);
 
         // Add to meta for slash command registration.
         slashCommands.push(command.data.toJSON());

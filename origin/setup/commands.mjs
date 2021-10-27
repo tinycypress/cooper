@@ -2,12 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import { Collection } from "discord.js";
 
+// https://discordjs.guide/creating-your-bot/command-handling.html#reading-command-files
 export default async function setupCommands(client) {    
     // Start locally loading the commands.
     client.commands = new Collection();
     
     // Parse throuh the command files
-    const commandsDir = path.resolve('./newcommands/');
+    const commandsDir = path.resolve('./commands/');
     const commandFolders = fs.readdirSync(commandsDir,  { withFileTypes: true }).filter(de => de.isDirectory());
     commandFolders.map(async f => {
         const cmdFolderPath = commandsDir + '/' + f.name + '/';
@@ -15,15 +16,14 @@ export default async function setupCommands(client) {
 
         for (const file of commandFiles) {
             // Dynamically import the command via path.
-            const command = await import(`../../newcommands/${f.name}/${file}`);
+            const command = await import(`../../commands/${f.name}/${file}`);
     
             // Register the command locally.
             client.commands.set(command.name, command);
         }
     });
 
-    // https://discordjs.guide/creating-your-bot/command-handling.html#reading-command-files
-
+    // Dynamically load and execute the command based on the interaction command name/key.
     client.on('interactionCreate', async interaction => {
         if (!interaction.isCommand()) return;
 
@@ -38,37 +38,4 @@ export default async function setupCommands(client) {
             await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
     });
-
-    // Register command groups.
-    // client.registry.registerGroups([ 
-    //     ['website', 'Website'],
-    //     ['info', 'Information'],
-        
-    //     ['community', 'Community'],
-    //     ['sacrifice', 'Sacrifice'],
-    //     ['election', 'Election'],
-    //     ['messages', 'Message'],
-        
-    //     ['advertise', 'Advertise'],
-    //     ['blog', 'Blog'],
-    //     ['projects', 'Projects'],
-    //     ['productivity', 'Productivity'],
-
-    //     ['mod', 'Moderation'],
-
-    //     ['conquest', 'Conquest'],
-    //     ['ownership', 'Item ownership/economy shares'],
-    //     ['skills', 'Skills'],
-    //     ['economy', 'Economy'],
-    //     ['points', 'Points'],
-    //     ['util', 'Utility'],
-    //     ['misc', 'Miscellaneous'],
-    //     ['gamble', 'Gamble']
-    // ])
-
-    // Register default types for args usage.
-    // .registerDefaultTypes()
-
-    // Point to path.
-    // .registerCommandsIn(path.join(__dirname, '../../commands'));
 }
