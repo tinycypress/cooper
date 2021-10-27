@@ -54,6 +54,8 @@ const printCreatedAsset = async function (algodclient, account, assetid) {
         }
     }
 };
+
+
 // Function used to print asset holding for account and assetid
 const printAssetHolding = async function (algodclient, account, assetid) {
     // note: if you have an indexer instance available it is easier to just use this

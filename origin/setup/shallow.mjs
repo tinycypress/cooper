@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Client } from 'discord.js';
+import { Client, Intents } from 'discord.js';
 
 import Database from './database.mjs';
 
@@ -32,7 +32,16 @@ dotenv.config();
 
 const shallowBot = async () => {
     // Instantiate a CommandoJS "client".
-    COOP.STATE.CLIENT = new Client({ owner: '786671654721683517' });
+    COOP.STATE.CLIENT = new Client({ 
+        owner: '786671654721683517',
+        intents: [
+            Intents.FLAGS.GUILDS,
+            Intents.FLAGS.DIRECT_MESSAGES,
+            Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+            Intents.FLAGS.GUILD_MESSAGES,
+            Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+        ]
+    });
 
     // Connect to Postgres database.
     await Database.connect();
@@ -44,7 +53,9 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
-        
+        test();
+
+
         // COMPETITIONS
         // Code
         // Art

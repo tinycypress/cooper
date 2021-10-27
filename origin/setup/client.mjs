@@ -1,7 +1,7 @@
 import { Client, Intents } from "discord.js";
 import setupCommands from './commands.mjs';
 
-// import joined from "../../operations/activity/welcome/joined.mjs";
+import joined from "../../operations/activity/welcome/joined.mjs";
 // import left from "../../operations/activity/welcome/left.mjs";
 // import messageAddedHandler from "../../operations/activity/messageAdded.mjs";
 // import reactAddedHandler from "../../operations/activity/reactionAdded.mjs";
@@ -24,7 +24,7 @@ export default async () => {
     // client.on('messageReactionAdd', reactAddedHandler);
 
     // Handler for a new member has joined
-    // client.on("guildMemberAdd", joined);
+    client.on("guildMemberAdd", joined);
 
     // Member left handler.
     // client.on('guildMemberRemove', left);

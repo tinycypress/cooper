@@ -5,8 +5,6 @@ export default async function memberJoined(member) {
 
   try {
     // Send direct message and channel message about next steps.
-
-    
     const dmWelcomeMessage = await USERS._dm(
       member.user.id,
       `Welcome to **The Coop!** Please introduce yourself in ${CHANNELS.textRef('INTRO')} so the community can fully approve you into the server :smile:!\n\n` +
@@ -14,8 +12,6 @@ export default async function memberJoined(member) {
       'Find our social media accounts here if you\'d like to support us there!\n' +
       'https://discord.com/channels/723660447508725802/841126959298773052/864617510624428033'
     );
-
-    // TODO: Should ask them to follow our social
 
     // Add some nice emojis to dm welcome message.
     MESSAGES.delayReact(dmWelcomeMessage, EMOJIS.COOP, 333);
@@ -25,10 +21,7 @@ export default async function memberJoined(member) {
     const joinAnnouncementText = `**Someone new joined "${member.user.username}": ${CHANNELS.textRef('ENTRY')}!**`;
     CHANNELS._codes(['TALK'], joinAnnouncementText);
 
-    // Add the welcome to the channel dedicated to people joining!
-    // CHANNELS._codes(['WELCOME'], `**${member.user.username}** has flown into The Coop!`);
-
-    const coop = MESSAGES.emojiText(EMOJIS.COOP);
+    // Send the welcome message.
     const welcomeMessage = await CHANNELS._postToChannelCode('ENTRY', 
       `Hey <@${member.user.id}>! Please introduce yourself in ${CHANNELS.textRef('INTRO')} so the community can fully approve you into the server :smile:!\n\n` +
       `_Be aware that you can only send one ${CHANNELS.textRef('INTRO')} message, make it good!_\n\n` +
