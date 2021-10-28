@@ -160,6 +160,9 @@ export default class ElectionHelper {
             // React crown to this message.
             // await MESSAGES.delayReact(feedMsg, '👑', 666);
 
+            // Indicate successful start.
+            return true;
+
         } catch(e) {
             console.log('Starting the election failed... :\'(');
             console.error(e);
