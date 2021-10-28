@@ -26,9 +26,7 @@ export const data = new SlashCommandBuilder()
 
 export const execute = async (interaction) => {
 	// Access the campaign text.
-	const campaignText = interaction.options.get('campaign_text');
-
-	console.log('campaignText', campaignText);
+	const campaignText = interaction.options.get('campaign_text').value ?? '';
 
 	// Prevent @everyone from idiots using it.
 	if (campaignText.includes('@everyone')) {
