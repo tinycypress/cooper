@@ -2,9 +2,9 @@ import { Client, Intents } from "discord.js";
 import setupCommands from './commands.mjs';
 
 import joined from "../../operations/activity/welcome/joined.mjs";
-// import left from "../../operations/activity/welcome/left.mjs";
-// import messageAddedHandler from "../../operations/activity/messageAdded.mjs";
-// import reactAddedHandler from "../../operations/activity/reactionAdded.mjs";
+import left from "../../operations/activity/welcome/left.mjs";
+import messageAddedHandler from "../../operations/activity/messageAdded.mjs";
+import reactAddedHandler from "../../operations/activity/reactionAdded.mjs";
 
 export default async () => {
     // Instantiate a Discord.JS
@@ -23,16 +23,16 @@ export default async () => {
     setupCommands(client);
 
     // Add handler for reaction added
-    // client.on('messageReactionAdd', reactAddedHandler);
+    client.on('messageReactionAdd', reactAddedHandler);
 
     // Handler for a new member has joined
     client.on("guildMemberAdd", joined);
 
     // Member left handler.
-    // client.on('guildMemberRemove', left);
+    client.on('guildMemberRemove', left);
 
     // Message interceptors.
-    // client.on("messageCreate", messageAddedHandler);
+    client.on("messageCreate", messageAddedHandler);
 
     return client;
 }
