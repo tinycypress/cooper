@@ -6,13 +6,16 @@ import ElectionHelper from '../../operations/members/hierarchy/election/election
 
 export const name = 'stand';
 
-export const description = 'Offer yourself as a potential leader/commander. Message has to be at least 30 characters and no more than 400.';
+export const description = 'Offer yourself as a potential leader/commander.';
     
 export const examples = '!stand <message>';
 
 export const data = new SlashCommandBuilder()
 	.setName(name)
 	.setDescription(description)
+
+	// Add some way to warn/hint about limits...?
+	// Message has to be at least 30 characters and no more than 400.
 	.addStringOption(option => option.setName('campaign_text').setDescription('Please provide your electoral campaign message'));
 
 
