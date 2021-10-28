@@ -9,7 +9,7 @@ export default class MessagesHelper {
 
     static embed(embedConf) {
         return { 
-            embed: [createEmbed(embedConf)]
+            embeds: [createEmbed(embedConf)]
         };
     }
 
