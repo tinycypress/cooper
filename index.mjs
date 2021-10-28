@@ -1,13 +1,10 @@
+import { STATE } from './origin/coop.mjs';
 import Database from './origin/setup/database.mjs';
 
 import client from './origin/setup/client.mjs';
-// import registerLogging from './origin/setup/logging.mjs';
+import registerLogging from './origin/setup/logging.mjs';
 
-// Feature/abstract usage.
-// import eventsManifest from './operations/manifest.mjs';
-
-// Singleton state accessor
-import { STATE } from './origin/coop.mjs';
+import eventsManifest from './operations/manifest.mjs';
 
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
@@ -43,11 +40,11 @@ export default async function bootstrap() {
     await botClient.login(process.env.DISCORD_TOKEN);
 
     // Register community events.
-    // eventsManifest(botClient);
+    eventsManifest(botClient);
 
     // Register logging, debugging, errors, etc.
-    // registerLogging(botClient);
+    registerLogging(botClient);
 
     // Set activity.
-    botClient.user.setActivity(`You need !help`, { type: 'WATCHING' });
+    botClient.user.setActivity(`We need /help`, { type: 'WATCHING' });
 }
