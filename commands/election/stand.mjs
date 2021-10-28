@@ -16,12 +16,19 @@ export const data = new SlashCommandBuilder()
 
 	// Add some way to warn/hint about limits...?
 	// Message has to be at least 30 characters and no more than 400.
-	.addStringOption(option => option.setName('campaign_text').setDescription('Please provide your electoral campaign message'));
+	.addStringOption(option => 
+		option
+			.setName('campaign_text')
+			.setDescription('Please provide your electoral campaign message')
+			.setRequired(true)
+	);
 
 
 export const execute = async (interaction) => {
 	// Access the campaign text.
 	const campaignText = interaction.options.get('campaign_text');
+
+	console.log('campaignText', campaignText);
 
 	// Prevent @everyone from idiots using it.
 	if (campaignText.includes('@everyone')) {
