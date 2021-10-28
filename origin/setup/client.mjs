@@ -7,6 +7,7 @@ import joined from "../../operations/activity/welcome/joined.mjs";
 // import reactAddedHandler from "../../operations/activity/reactionAdded.mjs";
 
 export default async () => {
+    // Instantiate a Discord.JS
     const client = new Client({ 
         intents: [
             Intents.FLAGS.GUILDS,
@@ -20,7 +21,7 @@ export default async () => {
 
     // Setup the slash and local commands.
     setupCommands(client);
-    
+
     // Add handler for reaction added
     // client.on('messageReactionAdd', reactAddedHandler);
 
