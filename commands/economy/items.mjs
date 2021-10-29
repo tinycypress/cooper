@@ -50,13 +50,17 @@ export const execute = async (interaction) => {
 			// Sort owned items by most first.
 			items.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
 
+			console.log(items);
+
 			// Crop items so a text overflow error does not happen.
 			items = items.slice(15);
+
+			console.log(items);
 
 			// Provide info and prompt to check website.
 			const itemDisplayMsg = COOP.ITEMS.formItemDropText(target, items) +
 				itemsOwned > 15 ? `15/${itemsOwned} ` : '' +
-				`<[Advanced item details on Coop website](https://www.thecoop.group/members/${target.id})>`
+				`[Advanced item details on Coop website](<https://www.thecoop.group/members/${target.id}>)`
 
 			return await interaction.reply(itemDisplayMsg, { ephemeral: true });
 		}
