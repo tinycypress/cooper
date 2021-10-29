@@ -23,51 +23,58 @@ export const data = new SlashCommandBuilder()
 
 
 export const execute = async (interaction) => {
-	let itemCode = interaction.options.get('item_code').value ?? 'ALL';
-	let target = interaction.options.get('target').value ?? interaction.user;
+	const itemCodeInput = interaction.options.get('item_code');
+	const targetInput = interaction.options.get('target');
 
-	console.log(itemCode);
-	console.log(target);
+	const itemCode = itemCodeInput ? itemCodeInput.value : 'ALL';
+	const target = targetInput ? targetInput.value : interaction.user;
 
 	// Try to interpret itemCode/itemEmoji arg
-	const itemInput = COOP.ITEMS.interpretItemCodeArg(itemCode);
+	const parsedItemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
 
 	try {
 		const name = target.username;
 
 		// Retrieve all item counts that user owns.
 		if (itemCode === 'ALL') {
-			const noItemsMsg = `${name} does not own any items.`;
-			const items = await COOP.ITEMS.getUserItems(target.id);
-			if (items.length === 0) return await interaction.reply(noItemsMsg, { ephemeral: true });
-			else {
-				// Sort owned items by most first.
-				items.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
+			// Load all of the target's items.
+			let items = await COOP.ITEMS.getUserItems(target.id);
 
-				// Crop items so a text overflow error does not happen.
+			// Track total number of items owned.
+			const itemsOwned = items.length;
 
-				const itemDisplayMsg = COOP.ITEMS.formItemDropText(target, items);
+			// Handle no item ownership situation.
+			if (items.length === 0) 
+				return await interaction.reply(`${name} does not own any items.`, { ephemeral: true });
 
-				// Add website link prompt.
+			// Sort owned items by most first.
+			items.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
 
-				return await interaction.reply(itemDisplayMsg, { ephemeral: true });
-			}
+			// Crop items so a text overflow error does not happen.
+			items = items.slice(0, 15);
+
+			// Provide info and prompt to check website.
+			const itemDisplayMsg = COOP.ITEMS.formItemDropText(target, items) +
+				itemsOwned > 15 ? `15/${itemsOwned} ` : '' +
+				`[Advanced item details on Coop website](https://www.thecoop.group/members/${target.id})`
+
+			return await interaction.reply(itemDisplayMsg, { ephemeral: true });
 		}
 
 		// Check if itemCode valid to use.
-		if (!USABLE.isUsable(itemInput))
-			return await interaction.reply(`${name}, ${itemInput} seems invalid.`, { ephemeral: true });
+		if (!USABLE.isUsable(parsedItemCode))
+			return await interaction.reply(`${name}, ${parsedItemCode} seems invalid.`, { ephemeral: true });
 
 		// Check a specific item instead.
-		const itemQty = await COOP.ITEMS.getUserItemQty(target.id, itemInput);
+		const itemQty = await COOP.ITEMS.getUserItemQty(target.id, parsedItemCode);
 		const displayQty = COOP.ITEMS.displayQty(itemQty);
 
 		// Send specific item count.
-		const emoji = COOP.MESSAGES.emojiText(EMOJIS[itemInput]);
+		const emoji = COOP.MESSAGES.emojiText(EMOJIS[parsedItemCode]);
 		if (itemQty > 0)  
-			return await interaction.reply(`${name} owns ${displayQty}x${itemInput} ${emoji}.`, { ephemeral: true });
+			return await interaction.reply(`${name} owns ${displayQty}x${parsedItemCode} ${emoji}.`, { ephemeral: true });
 		else 
-			return await interaction.reply(`${name} does not own any ${itemInput}.`, { ephemeral: true });
+			return await interaction.reply(`${name} does not own any ${parsedItemCode}.`, { ephemeral: true });
 
 	} catch(err) {
 		console.error(err);
