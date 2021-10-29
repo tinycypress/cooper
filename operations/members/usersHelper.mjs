@@ -22,9 +22,11 @@ export default class UsersHelper {
         return SERVER._coop().members.cache;
     }
 
+    static _all = () => SERVER._coop().members.list({ limit: 1000 });
+
     static _get = this._getMemberByID;
 
-    static _fetch = id => SERVER._coop().members.fetch(id);
+    static _fetch = id => SERVERS._coop().members.fetch(id);
     
     static _getMemberByID(id) {
         return this._cache().get(id);
@@ -333,14 +335,16 @@ export default class UsersHelper {
         const includedIDs = _.map(dbUsers, "discord_id");
         
         // Find the missing/unrecognised users (MEMBER role only).
-        const unrecognisedMembers = Array.from(ROLES._allWith('MEMBER')
-            .filter(member => !includedIDs.includes(member.user.id)));
+        const allServerUsers = await USERS._all();
+        const allMemberUsers = allServerUsers.filter(m => ROLES._has(m, 'MEMBER'));
+        
+        // Find the missing/unrecognised users (MEMBER role only).
+        const unrecognisedMembers = allMemberUsers.filter(m => !includedIDs.includes(m.user.id));
 
         // Attempt to recognise each unrecognised user.
-        unrecognisedMembers.forEach(async (memberSet, index) => {
+        Array.from(unrecognisedMembers).map(async (memberSet, index) => {
             const member = memberSet[1];
-            
-            try {                
+            try {
                 // Insert and respond to successful/failed insertion.
                 const dbRes = await this.addToDatabase(member.user.id, member.user.username, member.joinedTimestamp);
                 if (dbRes.rowCount === 1)

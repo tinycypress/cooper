@@ -1,7 +1,7 @@
 import AboutHelper from "../../operations/marketing/about/aboutHelper.mjs";
 import ElectionHelper from "../../operations/members/hierarchy/election/electionHelper.mjs";
 
-import { SERVER, STATE } from "../coop.mjs";
+import { SERVER, STATE, USERS } from "../coop.mjs";
 
 export default async () => { 
     try {
@@ -22,6 +22,9 @@ export default async () => {
 
         // Preload all about/options preferences options.
         await AboutHelper.preloadMesssages();
+
+        // Cache the members.
+        USERS._all();
 
     } catch(e) {
         console.error(e);

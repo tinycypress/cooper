@@ -5,7 +5,7 @@ import Database from './database.mjs';
 
 
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, MESSAGES, USERS } from '../coop.mjs';
+import COOP, { CHANNELS, MESSAGES, USERS, ROLES } from '../coop.mjs';
 import { CHANNELS as CHANNELS_CONFIG } from '../config.mjs';
 import _ from 'lodash';
 
@@ -59,22 +59,28 @@ const shallowBot = async () => {
 
         // discord.js now has support for message components! This introduces the MessageActionRow, MessageButton, and MessageSelectMenu classes, as well as associated interactions and collectors.
 
-        const isoFresh = await USERS._fetch('245315920233234432');
-        console.log(isoFresh);
-        // const iso = await USERS.loadSingle('245315920233234432');
-        // console.log(iso);
+        
+        // Load all recognised users.
+        const dbUsers = await USERS.load();
 
-        // ElectionHelper.startElection();
+        // Pluck the list of their IDs for comparison with latest data.
+        const includedIDs = _.map(dbUsers, "discord_id");
 
-        // const candidates = await ElectionHelper.getAllCandidates();
-        // console.log(candidates);
-        // let preloadMsgIDSets = candidates.map(candidate => {
-        //     const userStillExists = !!USERS._getMemberByID(candidate.candidate_id);
-        //     console.log(userStillExists);
-        // });
+        const allServerUsers = await USERS._all();
 
-        // await Chicken.setConfig('election_on', 'true');
-        // await Chicken.setConfig('last_election', parseInt(Date.now() / 1000));
+        const allMemberUsers = allServerUsers.filter(m => ROLES._has(m, 'MEMBER'));
+        
+        // Find the missing/unrecognised users (MEMBER role only).
+        const unrecognisedMembers = allMemberUsers.filter(m => !includedIDs.includes(m.user.id));
+
+        Array.from(unrecognisedMembers).map(async (memberSet, index) => {
+            console.log(memberSet[1].user);
+        });
+        // console.log('members', ROLES._allWith('MEMBER'))
+        // console.log(ROLES._allWith('MEMBER').size);
+        // console.log('unrecognised', unrecognisedMembers);
+
+        // const isoFresh = await USERS._fetch('245315920233234432');
 
         // Attempt to recognise each unrecognised user.
 
