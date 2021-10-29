@@ -17,7 +17,6 @@ import CooperMorality from "./minigames/small/cooperMorality.mjs";
 import TradingHelper from "./minigames/medium/economy/items/tradingHelper.mjs";
 import EconomyHelper from "./minigames/medium/economy/economyHelper.mjs";
 import ElectionHelper from "./members/hierarchy/election/electionHelper.mjs";
-import AboutHelper from "./marketing/about/aboutHelper.mjs";
 
 
 import COOP, { SERVER, USERS } from "../origin/coop.mjs";
@@ -115,7 +114,6 @@ export default function eventsManifest() {
   EventsHelper.chanceRunInterval(() => SacrificeHelper.random(), 25, baseTickDur * 10);
   EventsHelper.chanceRunInterval(() => ProspectHelper.randomReady(), 20, baseTickDur * 14);
 
-
   // Social
   EventsHelper.chanceRunInterval(() => NewsHelper.mailboy(), 10, baseTickDur * 8);
 
@@ -145,9 +143,9 @@ export default function eventsManifest() {
   EventsHelper.runInterval(() => BuffsHelper.cleanupExpired(), baseTickDur / 3);
 
   // Miscellaneous features.
-  EventsHelper.chanceRunInterval(() => {
-    COOP.CHANNELS._postToFeed('Ruuuuuu' + 'u'.repeat(COOP.STATE.CHANCE.natural({ min: 1, max: 20 })));
-  }, 2.5, baseTickDur * 10);
+  // EventsHelper.chanceRunInterval(() => {
+  //   COOP.CHANNELS._postToFeed('Ruuuuuu' + 'u'.repeat(COOP.STATE.CHANCE.natural({ min: 1, max: 20 })));
+  // }, 2.5, baseTickDur * 10);
 
-  EventsHelper.chanceRunInterval(() => { COOP.CHANNELS._postToFeed('._.') }, 1, baseTickDur * 3.5);
+  // EventsHelper.chanceRunInterval(() => { COOP.CHANNELS._postToFeed('._.') }, 1, baseTickDur * 3.5);
 }

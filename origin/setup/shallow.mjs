@@ -7,6 +7,7 @@ import Database from './database.mjs';
 // v DEV IMPORT AREA v
 import COOP, { CHANNELS, MESSAGES, USERS } from '../coop.mjs';
 import { CHANNELS as CHANNELS_CONFIG } from '../config.mjs';
+import _ from 'lodash';
 
 import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper.mjs';
 import EventsHelper from '../../operations/eventsHelper.mjs';
@@ -17,6 +18,9 @@ import test from '../../operations/minigames/medium/economy/blockchain/_testingA
 import PointsHelper from '../../operations/minigames/medium/economy/points/pointsHelper.mjs';
 import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper.mjs';
 import AboutHelper from '../../operations/marketing/about/aboutHelper.mjs';
+import ItemsHelper from '../../operations/minigames/medium/economy/items/itemsHelper.mjs';
+import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper.mjs';
+import Chicken from '../../operations/chicken.mjs';
 
 
 
@@ -24,6 +28,7 @@ import AboutHelper from '../../operations/marketing/about/aboutHelper.mjs';
 
 // Load ENV variables.
 dotenv.config();
+
 
 
 // Commonly useful.
@@ -53,8 +58,14 @@ const shallowBot = async () => {
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
 
-        test();
+        // discord.js now has support for message components! This introduces the MessageActionRow, MessageButton, and MessageSelectMenu classes, as well as associated interactions and collectors.
 
+        // ElectionHelper.startElection();
+
+        // await Chicken.setConfig('election_on', 'true');
+        // await Chicken.setConfig('last_election', parseInt(Date.now() / 1000));
+
+        // Attempt to recognise each unrecognised user.
 
         // COMPETITIONS
         // Code

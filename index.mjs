@@ -4,7 +4,7 @@ import Database from './origin/setup/database.mjs';
 import client from './origin/setup/client.mjs';
 import registerLogging from './origin/setup/logging.mjs';
 
-import eventsManifest from './operations/manifest.mjs';
+// import eventsManifest from './operations/manifest.mjs';
 
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
@@ -40,7 +40,7 @@ export default async function bootstrap() {
     await botClient.login(process.env.DISCORD_TOKEN);
 
     // Register community events.
-    // eventsManifest(botClient);
+    eventsManifest(botClient);
 
     // Register logging, debugging, errors, etc.
     registerLogging(botClient);
@@ -48,3 +48,6 @@ export default async function bootstrap() {
     // Set activity.
     botClient.user.setActivity(`We need /help`, { type: 'WATCHING' });
 }
+
+
+

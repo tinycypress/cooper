@@ -138,13 +138,13 @@ export default class ElectionHelper {
     static async startElection() {
         try {
             // Turn election on and set latest election to now! :D
-            await Chicken.setConfig('election_on', 'true');
-            await Chicken.setConfig('last_election', parseInt(Date.now() / 1000));
+            Chicken.setConfig('election_on', 'true');
+            Chicken.setConfig('last_election', parseInt(Date.now() / 1000));
             
             // Update the election message
             const readableElecLeft = TIME.humaniseSecs((await this.votingPeriodLeftSecs()));
             const startElecText = `The election is currently ongoing! Time remaining: ${readableElecLeft}`;
-            await this.editElectionInfoMsg(startElecText);
+            this.editElectionInfoMsg(startElecText);
 
             // Inform all members so they can fairly stand.
             const electionText = `our latest ${CHANS.textRef('ELECTION')} is running, all members are welcome to stand or vote for their preferred commander and leaders. \n` +
@@ -152,13 +152,7 @@ export default class ElectionHelper {
                 `To stand for election, use the /stand (slash command). \n\n` +
                 `Time remaining: ${readableElecLeft}.`;
 
-            await CHANS._postToFeed(`@everyone, ${electionText}`);
-
-            // TODO: Finish this method and output a formatted election message.
-            // COOP.USERS._dmAll((username) => `${username}, ${electionText}`);
-
-            // React crown to this message.
-            // await MESSAGES.delayReact(feedMsg, '👑', 666);
+            // CHANS._postToFeed(`@everyone, ${electionText}`);
 
             // Indicate successful start.
             return true;
@@ -258,7 +252,8 @@ export default class ElectionHelper {
             // Announce the winners!
             const declareText = `**Latest <#${CHANNELS.ELECTION.id}> ends with these results!**\n\n` +
 
-                `**New ${ROLES._textRef('COMMANDER')}:**\n${hierarchy.commander.username}\n\n` +
+                `**New ${ROLES._textRef('COMMANDER')}:**\n${hierarchy.commander ? 
+                    hierarchy.commander.username : 'None elected.' }\n\n` +
 
                 `**New ${ROLES._textRef('LEADER')}:** \n` +
                     `${hierarchy.leaders.map(leader => `${leader.username} (${leader.votes} Votes)`).join('\n')}\n\n` +
@@ -293,7 +288,7 @@ export default class ElectionHelper {
             
             // Remove the former leader roles.
             let index = 0;
-            await Promise.all(exLeaders.map(async (exLeader) => {
+            Promise.all(exLeaders.map(async (exLeader) => {
                 index++;
 
                 // Check ex leader is not re-elected.
