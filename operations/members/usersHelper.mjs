@@ -23,6 +23,8 @@ export default class UsersHelper {
     }
 
     static _get = this._getMemberByID;
+
+    static _fetch = id => SERVER._coop().members.fetch(id);
     
     static _getMemberByID(id) {
         return this._cache().get(id);
@@ -255,9 +257,11 @@ export default class UsersHelper {
         const allRoles = await UserRoles.all();
         const userRoles = {};
 
-        allUsers.map((user, index) => {
+        allUsers.map(async (user, index) => {
             const delay = 666 * index;
-            const member = this._getMemberByID(user.discord_id);
+
+            // Replace this with fresh fetch
+            const member = await this._fetch(user.discord_id);
 
             // If the member has left, clean up.
             if (!member) 

@@ -40,6 +40,10 @@ export const execute = async (interaction) => {
 	if (ROLES._idHasCode(interaction.user.id, 'PROSPECT'))
 		return COOP.MESSAGES.selfDestruct(interaction.channel, 'Prospects cannot stand for election.', 0, 5000);
 
+	// Prevent unrecognised users from standing.
+	if (!USERS.loadSingle(interaction.user.id))
+		return COOP.MESSAGES.selfDestruct(interaction.channel, 'Unrecognised users cannot stand for election.', 0, 5000);
+
 	try {
 		// Prevent bad campaign texts.
 		if (campaignText.length < 30) {
