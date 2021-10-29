@@ -59,26 +59,9 @@ const shallowBot = async () => {
 
         // discord.js now has support for message components! This introduces the MessageActionRow, MessageButton, and MessageSelectMenu classes, as well as associated interactions and collectors.
 
-        
-        // Load all recognised users.
-        const dbUsers = await USERS.load();
-
-        // Pluck the list of their IDs for comparison with latest data.
-        const includedIDs = _.map(dbUsers, "discord_id");
-
-        const allServerUsers = await USERS._all();
-
-        const allMemberUsers = allServerUsers.filter(m => ROLES._has(m, 'MEMBER'));
-        
-        // Find the missing/unrecognised users (MEMBER role only).
-        const unrecognisedMembers = allMemberUsers.filter(m => !includedIDs.includes(m.user.id));
-
-        Array.from(unrecognisedMembers).map(async (memberSet, index) => {
-            console.log(memberSet[1].user);
-        });
-        // console.log('members', ROLES._allWith('MEMBER'))
-        // console.log(ROLES._allWith('MEMBER').size);
-        // console.log('unrecognised', unrecognisedMembers);
+        // MessageActionRow
+        // MessageButton
+        // MessageSelectMenu
 
         // const isoFresh = await USERS._fetch('245315920233234432');
 
