@@ -224,6 +224,7 @@ export default class ElectionHelper {
     }
 
     static async endElection() {
+        console.log('Ending the election.')
         try {
             const votes = await this.fetchAllVotes();
             const hierarchy = this.calcHierarchy(votes);
@@ -539,8 +540,8 @@ export default class ElectionHelper {
 
     static async loadAllCampaigns() {
         const candidates = await this.getAllCandidates();
-        let preloadMsgIDSets = candidates.map(candidate => {
-            const userStillExists = !!USERS._getMemberByID(candidate.candidate_id);
+        let preloadMsgIDSets = candidates.map(async candidate => {
+            const userStillExists = !!(await USERS.loadSingle(candidate.candidate_id))
 
             // Attempt to clear up if they have left etc.
             if (!userStillExists) {

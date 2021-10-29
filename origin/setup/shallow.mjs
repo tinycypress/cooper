@@ -57,10 +57,16 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
         // discord.js now has support for message components! This introduces the MessageActionRow, MessageButton, and MessageSelectMenu classes, as well as associated interactions and collectors.
 
         // ElectionHelper.startElection();
+
+        // const candidates = await ElectionHelper.getAllCandidates();
+        // console.log(candidates);
+        // let preloadMsgIDSets = candidates.map(candidate => {
+        //     const userStillExists = !!USERS._getMemberByID(candidate.candidate_id);
+        //     console.log(userStillExists);
+        // });
 
         // await Chicken.setConfig('election_on', 'true');
         // await Chicken.setConfig('last_election', parseInt(Date.now() / 1000));
