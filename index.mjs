@@ -4,7 +4,7 @@ import Database from './origin/setup/database.mjs';
 import client from './origin/setup/client.mjs';
 import registerLogging from './origin/setup/logging.mjs';
 
-// import eventsManifest from './operations/manifest.mjs';
+import eventsManifest from './operations/manifest.mjs';
 
 // Help debugging the ghost errors from promises/rejects.
 process.on("unhandledRejection", e => {
