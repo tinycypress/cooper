@@ -623,10 +623,6 @@ export default class ElectionHelper {
 
             // Add to the overall data.
             if (candidate) {
-
-                console.log(candidate.user.username);
-                console.log(campaignMsg.reactions.cache.size);
-
                 votes.push({
                     username: candidate.user.username,
                     id: candidate.id,

@@ -67,15 +67,6 @@ const shallowBot = async () => {
         // const votes = await ElectionHelper.fetchAllVotes();
         // console.log(votes);
 
-   
-
-
-
-
-
-
-
-
 
         // COMPETITIONS
         // Code

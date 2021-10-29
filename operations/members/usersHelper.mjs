@@ -344,6 +344,7 @@ export default class UsersHelper {
         // Attempt to recognise each unrecognised user.
         Array.from(unrecognisedMembers).map(async (memberSet, index) => {
             const member = memberSet[1];
+            
             try {
                 // Insert and respond to successful/failed insertion.
                 const dbRes = await this.addToDatabase(member.user.id, member.user.username, member.joinedTimestamp);
