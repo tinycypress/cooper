@@ -9,18 +9,7 @@ import COOP, { CHANNELS, MESSAGES, USERS, ROLES } from '../coop.mjs';
 import { CHANNELS as CHANNELS_CONFIG } from '../config.mjs';
 import _ from 'lodash';
 
-import CompetitionHelper, { COMPETITION_DUR } from '../../operations/social/competitionHelper.mjs';
-import EventsHelper from '../../operations/eventsHelper.mjs';
-import BlogHelper from '../../operations/marketing/blog/blogHelper.mjs';
-import BaseHelper from '../../operations/minigames/medium/conquest/baseHelper.mjs';
-import DatabaseHelper from '../../operations/databaseHelper.mjs';
-import test from '../../operations/minigames/medium/economy/blockchain/_testingAlgorand.mjs';
-import PointsHelper from '../../operations/minigames/medium/economy/points/pointsHelper.mjs';
-import SacrificeHelper from '../../operations/members/redemption/sacrificeHelper.mjs';
-import AboutHelper from '../../operations/marketing/about/aboutHelper.mjs';
-import ItemsHelper from '../../operations/minigames/medium/economy/items/itemsHelper.mjs';
 import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper.mjs';
-import Chicken from '../../operations/chicken.mjs';
 
 
 
@@ -41,6 +30,7 @@ const shallowBot = async () => {
         owner: '786671654721683517',
         intents: [
             Intents.FLAGS.GUILDS,
+            Intents.FLAGS.GUILD_MEMBERS,
             Intents.FLAGS.DIRECT_MESSAGES,
             Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
             Intents.FLAGS.GUILD_MESSAGES,
@@ -57,15 +47,35 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // discord.js now has support for message components! This introduces the MessageActionRow, MessageButton, and MessageSelectMenu classes, as well as associated interactions and collectors.
+        // Attempt to update elections text after every vote received.
 
-        // MessageActionRow
-        // MessageButton
-        // MessageSelectMenu
 
-        // const isoFresh = await USERS._fetch('245315920233234432');
+        // Make the items command work
+        // Add check on website text to items command
+        // Make it ephemeral
 
-        // Attempt to recognise each unrecognised user.
+
+        // Update election progress.
+        // ElectionHelper.commentateElectionProgress(false);
+
+        // const candidates = await ElectionHelper.getAllCandidates();
+        // console.log(candidates);
+
+        // const campaigns = await ElectionHelper.loadAllCampaigns();
+        // console.log(campaigns);
+
+        // const votes = await ElectionHelper.fetchAllVotes();
+        // console.log(votes);
+
+   
+
+
+
+
+
+
+
+
 
         // COMPETITIONS
         // Code

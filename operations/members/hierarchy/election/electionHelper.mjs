@@ -168,7 +168,7 @@ export default class ElectionHelper {
     }
 
     // Provide updates and functionality for an ongoing election.
-    static async commentateElectionProgress() {
+    static async commentateElectionProgress(postUpdate = true) {
         // Check time since last election commentation message (prevent spam).
         const lastElecMsgSecs = parseInt(await Chicken.getConfigVal('last_elecupdatemsg_secs'));
         const nowSecs = TIME._secs();
@@ -189,8 +189,10 @@ export default class ElectionHelper {
             // (within 4 hourSecss should count every 0.5 hourSecss)
             bufferSecs = hourSecs * 0.5;
         
+        // Prevent the message version based on dynamic freshnesh.
         const fresh = nowSecs < lastElecMsgSecs + bufferSecs;
-        if (fresh) return false;
+
+        if (fresh && postUpdate) return false;
 
         // Note: Votes aren't saved in the database... we rely solely on Discord counts.
         const votes = await this.fetchAllVotes();
@@ -220,7 +222,9 @@ export default class ElectionHelper {
         // Inform the community and update records.
         await this.editElectionInfoMsg(electionProgressText);
         
-        CHANS._codes(['FEED', 'TALK', 'ACTIONS'], electionProgressText);
+        // Post an update if chosen.
+        if (postUpdate)
+            CHANS._codes(['FEED', 'TALK', 'ACTIONS'], electionProgressText);
     }
 
     static async endElection() {
@@ -438,10 +442,10 @@ export default class ElectionHelper {
                     if (!isVotingPeriod && isElecOn) 
                         await this.endElection();
             
-                    // Election needs to announce update?
-                    const tenPercentRoll = STATE.CHANCE.bool({ likelihood: 10 });
-                    if (isVotingPeriod && isElecOn && tenPercentRoll) 
-                        await this.commentateElectionProgress();
+                    // Update election progress but only send feed update message sometimes
+                    const tenPercentRoll = STATE.CHANCE.bool({ likelihood: 2.5 });
+                    if (isVotingPeriod && isElecOn)
+                        await this.commentateElectionProgress(tenPercentRoll);
                 }
                 
                 // If election isn't running (sometimes) update about next election secs.
@@ -508,16 +512,16 @@ export default class ElectionHelper {
             if (candidate) {
                 // Check if already voted
                 const vote = await this.getVoteByVoterID(user.id);
-                const candidateUser = (await USERS._getMemberByID(candidate.candidate_id)).user;
+                const candidateUser = (await USERS._fetch(candidate.candidate_id)).user;
 
                 // Add vote to database
                 await this.addVote(user.id, candidate.candidate_id);
+
+                // Announce and update.
+                await this.commentateElectionProgress(false);
                 
                 // Disabled vote limits, but use it to prevent feedback spam.
                 if (!vote) {
-                    // Announce and update.
-                    await this.commentateElectionProgress();
-            
                     // Acknowledge vote in feed.
                     CHANS._postToFeed(`${user.username} cast their vote for ${candidateUser.username}!`);
                 }
@@ -540,7 +544,7 @@ export default class ElectionHelper {
 
     static async loadAllCampaigns() {
         const candidates = await this.getAllCandidates();
-        let preloadMsgIDSets = candidates.map(async candidate => {
+        let preloadMsgIDSets = await Promise.all(candidates.map(async candidate => {
             const userStillExists = !!(await USERS.loadSingle(candidate.candidate_id))
 
             // Attempt to clear up if they have left etc.
@@ -552,7 +556,7 @@ export default class ElectionHelper {
 
             // Return formatted.
             return MESSAGES.parselink(candidate.campaign_msg_link);
-        });
+        }));
 
         // Filter out the potentially expired(kicked/left/banned user) IDs.
         preloadMsgIDSets = preloadMsgIDSets.filter(idSet => !!idSet);
@@ -601,35 +605,41 @@ export default class ElectionHelper {
 
         // Calculate votes and map author data.
         const campaignMsgs = await this.loadAllCampaigns();
-        campaignMsgs.map(campaignMsg => {
+        await Promise.all(campaignMsgs.map(async campaignMsg => {
             // Find the candidate for these reactions.
             let candidate = null;
             const embed = campaignMsg.embeds[0] || null;
+
             if (embed) {
                 // eslint-disable-next-line
                 const idMatches = embed.description.match(/\<@(\d+)\>/gms);
                 
                 let embedUserID = idMatches[0];
+
                 embedUserID = embedUserID.replace('<@', '');
                 embedUserID = embedUserID.replace('>', '');
-                if (embedUserID) candidate = USERS._getMemberByID(embedUserID).user;
+                if (embedUserID) candidate = await USERS._fetch(embedUserID);
             }
 
             // Add to the overall data.
             if (candidate) {
+
+                console.log(candidate.user.username);
+                console.log(campaignMsg.reactions.cache.size);
+
                 votes.push({
-                    username: candidate.username,
+                    username: candidate.user.username,
                     id: candidate.id,
                     // Count all crown reactions.
                     votes: campaignMsg.reactions.cache.reduce((acc, reaction) => {
                         if (reaction.emoji.name === '👑') 
                             return acc += (reaction.count - 1);
                         else 
-                            return 0;
+                            return acc;
                     }, 0)
                 });
             }
-        });
+        }));
         
         // Sort votes by most voted for candidate.
         votes.sort((a, b) => {

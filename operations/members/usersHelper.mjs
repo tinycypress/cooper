@@ -26,7 +26,7 @@ export default class UsersHelper {
 
     static _get = this._getMemberByID;
 
-    static _fetch = id => SERVERS._coop().members.fetch(id);
+    static _fetch = id => SERVER._coop().members.fetch(id);
     
     static _getMemberByID(id) {
         return this._cache().get(id);
