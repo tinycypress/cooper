@@ -40,7 +40,7 @@ export default async function bootstrap() {
     await botClient.login(process.env.DISCORD_TOKEN);
 
     // Register community events.
-    eventsManifest(botClient);
+    // eventsManifest(botClient);
 
     // Register logging, debugging, errors, etc.
     registerLogging(botClient);
