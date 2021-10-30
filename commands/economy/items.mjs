@@ -50,31 +50,16 @@ export const execute = async (interaction) => {
 				return await interaction.reply(`${name} does not own any items.`, { ephemeral: true });
 
 			// Sort owned items by most first.
-			items.sort((a, b) => (a.quantity < b.quantity) ? 1 : -1);
+			items.sort((a, b) => (a.quantity > b.quantity) ? 1 : -1);
 
 			// Crop items so a text overflow error does not happen.
-			items = items.slice(15);
-
-			console.log(COOP.ITEMS.formItemDropText(target, items));
+			items = items.slice(5);
 
 			// Provide info and prompt to check website.
 			const itemDisplayMsg = (COOP.ITEMS.formItemDropText(target, items) + '\n' +
-				itemsOwned > 15 ? `15/${itemsOwned} ` : '');
+				itemsOwned > 5 ? `15/${itemsOwned} ` : '');
 
-			console.log(itemDisplayMsg);
-
-			const test = `
-				LMF's items:
-				x1 **WOLF** :wolf:
-				x1 **BAT** :bat:
-				x1 **EAGLE** :eagle:
-				x1 **BIRD** :bird:
-				x1 **PENGUIN** :penguin:
-				x1 **CHICKEN** :chicken:
-			`;
-
-			// await interaction.reply(itemDisplayMsg, { ephemeral: true });
-			await interaction.reply(test, { ephemeral: true });
+			await interaction.reply(itemDisplayMsg, { ephemeral: true });
 			await interaction.followUp(websiteLink);
 			return true;
 		}
