@@ -299,7 +299,7 @@ export default class UsersHelper {
 
         const trackedRoles = Object.keys(ROLES_CONFIG).map(roleKey => ROLES_CONFIG[roleKey].id);
 
-        this._cache().map((member) => {
+        (await this._all()).map((member) => {
             const savedRoles = userRoles[member.user.id] || [];
 
             // Update the user's persisted roles.
