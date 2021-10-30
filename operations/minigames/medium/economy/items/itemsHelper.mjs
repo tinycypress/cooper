@@ -218,7 +218,7 @@ export default class ItemsHelper {
             const itemText = `\nx${displayQty} ${this.escCode(item.item_code)} ${emojiIcon}`;
             itemDisplayMsg += itemText;
         });
-        return itemDisplayMsg
+        return itemDisplayMsg;
     }
 
     static escCode(itemCode) {
