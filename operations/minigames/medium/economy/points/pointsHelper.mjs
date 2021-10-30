@@ -156,21 +156,21 @@ export default class PointsHelper {
 
             // Declare they won again.
             if (hadAlready) {
-                updateText = `**MOTW check ran and <@${highestChange.userID}> wins again!**\n\n`;
+                updateText = `**MOTW check ran and <@${highestChange.userID}> (${Math.round(highestChange.percChange)}%) wins again!**\n\n`;
             } else {
                 // Give the winner the role.
                 COOP.ROLES._add(highestChange.userID, 'MEMBEROFWEEK');
     
                 // Took it from previous winner.
                 if (prevWinner) {
-                    updateText = `**MOTW check ran and <@${highestChange.userID}> seizes the role from <@${prevWinner.id}>!**\n\n`;
+                    updateText = `**MOTW check ran and <@${highestChange.userID}> (${Math.round(highestChange.percChange)}%) seizes the role from <@${prevWinner.id}>!**\n\n`;
                 } else {
-                    updateText = `**MOTW check ran and <@${highestChange.userID}> seizes the role!**\n\n`;
+                    updateText = `**MOTW check ran and <@${highestChange.userID}> (${Math.round(highestChange.percChange)}%) seizes the role!**\n\n`;
                 }
             }
 
             // Add reasoning.
-            updateText += `<@${highestChange.userID}> was selected by MOTW as the best/most promising member this week!\n\n`;
+            updateText += `<@${highestChange.userID}> (${Math.round(highestChange.percChange)}%) was selected by MOTW as the best/most promising member this week!\n\n`;
 
             // Give the winner the reward.
             if (hadAlready) {
