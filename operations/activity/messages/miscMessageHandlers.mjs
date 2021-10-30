@@ -29,11 +29,6 @@ export default class MiscMessageHandlers {
             if (STATE.CHANCE.bool({ likelihood: 5 })) msg.react('🐬');
         }
 
-        if (msg.content.toLowerCase() === 'i-' && !COOP.USERS.isCooperMsg(msg) && STATE.CHANCE.bool({ likelihood: 25 })) 
-            msg.say('U-? Finish your sentence!');
-
-
-
         // Add Tilray for Doc.
         if (msg.author.id === '703967490577006712' && STATE.CHANCE.bool({ likelihood: 2.5 })) {
             // msg.react('🐬');
@@ -48,11 +43,11 @@ export default class MiscMessageHandlers {
 
             // If targetting Cooper.
             if (COOP.USERS.isCooper(target.id)) {
-                if (msg.content.indexOf(';-;') > -1) msg.say(';-;');
-                if (msg.content.indexOf('._.') > -1) msg.say('._.');
-                if (msg.content.indexOf(':]') > -1) msg.say(':]');
-                if (msg.content.indexOf(':}') > -1) msg.say(':}');
-                if (msg.content.indexOf(':3') >-1) msg.say(':3');
+                if (msg.content.indexOf(';-;') > -1) msg.channel.send(';-;');
+                if (msg.content.indexOf('._.') > -1) msg.channel.send('._.');
+                if (msg.content.indexOf(':]') > -1) msg.channel.send(':]');
+                if (msg.content.indexOf(':}') > -1) msg.channel.send(':}');
+                if (msg.content.indexOf(':3') >-1) msg.channel.send(':3');
 
                 if (
                     msg.content.indexOf('hate you') > -1 ||
@@ -72,7 +67,7 @@ export default class MiscMessageHandlers {
                             const endpoint = 'https://api.fungenerators.com/taunt/generate?category=shakespeare&limit=1';
                             const result = (await Axios.get(endpoint)).data || null;
                             const insults = (result.contents || null).taunts || null;
-                            if (insults) msg.say(insults[0]);
+                            if (insults) msg.channel.send(insults[0]);
                         }
                     }, 250);
                 }
@@ -156,7 +151,7 @@ export default class MiscMessageHandlers {
         }
 
         if (STATE.CHANCE.bool({ likelihood: 25 }) && msg.author.id === '266840470624272385' && msg.content === '?') {
-            msg.say('?');
+            msg.channel.send('?');
         }
 
         // surprise lmf, i hope this works ;--;

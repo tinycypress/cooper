@@ -197,7 +197,7 @@ export default class EggHuntMinigame {
 
                 setTimeout(async () => {
                     if (!CHANNELS.checkIsByCode(reaction.message.channel.id, 'FEED')) {
-                        const feedbackMsg = await reaction.message.say(feedbackText);
+                        const feedbackMsg = await reaction.message.channel.send(feedbackText);
                         MESSAGES.delayReact(feedbackMsg, EMOJIS.FRYING_PAN, 1333);
                         MESSAGES.delayDelete(feedbackMsg, 10000);
                     }
@@ -206,7 +206,7 @@ export default class EggHuntMinigame {
                 }, 333)
                 // TODO: REfactor to CHANNELS.propagate()
             } else {
-                const unableMsg = await reaction.message.say('Unable to use FRYING_PAN, you own none. :/');
+                const unableMsg = await reaction.message.channel.send('Unable to use FRYING_PAN, you own none. :/');
                 setTimeout(() => reaction.users.remove(user.id), 666);
                 MESSAGES.delayReact(unableMsg, EMOJIS.FRYING_PAN, 1333);
                 MESSAGES.delayDelete(unableMsg, 10000);

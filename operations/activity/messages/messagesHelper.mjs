@@ -205,8 +205,8 @@ export default class MessagesHelper {
                         let messageRef = null;
 
                         // If passed a message directly, use "say" method.
-                        if (typeof msgOrChannelRef.say === 'function')
-                            messageRef = await msgOrChannelRef.say(content, silentOpts);
+                        if (typeof msgOrChannelRef.send !== 'function')
+                            messageRef = await msgOrChannelRef.channel.send(content, silentOpts);
 
                         // If passed a channel, use channel's "say" method.
                         if (typeof msgOrChannelRef.send === 'function')
@@ -214,7 +214,7 @@ export default class MessagesHelper {
                         
                         if (messageRef) {
                             this.delayDelete(messageRef, fuseMs);
-                            TemporaryMessages.add(messageRef)
+                            TemporaryMessages.add(messageRef);
                             resolve(messageRef);
                         } else {
                             resolve(null);
@@ -239,8 +239,8 @@ export default class MessagesHelper {
                         let messageRef = null;
 
                         // If passed a message directly, use "say" method.
-                        if (typeof msgOrChannelRef.say === 'function')
-                            messageRef = await msgOrChannelRef.say(content);
+                        if (typeof msgOrChannelRef.send !== 'function')
+                            messageRef = await msgOrChannelRef.channel.send(content);
 
                         // If passed a channel, use channel's "say" method.
                         if (typeof msgOrChannelRef.send === 'function')

@@ -33,7 +33,7 @@ export default class SubscriptionHelper {
             const confirmText = `\n\nPlease confirm ${email} is your email in the next 60 secs using the emoji reactions!`;
 
             const confirmEmailText = detectText + actionText + termsText + confirmText;
-            const confirmMsg = await msg.say(confirmEmailText);
+            const confirmMsg = await msg.channel.send(confirmEmailText);
 
             // Avoid rate limiting/hammering network.
             MESSAGES.delayReact(confirmMsg, EMOJIS.POLL_FOR, 333);
@@ -63,7 +63,7 @@ export default class SubscriptionHelper {
                     
                     // Handle existing subscription modification.
                     else if (subscription.success && !subscription.newLead) 
-                        confirmMsg.say('Your email address was updated.');
+                        confirmMsg.channel.send('Your email address was updated.');
                     
                 } catch(e) {
                     confirmMsg.reply('Confirmation fail. Try again by stating your email.');

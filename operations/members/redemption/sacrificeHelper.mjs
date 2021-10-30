@@ -204,7 +204,7 @@ export default class SacrificeHelper {
                 });
 
                 // const backstabMsg = 
-                await reaction.message.say(
+                await reaction.message.channel.send(
                     `${targetMember.user.username} got backstabbed! ${EMOJIS.DAGGER.repeat(updatedNumVotes)}`
                 );
             }, 3000);

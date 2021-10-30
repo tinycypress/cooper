@@ -1,7 +1,9 @@
-import MessageNotifications from './activity/information/messageNotifications.mjs';
+import { Permissions } from 'discord.js';
 
 import COOP, { STATE, SERVER } from '../origin/coop.mjs';
 import { CHANNELS as CHANNELS_CONFIG } from '../origin/config.mjs';
+
+import MessageNotifications from './activity/information/messageNotifications.mjs';
 
 export const silentOpts = { allowedMentions: { users: [], roles: [] }};
 
@@ -146,6 +148,40 @@ export default class ChannelHelper {
 
         return selection;
     }
+
+    static _hide(id, reason = 'Hiding channel') {
+       // Hide the channel.
+       const channel = this._get(id);
+
+       // Remove the current permissions.
+       channel.permissionOverwrites.cache.map(p => 
+           channel.permissionOverwrites.delete(p.id)
+       );
+
+       // Access the everyone role.
+       const everyoneRole = COOP.SERVER._coop().roles.everyone;
+
+       // Set everyone to VIEW_CHANNEL false.
+       channel.permissionOverwrites.set(
+           [{
+              id: everyoneRole.id,
+              deny: [Permissions.FLAGS.VIEW_CHANNEL]
+           }], 
+           reason
+       );
+    }
+
+    static _show(id) {
+        // Access the channel
+        const channel = this._get(id);
+
+        // Show the channel.
+        return channel.lockPermissions();
+     }
+
+
+    
+
 
     // TODO: Implement this
     // static selectWeightedActive(channels, weights) {

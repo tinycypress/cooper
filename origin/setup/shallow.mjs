@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Client, Intents } from 'discord.js';
+import { Client, Intents, Permissions } from 'discord.js';
 
 import Database from './database.mjs';
 
@@ -39,7 +39,12 @@ const shallowBot = async () => {
 
         // Track competitions (due or not)
         // Announce and show channel when active
-        
+
+        // Show the channel.
+        // COOP.CHANNELS._hide('845603592940945418');
+        // COOP.CHANNELS._show('845603592940945418');
+        // bizChan.lockPermissions();
+
         // Allow people to register for competition
         // Allow posting of entries
         // Declare winner and hide channel when ended

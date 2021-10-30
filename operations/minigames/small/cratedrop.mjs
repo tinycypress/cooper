@@ -75,7 +75,7 @@ export default class CratedropMinigame {
             if (hitCount >= reqHits) await this.open(reaction, user);
             else {
                 const hitsLeft = reqHits - hitCount;
-                const openingUpdateMsg = await msg.say(
+                const openingUpdateMsg = await msg.channel.send(
                     `${user.username} tried opening the crate! ${hitsLeft}/${reqHits} more hits to break!`
                 );
 
