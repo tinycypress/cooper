@@ -63,7 +63,18 @@ export const execute = async (interaction) => {
 
 			console.log(itemDisplayMsg);
 
-			await interaction.reply(itemDisplayMsg, { ephemeral: true });
+			const test = `
+				LMF's items:
+				x1 **WOLF** :wolf:
+				x1 **BAT** :bat:
+				x1 **EAGLE** :eagle:
+				x1 **BIRD** :bird:
+				x1 **PENGUIN** :penguin:
+				x1 **CHICKEN** :chicken:
+			`;
+
+			// await interaction.reply(itemDisplayMsg, { ephemeral: true });
+			await interaction.reply(test, { ephemeral: true });
 			await interaction.followUp(websiteLink);
 			return true;
 		}

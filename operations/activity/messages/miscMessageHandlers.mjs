@@ -32,6 +32,17 @@ export default class MiscMessageHandlers {
         if (msg.content.toLowerCase() === 'i-' && !COOP.USERS.isCooperMsg(msg) && STATE.CHANCE.bool({ likelihood: 25 })) 
             msg.say('U-? Finish your sentence!');
 
+
+
+        // Add Tilray for Doc.
+        if (msg.author.id === '703967490577006712' && STATE.CHANCE.bool({ likelihood: 2.5 })) {
+            // msg.react('🐬');
+            
+        }
+
+
+
+
         const target = msg.mentions.users.first();
         if (target) {
 
