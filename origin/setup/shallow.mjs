@@ -3,22 +3,12 @@ import { Client, Intents } from 'discord.js';
 
 import Database from './database.mjs';
 
-
 // v DEV IMPORT AREA v
-import COOP, { CHANNELS, MESSAGES, USERS, ROLES } from '../coop.mjs';
-import { CHANNELS as CHANNELS_CONFIG } from '../config.mjs';
-import _ from 'lodash';
-
-import ElectionHelper from '../../operations/members/hierarchy/election/electionHelper.mjs';
-
-
-
+import COOP from '../coop.mjs';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
 dotenv.config();
-
-
 
 // Commonly useful.
 // const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
@@ -47,10 +37,9 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Attempt to update elections text after every vote received.
-
         // Track competitions (due or not)
         // Announce and show channel when active
+        
         // Allow people to register for competition
         // Allow posting of entries
         // Declare winner and hide channel when ended

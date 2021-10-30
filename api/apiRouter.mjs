@@ -10,7 +10,7 @@ import EconomyRouter from "./services/economy/economyRouter.mjs";
 
 const APIRouter = Router();
 
-APIRouter.get('/', (req, res) => res.status(200).send(200));
+APIRouter.get('/', (req, res) => res.sendStatus(200));
 
 APIRouter.use('/auth', AuthRouter);
 APIRouter.use('/blog', BlogRouter);
