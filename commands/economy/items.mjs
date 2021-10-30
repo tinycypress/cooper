@@ -55,9 +55,13 @@ export const execute = async (interaction) => {
 			// Crop items so a text overflow error does not happen.
 			items = items.slice(15);
 
+			console.log(COOP.ITEMS.formItemDropText(target, items));
+
 			// Provide info and prompt to check website.
-			const itemDisplayMsg = COOP.ITEMS.formItemDropText(target, items) + '\n' +
-				itemsOwned > 15 ? `15/${itemsOwned} ` : '';
+			const itemDisplayMsg = (COOP.ITEMS.formItemDropText(target, items) + '\n' +
+				itemsOwned > 15 ? `15/${itemsOwned} ` : '');
+
+			console.log(itemDisplayMsg);
 
 			await interaction.reply(itemDisplayMsg, { ephemeral: true });
 			await interaction.followUp(websiteLink);
