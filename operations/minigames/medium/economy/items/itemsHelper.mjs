@@ -150,7 +150,7 @@ export default class ItemsHelper {
     static async getUserItems(userID) {
         const query = {
             name: "get-all-user-items",
-            text: `SELECT * FROM "items" WHERE owner_id = $1`,
+            text: `SELECT * FROM "items" WHERE owner_id = $1 ORDER BY quantity DESC`,
             values: [userID]
         };
 

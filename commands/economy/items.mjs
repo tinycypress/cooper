@@ -42,9 +42,6 @@ export const execute = async (interaction) => {
 			// Load all of the target's items.
 			let items = await COOP.ITEMS.getUserItems(target.id);
 
-			// Track total number of items owned.
-			const itemsOwned = items.length;
-
 			// Handle no item ownership situation.
 			if (items.length === 0) 
 				return await interaction.reply(`${name} does not own any items.`, { ephemeral: true });
