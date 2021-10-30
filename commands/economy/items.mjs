@@ -26,12 +26,10 @@ export const execute = async (interaction) => {
 	const itemCodeInput = interaction.options.get('item_code');
 	const targetInput = interaction.options.get('target');
 
-	console.log(targetInput);
-
 	const itemCode = itemCodeInput ? itemCodeInput.value : 'ALL';
-	const target = targetInput ? targetInput.value : interaction.user;
+	const target = targetInput ? targetInput.user : interaction.user;
 
-	console.log(target);
+	const websiteLink = `[See advanced details via website](<https://www.thecoop.group/members/${target.id}>)`
 
 	// Try to interpret itemCode/itemEmoji arg
 	const parsedItemCode = COOP.ITEMS.interpretItemCodeArg(itemCode);
@@ -59,10 +57,11 @@ export const execute = async (interaction) => {
 
 			// Provide info and prompt to check website.
 			const itemDisplayMsg = COOP.ITEMS.formItemDropText(target, items) + '\n' +
-				itemsOwned > 15 ? `15/${itemsOwned} ` : '' +
-				`[See advanced details via website](<https://www.thecoop.group/members/${target.id}>)`
+				itemsOwned > 15 ? `15/${itemsOwned} ` : '';
 
-			return await interaction.reply(itemDisplayMsg, { ephemeral: true });
+			await interaction.reply(itemDisplayMsg, { ephemeral: true });
+			await interaction.followUp(websiteLink);
+			return true;
 		}
 
 		// Check if itemCode valid to use.
@@ -75,8 +74,11 @@ export const execute = async (interaction) => {
 
 		// Send specific item count.
 		const emoji = COOP.MESSAGES.emojiText(EMOJIS[parsedItemCode]);
-		if (itemQty > 0)  
-			return await interaction.reply(`${name} owns ${displayQty}x${parsedItemCode} ${emoji}.`, { ephemeral: true });
+		if (itemQty > 0) {
+			await interaction.reply(`${name} owns ${displayQty}x${parsedItemCode} ${emoji}.`, { ephemeral: true });
+			await interaction.followUp(websiteLink);
+			return true;
+		}
 		else 
 			return await interaction.reply(`${name} does not own any ${parsedItemCode}.`, { ephemeral: true });
 
