@@ -11,7 +11,7 @@ export default async () => {
         const guild = SERVER.getByCode(STATE.CLIENT, 'PROD');
         let reqNum = 0;
         guild.channels.cache.each(channel => {
-            if (channel.type === 'text') {
+            if (channel.type === 'GUILD_TEXT') {
                 setTimeout(() => channel.messages.fetch({ limit: 5 }), 666 * reqNum);
                 reqNum++;
             }

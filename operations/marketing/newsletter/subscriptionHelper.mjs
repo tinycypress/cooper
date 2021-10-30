@@ -18,7 +18,7 @@ export default class SubscriptionHelper {
     // Check if email address is within message, if so... add it for them.  
     static async onMessage(msg) {
         // Only allow in DMs.
-        if (msg.channel.type !== 'dm') return null;
+        if (msg.channel.type !== 'DM') return null;
 
         // Ignore Cooper for this.
         if (USERS.isCooperMsg(msg)) return null;

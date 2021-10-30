@@ -40,7 +40,7 @@ export default class MessageNotifications {
         // if (channelID === CHANNELS.COOPERTESTS.id) return false;
 
         // Filter out DM messages.
-        if (msg.channel.type === 'dm') return false;
+        if (msg.channel.type === 'DM') return false;
 
         // If not already tracking, create the key on the object.
         if (typeof STATE.MESSAGE_HISTORY[channelID] === 'undefined') {

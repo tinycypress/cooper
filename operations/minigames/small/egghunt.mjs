@@ -232,7 +232,7 @@ export default class EggHuntMinigame {
 
             // Check the channel type or location of the action.
             let location = null;
-            if (reaction.message.channel.type === 'dm') location = 'direct message'
+            if (reaction.message.channel.type === 'DM') location = 'direct message'
             else location = `"${reaction.message.channel.name}" channel`;
 
             // Setup the text for feedback messages.

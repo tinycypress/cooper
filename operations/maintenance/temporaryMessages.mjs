@@ -10,7 +10,7 @@ export default class TemporaryMessages {
     // TODO: If the same message attempt to be added twice and one is shorter, reduce its lifetime
     // Consider this a correction from Cooper/more recent data.
     static async add(msg, deleteSecs = 60 * 5, note, data) {
-        if (msg.channel.type === 'dm') return false;
+        if (msg.channel.type === 'DM') return false;
 
         let lifetimeSecs = !isNaN(parseInt(deleteSecs)) ? parseInt(deleteSecs) : 1;
         let expiry = Math.round((Date.now() / 1000) + lifetimeSecs);

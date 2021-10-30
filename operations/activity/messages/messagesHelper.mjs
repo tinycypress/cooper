@@ -166,7 +166,7 @@ export default class MessagesHelper {
         if (msg.deleted) return true;
 
         // TODO: Check if message is in a DM... since these can't be deleted.
-        if (msg.channel.type === 'dm') return true;
+        if (msg.channel.type === 'DM') return true;
 
         // TODO: This should definitely be applied to temp_messages too, since... can't be deleted.
         if (msg) setTimeout(async () => { 
