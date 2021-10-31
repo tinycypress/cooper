@@ -8,9 +8,10 @@ DonationRouter.get('/', async (req, res) => {
 
     // process.env.RAISELY_ENCRYPTION_KEY
 
-    res.status(200).json({
-        "DONATION": "TESTING"
-    });
+    res.sendStatus(200);
+    // .json({
+    //     "DONATION": "TESTING"
+    // });
 });
 
 export default DonationRouter;
