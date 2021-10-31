@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const DonationRouter = Router();
 
-DonationRouter.get('/', async (req, res) => {
+DonationRouter.post('/', async (req, res) => {
     console.log('Donation1?!?!');
     console.log(req.body);
 
