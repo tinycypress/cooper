@@ -25,15 +25,15 @@ export default class LinkPreviewFilter {
 
         // Check if portrait emoji, toggle suppression.
         static onReaction(reaction, user) {
-            // if (USERS.isCooper(user.id)) return false;
-            // if (USERS.isCooperMsg(reaction.message)) return false;
-            // if (reaction.emoji.name !== '🖼️') return false;
+            if (USERS.isCooper(user.id)) return false;
+            if (USERS.isCooperMsg(reaction.message)) return false;
+            if (reaction.emoji.name !== '🖼️') return false;
 
-            // // If not suppressed, default to true (suppressive).
-            // const toggleVal = reaction.message.embeds.length > 0;
+            // If not suppressed, default to true (suppressive).
+            const toggleVal = reaction.message.embeds.length > 0;
 
-            // // "Rate-limited" embed suppression.
-            // setTimeout(() => reaction.message.suppressEmbeds(toggleVal), 666);
+            // "Rate-limited" embed suppression.
+            setTimeout(() => reaction.message.suppressEmbeds(toggleVal), 666);
         }
 
 }

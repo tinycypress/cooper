@@ -39,6 +39,8 @@ export const execute = async (interaction) => {
 
 	// TODO: Need to handle unrecognised.
 
+	console.log(data);
+
 	const tickerData = {
 		meta: {},
 		price: {}
@@ -70,12 +72,12 @@ export const execute = async (interaction) => {
 	console.log(tickerData);
 
 	// Format the response.
-	const responseText = `**${ticker} ${duration}**\n` +
-		`Open: ${tickerData.open}\n` +
-		`High: ${tickerData.high}\n` +
-		`Low: ${tickerData.low}\n` +
-		`Close: ${tickerData.close}\n\n` +
-		`_Last refresh: ${tickerData.last_refreshed}_`;
+	const responseText = `**${ticker} (${duration})**\n` +
+		`Open: ${tickerData.price.open}\n` +
+		`High: ${tickerData.price.high}\n` +
+		`Low: ${tickerData.price.low}\n` +
+		`Close: ${tickerData.price.close}\n\n` +
+		`_Last refresh: ${tickerData.meta.last_refreshed}_`;
 
 	// Ticker search
 	// https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=demo

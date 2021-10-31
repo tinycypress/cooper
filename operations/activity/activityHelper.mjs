@@ -1,4 +1,5 @@
 import { SERVER } from "../../origin/coop.mjs";
+import Database from "../../origin/setup/database.mjs";
 
 export default class ActivityHelper {
 

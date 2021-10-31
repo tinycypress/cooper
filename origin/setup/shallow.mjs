@@ -41,17 +41,10 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Toggle link preview off?
-
-        const goog = await COOP.MESSAGES.getByLink('https://discord.com/channels/723660447508725802/779341376630292521/904453846619811902');
-        console.log(goog);
-
-        goog.suppressEmbeds();
+        // Restore items
 
         // Supporter role/donation
         // Charity register
-        // Mention without pinging?
-        // Restore items
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa
