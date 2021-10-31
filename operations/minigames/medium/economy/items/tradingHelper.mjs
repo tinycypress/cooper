@@ -8,9 +8,9 @@ import Database from "../../../../../origin/setup/database.mjs";
 export default class TradingHelper {
 
     static async updateChannel() {
-        // Update message at top of trades :), fuck your sarcastic comments.
-        const dateFmt = TIME.secsLongFmt(Date.now() / 1000);
-        const editResult = await MESSAGES.editByLink(KEY_MESSAGES.trade_info, 'Trade Message Updated ' + dateFmt);
+        // Update message at top of trades :)
+        // const dateFmt = TIME.secsLongFmt(Date.now() / 1000);
+        // const editResult = await MESSAGES.editByLink(KEY_MESSAGES.trade_info, 'Trade Message Updated ' + dateFmt);
 
         // Post latest/most recent 5-10 trades in talk.
         const lastTrades = await this.all();
