@@ -21,7 +21,7 @@ import ElectionHelper from "./members/hierarchy/election/electionHelper.mjs";
 
 import COOP, { SERVER, USERS } from "../origin/coop.mjs";
 import TodoHelper from "./productivity/todos/todoHelper.mjs";
-import { status } from "./marketing/rewards/loyalty.mjs";
+// import { status } from "./marketing/rewards/loyalty.mjs";
 import ProspectHelper from "./members/redemption/prospectHelper.mjs";
 import serverTick from "./serverTick.mjs";
 import TemporaryMessages from "./maintenance/temporaryMessages.mjs";
@@ -77,7 +77,7 @@ export default function eventsManifest() {
   // Track the competitions, start/end if necessary.
   EventsHelper.runInterval(() => CompetitionHelper.track(), baseTickDur * 8);
 
-  EventsHelper.chanceRunInterval(status, 10, baseTickDur * 50);
+  // EventsHelper.chanceRunInterval(status, 10, baseTickDur * 50);
 
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);  
 
