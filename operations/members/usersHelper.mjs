@@ -100,7 +100,7 @@ export default class UsersHelper {
     }
 
     static async removeFromDatabase(member) {
-        console.log('Member removed', member);
+        console.log('Member removed', member.user.username, member.user.id);
         const query = {
             name: "remove-user",
             text: "DELETE FROM users WHERE discord_id = $1",
