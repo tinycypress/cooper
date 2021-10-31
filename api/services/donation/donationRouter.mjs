@@ -8,6 +8,13 @@ DonationRouter.post('/', async (req, res) => {
 
     // process.env.RAISELY_ENCRYPTION_KEY
 
+    console.log(req.body.user);
+    console.log(req.body.profile);
+
+    req.body.receipts.map(r => {
+        console.log(r);
+    });
+
     res.sendStatus(200);
     // .json({
     //     "DONATION": "TESTING"
