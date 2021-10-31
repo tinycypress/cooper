@@ -5,6 +5,8 @@ import Database from './database.mjs';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop.mjs';
+import DatabaseHelper from '../../operations/databaseHelper.mjs';
+import ActivityHelper from '../../operations/activity/activityHelper.mjs';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -38,15 +40,14 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Track activity
-        const coop = await COOP.SERVER._coop().fetch();
-        const active = coop.approximatePresenceCount;
+        // activity_hours
+        // hour
+        // active_num
 
-        // Get the hour to assign it to.
-        const date = new Date;
-        console.log(date.getHours());
-        console.log(active);
+        ActivityHelper.track();
 
+
+        // DatabaseHelper
 
         // Supporter role/donation
         // Charity register
