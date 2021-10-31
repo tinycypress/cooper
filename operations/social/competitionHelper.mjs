@@ -4,6 +4,18 @@ import EventsHelper from "../eventsHelper.mjs";
 
 export const COMPETITION_DUR = 1000 * 3600 * 24 * 7;
 
+// Track competitions (due or not)
+// Announce and show channel when active
+
+// Show the channel.
+// COOP.CHANNELS._hide('845603592940945418');
+// COOP.CHANNELS._show('845603592940945418');
+// bizChan.lockPermissions();
+
+// Allow people to register for competition
+// Allow posting of entries
+// Declare winner and hide channel when ended
+
 export default class CompetitionHelper {
 
     static async get(code) {

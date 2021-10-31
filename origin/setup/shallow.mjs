@@ -24,7 +24,8 @@ const shallowBot = async () => {
             Intents.FLAGS.DIRECT_MESSAGES,
             Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
             Intents.FLAGS.GUILD_MESSAGES,
-            Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+            Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+            Intents.FLAGS.GUILD_PRESENCES
         ]
     });
 
@@ -37,17 +38,21 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Track competitions (due or not)
-        // Announce and show channel when active
+        // Track activity
+        const coop = await COOP.SERVER._coop().fetch();
+        const active = coop.approximatePresenceCount;
 
-        // Show the channel.
-        // COOP.CHANNELS._hide('845603592940945418');
-        // COOP.CHANNELS._show('845603592940945418');
-        // bizChan.lockPermissions();
+        // Get the hour to assign it to.
+        const date = new Date;
+        console.log(date.getHours());
+        console.log(active);
 
-        // Allow people to register for competition
-        // Allow posting of entries
-        // Declare winner and hide channel when ended
+
+        // Supporter role/donation
+        // Charity register
+        // Mention without pinging?
+        // Toggle link preview off?
+        // Restore items
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa
