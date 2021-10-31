@@ -7,6 +7,7 @@ import GroundRouter from "./services/conquest/groundRouter.mjs";
 import MembersRouter from "./services/members/membersRouter.mjs";
 import ProjectsRouter from "./services/projects/projectsRouter.mjs";
 import EconomyRouter from "./services/economy/economyRouter.mjs";
+import DonationRouter from "./services/donation/donationRouter.mjs";
 
 const APIRouter = Router();
 
@@ -19,5 +20,6 @@ APIRouter.use('/ground', GroundRouter);
 APIRouter.use('/economy', EconomyRouter);
 APIRouter.use('/members', MembersRouter);
 APIRouter.use('/projects', ProjectsRouter);
+APIRouter.use('/donation', DonationRouter);
 
 export default APIRouter;

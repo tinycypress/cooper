@@ -41,8 +41,11 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
+        // Add raisely encryption key for comparison (add to heroku)
+
         // Restore items
 
+        // Tied together:
         // Supporter role/donation
         // Charity register
 
