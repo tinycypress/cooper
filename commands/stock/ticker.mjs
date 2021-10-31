@@ -67,6 +67,8 @@ export const execute = async (interaction) => {
 		}
 	});
 
+	console.log(tickerData);
+
 	// Format the response.
 	const responseText = `**${ticker} ${duration}**\n` +
 		`Open: ${tickerData.open}\n` +

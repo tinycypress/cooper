@@ -10,17 +10,17 @@ export default class LinkPreviewFilter {
         }
 
         static async onMessage(msg) {
-            // if (USERS.isCooperMsg(msg)) return false;
-            // if (msg.command !== null) return false;
+            if (USERS.isCooperMsg(msg)) return false;
+            if (msg.command !== null) return false;
 
-            // // Check if message contains link.
-            // if (this.isLink(msg.content)) {
-            //     MESSAGES.delayReact(msg, '🖼️', 666);
+            // Check if message contains link.
+            if (this.isLink(msg.content)) {
+                MESSAGES.delayReact(msg, '🖼️', 666);
 
-            //     // If it does not contain gif or tenor, suppress preview.
-            //     if (msg.content.indexOf('tenor') === -1 && msg.content.indexOf('gif') === -1)
-            //         msg.suppressEmbeds(true);
-            // }
+                // If it does not contain gif or tenor, suppress preview.
+                if (msg.content.indexOf('tenor') === -1 && msg.content.indexOf('gif') === -1)
+                    msg.suppressEmbeds(true);
+            }
         }
 
         // Check if portrait emoji, toggle suppression.
