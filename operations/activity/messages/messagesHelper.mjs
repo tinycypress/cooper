@@ -206,11 +206,11 @@ export default class MessagesHelper {
 
                         // If passed a message directly, use "say" method.
                         if (typeof msgOrChannelRef.send !== 'function')
-                            messageRef = await msgOrChannelRef.channel.send(content, silentOpts);
+                            messageRef = await msgOrChannelRef.channel.send(Object.assign({ content, ...silentOpts }));
 
                         // If passed a channel, use channel's "say" method.
                         if (typeof msgOrChannelRef.send === 'function')
-                            messageRef = await msgOrChannelRef.send(content, silentOpts);
+                            messageRef = await msgOrChannelRef.send(Object.assign({ content, ...silentOpts }));
                         
                         if (messageRef) {
                             this.delayDelete(messageRef, fuseMs);

@@ -17,7 +17,7 @@ export default class ChannelHelper {
     static _send(code, text, opts = silentOpts) {
         const coop = SERVER._coop();
         const chan = this.getByCode(coop, code);
-        return chan.send(text, opts);
+        return chan.send(Object.assign({ content: text, ...opts }));
     }
 
     static async silentPropagate(msgRef, text, recordChan, selfDestruct = true) {

@@ -29,9 +29,4 @@ export default class DatabaseHelper {
 		return this.many(queryResult);
 	}
 
-	static async singleUpsert(query) {
-		const queryResult = await Database.query(query);
-		return this.upsert(queryResult);
-	}
-
 }

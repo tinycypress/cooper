@@ -28,6 +28,8 @@ import TemporaryMessages from "./maintenance/temporaryMessages.mjs";
 import TempAccessCodeHelper from "./members/tempAccessCodeHelper.mjs";
 import NewsHelper from "./social/newsHelper.mjs";
 import CompetitionHelper from "./social/competitionHelper.mjs";
+import ActivityHelper from "./activity/activityHelper.mjs";
+
 
 export const baseTickDur = 60 * 25 * 1000;
 
@@ -73,6 +75,9 @@ export default function eventsManifest() {
   
   // New day events/calendar events.
   EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
+
+  // Try to determine peak hours by sampling around 3 times an hour.
+  EventsHelper.runInterval(() => ActivityHelper.track(), baseTickDur / 1.75);
 
   // Track the competitions, start/end if necessary.
   EventsHelper.runInterval(() => CompetitionHelper.track(), baseTickDur * 8);

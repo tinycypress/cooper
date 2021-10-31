@@ -41,21 +41,6 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // activity_hours
-        // hour
-        // active_num
-
-        // ActivityHelper.track();
-
-        // DatabaseHelper
-
-
-
-
-
-
-        
-
 
         // Supporter role/donation
         // Charity register
