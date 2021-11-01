@@ -11,13 +11,12 @@ export default class TradingHelper {
         // Update message at top of trades :)
         // const dateFmt = TIME.secsLongFmt(Date.now() / 1000);
         // const editResult = await MESSAGES.editByLink(KEY_MESSAGES.trade_info, 'Trade Message Updated ' + dateFmt);
+        // return editResult;
 
         // Post latest/most recent 5-10 trades in talk.
         const lastTrades = await this.all();
         if (lastTrades.length > 0)
             CHANNELS._send('TALK', '**Latest active trades**:\n' + this.manyTradeItemsStr(lastTrades), 0, 30000);
-
-        return editResult;
     }
 
     static async remove(tradeID) {
