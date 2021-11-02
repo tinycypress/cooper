@@ -42,6 +42,8 @@ Starts script text: node --experimental-json-modules ./index.mjs
 yarn start-api
 Starts script text: node --experimental-json-modules ./api.mjs
 
+Note: For successful operation your deployment/hosting target must have a valid .env file.
+
 # Deploying/updating slash commands via Discord API:
 yarn deploy-commands
 Starts script text: node --experimental-json-modules ./tools/deploy-commands.mjs
