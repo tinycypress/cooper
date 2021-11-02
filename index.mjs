@@ -30,6 +30,8 @@ bootstrap();
 
 // Define the production bot.
 export default async function bootstrap() {
+    console.log('STARTING DEV branch bot!!')
+
     // Globalise the created client (extended Discordjs).
     const botClient = STATE.CLIENT = await client();
 
