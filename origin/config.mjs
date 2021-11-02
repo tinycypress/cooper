@@ -4,7 +4,7 @@ import KEY_MESSAGES_CONFIG from './config/keymessages.json';
 import CHANNELS_CONFIG from './config/channels.json';
 import CATEGORIES_CONFIG from './config/categories.json';
 import ROLES_CONFIG from './config/roles.json';
-import SERVER_CONFIG from './config/servers.json';
+import SERVER_CONFIG from './config/servers.mjs';
 
 export const EMOJIS = EMOJIS_CONFIG;
 export const RAW_EMOJIS = RAW_EMOJIS_CONFIG;

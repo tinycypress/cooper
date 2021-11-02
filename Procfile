@@ -1,2 +1,2 @@
-worker: npm run startBot
-web: npm run startAPI
+worker: yarn start-bot
+web: yarn start-api

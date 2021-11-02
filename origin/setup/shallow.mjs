@@ -5,11 +5,6 @@ import Database from './database.mjs';
 
 // v DEV IMPORT AREA v
 import COOP from '../coop.mjs';
-import DatabaseHelper from '../../operations/databaseHelper.mjs';
-import ActivityHelper from '../../operations/activity/activityHelper.mjs';
-import axios from 'axios';
-
-import CompetitionHelper from '../../operations/social/competitionHelper.mjs';
 // ^ DEV IMPORT AREA ^
 
 

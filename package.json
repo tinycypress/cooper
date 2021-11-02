@@ -4,12 +4,11 @@
   "description": "get cooped with cooper",
   "type": "module",
   "scripts": {
-    "startBot": "node --experimental-json-modules ./index.mjs",
-    "startAPI": "node --experimental-json-modules ./api.mjs",
+    "start-bot": "node --experimental-json-modules ./index.mjs",
+    "start-api": "node --experimental-json-modules ./api.mjs",
     "db": "heroku pg:psql --app cooperchickenbot",
     "dev": "nodemon --exec 'node --experimental-json-modules' ./origin/setup/shallow.mjs",
     "lint": "eslint .",
-
     "deploy-commands": "node --experimental-json-modules ./tools/deploy-commands.mjs"
   },
   "author": "lmf-git",

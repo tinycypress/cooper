@@ -4,7 +4,7 @@ import path from 'path';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 
-import SERVERS from '../origin/config/servers.json';
+import SERVERS from '../origin/config/servers.mjs';
 import BOTS from '../origin/config/bots.json';
 
 dotenv.config();
