@@ -8,14 +8,19 @@ import COOP from '../coop.mjs';
 import DatabaseHelper from '../../operations/databaseHelper.mjs';
 import ActivityHelper from '../../operations/activity/activityHelper.mjs';
 import axios from 'axios';
+
+import CompetitionHelper from '../../operations/social/competitionHelper.mjs';
 // ^ DEV IMPORT AREA ^
+
+
 
 // Load ENV variables.
 dotenv.config();
 
 // Commonly useful.
-// const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
-// const listenMessages = (fn) => COOP.STATE.CLIENT.on('message', fn);
+const listenReactions = (fn) => COOP.STATE.CLIENT.on('messageReactionAdd', fn);
+const listenChannelUpdates = (fn) => COOP.STATE.CLIENT.on('channelUpdate', fn);
+const listenMessages = (fn) => COOP.STATE.CLIENT.on('messageCreate', fn);
 
 const shallowBot = async () => {
     // Instantiate a CommandoJS "client".
@@ -41,10 +46,19 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        // Add raisely encryption key for comparison (add to heroku)
+        listenReactions((reaction, user) => CompetitionHelper.onReaction(reaction, user));
+        // listenChannelUpdates(chanUpdate => CompetitionHelper.onChannelUpdate(chanUpdate));
+        listenMessages(msg => CompetitionHelper.onMessage(msg));
+
+        // CompetitionHelper.start('business_competition');
+        // CompetitionHelper.end('business_competition');
 
         // Restore items
 
+        // Load donation by ID to check for that custom field
+        // Add raisely encryption key for comparison (add to heroku)
+
+        // Waiting for support reply
         // Tied together:
         // Supporter role/donation
         // Charity register

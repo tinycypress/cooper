@@ -5,6 +5,7 @@ import joined from "../../operations/activity/welcome/joined.mjs";
 import left from "../../operations/activity/welcome/left.mjs";
 import messageAddedHandler from "../../operations/activity/messageAdded.mjs";
 import reactAddedHandler from "../../operations/activity/reactionAdded.mjs";
+import CompetitionHelper from "../../operations/social/competitionHelper.mjs";
 
 export default async () => {
     // Instantiate a Discord.JS
@@ -34,6 +35,15 @@ export default async () => {
 
     // Message interceptors.
     client.on("messageCreate", messageAddedHandler);
+
+    // Channel modification interceptors.
+    client.on('channelUpdate',  chanUpdate => {
+        // So far the only one used to change competition titles/descriptions, refactor if more added.
+        CompetitionHelper.onChannelUpdate(chanUpdate);
+
+        // Come to think of it, should handle blog and projects this way.
+    });
+
 
     return client;
 }

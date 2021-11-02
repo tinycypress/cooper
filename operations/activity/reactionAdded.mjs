@@ -17,6 +17,7 @@ import LinkPreviewFilter from "./messages/linkPreviewFilter.mjs";
 
 import COOP, { USABLE, STATE } from "../../origin/coop.mjs";
 import SuggestionsHelper from "./suggestions/suggestionsHelper.mjs";
+import CompetitionHelper from "../social/competitionHelper.mjs";
 
 
 
@@ -32,6 +33,9 @@ export default async function reactAddedHandler(reaction, user) {
 
         // User settings via about channel
         AboutHelper.onReaction(reaction, user);
+
+        // Competition reactions/abilities.
+        CompetitionHelper.onReaction(reaction, user);
 
         // Check for usable items being exercised.
         USABLE.onReaction(reaction, user);

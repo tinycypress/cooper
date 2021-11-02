@@ -10,7 +10,7 @@ import Mining from "./minigames/small/mining.mjs";
 import Woodcutting from "./minigames/small/woodcutting.mjs";
 import InstantFurnace from "./minigames/small/instantfurnace.mjs";
 import EasterMinigame from "./minigames/small/holidays/easter.mjs";
-import ChestPop from "./minigames/small/chestpop.mjs";
+// import ChestPop from "./minigames/small/chestpop.mjs";
 
 import BuffsHelper from "./minigames/medium/conquest/buffsHelper.mjs";
 import CooperMorality from "./minigames/small/cooperMorality.mjs";
@@ -20,8 +20,7 @@ import ElectionHelper from "./members/hierarchy/election/electionHelper.mjs";
 
 
 import COOP, { SERVER, USERS } from "../origin/coop.mjs";
-import TodoHelper from "./productivity/todos/todoHelper.mjs";
-// import { status } from "./marketing/rewards/loyalty.mjs";
+
 import ProspectHelper from "./members/redemption/prospectHelper.mjs";
 import serverTick from "./serverTick.mjs";
 import TemporaryMessages from "./maintenance/temporaryMessages.mjs";
@@ -69,9 +68,6 @@ export const VELOCITY_EVENTS = {
 
 // Events manifest should load baseTickDuration from COOP.STATE (which loads from database of community set values)
 export default function eventsManifest() {
-
-  // Check Todo helper items late! PUNISH!
-  EventsHelper.runInterval(() => TodoHelper.checkDue(), baseTickDur * 10);
   
   // New day events/calendar events.
   EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
@@ -81,8 +77,6 @@ export default function eventsManifest() {
 
   // Track the competitions, start/end if necessary.
   EventsHelper.runInterval(() => CompetitionHelper.track(), baseTickDur * 8);
-
-  // EventsHelper.chanceRunInterval(status, 10, baseTickDur * 50);
 
   EventsHelper.runInterval(() => SacrificeHelper.updateSacrificeHeaderMessage(), baseTickDur * 6);  
 

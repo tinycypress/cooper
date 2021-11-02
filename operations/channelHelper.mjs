@@ -179,10 +179,6 @@ export default class ChannelHelper {
         return channel.lockPermissions();
      }
 
-
-    
-
-
     // TODO: Implement this
     // static selectWeightedActive(channels, weights) {
         // console.log('selectWeightedActive');
@@ -240,8 +236,6 @@ export default class ChannelHelper {
             .filterByCodes(guild, codes)
             .map(channel => channel.send(message, opts));
     }
-
-
 
     static fetchRandomTextChannel(guild) {       
         let result = null;

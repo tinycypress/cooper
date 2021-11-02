@@ -213,8 +213,7 @@ export default class MessagesHelper {
                             messageRef = await msgOrChannelRef.send(Object.assign({ content, ...silentOpts }));
                         
                         if (messageRef) {
-                            this.delayDelete(messageRef, fuseMs);
-                            TemporaryMessages.add(messageRef);
+                            this.ensureDeletion(messageRef, fuseMs);
                             resolve(messageRef);
                         } else {
                             resolve(null);
@@ -228,6 +227,11 @@ export default class MessagesHelper {
                 }
             }, delayMs);
         });
+    }
+
+    static ensureDeletion(messageRef, fuseMs = 0) {
+        this.delayDelete(messageRef, fuseMs);
+        TemporaryMessages.add(messageRef);
     }
 
     static selfDestruct(msgOrChannelRef, content, delayMs = 666, fuseMs = 30000) {

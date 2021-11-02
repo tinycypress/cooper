@@ -1,7 +1,6 @@
 import COOP, { SERVER, USERS } from '../../../../origin/coop.mjs';
 import { ROLES as ROLES_CONFIG } from '../../../../origin/config.mjs';
 
-
 export default class RolesHelper {
 
     static _textRef(code) {
@@ -135,7 +134,6 @@ export default class RolesHelper {
             console.log('Error removing role');
             console.error(e);
         }
-        // 723676356818239773 LEADER
     }
 
     static _idHasCode(userID, roleCode) {
