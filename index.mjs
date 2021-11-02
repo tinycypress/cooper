@@ -33,6 +33,9 @@ export default async function bootstrap() {
     // Globalise the created client (extended Discordjs).
     const botClient = STATE.CLIENT = await client();
 
+    // Indicate to initialisation backend logging.
+    console.log('Starting bot on guild id: ' + process.env.GUILD_ID);
+
     // Connect to PostGres Database and attach event/error handlers.
     await Database.connect();
 
