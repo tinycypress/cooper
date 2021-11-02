@@ -4,7 +4,6 @@ import KEY_MESSAGES_CONFIG from './config/keymessages.json';
 import CHANNELS_CONFIG from './config/channels.json';
 import CATEGORIES_CONFIG from './config/categories.json';
 import ROLES_CONFIG from './config/roles.json';
-import SERVER_CONFIG from './config/servers.mjs';
 
 export const EMOJIS = EMOJIS_CONFIG;
 export const RAW_EMOJIS = RAW_EMOJIS_CONFIG;
@@ -12,7 +11,6 @@ export const KEY_MESSAGES = KEY_MESSAGES_CONFIG;
 export const CHANNELS = CHANNELS_CONFIG;
 export const CATEGORIES = CATEGORIES_CONFIG;
 export const ROLES = ROLES_CONFIG;
-export const SERVERS = SERVER_CONFIG;
 
 // Name explicitly on multi-line for easier IDE experience.
 const CONFIG = {
@@ -21,7 +19,6 @@ const CONFIG = {
     KEY_MESSAGES,
     CHANNELS,
     CATEGORIES,
-    ROLES,
-    SERVERS
+    ROLES
 };
 export default CONFIG;

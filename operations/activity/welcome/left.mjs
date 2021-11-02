@@ -4,7 +4,7 @@ import { USERS, CHANNELS, SERVER, STATE } from '../../../origin/coop.mjs';
 export default async function memberLeft(member) {
 
   try {
-    const server = SERVER.getByCode(STATE.CLIENT, 'PROD');
+    const server = SERVER._coop();
     await CHANNELS
       .getByCode(server, 'FEED')
       .send(`${member.user.username} has flown the coop. F for ${member.user.username}`); 

@@ -244,7 +244,7 @@ export default class PointsHelper {
 
 
     static async renderLeaderboard(leaderboardRows, position = 0) {
-        const guild = COOP.SERVER.getByCode(STATE.CLIENT, 'PROD');
+        const guild = COOP.SERVER._coop();
         const rowUsers = await Promise.all(leaderboardRows.map(async (row, index) => {
             let username = '?';
             try {

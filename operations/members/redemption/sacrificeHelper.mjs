@@ -54,7 +54,7 @@ export default class SacrificeHelper {
 
 
     static async processVote(reaction, user) {
-        const guild = COOP.SERVER.getByCode(COOP.STATE.CLIENT, 'PROD');
+        const guild = COOP.SERVER._coop();
 
         // Try to access sacrificee from message
         try {
@@ -166,7 +166,7 @@ export default class SacrificeHelper {
     }
 
     static async processBackDagger(reaction) {
-        const guild = COOP.SERVER.getByCode(COOP.STATE.CLIENT, 'PROD');
+        const guild = COOP.SERVER._coop();
 
         // Calculate the number of required votes for the redemption poll.
         const reqSacrificeVotes = VotingHelper.getNumRequired(SACRIFICE_RATIO_PERC);

@@ -8,7 +8,8 @@ export default async () => {
         console.log(`Logged in as ${STATE.CLIENT.user.username}`); 
         
         // Prepare cache (avoid partials)!
-        const guild = SERVER.getByCode(STATE.CLIENT, 'PROD');
+        const guild = SERVER._coop();
+        
         let reqNum = 0;
         guild.channels.cache.each(channel => {
             if (channel.type === 'GUILD_TEXT') {

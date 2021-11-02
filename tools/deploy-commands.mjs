@@ -4,7 +4,6 @@ import path from 'path';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 
-import SERVERS from '../origin/config/servers.mjs';
 import BOTS from '../origin/config/bots.json';
 
 dotenv.config();
@@ -35,7 +34,7 @@ try {
     console.log('Started refreshing application (/) commands.');
 
     await rest.put(
-        Routes.applicationGuildCommands(BOTS.COOPER.id, SERVERS.PROD.id),
+        Routes.applicationGuildCommands(BOTS.COOPER.id, process.env.GUILD_ID),
         { body: slashCommands },
     );
 

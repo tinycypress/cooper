@@ -56,7 +56,7 @@ export default class ChannelHelper {
     }
 
     static _postToFeed(message, delay = 333) {
-        const prodServer = SERVER.getByCode(STATE.CLIENT, 'PROD');
+        const prodServer = SERVER._coop();
         const feedChannel = this.getByCode(prodServer, 'FEED');
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
@@ -101,7 +101,7 @@ export default class ChannelHelper {
     // This function may be a good example/starting point for a lib 
     // for handling request timeouts and reject enforcement...?
     static _postToChannelCode(name, message, delay = 333) {
-        const prodServer = SERVER.getByCode(STATE.CLIENT, 'PROD');
+        const prodServer = SERVER._coop();
         const feedChannel = this.getByCode(prodServer, name);
 
         return new Promise((resolve, reject) => {
@@ -132,7 +132,7 @@ export default class ChannelHelper {
     }
 
     static _randomText() {
-        const server = SERVER.getByCode(STATE.CLIENT, 'PROD');
+        const server = SERVER._coop();
         return this.fetchRandomTextChannel(server);
     }
 

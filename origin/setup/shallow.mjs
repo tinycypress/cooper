@@ -4,7 +4,7 @@ import { Client, Intents, Permissions } from 'discord.js';
 import Database from './database.mjs';
 
 // v DEV IMPORT AREA v
-import COOP from '../coop.mjs';
+import COOP, { SERVER, STATE } from '../coop.mjs';
 // ^ DEV IMPORT AREA ^
 
 
@@ -47,6 +47,10 @@ const shallowBot = async () => {
 
         // CompetitionHelper.start('business_competition');
         // CompetitionHelper.end('business_competition');
+
+
+        const guild = SERVER._coop();
+        console.log(guild);
 
         // Restore items
 
