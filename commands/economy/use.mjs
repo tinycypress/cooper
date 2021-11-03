@@ -22,12 +22,12 @@ export const description = 'Use items you own';
 export const data = new SlashCommandBuilder()
     .setName(name)
     .setDescription(description)
-	.addUserOption(option => 
+	.addStringOption(option => 
 		option
 			.setName('item_code')
 			.setDescription('Use which item [ITEM_CODE or item emoji]')
 	)
-	.addStringOption(option => 
+	.addIntegerOption(option => 
 		option
 			.setName('item_qty')
 			.setDescription('Use how many?')
