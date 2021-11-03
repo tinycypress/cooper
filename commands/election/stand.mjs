@@ -6,7 +6,7 @@ import ElectionHelper from '../../operations/members/hierarchy/election/election
 
 export const name = 'stand';
 
-export const description = 'Offer yourself as a potential leader/commander.';
+export const description = 'Offer yourself as a potential leader/commander. Message must be between 30 and 400 characters long!';
     
 export const examples = '!stand <message>';
 
