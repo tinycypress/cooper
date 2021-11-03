@@ -284,13 +284,15 @@ export default class CompetitionHelper {
         const competitionCode = this.compCodeFromChannelID(chanUpdate.id);
 
         // Get the new title and description.
-        const topicParts = freshChan.topic.split('\n');
-        const title = topicParts[0];
-        const description = topicParts.slice(1).join('\n');
-
-        // Store it in the database to make viewable from the website?
-        await this.setTitle(competitionCode, title);
-        await this.setDescription(competitionCode, description);
+        if (freshChan.topic) {
+            const topicParts = freshChan.topic.split('\n');
+            const title = topicParts[0];
+            const description = topicParts.slice(1).join('\n');
+    
+            // Store it in the database to make viewable from the website?
+            await this.setTitle(competitionCode, title);
+            await this.setDescription(competitionCode, description);
+        }
     }
 
     static async onReaction(reaction, user) {

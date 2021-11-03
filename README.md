@@ -36,7 +36,7 @@ yarn dev
 Starts script text: nodemon --exec 'node --experimental-json-modules' ./origin/setup/shallow.mjs
 
 # Production running:
-yatn start-bot
+yarn start-bot
 Starts script text: node --experimental-json-modules ./index.mjs
 
 yarn start-api

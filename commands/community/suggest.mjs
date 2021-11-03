@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-import COOP, { USERS } from '../../origin/coop.mjs';
+import COOP, { USERS, CHANNELS } from '../../origin/coop.mjs';
 import { EMOJIS } from '../../origin/config.mjs';
 import SuggestionsHelper from '../../operations/activity/suggestions/suggestionsHelper.mjs';
 

@@ -5,6 +5,7 @@ import Database from './database.mjs';
 
 // v DEV IMPORT AREA v
 import COOP, { SERVER, STATE } from '../coop.mjs';
+import CompetitionHelper from '../../operations/social/competitionHelper.mjs';
 // ^ DEV IMPORT AREA ^
 
 
@@ -46,11 +47,8 @@ const shallowBot = async () => {
         listenMessages(msg => CompetitionHelper.onMessage(msg));
 
         // CompetitionHelper.start('business_competition');
-        // CompetitionHelper.end('business_competition');
+        // CompetitionHelper.end('technology_competition');
 
-
-        const guild = SERVER._coop();
-        console.log(guild);
 
         // Restore items
 
