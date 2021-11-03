@@ -53,8 +53,9 @@ export const execute = async (interaction) => {
 			+ " \n\n\n " + " _ " + suggestionText
 		);
 
+
 		// Send confirmation of success.
-		return await interaction.reply('Suggestion created, more details: suggestions channel / DM');
+		return await interaction.reply(`Added to ${CHANNELS.textRef('SUGGESTIONS')} & DM'd to you.`);
 
 	} catch(err) {
 		console.error(err);
