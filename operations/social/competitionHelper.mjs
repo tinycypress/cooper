@@ -1,10 +1,11 @@
 import _ from 'lodash'
-import { STATE, CHANNELS, MESSAGES, USERS, ROLES, REACTIONS, TIME } from "../../origin/coop.mjs";
+import { STATE, CHANNELS, MESSAGES, USERS, ROLES, REACTIONS, TIME, ITEMS } from "../../origin/coop.mjs";
 import { CHANNELS as CHANNELS_CONFIG } from "../../origin/config.mjs";
 
 import DatabaseHelper from "../databaseHelper.mjs";
 import EventsHelper from "../eventsHelper.mjs";
 import Database from '../../origin/setup/database.mjs';
+import DropTable from '../minigames/medium/economy/items/droptable.mjs';
 
 export const COMPETITION_DUR = 1000 * 3600 * 24 * 7;
 
@@ -20,7 +21,7 @@ export const COMPETITION_ROLES = {
 export default class CompetitionHelper {
 
     static async get(code) {
-        const competitions = await DatabaseHelper.manyQuery({
+        const competitions = await DatabaseHelper.singleQuery({
             name: "load-competition",
             text: `SELECT * FROM events WHERE event_code = $1`,
             values: [code]
@@ -162,19 +163,17 @@ export default class CompetitionHelper {
 
     // Check the most important things at the beginning of a new day.
     static async check(competition) {
-        // Attach a vote tracking object.
-        competition.votes = {};
-
         // Get entries for competition.
-        const entries = await this.loadEntrants(competition.event_code);
-
-        // Attach entries object.
-        competition.entries = entries;
+        let entries = await this.loadEntrants(competition.event_code);
 
         // Count votes and attach to competition checking result.
         await Promise.all(entries.map(async e => {
-            competition.votes[e.entrant_id] = await this.countEntryVotes(e);
+            const entrantIndex = entries.findIndex(se => se.entrant_id === e.entrant_id);
+            entries[entrantIndex].votes = await this.countEntryVotes(e);
         }));
+
+        // Attach entries object.
+        competition.entries = entries;
 
         // Return the result in the check.
         return competition;
@@ -277,31 +276,98 @@ export default class CompetitionHelper {
         MESSAGES.delayReact(registeredFeedMsg, '🍀');
     }
 
-    static async end(code) {
-        // Set competition is not active.
-        await this.setActive(code, false);
-
-        // Notify people it's over with results, in talk not competition channel (invisible).
-        // Debug.
-        // console.log(code + ' end');
-        // CHANNELS._send(code.toUpperCase(), code + ' end');
-        // CHANNELS._send('TALK', code + ' end');
+    static async end(competionCode) {
+        // Load the competition.
+        const competition = await this.get(competionCode);
 
         // Calculate the winner by votes.
-        
-        // Reward the winners.
-        
-        // Declare the competition winner.
+        const progress = await this.check(competition);
+
+        // Calculate the rightful winners.
+        let winners = progress.entries;
+
+        // Sort entries into vote order.
+        winners.sort((a, b) => a.votes > b.votes);
+
+        // Limit winners to first 3.
+        winners = winners.slice(0, 3);
+
+        // Handle rewards and notifications for each winner.
+        winners.map((w, index) => {
+            // Reward amount.
+            const baseRewardAmount = 4 / (index + 1);
+            const rewardAmount = STATE.CHANCE.natural({ 
+                min: baseRewardAmount, 
+                max: baseRewardAmount * 3
+            });
+
+            // Generate the rewards for the player.
+            winners[index].rewards = [];
+            for (let r = 0; r < rewardAmount; r++) {
+                // Random roll for rarity.
+                let accessibleTiers = ['AVERAGE'];
+                
+                // First place gets better rewards.
+                if (index === 0) accessibleTiers.push('RARE', 'LEGENDARY')
+
+                // Second place gets rare rewards.
+                if (index === 1) accessibleTiers.push('RARE')
+
+                // Generate and add to the player's rewards.
+                const tier = STATE.CHANCE.pickone(accessibleTiers);
+                const randomReward = DropTable.getRandomTieredWithQty(tier);
+                winners[index].rewards.push(randomReward);
+            }
+
+            // Clean up the duplicate item awards by merging qtys.
+            // ...
+
+
+            // Add the items to the user.
+            winners[index].rewards.map(r => ITEMS.add(w.entrant_id, r.item, r.qty, 'Competition win'));
+
+            // DM the winners.
+            try {
+                const competitionWinDMText = `:trophy: Congratulations! ` +
+                    // If not first place then not "winning"
+                    `You were rewarded for winning the ${this.formatCode(competionCode)}! :trophy:\n\n` +
+
+                    'You received the following items as a prize:\n' +
+                    winners[index].rewards.map(r => `${r.item}x${r.qty}`).join('\n')
+                    
+                USERS._dm(w.entrant_id, competitionWinDMText);
+            } catch(e) {
+                console.log('Error DMing competition winner!');
+                console.error(e);
+            }
+        });
+
+        // Declare the competition winner publicly showing prizes.
+        const publicPrizeText = `:trophy: Congratulations! ` +
+            `Announcing the ${this.formatCode(competionCode)} winners! :trophy:\n\n` +
+
+            '**The winners and their prizes** are thus:\n\n' +
+
+            winners.map((w, i) => (
+                ':trophy:'.repeat(3 - i) + ` <@${w.entrant_id}>` + '\n' +
+                w.rewards.map(r => `${r.item}x${r.qty}`).join('\n') + '\n\n'
+            ));
+
+        // Annouce publicly (with pings).
+        CHANNELS._send('TALK', publicPrizeText);
 
         // Clear the messages.
-        this.clear(code);
+        this.clear(competionCode);
 
         // Clear the entrants.
-        this.clearCompetitionEntrants(code);
+        this.clearCompetitionEntrants(competionCode);
 
         // Hide the channel until next time
-        const channelID = CHANNELS._getCode(code.toUpperCase()).id;
-        CHANNELS._hide(channelID, code + ' is over, hiding until next time!');
+        const channelID = CHANNELS._getCode(competionCode.toUpperCase()).id;
+        CHANNELS._hide(channelID, competionCode + ' is over, hiding until next time!');
+
+        // Set competition is not active.
+        await this.setActive(competionCode, false);
     }
 
     static async track() {
@@ -342,11 +408,8 @@ export default class CompetitionHelper {
                 // Create a text response to be modified conditionally (register period or not).
                 let competitionUpdateText = 'Competition updating.';
 
-                console.log(comp.active);
-
                 // Check the competition.
                 const progress = await this.check(comp);
-                console.log(progress);
 
                 // Load the information message.
                 const compInfoMsg = await MESSAGES.getByLink(comp.message_link);
@@ -357,7 +420,7 @@ export default class CompetitionHelper {
                 // Check if the competition should end now.
                 if (hasExpired) {
                     // Handle competition announcements and channels.
-                    await this.end(comp);
+                    await this.end(comp.event_code);
 
                     // Make other checks aware this is starting and counted.
                     numRunning--;
@@ -402,7 +465,7 @@ export default class CompetitionHelper {
                     const firstFiveEntrantsByVotes = progress.entries;
 
                     // Sort the entrants by largest id
-                    firstFiveEntrantsByVotes.sort((a, b) => progress.votes[a.entrant_id] > progress.votes[b.entrant_id]);
+                    firstFiveEntrantsByVotes.sort((a, b) => a.votes > b.votes);
 
                     // Edit the message to contain post-registration period content.
                     competitionUpdateText = (
@@ -411,7 +474,7 @@ export default class CompetitionHelper {
 
                         `**Currently winning:** \n\n` +
                         firstFiveEntrantsByVotes.map(e => (
-                            `<@${e.entrant_id}> - ${progress.votes[e.entrant_id]} vote(s)`
+                            `<@${e.entrant_id}> - ${e.votes} vote(s)`
                         )).join('\n') +
                         `\n\n_For more information/details check website: link soon_`
                     );

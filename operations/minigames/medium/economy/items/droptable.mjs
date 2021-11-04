@@ -45,8 +45,6 @@ export default class DropTable {
     static getRandom() {
         // TODO: OVERPOWERED - Reduce legendary/rare access, etc.
         const tier = STATE.CHANCE.pickone(Object.keys(this.TIERS));
-
-
         const item = this.getRandomTiered(tier);
         return item;
     }
