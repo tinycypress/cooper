@@ -37,8 +37,8 @@ export default class ChannelHelper {
         return this.getByID(SERVER._coop(), id);
     }
 
-    static _getCode(code) {
-        return this.getByCode(SERVER._coop(), code);
+    static _getCode(code = '') {
+        return this.getByCode(SERVER._coop(), code.toUpperCase());
     }
 
     static getByCode(guild, code) {

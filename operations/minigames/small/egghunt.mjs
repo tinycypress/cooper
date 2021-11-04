@@ -65,7 +65,8 @@ export default class EggHuntMinigame {
             const isPanEmoji = reaction.emoji.name === 'frying_pan';
 
             // Check user is in the database:
-            if (!await isRegisteredUserGuard(reaction.message, user)) return false;
+            if (!await isRegisteredUserGuard(reaction.message, user)) 
+                return false;
 
             if (isEggCollectible && isPanEmoji) this.fry(reaction, user);
             if (isEggCollectible && isBombEmoji) this.explode(reaction, user);
@@ -266,16 +267,16 @@ export default class EggHuntMinigame {
                 acknowledgementMsgText = `${actionText} clumsily broke the egg, 0 points!`.trim();
                 activityFeedMsgText = `${user.username} broke an egg in ${location}! :( <${emoji}>`.trim();
                 MESSAGES.delayEdit(reaction.message, acknowledgementMsgText, 666);
-                MESSAGES.delayDelete(reaction.message, 15000);
+                // MESSAGES.delayDelete(reaction.message, 15000);
             }
 
             // Provide record of event.
-            CHANNELS._postToChannelCode('ACTIONS', activityFeedMsgText);
-            
+            // CHANNELS._postToChannelCode('ACTIONS', activityFeedMsgText);
+
             // Sometimes tell the-barn that an egg was collected and where.
-            const fivePercentRoll = STATE.CHANCE.bool({ likelihood: 2.5 });
-            if (fivePercentRoll) 
-                CHANNELS._tempSend('TALK', activityFeedMsgText, 333, 5000);
+            // const fivePercentRoll = STATE.CHANCE.bool({ likelihood: 2.5 });
+            // if (fivePercentRoll) 
+            //     CHANNELS._tempSend('TALK', activityFeedMsgText, 333, 5000);
 
         } catch(e) {
             console.error(e);
@@ -304,6 +305,8 @@ export default class EggHuntMinigame {
                     if (rarity === 'LEGENDARY_EGG') eggLifespan = 60 * 7;
 
                     // TODO: If Cooper is evil, chance of destroying it immediately after.
+
+                    // Change this deletion to 
 
                     // Schedule the deletion/cleanup of the dropped egg.
                     TemporaryMessages.add(eggMsg, eggLifespan, 'EGG_HUNT', { rarity });
@@ -362,7 +365,6 @@ export default class EggHuntMinigame {
 
         // Small chance of rolling for a direct message egg.
         if (STATE.CHANCE.bool({ likelihood: 10 })) {
-            if (STATE.CHANCE.bool({ likelihood: 1.35 })) this.dmDrop('TOXIC_EGG');
             if (STATE.CHANCE.bool({ likelihood: 3.85 })) this.dmDrop('AVERAGE_EGG');
             if (STATE.CHANCE.bool({ likelihood: 2.45 })) this.dmDrop('RARE_EGG');
             if (STATE.CHANCE.bool({ likelihood: 0.025 })) this.dmDrop('LEGENDARY_EGG');

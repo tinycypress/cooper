@@ -136,15 +136,15 @@ export default function eventsManifest() {
   EventsHelper.chanceRunInterval(() => EasterMinigame.run(), 33, baseTickDur);
 
   // Update trades channel message
-  EventsHelper.chanceRunInterval(() => TradingHelper.updateChannel(), 22, baseTickDur * 2);
+  EventsHelper.chanceRunInterval(() => TradingHelper.updateChannel(), 22, baseTickDur * 4);
 
   // Clean up CONQUEST buffs/item effects.
   EventsHelper.runInterval(() => BuffsHelper.cleanupExpired(), baseTickDur / 3);
 
   // Miscellaneous features.
-  // EventsHelper.chanceRunInterval(() => {
-  //   COOP.CHANNELS._postToFeed('Ruuuuuu' + 'u'.repeat(COOP.STATE.CHANCE.natural({ min: 1, max: 20 })));
-  // }, 2.5, baseTickDur * 10);
+  EventsHelper.chanceRunInterval(() => {
+    COOP.CHANNELS._postToFeed('Ruuuuuu' + 'u'.repeat(COOP.STATE.CHANCE.natural({ min: 1, max: 20 })));
+  }, 2.5, baseTickDur * 10);
 
-  // EventsHelper.chanceRunInterval(() => { COOP.CHANNELS._postToFeed('._.') }, 1, baseTickDur * 3.5);
+  EventsHelper.chanceRunInterval(() => COOP.CHANNELS._postToFeed('._.'), 1, baseTickDur * 10);
 }

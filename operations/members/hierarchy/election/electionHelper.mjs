@@ -416,8 +416,6 @@ export default class ElectionHelper {
         }
     }
 
-
-
     static async checkProgress() {
         // A variable used for tracking election before/after (start).
         let electionJustStarted = false;

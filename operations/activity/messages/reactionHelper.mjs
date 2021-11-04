@@ -25,6 +25,22 @@ export default class ReactionHelper {
         return didReactWith;
     }
 
+    // Check if the user with specified ID reacted to a message with a certain emoji.
+    static async userReactedWith(msg, userID, emoji) {
+        let didReactWith = false;
+
+        // Check reactions for user with that reaction.
+        await Promise.all(msg.reactions.cache.map(async r => {
+            if (r.emoji.name !== emoji) return;
+
+            // Load the reaction users.
+            const rUsers = await r.users.fetch();
+            if (rUsers.has(userID)) didReactWith = true;
+        }));
+
+        return didReactWith;
+    }
+
     // Count the types of emoji on message by emoji name.
     static countType(message, type) {
         let count = 0;

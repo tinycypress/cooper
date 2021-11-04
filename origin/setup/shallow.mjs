@@ -4,11 +4,9 @@ import { Client, Intents, Permissions } from 'discord.js';
 import Database from './database.mjs';
 
 // v DEV IMPORT AREA v
-import COOP, { SERVER, STATE } from '../coop.mjs';
+import COOP, { SERVER, STATE, MESSAGES, REACTIONS } from '../coop.mjs';
 import CompetitionHelper from '../../operations/social/competitionHelper.mjs';
 // ^ DEV IMPORT AREA ^
-
-
 
 // Load ENV variables.
 dotenv.config();
@@ -46,9 +44,26 @@ const shallowBot = async () => {
         // listenChannelUpdates(chanUpdate => CompetitionHelper.onChannelUpdate(chanUpdate));
         listenMessages(msg => CompetitionHelper.onMessage(msg));
 
-        // CompetitionHelper.start('business_competition');
-        // CompetitionHelper.end('technology_competition');
+        CompetitionHelper.end('technology_competition');
+        // CompetitionHelper.start('technology_competition');
 
+        // Check where the competitions are up to.
+        // CompetitionHelper.track();
+
+        // const entrants = await CompetitionHelper.loadEntrants('technology_competition');
+        // console.log(entrants);
+
+
+        // Add a message when checking/testing to get a reasonable pace
+
+        // - Calculate votes
+        // - Declare winner
+        // - Give reward
+
+        // const msg = await MESSAGES.getByLink('https://discord.com/channels/723660447508725802/845603416720801843/905578442664329266');
+        // const didReact = await REACTIONS.userReactedWith(msg, '799695179623432222', '📋');
+
+        // console.log(didReact);
 
         // Restore items
 

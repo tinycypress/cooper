@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { CHANNELS, MESSAGES, USERS, ROLES } from "../../origin/coop.mjs";
+import { STATE, CHANNELS, MESSAGES, USERS, ROLES, REACTIONS, TIME } from "../../origin/coop.mjs";
 import { CHANNELS as CHANNELS_CONFIG } from "../../origin/config.mjs";
 
 import DatabaseHelper from "../databaseHelper.mjs";
@@ -37,6 +37,149 @@ export default class CompetitionHelper {
         return competitions;
     }
 
+    static formatCode(code) {
+        return code.replace('_', ' ').toLowerCase();
+    }
+
+    static saveEntrant(code, user) {
+        return Database.query({
+            name: 'add-competition-entrant',
+            text: 'INSERT INTO competition_entries (entrant_id, competition) VALUES ($1, $2)',
+            values: [user.id, code]
+        });
+    }
+
+    static loadEntrant(code, user) {
+        return DatabaseHelper.singleQuery({
+            name: 'load-competition-entrant',
+            text: 'SELECT * FROM competition_entries WHERE entrant_id = $1 AND competition = $2',
+            values: [user.id, code]
+        });
+    }
+
+    static loadEntrants(code) {
+        return DatabaseHelper.manyQuery({
+            name: 'load-competition-entrants',
+            text: 'SELECT * FROM competition_entries WHERE competition = $1',
+            values: [code]
+        });
+    }
+
+    static async setActive(code, active) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-competition-status",
+            text: 'UPDATE events SET active = $2 WHERE event_code = $1',
+            values: [code, !!active]
+        });
+    }
+
+    static async setTitle(code, title) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-competition-title",
+            text: 'UPDATE events SET title = $2 WHERE event_code = $1',
+            values: [code, title]
+        });
+    }
+
+    static async setDescription(code, description) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-competition-description",
+            text: 'UPDATE events SET description = $2 WHERE event_code = $1',
+            values: [code, description]
+        });
+    }
+
+    static async setMessageLink(code, link) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-competition-message",
+            text: 'UPDATE events SET message_link = $2 WHERE event_code = $1',
+            values: [code, link]
+        });
+    }
+
+    static isCompetitionChnanel(id) {
+        const { TECHNOLOGY_COMPETITION, ART_COMPETITION, BUSINESS_COMPETITION } = CHANNELS_CONFIG;
+        const compChannels = [TECHNOLOGY_COMPETITION, ART_COMPETITION, BUSINESS_COMPETITION];
+        return compChannels.some(c => c.id === id);
+    }
+
+    static compCodeFromChannelID(id) {
+        let competitionCode = null;
+        _.each(CHANNELS_CONFIG, (v, k) => {
+            if (v.id === id)
+                competitionCode = k.toLowerCase();
+        });
+        return competitionCode;
+    }
+
+    static setEntryMessageID(entryID, messageID) {
+        return Database.query({
+            text: 'UPDATE competition_entries SET entry_msg_id = $2 WHERE id = $1',
+            values: [entryID, messageID]
+        });
+    }
+
+    static clearCompetitionEntrants(code) {
+        return Database.query({
+            text: 'DELETE FROM competition_entries WHERE competition = $1',
+            values: [code]
+        });
+    }
+
+    // Calculate the votes present on a competition entry.
+    static async countEntryVotes(entry) {
+        // Start on the votes object.
+        let votes = 0;
+
+        // Access the channel for this competition.
+        const channel = CHANNELS._getCode(entry.competition);
+
+        // Load the messages/submission for each entrant.
+        const message = await channel.messages.fetch(entry.entry_msg_id);
+
+        // Count the votes on the message/submission.
+        await Promise.all(message.reactions.cache.map(async r => {
+            // Only pay attention to trophy emojis.
+            if (r.emoji.name !== '🏆') return;
+
+            // Load the reaction users.
+            const reactionUsers = await r.users.fetch();
+            reactionUsers.map(ru => {
+                // Ignore Cooper's vote.
+                if (USERS.isCooper(ru.id)) return;
+
+                // Ignore message author voting for self.
+                if (entry.entrant_id === ru.id) return;
+
+                // Track this vote as counting.
+                votes++;
+            });
+        }));
+
+        // Return the total number of votes.
+        return votes;
+    }
+
+    // Check the most important things at the beginning of a new day.
+    static async check(competition) {
+        // Attach a vote tracking object.
+        competition.votes = {};
+
+        // Get entries for competition.
+        const entries = await this.loadEntrants(competition.event_code);
+
+        // Attach entries object.
+        competition.entries = entries;
+
+        // Count votes and attach to competition checking result.
+        await Promise.all(entries.map(async e => {
+            competition.votes[e.entrant_id] = await this.countEntryVotes(e);
+        }));
+
+        // Return the result in the check.
+        return competition;
+    }
+
     static async start(code) {
         // Make sure event last occurred time is updated.
         await EventsHelper.update(code, Date.now());
@@ -54,6 +197,10 @@ export default class CompetitionHelper {
 
         // Add the initial message and the start reaction (with ping).
         const initialMsg = await CHANNELS._send(code.toUpperCase(), initialMsgText, {});
+
+        // Capture and store/attach the competition main message link.
+        const compMsgLink = MESSAGES.link(initialMsg);
+        await this.setMessageLink(code, compMsgLink);
 
         // Add the reaction which will allow launching the competition when reacted with.
         MESSAGES.delayReact(initialMsg, '▶');
@@ -111,26 +258,6 @@ export default class CompetitionHelper {
         MESSAGES.delayReact(launchedCompMsg, '📋');
     }
 
-    static formatCode(code) {
-        return code.replace('_', ' ').toLowerCase();
-    }
-
-    static saveEntrant(code, user) {
-        return Database.query({
-            name: 'add-competition-entrant',
-            text: 'INSERT INTO competition_entries (entrant_id, competition) VALUES ($1, $2)',
-            values: [user.id, code]
-        });
-    }
-
-    static loadEntrant(code, user) {
-        return DatabaseHelper.singleQuery({
-            name: 'load-competition-entrant',
-            text: 'SELECT * FROM competition_entries WHERE entrant_id = $1 AND competition = $2',
-            values: [user.id, code]
-        });
-    }
-
     static async register(code, reaction, user) {
         // Check not already registered on this competition.
         const entrant = await this.loadEntrant(code, user);
@@ -154,9 +281,17 @@ export default class CompetitionHelper {
         // Set competition is not active.
         await this.setActive(code, false);
 
-        // Calculate the winner by votes.
+        // Notify people it's over with results, in talk not competition channel (invisible).
+        // Debug.
+        // console.log(code + ' end');
+        // CHANNELS._send(code.toUpperCase(), code + ' end');
+        // CHANNELS._send('TALK', code + ' end');
 
-        // Reward the winner.
+        // Calculate the winner by votes.
+        
+        // Reward the winners.
+        
+        // Declare the competition winner.
 
         // Clear the messages.
         this.clear(code);
@@ -167,41 +302,11 @@ export default class CompetitionHelper {
         // Hide the channel until next time
         const channelID = CHANNELS._getCode(code.toUpperCase()).id;
         CHANNELS._hide(channelID, code + ' is over, hiding until next time!');
-
-        // Notify people it's over with results, in talk not competition channel (invisible).
-        // Debug.
-        console.log(code + ' end');
-        // CHANNELS._send(code.toUpperCase(), code + ' end');
-        // CHANNELS._send('TALK', code + ' end');
-    }
-
-    static async setActive(code, active) {
-        return await DatabaseHelper.singleQuery({
-            name: "set-competition-status",
-            text: 'UPDATE events SET active = $2 WHERE event_code = $1',
-            values: [code, !!active]
-        });
-    }
-
-    static async setTitle(code, title) {
-        return await DatabaseHelper.singleQuery({
-            name: "set-competition-title",
-            text: 'UPDATE events SET title = $2 WHERE event_code = $1',
-            values: [code, title]
-        });
-    }
-
-    static async setDescription(code, description) {
-        return await DatabaseHelper.singleQuery({
-            name: "set-competition-description",
-            text: 'UPDATE events SET description = $2 WHERE event_code = $1',
-            values: [code, description]
-        });
     }
 
     static async track() {
         // Time reference ms.
-        const now = Date.now();
+        const now = TIME._secs();
 
         // Load all competitions.
         const competitions = await this.load();
@@ -211,24 +316,14 @@ export default class CompetitionHelper {
 
         // Check if any of the competitions need starting/overdue.
         competitions.map(async comp => {
+            // Parse the last occurred time into an integer.
             const compLastOccurred = parseInt(comp.last_occurred);
 
-            // Check if active competition has expired.
-            if (comp.active) {
-                // Allow some time after competition has ran before starting another.
-                const hasExpired = now - compLastOccurred > COMPETITION_DUR;
-
-                // Attempt to start a competition if required.
-                if (hasExpired) {
-                    // Handle competition announcements and channels.
-                    await this.end(comp.event_code);
-
-                    // Make other checks aware this is starting and counted.
-                    numRunning--;
-                }
+            // Check if within registration period.
+            const isRegistrationPeriod = compLastOccurred + 3600 * 24 <= now;
 
             // Check if inactive competition should start.
-            } else {
+            if (comp.active == false) {
                 // Allow some time after competition has ran before starting another.
                 const isDue = now - compLastOccurred > (COMPETITION_DUR * 2);
 
@@ -241,37 +336,92 @@ export default class CompetitionHelper {
                     numRunning++;
                 }
             }
-        });
-    }
+
+            // Check if active competition
+            if (comp.active) {
+                // Create a text response to be modified conditionally (register period or not).
+                let competitionUpdateText = 'Competition updating.';
+
+                console.log(comp.active);
+
+                // Check the competition.
+                const progress = await this.check(comp);
+                console.log(progress);
+
+                // Load the information message.
+                const compInfoMsg = await MESSAGES.getByLink(comp.message_link);
+
+                // Allow some time after competition has ran before starting another.
+                const hasExpired = now - compLastOccurred > COMPETITION_DUR;
+
+                // Check if the competition should end now.
+                if (hasExpired) {
+                    // Handle competition announcements and channels.
+                    await this.end(comp);
+
+                    // Make other checks aware this is starting and counted.
+                    numRunning--;
+                }
+
+                // Shared competition details text.
+                const competitionDetailsText = `🏆 **__Competition details__** 🏆\n` +
+                    (comp.title ? comp.title : ('Working Title...' + '\n')) +
+                    (comp.description ? comp.description : ('Campaign managers should edit channel description to competition outline.' + '\n\n'));
+
+                // If during registration stage, show most recent registrants.
+                if (isRegistrationPeriod) {
+                    // Edit the message to contain registration period content.
+                    const firstFiveEntrantsByLatestFirst = progress.entries;
+
+                    // Sort the entrants by largest id
+                    firstFiveEntrantsByLatestFirst.sort((a, b) => a.id > b.id);
+
+                    competitionUpdateText = competitionDetailsText + '\n\n' +
+
+                        `**Registration open!**\n\n` +
+                        `**Registrants:** \n` +
+
+                        firstFiveEntrantsByLatestFirst.map(e => `<@${e.entrant_id}>`).join('\n') +
+
+                        `_To register press the clipboard emoji on this message!_`
+                        
+
+                // If after registration stage, show current votes/winning users.
+                } else {
+                    // Remove registration emoji trigger if still visible.
+                    if (await REACTIONS.userReactedWith(compInfoMsg, STATE.CLIENT.user.id, '📋')) 
+                        compInfoMsg.reactions.cache.map(async r => {
+                            // Ignore non-reaction emojis.
+                            if (r.emoji.name !== '📋') return;
     
-    static isCompetitionChnanel(id) {
-        const { TECHNOLOGY_COMPETITION, ART_COMPETITION, BUSINESS_COMPETITION } = CHANNELS_CONFIG;
-        const compChannels = [TECHNOLOGY_COMPETITION, ART_COMPETITION, BUSINESS_COMPETITION];
-        return compChannels.some(c => c.id === id);
-    }
+                            // Remove it since it's matching.
+                            r.remove();
+                        });
 
-    static compCodeFromChannelID(id) {
-        let competitionCode = null;
-        _.each(CHANNELS_CONFIG, (v, k) => {
-            if (v.id === id)
-                competitionCode = k.toLowerCase();
-        });
-        return competitionCode;
-    }
+                    // Edit the message to contain registration period content.
+                    const firstFiveEntrantsByVotes = progress.entries;
 
-    static setEntryMessageID(entryID, messageID) {
-        return Database.query({
-            text: 'UPDATE competition_entries SET entry_msg_id = $2 WHERE id = $1',
-            values: [entryID, messageID]
-        });
-    }
+                    // Sort the entrants by largest id
+                    firstFiveEntrantsByVotes.sort((a, b) => progress.votes[a.entrant_id] > progress.votes[b.entrant_id]);
 
-    static clearCompetitionEntrants(code) {
-        return Database.query({
-            text: 'DELETE FROM competition_entries WHERE competition = $1',
-            values: [code]
+                    // Edit the message to contain post-registration period content.
+                    competitionUpdateText = (
+                        competitionDetailsText +
+                        `**${this.formatCode(comp.event_code)} continues!**\n\n` +
+
+                        `**Currently winning:** \n\n` +
+                        firstFiveEntrantsByVotes.map(e => (
+                            `<@${e.entrant_id}> - ${progress.votes[e.entrant_id]} vote(s)`
+                        )).join('\n') +
+                        `\n\n_For more information/details check website: link soon_`
+                    );
+                }
+
+                // Edit the first message that has been posted at top of comp channel.
+                compInfoMsg.edit(competitionUpdateText);
+            }
         });
-    }
+    } 
 
     static async onChannelUpdate(chanUpdate) {
         // Ensure it's a competition channel.
@@ -296,23 +446,35 @@ export default class CompetitionHelper {
     }
 
     static async onReaction(reaction, user) {
-        // Check if it's a competition channel.
-        if (!this.isCompetitionChnanel(reaction.message.channel.id)) 
-            return false;
+        try {
+            // Check if it's a competition channel.
+            if (!this.isCompetitionChnanel(reaction.message.channel.id)) 
+                return false;
 
-        // Check it's not Cooper.
-        if (USERS.isCooper(user.id))
-            return false;
+            // Check it's not Cooper.
+            if (USERS.isCooper(user.id))
+                return false;
 
-        // Handle launch action.
-        if (reaction.emoji.name === '▶')
-            return this.launch(this.compCodeFromChannelID(reaction.message.channel.id), reaction, user);
+            // Handle launch action.
+            if (reaction.emoji.name === '▶')
+                return this.launch(this.compCodeFromChannelID(reaction.message.channel.id), reaction, user);
 
-        // Handle register action.
-        if (reaction.emoji.name === '📋')
-            return this.register(this.compCodeFromChannelID(reaction.message.channel.id), reaction, user);
+            // Handle register action.
+            if (reaction.emoji.name === '📋') {
+                // Stop author voting for their self and from registering when not applicable.
+                const cooperRegisterEmoji = await REACTIONS.userReactedWith(reaction.message, STATE.CLIENT.user.id, '📋');
+                if (reaction.message.author.id === user.id || !cooperRegisterEmoji)
+                    return await reaction.remove();
+
+                // Register the user for the competition!
+                const competitionCode = this.compCodeFromChannelID(reaction.message.channel.id);
+                return this.register(competitionCode, reaction, user);
+            }
+        } catch (e) {
+            console.log('Error handling competition reaction.');
+            console.error(e);
+        }
     }
-
 
     static async onMessage(msg) {
         // Check if it's a competition channel.
