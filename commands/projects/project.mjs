@@ -45,6 +45,9 @@ export const execute = async (interaction) => {
 	const numWeeks = Math.max(1, TIME.weeksUntilStr(deadline));
 	const price = basePrice * numWeeks;
 
+	// End the authority of the slash command handler, offload to messages.
+	interaction.reply('Please confirm you want to go ahead.');
+
 	// Acknowledge 
 	const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
 	const createProjectText = '**Create !project?** Details:\n\n' +
@@ -53,7 +56,6 @@ export const execute = async (interaction) => {
 		'Owner: ' + `<@${interaction.user.id}>` + '\n' +
 		'Deadline: ' + deadline + '\n' +
 		'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n'
-
 
 	const confirmText = createProjectText + '_Please react with tick to propose the project\'s creation!_';
 
@@ -83,15 +85,12 @@ export const execute = async (interaction) => {
 	// Add project marker.
 	MESSAGES.delayReact(projectSuggestionMsg, RAW_EMOJIS.PROJECT, 999);
 	
-	// Form the success message.
-	const successText = title + '\'s project channel is being voted on:\n';
-
 	// Send poll tracking link.
 	USERS._dm(interaction.user.id, 
-		successText + 
+		title + '\'s project channel is being voted on:\n' + 
 		MESSAGES.link(projectSuggestionMsg)
 	);
 	
 	// Indicate success.
-	return await interaction.reply(successText);
+	return true;
 }
