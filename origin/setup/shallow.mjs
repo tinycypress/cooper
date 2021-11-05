@@ -42,22 +42,14 @@ const shallowBot = async () => {
 
 
         // Return a chart from ticker data.
-        
+        // CompetitionHelper.end('technology_competition');
 
         // Prompt to save to watchlist? :D
-
 
         // More info link for ticker, requires exchange? :'(
         // https://www.google.com/finance/quote/GME:ASX
 
-
         // Restore items
-
-
-
-
-
-
 
         // Load donation by ID to check for that custom field
         // Add raisely encryption key for comparison (add to heroku)

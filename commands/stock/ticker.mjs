@@ -1,11 +1,10 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import axios from "axios";
 import StockHelper from "../../operations/stock/stockHelper.mjs";
 
 export const name = 'ticker';
 
 export const description = 'Get stock ticker information';
-    
+
 export const data = new SlashCommandBuilder()
 	.setName(name)
 	.setDescription(description)
@@ -26,7 +25,6 @@ export const execute = async (interaction) => {
 
 	// Guard against the edge-case of no data found.
 	if (!tickerData) 
-		// Send the stock price data
 		return await interaction.reply('Could not find that ticker! (' + ticker + ')');
 
 	// Format the response.
@@ -39,7 +37,7 @@ export const execute = async (interaction) => {
 
 	// Send the stock price data
 	await interaction.reply(responseText);
-		
+
 	// Generate the chart image.
 	// cht=lc
 	// chd=t:40,60,60,45,47,75,70,72
