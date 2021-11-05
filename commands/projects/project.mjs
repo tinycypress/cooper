@@ -8,8 +8,6 @@ import UsableItemHelper from '../../operations/minigames/medium/economy/items/us
 
 import { authorConfirmationPrompt } from '../../operations/common/ui.mjs';
 
-
-
 export const name = 'project';
 
 export const description = 'This command is used to suggest the creation of a community project with a deadline.';
@@ -65,7 +63,7 @@ export const execute = async (interaction) => {
 		return MESSAGES.selfDestruct(interaction.channel, `<@${interaction.user.id}>, you cannot afford the project price (${price}xGOLD_COIN).`);
 
 	// Use the confirmation from the coin flip feature! :D
-	const confirmMsg = await authorConfirmationPrompt(msg, confirmText, interaction.user.id);
+	const confirmMsg = await authorConfirmationPrompt(interaction.channel, confirmText, interaction.user.id);
 	if (!confirmMsg) return null;
 
 	// Check the user did pay.
