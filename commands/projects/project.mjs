@@ -29,7 +29,7 @@ export const data = new SlashCommandBuilder()
 	);
 
 export const execute = async (interaction) => {
-	// Access the campaign text.
+	// Access the project title text.
 	const title = interaction.options.get('title').value ?? '';
 	const deadline = interaction.options.get('deadline').value ?? '';
 
