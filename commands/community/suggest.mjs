@@ -24,7 +24,10 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction) => {
 	let suggestionText = interaction.options.get('text').value ?? '';
 
-	// Make safe to repost content, @isoleucine?
+	// Prevent things which may appear economical/interactable/item duplicatory.
+	// Cooper will not allow pickup of any item without authoratitive drop meoji reaction.
+	// Items may be interactable with unless the text is tested.
+	// A class should be built for tihs purpose.
 
 	if (suggestionText.includes('@everyone') || suggestionText.includes('@here'))
 		return COOP.MESSAGES.selfDestruct(interaction.channel, 'Pinging via Cooper disallowed.');
@@ -35,9 +38,9 @@ export const execute = async (interaction) => {
 		const pollAcknowledgement = await COOP.CHANNELS._postToChannelCode('SUGGESTIONS', cleanedContent);
 
 		// Detect attempts to suggest PROJECT_CHANNEL
-		if (suggestionText.toLowerCase().includes('project channel')) {
+		// if (suggestionText.toLowerCase().includes('project channel')) {
 			// If needs an owner to give the project channel to.
-		}
+		// }
 
 		// Add reactions for people to use.
 		SuggestionsHelper.activateSuggestion(pollAcknowledgement);
