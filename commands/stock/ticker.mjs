@@ -28,7 +28,7 @@ export const execute = async (interaction) => {
 
 	const params = [
 		'function=TIME_SERIES_INTRADAY',
-		'symbol=' + 'BB',
+		'symbol=' + ticker,
 		'interval=' + duration,
 		`apikey=${process.env.ALPHA_VANTAGE_KEY}`
 	]

@@ -40,14 +40,24 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-        listenReactions((reaction, user) => CompetitionHelper.onReaction(reaction, user));
-        // listenChannelUpdates(chanUpdate => CompetitionHelper.onChannelUpdate(chanUpdate));
-        listenMessages(msg => CompetitionHelper.onMessage(msg));
 
-        // CompetitionHelper.start('technology_competition');
-        // CompetitionHelper.end('technology_competition');
+        // Return a chart from ticker data.
+        
+
+        // Prompt to save to watchlist? :D
+
+
+        // More info link for ticker, requires exchange? :'(
+        // https://www.google.com/finance/quote/GME:ASX
+
 
         // Restore items
+
+
+
+
+
+
 
         // Load donation by ID to check for that custom field
         // Add raisely encryption key for comparison (add to heroku)
