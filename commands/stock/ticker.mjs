@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import axios from "axios";
+import StockHelper from "../../operations/stock/stockHelper.mjs";
 
 export const name = 'ticker';
 
@@ -16,60 +17,17 @@ export const data = new SlashCommandBuilder()
 	)
 
 export const execute = async (interaction) => {
+	// Parse and normalise the ticker.
 	let ticker = interaction.options.get('ticker').value ?? '';
-
 	ticker = ticker.toUpperCase();
 
-	// Stock make Ticker work.
-	const base = `https://www.alphavantage.co/query?`;
+	// Load the alphavantage data for the ticker.
+	const tickerData = await StockHelper.getAlpha(ticker);
 
-	// Provide a dropdown select for this?
-	const duration = '5min';
-
-	const params = [
-		'function=TIME_SERIES_INTRADAY',
-		'symbol=' + ticker,
-		'interval=' + duration,
-		`apikey=${process.env.ALPHA_VANTAGE_KEY}`
-	]
-
-	const resp = await axios.get(base + params.join('&'));
-
-	const data = resp.data;
-
-	// TODO: Need to handle unrecognised.
-
-	console.log(data);
-
-	const tickerData = {
-		meta: {},
-		price: {}
-	};
-
-	Object.keys(data).map(key => {
-		if (key === 'Meta Data') 
-			tickerData.meta = {
-				information: data[key]['1. Information'],
-				symbol: data[key]['2. Symbol'],
-				last_refreshed: data[key]['3. Last Refreshed'],
-				interval: data[key]['4. Interval'],
-				output_size: data[key]['5. Output Size'],
-				time_zone: data[key]['6. Time Zone']
-			}
-		else {
-			const priceKeys = Object.keys(data[key]);
-			const latestPrice = data[key][priceKeys[0]];
-			tickerData.price = {
-				open: latestPrice['1. open'],
-				high: latestPrice['2. high'],
-				low: latestPrice['3. low'],
-				close: latestPrice['4. close'],
-				volume: latestPrice['5. volume']
-			};
-		}
-	});
-
-	console.log(tickerData);
+	// Guard against the edge-case of no data found.
+	if (!tickerData) 
+		// Send the stock price data
+		return await interaction.reply('Could not find that ticker! (' + ticker + ')');
 
 	// Format the response.
 	const responseText = `**${ticker} (${duration})**\n` +
@@ -79,9 +37,19 @@ export const execute = async (interaction) => {
 		`Close: ${tickerData.price.close}\n\n` +
 		`_Last refresh: ${tickerData.meta.last_refreshed}_`;
 
-	// Ticker search
-	// https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=demo
+	// Send the stock price data
+	await interaction.reply(responseText);
+		
+	// Generate the chart image.
+	// cht=lc
+	// chd=t:40,60,60,45,47,75,70,72
 
-	return await interaction.reply(responseText);
+	// Follow up with a sample chart image.
+	const chartImageURL = "https://image-charts.com/chart?ichm=8ddb1ec5ebcb42389a527872f2f1094e49c6b7785010ad644f5f73fdbb92d9ef&cht=bvs&icac=documentation&chd=s:theresadifferencebetweenknowingthepathandwalkingthepath&chf=b0,lg,90,03a9f4,0,3f51b5,1&chs=700x200&chxt=y&icretina=1&chof=.png";
+	await interaction.followup(chartImageURL);
+
+	return true;
 };
 
+// Ticker search
+// https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=demo
