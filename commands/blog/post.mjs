@@ -41,7 +41,7 @@ export const data = new SlashCommandBuilder()
 
 export const execute = async interaction => {
 	const action = interaction.options.getSubcommand();
-	if (action === 'post') return await post(interaction);
+	if (action === 'create') return await post(interaction);
 	// if (action === 'preview') return await preview(interaction);
 	// if (action === 'publish') return await publish(interaction);
 }
@@ -110,7 +110,7 @@ const post = async interaction => {
 			const didPay = await USABLE.use(interaction.user.id, 'GOLD_COIN', price, 'Proposing blog post');
 			if (!didPay) 
 				return await i.editReply({ content: `Post proposal cancelled, payment failure.`, components: [] });
-
+ 
 			// Create the project in suggestions for democratic approval.
 			const postSuggestMsg = await CHANNELS._postToChannelCode('SUGGESTIONS', createProjectText);
 
