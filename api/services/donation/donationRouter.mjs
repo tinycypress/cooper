@@ -5,7 +5,6 @@ import Database from '../../../origin/setup/database.mjs';
 const DonationRouter = Router();
 
 DonationRouter.post('/', async (req, res) => {
-
     try {
         // Guard against false claims.
         const secret = _.get(req.body, 'secret');
@@ -15,17 +14,17 @@ DonationRouter.post('/', async (req, res) => {
         // Access the webhook body data.
         const data = _.get(req.body, 'data.data');
 
-        console.log(data);
-
+        // Construct the donation object.
         const donation = {
             discord_full_username: null,
             acknowledged: false,
-            amount: 0,
-            created_on: new Date
+            amount: data.publicTotal,
+            created_on: new Date,
+            symbol: data.currencySymbol
         }
 
         // Access the potential discord ID from webhook payload.
-        const discordID = _.get(req.body, 'data.data.public.discordID');
+        const discordID = data.fullDiscordUsername || '';
         if (discordID)
             donation.discord_full_username = discordID;
         else
@@ -35,13 +34,14 @@ DonationRouter.post('/', async (req, res) => {
         Database.query({
             name: 'insert-donation',
             text: `INSERT INTO donations (
-                    discord_full_username, acknowledged, amount, created_on
-                ) VALUES ($1, $2, $3, $4)`,
+                    discord_full_username, acknowledged, amount, created_on, symbol
+                ) VALUES ($1, $2, $3, $4, $5)`,
             values: [
                 donation.discord_full_username, 
                 donation.acknowledged, 
                 donation.amount, 
-                donation.created_on
+                donation.created_on,
+                donation.symbol
             ]
         });
 
