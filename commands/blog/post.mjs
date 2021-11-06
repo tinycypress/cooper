@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageActionRow, MessageButton } from "discord.js";
 import BlogHelper from "../../operations/marketing/blog/blogHelper.mjs";
 
-import { EMOJIS } from '../../origin/config.mjs';
+import { EMOJIS, RAW_EMOJIS } from '../../origin/config.mjs';
 import { MESSAGES, TIME, ITEMS, CHANNELS, USABLE } from '../../origin/coop.mjs';
 import Database from "../../origin/setup/database.mjs";
 
