@@ -23,7 +23,7 @@ export const execute = async (interaction) => {
         );
 
     // Defer so we have longer to work/wait for response?
-    interaction.deferUpdate();
+    interaction.deferReply();
     
     await interaction.reply({ content: 'Message action row!', components: [row] });
 
