@@ -125,8 +125,10 @@ export default class CratedropMinigame {
         // A short time after, to avoid rate-limits... award items.
         setTimeout(async () => {
             const crate = CRATE_DATA[rarity];
-            const hitters = axeEmojiReaction.users.cache
-                .map(user => user)
+
+            // Fetch the crate hitters!
+            const reactionUsers = await axeEmojiReaction.users.fetch();
+            const hitters = reactionUsers
                 .filter(user => !COOP.USERS.isCooper(user.id));
 
             const hitterNames = hitters.map(user => user.username);

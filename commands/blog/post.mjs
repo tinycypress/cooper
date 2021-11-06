@@ -162,3 +162,50 @@ const preview = async interaction => {
 	// Send the link
 	return await interaction.reply(`**${draft.title}** preview: \n<${previewLink}>`);
 }
+
+
+// const preview = interaction => {
+// 	const draft = await BlogHelper.loadDraftByChannelID(interaction.channel.id);
+// 	const previewLink = `https://thecoop.group/blog/preview?channel_id=${interaction.channel.id}`;
+
+// 	if (!draft)
+// 		MESSAGES.selfDestruct(interaction.channel, 'Try preview on a post draft channel!');
+
+// 	// Add content to the table so it shows up to date.
+// 	const chan = CHANNELS._get(draft.channel_id);
+// 	const content = await BlogHelper.buildDraft(chan);
+
+// 	await Database.query({
+// 		name: "update-draft-content",
+// 		text: `UPDATE post_drafts SET content = $1 WHERE channel_id = $2`,
+// 		values: [content, draft.channel_id]
+// 	});
+
+// 	// Send the link
+// 	MESSAGES.selfDestruct(interaction.channel, `**${draft.title}** preview: \n<${previewLink}>`);
+
+// 	return interaction.reply('Preview is work in progres.');
+// }
+
+// const publish = interaction => {		
+// 	try {
+// 		// If ID is null... try to see if the current one will work.
+// 		const draft = await BlogHelper.loadDraftByChannelID(interaction.channel.id);
+// 		if (!draft)
+// 			return MESSAGES.selfDestruct(interaction.channel, 'Please run command within a post channel.');
+
+// 		// Check user is the owner of the blog post draft.
+// 		if (interaction.user.id !== draft.owner_id)
+// 			return MESSAGES.selfDestruct(interaction.channel, 'You cannot manage that blog post draft.');
+
+// 		const confirmMsg = await authorConfirmationPrompt(interaction.channel, 'Really publish ' + draft.title + '?', interaction.user.id);
+// 		if (!confirmMsg) return null;
+
+// 		// Fulfil the draft.
+// 		BlogHelper.fulfilDraft(draft);
+		
+// 	} catch(e) {
+// 		console.log('Failed to publish blog post draft.');
+// 		console.error
+// 	}
+// }
