@@ -21,7 +21,7 @@ export default class DonationHelper {
                 await ROLES.add(member, 'SUPPORTER');
                 
                 // Announce.
-                await CHANNELS._send('TALK', `<@${member.user.id}> donated £${d.amount}, given ${ROLES._textRef('SUPPORTER')} role like all donators (any size).`);
+                await CHANNELS._send('TALK', `<@${member.user.id}> donated ${d.symbol}${d.amount}, given ${ROLES._textRef('SUPPORTER')} role like all donators (any size).`, {});
 
                 // Set the acknowledgement to true in database so not rewarded duplicate times.
                 await Database.query({
