@@ -71,7 +71,6 @@ const post = async interaction => {
 	if (userCoinQty < price)
 		return await interaction.reply(`<@${interaction.user.id}>, you cannot afford the post price (${price}xGOLD_COIN).`);
 
-
 	// Form the confirmation message text.
 	const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
 	const createProjectText = '**Confirm post creation:**\n\n' +
@@ -82,71 +81,64 @@ const post = async interaction => {
 		'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
 
 	// Create the response actions.
-	const actions = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setCustomId('confirm')
-                .setLabel('Confirm')
-                .setStyle('SUCCESS'),
-            new MessageButton()
-                .setCustomId('cancel')
-                .setLabel('Cancel')
-                .setStyle('DANGER')
-        );
+	await interaction.reply({ content: createProjectText, components: [
+		new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('confirm')
+					.setLabel('Confirm')
+					.setStyle('SUCCESS'),
+				new MessageButton()
+					.setCustomId('cancel')
+					.setLabel('Cancel')
+					.setStyle('DANGER')
+			)
+	] });
 
-	await interaction.reply({ content: createProjectText, components: [actions] });
-
+	// Handle confirmation/cancellation of post creation.
 	const filter = i => (
 		['confirm', 'cancel'].includes(i.customId) 
 		&& 
 		i.user.id === interaction.user.id
 	);
 	const collector = interaction.channel.createMessageComponentCollector({ max: 1, filter, time: 6666 });
-
 	collector.on('collect', async i => {
-		console.log(i.customId);
-
-		if (i.customId === 'cancel') {
-		}
-
-		if (i.customId === 'confirm') {
-		}
-
+		// Give us more time to complete actions.
 		await i.deferUpdate();
-		await i.editReply({ content: 'A decision was made', components: [] });
+
+		// Handle cancellations.
+		if (i.customId === 'cancel')
+			return await i.editReply({ content: 'Cancelled post creation.', components: [] });
+
+		// Handle confirmations.
+		if (i.customId === 'confirm') {
+			// Check the user did pay.
+			const didPay = await UsableItemHelper.use(interaction.user.id, 'GOLD_COIN', price, 'Proposing blog post');
+			if (!didPay) 
+				return await i.editReply({ content: `Post proposal cancelled, payment failure.`, components: [] });
+
+			// Create the project in suggestions for democratic approval.
+			const postSuggestMsg = await CHANNELS._postToChannelCode('SUGGESTIONS', createProjectText);
+
+			// Add reactions for people to use.
+			MESSAGES.delayReact(postSuggestMsg, EMOJIS.POLL_FOR, 333);
+			MESSAGES.delayReact(postSuggestMsg, EMOJIS.POLL_AGAINST, 666);
+
+			// Add project marker.
+			MESSAGES.delayReact(postSuggestMsg, RAW_EMOJIS.POST, 999);
+			
+			// Send poll tracking link.
+			try {
+				USERS._dm(interaction.user.id, 
+					title + '\'s project channel is being voted on:\n' + 
+					MESSAGES.link(postSuggestMsg)
+				);
+			} catch(e) {
+				console.log('Sending confirmation of project suggestion failed.');
+				console.error(e);
+			}
+
+			return await i.editReply({ content: 'Proposed post pending creation!', components: [] });
+		}
 	});
-
-
-
-	// const confirmText = createProjectText + '_Please react with tick to propose the blog post\'s creation!_';
-
-	// Use the confirmation from the coin flip feature! :D
-	// const confirmMsg = await authorConfirmationPrompt(interaction.channel, confirmText, interaction.user.id);
-	// if (!confirmMsg) return null;
-
-	// Check the user did pay.
-	// const didPay = await UsableItemHelper.use(interaction.user.id, 'GOLD_COIN', price, 'Proposing blog post');
-	// if (!didPay) return MESSAGES.selfDestruct(interaction.channel, `Post proposal cancelled, payment failure.`);
-	
-	// Proceed to list the channel for approval.
-	// MESSAGES.selfDestruct(interaction.channel, title + '\'s blog post channel is being voted on!');
-
-	// Create the project in suggestions for democratic approval.
-	// const postSuggestMsg = await CHANNELS._postToChannelCode('SUGGESTIONS', createProjectText);
-
-	// Add reactions for people to use.
-	// MESSAGES.delayReact(postSuggestMsg, EMOJIS.POLL_FOR, 333);
-	// MESSAGES.delayReact(postSuggestMsg, EMOJIS.POLL_AGAINST, 666);
-
-	// Add project marker.
-	// MESSAGES.delayReact(postSuggestMsg, RAW_EMOJIS.POST, 999);
-	
-	// Send poll tracking link.
-	// USERS._dm(interaction.user.id, 
-	// 	title + '\'s project channel is being voted on:\n' + 
-	// 	MESSAGES.link(postSuggestMsg)
-	// );
-	
-	// Indicate success.
-	// return true;
 }
