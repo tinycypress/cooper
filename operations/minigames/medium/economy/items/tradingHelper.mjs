@@ -52,7 +52,8 @@ export default class TradingHelper {
         const result = DatabaseHelper.single(await Database.query(query));
 
         let tradeID = null;
-        if (typeof result.id !== 'undefined') tradeID = result.id;
+        if (typeof result.id !== 'undefined') 
+            tradeID = result.id;
 
         return tradeID;
     }
