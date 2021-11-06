@@ -57,6 +57,10 @@ const post = interaction => {
 	const title = interaction.options.get('title').value ?? '';
 	const deadline = interaction.options.get('deadline').value ?? '';
 
+	// This command a lil slow?
+	interaction.deferReply();
+
+
 	// Check deadline is valid.
 	if (!TIME.isValidDeadline(deadline))
 		return MESSAGES.selfDestruct(interaction.channel, `<@${interaction.user.id}>, ${deadline} is an invalid duration for a post deadline.`);
