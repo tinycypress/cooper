@@ -45,7 +45,7 @@ export const data = new SlashCommandBuilder()
 			.setName('publish')
 			.setDescription('Publish this channel.'));
 
-export const execute = async (interaction) => {
+export const execute = interaction => {
 	const action = interaction.options.getSubcommand();
 	if (action === 'post') return post(interaction);
 	// if (action === 'preview') return preview(interaction);
@@ -54,16 +54,16 @@ export const execute = async (interaction) => {
 
 const post = interaction => {
 	// Access the project title text.
-	const title = interaction.options.get('title').value ?? '';
-	const deadline = interaction.options.get('deadline').value ?? '';
+	// const title = interaction.options.get('title').value ?? '';
+	// const deadline = interaction.options.get('deadline').value ?? '';
 
-	const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
-	const createProjectText = '**Create !post?** Details:\n\n' +
+	// const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
+	// const createProjectText = '**Create !post?** Details:\n\n' +
 
-		'Title: __' + title + '__\n' +
-		'Writer: ' + `<@${interaction.user.id}>` + '\n' +
-		'Deadline: ' + deadline + '\n' +
-		'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
+	// 	'Title: __' + title + '__\n' +
+	// 	'Writer: ' + `<@${interaction.user.id}>` + '\n' +
+	// 	'Deadline: ' + deadline + '\n' +
+	// 	'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
 
 	// Create the response actions.
 	const actions = new MessageActionRow()
@@ -75,10 +75,10 @@ const post = interaction => {
             new MessageButton()
                 .setCustomId('cancel')
                 .setLabel('Cancel')
-                .setStyle('DANGER'),
+                .setStyle('DANGER')
         );
 
-    return await interaction.reply({ content: createProjectText, components: [actions] });
+    return await interaction.reply({ content: 'Testing????', components: [actions] });
 
 
 	// // This command a lil slow?
