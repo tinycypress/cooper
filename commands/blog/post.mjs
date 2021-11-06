@@ -97,16 +97,23 @@ const post = async interaction => {
 	await interaction.reply({ content: createProjectText, components: [actions] });
 
 	const filter = i => (
-		['submit', 'cancel'].includes(i.customId) 
+		['confirm', 'cancel'].includes(i.customId) 
 		&& 
 		i.user.id === interaction.user.id
 	);
-	const collector = interaction.channel.createMessageComponentCollector({ max: 1, filter, time: 15000 });
-	collector.on('end', async collected => { 
-		console.log(`Collected ${collected.size} items`)
-		console.log(collected);
-		
-		await interaction.update({ content: 'Was collected??', components: [] });
+	const collector = interaction.channel.createMessageComponentCollector({ max: 1, filter, time: 6666 });
+
+	collector.on('collect', async i => {
+		console.log(i.customId);
+
+		if (i.customId === 'cancel') {
+		}
+
+		if (i.customId === 'confirm') {
+		}
+
+		await i.deferUpdate();
+		await i.editReply({ content: 'A decision was made', components: [] });
 	});
 
 
