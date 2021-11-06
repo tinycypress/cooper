@@ -95,8 +95,6 @@ const post = async interaction => {
         );
 
 	await interaction.reply({ content: createProjectText, components: [actions] });
-	
-	console.log(confirmIntention);
 
 	const filter = i => !!i;
 	const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
