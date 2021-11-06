@@ -4,8 +4,9 @@ import { Client, Intents, Permissions } from 'discord.js';
 import Database from './database.mjs';
 
 // v DEV IMPORT AREA v
-import COOP, { SERVER, STATE, MESSAGES, REACTIONS } from '../coop.mjs';
-import CompetitionHelper from '../../operations/social/competitionHelper.mjs';
+import COOP, { SERVER, CHANNELS, ROLES, STATE, MESSAGES, REACTIONS } from '../coop.mjs';
+import DatabaseHelper from '../../operations/databaseHelper.mjs';
+import DonationHelper from '../../operations/social/donationHelper.mjs';
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -40,24 +41,7 @@ const shallowBot = async () => {
         console.log('Shallow bot is ready');
         // DEV WORK AND TESTING ON THE LINES BELOW.
 
-
-        // Return a chart from ticker data.
-        // CompetitionHelper.end('technology_competition');
-
-        // Prompt to save to watchlist? :D
-
-        // More info link for ticker, requires exchange? :'(
-        // https://www.google.com/finance/quote/GME:ASX
-
-        // Restore items
-
-        // Load donation by ID to check for that custom field
-        // Add raisely encryption key for comparison (add to heroku)
-
-        // Waiting for support reply
-        // Tied together:
-        // Supporter role/donation
-        // Charity register
+        console.log('LMF'.split('#'));
 
         // TODO:
         // https://developer.algorand.org/docs/features/asa

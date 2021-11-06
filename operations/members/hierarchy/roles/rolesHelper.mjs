@@ -74,6 +74,12 @@ export default class RolesHelper {
         return roles;
     }
 
+    static add(member, roleCode) {
+        const guild = SERVER._coop();
+        const role = this.getRoleByID(guild, ROLES_CONFIG[roleCode].id);
+        return member.roles.add(role);
+    }
+
     static _add(userID, roleCode) {
         try {
             const guild = SERVER._coop();
