@@ -1,7 +1,10 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageActionRow, MessageButton } from "discord.js";
+import BlogHelper from "../../operations/marketing/blog/blogHelper.mjs";
 
+import { EMOJIS } from '../../origin/config.mjs';
 import { MESSAGES, TIME, ITEMS, CHANNELS, USABLE } from '../../origin/coop.mjs';
+import Database from "../../origin/setup/database.mjs";
 
 export const name = 'post';
 
@@ -42,7 +45,7 @@ export const data = new SlashCommandBuilder()
 export const execute = async interaction => {
 	const action = interaction.options.getSubcommand();
 	if (action === 'create') return await post(interaction);
-	// if (action === 'preview') return await preview(interaction);
+	if (action === 'preview') return await preview(interaction);
 	// if (action === 'publish') return await publish(interaction);
 }
 
@@ -135,4 +138,27 @@ const post = async interaction => {
 			return await i.editReply({ content: 'Proposed post pending creation!', components: [] });
 		}
 	});
+}
+
+
+const preview = async interaction => {
+	const draft = await BlogHelper.loadDraftByChannelID(interaction.channel.id);
+	const previewLink = `https://thecoop.group/blog/preview?channel_id=${interaction.channel.id}`;
+
+	// Only allow usage on a draft channel.
+	if (!draft)
+		return await interaction.reply(`'Try preview on a post draft channel!'`);
+
+	// Add content to the table so it shows up to date.
+	const chan = CHANNELS._get(draft.channel_id);
+	const content = await BlogHelper.buildDraft(chan);
+
+	await Database.query({
+		name: "update-draft-content",
+		text: `UPDATE post_drafts SET content = $1 WHERE channel_id = $2`,
+		values: [content, draft.channel_id]
+	});
+
+	// Send the link
+	return await interaction.reply(`**${draft.title}** preview: \n<${previewLink}>`);
 }
