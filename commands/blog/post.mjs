@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageActionRow, MessageButton } from "discord.js";
 
-import { MESSAGES, TIME, ITEMS, MESSAGES } from '../../origin/coop.mjs';
+import { MESSAGES, TIME, ITEMS, CHANNELS } from '../../origin/coop.mjs';
 // import { MESSAGES, ITEMS, TIME, CHANNELS } from '../../origin/coop.mjs';
 
 // import BlogHelper from '../../operations/marketing/blog/blogHelper.mjs';
