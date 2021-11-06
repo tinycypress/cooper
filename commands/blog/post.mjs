@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { MessageActionRow, MessageButton } from "discord.js";
 
 import { RAW_EMOJIS, EMOJIS } from '../../origin/config.mjs';
 import { MESSAGES, ITEMS, TIME, USERS, CHANNELS } from '../../origin/coop.mjs';
@@ -67,21 +68,6 @@ const post = interaction => {
 		'Deadline: ' + deadline + '\n' +
 		'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
 
-	// Create the response actions.
-	const actions = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-                .setCustomId('confirm')
-                .setLabel('Confirm')
-                .setStyle('SUCCESS'),
-            new MessageButton()
-                .setCustomId('cancel')
-                .setLabel('Cancel')
-                .setStyle('DANGER'),
-        );
-
-    return await interaction.reply({ content: createProjectText, components: [actions] });
-
 	// Check deadline is valid.
 	if (!TIME.isValidDeadline(deadline))
 		return MESSAGES.selfDestruct(interaction.channel, `<@${interaction.user.id}>, ${deadline} is an invalid duration for a post deadline.`);
@@ -118,7 +104,6 @@ const post = interaction => {
                 .setStyle('DANGER'),
         );
 
-    
     const wut = await interaction.reply({ content: createProjectText, components: [actions] });
 
     // Defer so we have longer to work/wait for response?
@@ -129,10 +114,12 @@ const post = interaction => {
     collector.on('collect', async i => {
         await i.update({ content: 'A button was clicked!', components: [] });
     });
-    collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+    collector.on('end', async collected => { 
+		console.log(`Collected ${collected.size} items`)
+		console.log(wut);
+		await wut.followUp({ content: createProjectText, components: [actions] });
+	});
 
-	console.log(wut);
-	await wut.followUp({ content: createProjectText, components: [actions] });
 	// const confirmText = createProjectText + '_Please react with tick to propose the blog post\'s creation!_';
 
 	// Use the confirmation from the coin flip feature! :D
@@ -163,7 +150,7 @@ const post = interaction => {
 	// );
 	
 	// Indicate success.
-	return true;
+	// return true;
 }
 
 const preview = interaction => {
