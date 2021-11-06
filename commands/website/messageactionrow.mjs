@@ -22,10 +22,11 @@ export const execute = async (interaction) => {
                 .setStyle('DANGER'),
         );
 
-    // Defer so we have longer to work/wait for response?
-    interaction.deferReply();
-    
+        
     await interaction.reply({ content: 'Message action row!', components: [row] });
+
+    // Defer so we have longer to work/wait for response?
+    // interaction.deferReply();
 
     const filter = i => !!i;
 
