@@ -61,12 +61,42 @@ const post = interaction => {
 	// This command a lil slow?
 	// interaction.deferReply();
 
+
+	const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
 	const createProjectText = '**Create !post?** Details:\n\n' +
 
 		'Title: __' + title + '__\n' +
 		'Writer: ' + `<@${interaction.user.id}>` + '\n' +
 		'Deadline: ' + deadline + '\n' +
 		'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
+
+	// Create the response actions.
+	const actions = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId('confirm')
+                .setLabel('Confirm')
+                .setStyle('SUCCESS'),
+            new MessageButton()
+                .setCustomId('cancel')
+                .setLabel('Cancel')
+                .setStyle('DANGER'),
+        );
+
+    return await interaction.reply({ content: createProjectText, components: [actions] });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// Check deadline is valid.
 	if (!TIME.isValidDeadline(deadline))
