@@ -54,16 +54,32 @@ export const execute = async interaction => {
 
 const post = async interaction => {
 	// Access the project title text.
-	// const title = interaction.options.get('title').value ?? '';
-	// const deadline = interaction.options.get('deadline').value ?? '';
+	const title = interaction.options.get('title').value ?? '';
+	const deadline = interaction.options.get('deadline').value ?? '';
 
-	// const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
-	// const createProjectText = '**Create !post?** Details:\n\n' +
+	// Check deadline is valid.
+	if (!TIME.isValidDeadline(deadline))
+		return await interaction.reply(`<@${interaction.user.id}>, ${deadline} is an invalid duration for a post deadline.`);
 
-	// 	'Title: __' + title + '__\n' +
-	// 	'Writer: ' + `<@${interaction.user.id}>` + '\n' +
-	// 	'Deadline: ' + deadline + '\n' +
-	// 	'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
+	// Calculate the price.
+	const basePrice = await ITEMS.perBeakRelativePrice('GOLD_COIN', 0.05);
+	const numWeeks = Math.max(1, TIME.weeksUntilStr(deadline));
+	const price = basePrice * numWeeks;
+
+	// Check the user can afford to pay the price!
+	const userCoinQty = await ITEMS.getUserItemQty(interaction.user.id, 'GOLD_COIN');
+	if (userCoinQty < price)
+		return await interaction.reply(`<@${interaction.user.id}>, you cannot afford the post price (${price}xGOLD_COIN).`);
+
+
+	// Form the confirmation message text.
+	const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
+	const createProjectText = '**Create !post?** Details:\n\n' +
+
+		'Title: __' + title + '__\n' +
+		'Writer: ' + `<@${interaction.user.id}>` + '\n' +
+		'Deadline: ' + deadline + '\n' +
+		'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
 
 	// Create the response actions.
 	const actions = new MessageActionRow()
@@ -78,63 +94,25 @@ const post = async interaction => {
                 .setStyle('DANGER')
         );
 
-    return await interaction.reply({ content: 'Testing????', components: [actions] });
-
-
-	// // This command a lil slow?
-	// // interaction.deferReply();
-
-	// // Check deadline is valid.
-	// if (!TIME.isValidDeadline(deadline))
-	// 	return MESSAGES.selfDestruct(interaction.channel, `<@${interaction.user.id}>, ${deadline} is an invalid duration for a post deadline.`);
-
-	// // Calculate the price.
-	// const basePrice = await ITEMS.perBeakRelativePrice('GOLD_COIN', 0.05);
-	// const numWeeks = Math.max(1, TIME.weeksUntilStr(deadline));
-	// const price = basePrice * numWeeks;
-
-	// // Check the user can afford to pay the price!
-	// const userCoinQty = await ITEMS.getUserItemQty(interaction.user.id, 'GOLD_COIN');
-	// if (userCoinQty < price)
-	// 	return MESSAGES.selfDestruct(interaction.channel, `<@${interaction.user.id}>, you cannot afford the post price (${price}xGOLD_COIN).`);
-
-	// // Acknowledge 
-	// const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
-	// const createProjectText = '**Create !post?** Details:\n\n' +
-
-	// 	'Title: __' + title + '__\n' +
-	// 	'Writer: ' + `<@${interaction.user.id}>` + '\n' +
-	// 	'Deadline: ' + deadline + '\n' +
-	// 	'Price: ' + emoji + ' ' + price + ' _(0.01% avg coin qty a week)_\n\n';
-
-	// // Create the response actions.
-	// const actions = new MessageActionRow()
-    //     .addComponents(
-    //         new MessageButton()
-    //             .setCustomId('confirm')
-    //             .setLabel('Confirm')
-    //             .setStyle('SUCCESS'),
-    //         new MessageButton()
-    //             .setCustomId('cancel')
-    //             .setLabel('Cancel')
-    //             .setStyle('DANGER'),
-    //     );
-
-    // const wut = await interaction.reply({ content: createProjectText, components: [actions] });
-
-    // Defer so we have longer to work/wait for response?
-    // interaction.deferReply();
-
-    // const filter = i => !!i;
-    // const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-    // collector.on('collect', async i => {
-    //     await i.update({ content: 'A button was clicked!', components: [] });
-    // });
-    // collector.on('end', async collected => { 
+	// const filter = i => !!i;
+	// const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+	// collector.on('collect', async i => {
+	//     await i.update({ content: 'A button was clicked!', components: [] });
+	// });
+	// collector.on('end', async collected => { 
 	// 	console.log(`Collected ${collected.size} items`)
 	// 	console.log(wut);
 	// 	await wut.followUp({ content: createProjectText, components: [actions] });
 	// });
+
+	// const wut = await interaction.reply({ content: createProjectText, components: [actions] });
+	
+    return await interaction.reply({ content: createProjectText, components: [actions] });
+
+
+
+
+
 
 	// const confirmText = createProjectText + '_Please react with tick to propose the blog post\'s creation!_';
 
