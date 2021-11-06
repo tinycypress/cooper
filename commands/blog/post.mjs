@@ -1,13 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageActionRow, MessageButton } from "discord.js";
 
-import { MESSAGES, TIME, ITEMS, CHANNELS } from '../../origin/coop.mjs';
-// import { MESSAGES, ITEMS, TIME, CHANNELS } from '../../origin/coop.mjs';
-
-// import BlogHelper from '../../operations/marketing/blog/blogHelper.mjs';
-// import Database from '../../origin/setup/database.mjs';
-
-// import { authorConfirmationPrompt } from '../../operations/common/ui.mjs';
+import { MESSAGES, TIME, ITEMS, CHANNELS, USABLE } from '../../origin/coop.mjs';
 
 export const name = 'post';
 
@@ -19,7 +13,7 @@ export const data = new SlashCommandBuilder()
 
 	.addSubcommand(subcommand =>
 		subcommand
-			.setName('post')
+			.setName('create')
 			.setDescription('Democratically creates a community blog post.')
 			.addStringOption(option => 
 				option
@@ -113,7 +107,7 @@ const post = async interaction => {
 		// Handle confirmations.
 		if (i.customId === 'confirm') {
 			// Check the user did pay.
-			const didPay = await UsableItemHelper.use(interaction.user.id, 'GOLD_COIN', price, 'Proposing blog post');
+			const didPay = await USABLE.use(interaction.user.id, 'GOLD_COIN', price, 'Proposing blog post');
 			if (!didPay) 
 				return await i.editReply({ content: `Post proposal cancelled, payment failure.`, components: [] });
 
