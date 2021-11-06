@@ -74,7 +74,7 @@ const post = async interaction => {
 
 	// Form the confirmation message text.
 	const emoji = MESSAGES.emojiCodeText('GOLD_COIN');
-	const createProjectText = '**Create !post?** Details:\n\n' +
+	const createProjectText = '**Confirm post creation:**\n\n' +
 
 		'Title: __' + title + '__\n' +
 		'Writer: ' + `<@${interaction.user.id}>` + '\n' +
@@ -94,19 +94,19 @@ const post = async interaction => {
                 .setStyle('DANGER')
         );
 
-	const confirmIntention = await interaction.reply({ content: createProjectText, components: [actions] });
+	await interaction.reply({ content: createProjectText, components: [actions] });
 	
 	console.log(confirmIntention);
 
 	const filter = i => !!i;
-	const collector = confirmIntention.channel.createMessageComponentCollector({ filter, time: 15000 });
+	const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
 	collector.on('collect', async i => {
 		await i.update({ content: 'A button was clicked!', components: [] });
 	});
 	collector.on('end', async collected => { 
 		console.log(`Collected ${collected.size} items`)
 		// console.log(wut);
-		await confirmIntention.followUp({ content: 'Was collected??', components: [] });
+		await interaction.followUp({ content: 'Was collected??', components: [] });
 	});
 
 
