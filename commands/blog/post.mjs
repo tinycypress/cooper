@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { MessageActionRow, MessageButton } from "discord.js";
 
-import { MESSAGES } from '../../origin/coop.mjs';
+import { MESSAGES, TIME, ITEMS, MESSAGES } from '../../origin/coop.mjs';
 // import { MESSAGES, ITEMS, TIME, CHANNELS } from '../../origin/coop.mjs';
 
 // import BlogHelper from '../../operations/marketing/blog/blogHelper.mjs';
@@ -94,23 +94,20 @@ const post = async interaction => {
                 .setStyle('DANGER')
         );
 
-	// const filter = i => !!i;
-	// const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-	// collector.on('collect', async i => {
-	//     await i.update({ content: 'A button was clicked!', components: [] });
-	// });
-	// collector.on('end', async collected => { 
-	// 	console.log(`Collected ${collected.size} items`)
-	// 	console.log(wut);
-	// 	await wut.followUp({ content: createProjectText, components: [actions] });
-	// });
-
-	// const wut = await interaction.reply({ content: createProjectText, components: [actions] });
+	const confirmIntention = await interaction.reply({ content: createProjectText, components: [actions] });
 	
-    return await interaction.reply({ content: createProjectText, components: [actions] });
+	console.log(confirmIntention);
 
-
-
+	const filter = i => !!i;
+	const collector = confirmIntention.channel.createMessageComponentCollector({ filter, time: 15000 });
+	collector.on('collect', async i => {
+		await i.update({ content: 'A button was clicked!', components: [] });
+	});
+	collector.on('end', async collected => { 
+		console.log(`Collected ${collected.size} items`)
+		// console.log(wut);
+		await confirmIntention.followUp({ content: 'Was collected??', components: [] });
+	});
 
 
 
