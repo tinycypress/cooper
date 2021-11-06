@@ -96,15 +96,17 @@ const post = async interaction => {
 
 	await interaction.reply({ content: createProjectText, components: [actions] });
 
-	const filter = i => !!i;
-	const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-	collector.on('collect', async i => {
-		await i.update({ content: 'A button was clicked!', components: [] });
-	});
+	const filter = i => (
+		['submit', 'cancel'].includes(i.customId) 
+		&& 
+		i.user.id === interaction.user.id
+	);
+	const collector = interaction.channel.createMessageComponentCollector({ max: 1, filter, time: 15000 });
 	collector.on('end', async collected => { 
 		console.log(`Collected ${collected.size} items`)
-		// console.log(wut);
-		await interaction.followUp({ content: 'Was collected??', components: [] });
+		console.log(collected);
+		
+		await interaction.update({ content: 'Was collected??', components: [] });
 	});
 
 
