@@ -45,14 +45,14 @@ export const data = new SlashCommandBuilder()
 			.setName('publish')
 			.setDescription('Publish this channel.'));
 
-export const execute = interaction => {
+export const execute = async interaction => {
 	const action = interaction.options.getSubcommand();
-	if (action === 'post') return post(interaction);
-	// if (action === 'preview') return preview(interaction);
-	// if (action === 'publish') return publish(interaction);
+	if (action === 'post') return await post(interaction);
+	// if (action === 'preview') return await preview(interaction);
+	// if (action === 'publish') return await publish(interaction);
 }
 
-const post = interaction => {
+const post = async interaction => {
 	// Access the project title text.
 	// const title = interaction.options.get('title').value ?? '';
 	// const deadline = interaction.options.get('deadline').value ?? '';
