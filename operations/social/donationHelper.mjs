@@ -21,13 +21,17 @@ export default class DonationHelper {
                 await ROLES.add(member, 'SUPPORTER');
                 
                 // Announce.
-                await CHANNELS._send('FEED', `<@${member.user.id}> donated ${d.symbol}${d.amount}, given ${ROLES._textRef('SUPPORTER')} role like all donators (any size).`, {});
+                await CHANNELS._send(
+                    'FEED', 
+                    `<@${member.user.id}> donated ${d.symbol}${d.amount}, given ${ROLES._textRef('SUPPORTER')} role like all donators (any size).`,
+                    { allowedMentions: { users: [member.user.id], roles: [] }}
+                );
 
                 // Set the acknowledgement to true in database so not rewarded duplicate times.
                 await Database.query({
                     text: 'UPDATE donations SET acknowledged = true WHERE id = $1',
                     values: [d.id]
-                })
+                });
             }
         });
     }
