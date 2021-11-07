@@ -24,7 +24,7 @@ DonationRouter.post('/', async (req, res) => {
         }
 
         // Access the potential discord ID from webhook payload.
-        const discordID = data.fullDiscordUsername || '';
+        const discordID = _.get(data, 'public.fullDiscordUsername');
         if (discordID)
             donation.discord_full_username = discordID;
         else

@@ -71,7 +71,7 @@ export const VELOCITY_EVENTS = {
 export default function eventsManifest() {
 
   // Process/thank people for donations
-  EventsHelper.runInterval(() => DonationHelper.process(), baseTickDur);
+  EventsHelper.runInterval(() => DonationHelper.process(), baseTickDur / 3);
   
   // New day events/calendar events.
   EventsHelper.runInterval(() => COOP.CHICKEN.checkIfNewDay(), baseTickDur / 2);
