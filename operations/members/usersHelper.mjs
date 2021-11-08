@@ -382,6 +382,16 @@ export default class UsersHelper {
                     FROM items it
                     GROUP BY it.owner_id
                 ) items ON users.discord_id = items.owner_id
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'author_username', bp.author_username,
+                            'slug', bp.slug
+                        )) AS blog_posts,
+                        author_id
+                    FROM blog_posts bp
+                    GROUP BY bp.author_id
+                ) blog_posts ON users.discord_id = blog_posts.author_id
                 WHERE username LIKE $1
             `,
             values: [username]
@@ -408,6 +418,16 @@ export default class UsersHelper {
                     FROM items it
                     GROUP BY it.owner_id
                 ) items ON users.discord_id = items.owner_id
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'author_username', bp.author_username,
+                            'slug', bp.slug
+                        )) AS blog_posts,
+                        author_id
+                    FROM blog_posts bp
+                    GROUP BY bp.author_id
+                ) blog_posts ON users.discord_id = blog_posts.author_id
                 WHERE discord_id = $1
             `,
             values: [discordID]
@@ -435,6 +455,16 @@ export default class UsersHelper {
                     FROM items it
                     GROUP BY it.owner_id
                 ) items ON users.discord_id = items.owner_id
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'author_username', bp.author_username,
+                            'slug', bp.slug
+                        )) AS blog_posts,
+                        author_id
+                    FROM blog_posts bp
+                    GROUP BY bp.author_id
+                ) blog_posts ON users.discord_id = blog_posts.author_id
                 ORDER BY historical_points DESC NULLS LAST
             `
         };
