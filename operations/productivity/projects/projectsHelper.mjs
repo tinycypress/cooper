@@ -1,26 +1,36 @@
-import { Permissions } from "discord.js";
+import { Permissions, MessageMentions } from "discord.js";
 import { EMOJIS, CATEGORIES } from "../../../origin/config.mjs";
-import { CHANNELS, MESSAGES, TIME } from "../../../origin/coop.mjs";
+import { CHANNELS, MESSAGES, TIME, USERS } from "../../../origin/coop.mjs";
 import Database from "../../../origin/setup/database.mjs";
 import DatabaseHelper from "../../databaseHelper.mjs";
-
-
+   
 // Show the user's projects on the website.
 // Should add support for contributors so it can show up on their coop website profile.
 export default class ProjectsHelper {
 
     static async passed(suggestion) {
-        const owner = suggestion.mentions.users.first() || null;
+        const ownerID = MessageMentions.USERS_PATTERN.exec(suggestion.content)[1] || null;
         const title = MESSAGES.getRegexMatch(/Title: __([^\r\n]*)__/gm, suggestion.content);
         const deadline = MESSAGES.getRegexMatch(/Deadline: ([^\r\n]*)/gm, suggestion.content);
+
+        const member = await USERS._fetch(ownerID);
         
         // TODO: Create with slug.
-        const channel = await this.create(title, owner, deadline);
+        const channel = await this.create(title, member, deadline);
 
         // Is this necessary??
         const announcementMsg = await CHANNELS._postToChannelCode('FEED', `Project created! <#${channel.id}>`);
         MESSAGES.delayReact(announcementMsg, EMOJIS.GOLD_COIN);
     }
+
+    static loadBySlug(slug) {
+        return DatabaseHelper.singleQuery({
+            name: "load-project-slug", 
+            text: `SELECT * FROM projects WHERE slug = $1`,
+            values: [slug]
+        });
+    }
+
 
     static async create(name, owner, deadline) {
         try {
@@ -44,17 +54,19 @@ export default class ProjectsHelper {
             // Take human readable due time.
             const unixSecsDeadline = Math.round(TIME.parseHuman(deadline).getTime() / 1000);
             
+            const slug = encodeURIComponent(name.replaceAll(' ', '-').toLowerCase());
+
             // Add the channel to the database.
             const query = {
                 name: "create-project",
                 text: `INSERT INTO projects(
-                        title, description, 
+                        title, description, slug, 
                         channel_id, owner_id,
                         created, deadline
                     )
                     VALUES($1, $2, $3, $4, $5, $6)`,
                 values: [
-                    name, 'No description yet.',
+                    name, 'No description yet.', slug,
                     channel.id, owner.id,
                     TIME._secs(), unixSecsDeadline
                 ]
@@ -71,14 +83,57 @@ export default class ProjectsHelper {
         }
     }
 
-
     static async all() {
         const query = {
-            name: "get-all-projects",
-            text: `SELECT * FROM projects`
+            name: "get-all-projects-with-username",
+            text: `SELECT * FROM projects
+                INNER JOIN users 
+                ON projects.owner_id = discord_id`
         };
         const result = await DatabaseHelper.manyQuery(query);
         return result;
     }
+
+    static async setTitle(channelID, title) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-project-title",
+            text: 'UPDATE projects SET title = $2 WHERE channel_id = $1',
+            values: [channelID, title]
+        });
+    }
+
+    static async setDescription(channelID, description) {
+        return await DatabaseHelper.singleQuery({
+            name: "set-project-description",
+            text: 'UPDATE projects SET description = $2 WHERE channel_id = $1',
+            values: [channelID, description]
+        });
+    }
+
+    static async onChannelUpdate(chanUpdate) {
+        // Ensure it's a project channel.
+        if (chanUpdate.parentId !== CATEGORIES['PROJECTS'].id)
+            return false;
+
+        console.log('Updated project channel');
+        
+        // Make sure to request the most up to date channel data.
+        const freshChan = await chanUpdate.fetch();
+
+        // Get the new title and description.
+        if (freshChan.topic) {
+            const topicParts = freshChan.topic.split('\n');
+            const title = topicParts[0];
+            const description = topicParts.slice(1).join('\n');
+
+            console.log(title, description);
+    
+            // Store it in the database to make viewable from the website?
+            await this.setTitle(chanUpdate.id, title);
+            await this.setDescription(chanUpdate.id, description);
+        }
+    } 
+
+
 
 }

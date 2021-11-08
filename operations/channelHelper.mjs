@@ -33,6 +33,11 @@ export default class ChannelHelper {
         return guild.channels.cache.get(id);
     }
 
+    static fetch(id) {
+        return SERVER._coop().channels.fetch(id);
+    }
+
+
     static _get(id) {
         return this.getByID(SERVER._coop(), id);
     }

@@ -188,6 +188,7 @@ export default class SuggestionsHelper {
     static async reject(suggestion, votes, index) {
         setTimeout(() => {
             try {
+                
                 const rejectedText = `Suggestion rejected, proposal: ${suggestion.content}\n` +
                     `${EMOJIS.POLL_FOR.repeat(votes.for)}${EMOJIS.POLL_AGAINST.repeat(votes.against)}`;
                 

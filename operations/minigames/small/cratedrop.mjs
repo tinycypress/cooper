@@ -132,6 +132,10 @@ export default class CratedropMinigame {
                 .filter(user => !COOP.USERS.isCooper(user.id));
 
             const hitterNames = hitters.map(user => user.username);
+
+            console.log('Crate hittres');
+            console.log(reactionUsers);
+            console.log(hitters);
             
             // Add points to all hitters.
             await Promise.all(hitters.map(user => COOP.ITEMS.add(user.id, 'COOP_POINT', crate.openingPoints, `Opening ${rarity}`)));

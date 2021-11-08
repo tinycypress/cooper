@@ -71,8 +71,7 @@ export const execute = async (interaction) => {
 		// Send specific item count.
 		const emoji = COOP.MESSAGES.emojiText(EMOJIS[parsedItemCode]);
 		if (itemQty > 0) {
-			await interaction.reply(`${name} owns ${displayQty}x${parsedItemCode} ${emoji}.`, { ephemeral: true });
-			await interaction.followUp(websiteLink);
+			await interaction.reply(`${name} owns ${displayQty}x${parsedItemCode} ${emoji}.\n\n${websiteLink}`, { ephemeral: true });
 			return true;
 		}
 		else 
