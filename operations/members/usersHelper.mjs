@@ -371,7 +371,18 @@ export default class UsersHelper {
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
                     FROM user_roles ur
                     GROUP BY ur.discord_id
-                ) roles USING (discord_id) WHERE username LIKE $1
+                ) roles USING (discord_id) 
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'item_code', it.item_code,
+                            'quantity', it.quantity
+                        )) AS item_list,
+                        owner_id
+                    FROM items it
+                    GROUP BY it.owner_id
+                ) items ON users.discord_id = items.owner_id
+                WHERE username LIKE $1
             `,
             values: [username]
         });
@@ -387,6 +398,16 @@ export default class UsersHelper {
                     FROM user_roles ur
                     GROUP BY ur.discord_id
                 ) roles USING (discord_id)
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'item_code', it.item_code,
+                            'quantity', it.quantity
+                        )) AS item_list,
+                        owner_id
+                    FROM items it
+                    GROUP BY it.owner_id
+                ) items ON users.discord_id = items.owner_id
                 WHERE discord_id = $1
             `,
             values: [discordID]
@@ -404,6 +425,16 @@ export default class UsersHelper {
                     FROM user_roles ur
                     GROUP BY ur.discord_id
                 ) roles USING (discord_id)
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'item_code', it.item_code,
+                            'quantity', it.quantity
+                        )) AS item_list,
+                        owner_id
+                    FROM items it
+                    GROUP BY it.owner_id
+                ) items ON users.discord_id = items.owner_id
                 ORDER BY historical_points DESC NULLS LAST
             `
         };

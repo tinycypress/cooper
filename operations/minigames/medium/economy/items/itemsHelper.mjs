@@ -146,6 +146,16 @@ export default class ItemsHelper {
         const hasQty = await this.getUserItemQty(userID, itemCode);
         return hasQty >= qty;
     }
+
+    static async getAllItemOwners(itemCode) {
+        const query = {
+            name: "get-all-user-items",
+            text: `SELECT * FROM "items" WHERE item_code = $1 ORDER BY quantity DESC`,
+            values: [itemCode]
+        };
+
+        return DatabaseHelper.many(await Database.query(query));
+    }
     
     static async getUserItems(userID) {
         const query = {
@@ -371,9 +381,6 @@ export default class ItemsHelper {
             COOP.CHANNELS._postToFeed(successText);
         }
     }
-
-
-
 
     // Calculating person with most items and rewarding them.
     static async getBiggestWhale() {
