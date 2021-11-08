@@ -8,8 +8,7 @@ ProjectsRouter.get('/', async (req, res) => {
     res.status(200).json(projects);
 });
 
-// TODO: Projects need slug =0
-ProjectsRouter.get('/:projectSlug', async (req, res) => {
+ProjectsRouter.get('/:slug', async (req, res) => {
     const projects = await ProjectsHelper.loadBySlug(req.params.slug);
     res.status(200).json(projects);
 });

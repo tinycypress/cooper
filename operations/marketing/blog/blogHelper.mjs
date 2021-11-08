@@ -102,7 +102,6 @@ export default class BlogHelper {
         });
     }
 
-
     static async deleteDraft(draftID) {
         return Database.query({
             name: 'delete-draft',
@@ -132,9 +131,7 @@ export default class BlogHelper {
             const chan = CHANNELS._get(draft.channel_id);
             const content = await this.buildDraft(chan);
 
-            const slug = draft.title.toLowerCase()
-                .replace(/[^\w ]+/g,'')
-                .replace(/ +/g,'-');
+            const slug = encodeURIComponent(draft.title.replaceAll(' ', '-').toLowerCase());
 
             // Save to blog posts database (public on website).
             this.publish(draft.title, slug, content, draft.owner_id);

@@ -95,10 +95,11 @@ export default class ProjectsHelper {
     }
 
     static async setTitle(channelID, title) {
+        const slug = encodeURIComponent(title.replaceAll(' ', '-').toLowerCase());
         return await DatabaseHelper.singleQuery({
             name: "set-project-title",
-            text: 'UPDATE projects SET title = $2 WHERE channel_id = $1',
-            values: [channelID, title]
+            text: 'UPDATE projects SET title = $2, slug = $3 WHERE channel_id = $1',
+            values: [channelID, title, slug]
         });
     }
 
