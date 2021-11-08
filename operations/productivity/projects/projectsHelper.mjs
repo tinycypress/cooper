@@ -26,7 +26,10 @@ export default class ProjectsHelper {
     static loadBySlug(slug) {
         return DatabaseHelper.singleQuery({
             name: "load-project-slug", 
-            text: `SELECT * FROM projects WHERE slug = $1`,
+            text: `SELECT * FROM projects
+                    JOIN users 
+                    ON projects.owner_id = discord_id
+                WHERE slug = $1`,
             values: [slug]
         });
     }

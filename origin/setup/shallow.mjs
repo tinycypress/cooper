@@ -59,8 +59,12 @@ const shallowBot = async () => {
         // const result = await DatabaseHelper.manyQuery(query);
         // console.log(result);
 
-        const projectChannel = await CHANNELS.fetch('907380369236574208');
-        console.log(projectChannel.parentId);
+        // const projectChannel = await CHANNELS.fetch('907380369236574208');
+        // console.log(projectChannel.parentId);
+
+        const proj = await ProjectsHelper.loadBySlug('corporate-client-presentation-app');
+        console.log(proj);
+
 
         // Check link is valid
         // const link = 'https://discord.com/channels/723660447508725802/724212582633963540/773945284782850099';
