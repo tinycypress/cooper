@@ -367,11 +367,13 @@ export default class UsersHelper {
     static async searchByUsername(username) {
         const results = await DatabaseHelper.manyQuery({
             text: `SELECT *, roles.role_list FROM users
-                JOIN (
+
+                LEFT JOIN (
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
                     FROM user_roles ur
                     GROUP BY ur.discord_id
                 ) roles USING (discord_id) 
+
                 LEFT JOIN (
                     SELECT 
                         json_agg(json_build_object(
@@ -382,6 +384,7 @@ export default class UsersHelper {
                     FROM items it
                     GROUP BY it.owner_id
                 ) items ON users.discord_id = items.owner_id
+
                 LEFT JOIN (
                     SELECT 
                         json_agg(json_build_object(
@@ -392,6 +395,17 @@ export default class UsersHelper {
                     FROM blog_posts bp
                     GROUP BY bp.author_id
                 ) blog_posts ON users.discord_id = blog_posts.author_id
+
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'slug', pr.slug
+                        )) AS project_list,
+                        owner_id
+                    FROM projects pr
+                    GROUP BY pr.owner_id
+                ) projects ON users.discord_id = projects.owner_id
+
                 WHERE username LIKE $1
             `,
             values: [username]
@@ -403,11 +417,13 @@ export default class UsersHelper {
         const query = {
             text: `SELECT *, roles.role_list 
                 FROM users
-                JOIN (
+
+                LEFT JOIN (
                     SELECT array_agg(ur.role_code) AS role_list, discord_id
                     FROM user_roles ur
                     GROUP BY ur.discord_id
                 ) roles USING (discord_id)
+
                 LEFT JOIN (
                     SELECT 
                         json_agg(json_build_object(
@@ -418,6 +434,7 @@ export default class UsersHelper {
                     FROM items it
                     GROUP BY it.owner_id
                 ) items ON users.discord_id = items.owner_id
+
                 LEFT JOIN (
                     SELECT 
                         json_agg(json_build_object(
@@ -428,6 +445,17 @@ export default class UsersHelper {
                     FROM blog_posts bp
                     GROUP BY bp.author_id
                 ) blog_posts ON users.discord_id = blog_posts.author_id
+
+                LEFT JOIN (
+                    SELECT 
+                        json_agg(json_build_object(
+                            'slug', pr.slug
+                        )) AS project_list,
+                        owner_id
+                    FROM projects pr
+                    GROUP BY pr.owner_id
+                ) projects ON users.discord_id = projects.owner_id
+
                 WHERE discord_id = $1
             `,
             values: [discordID]
