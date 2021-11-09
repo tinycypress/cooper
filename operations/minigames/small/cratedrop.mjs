@@ -126,16 +126,14 @@ export default class CratedropMinigame {
         setTimeout(async () => {
             const crate = CRATE_DATA[rarity];
 
-            // Fetch the crate hitters!
+            // Fetch the crate hitters and convert into array.
             const reactionUsers = await axeEmojiReaction.users.fetch();
-            const hitters = reactionUsers
-                .filter(user => !COOP.USERS.isCooper(user.id));
+            const hitters = Array.from(
+                reactionUsers
+                    .filter(user => !COOP.USERS.isCooper(user.id))
+            ).map(userSet => userSet[1]);
 
             const hitterNames = hitters.map(user => user.username);
-
-            console.log('Crate hittres');
-            console.log(reactionUsers);
-            console.log(hitters);
             
             // Add points to all hitters.
             await Promise.all(hitters.map(user => COOP.ITEMS.add(user.id, 'COOP_POINT', crate.openingPoints, `Opening ${rarity}`)));

@@ -1,13 +1,9 @@
 import dotenv from 'dotenv';
-import { Client, Intents, MessageMentions } from 'discord.js';
-
-// v DEV IMPORT AREA v
+import { Client, Intents } from 'discord.js';
 import Database from './database.mjs';
 import COOP from '../coop.mjs';
 
-
-import CATEGORIES from '../../origin/config/categories.json';
-
+// v DEV IMPORT AREA v
 // ^ DEV IMPORT AREA ^
 
 // Load ENV variables.
@@ -44,6 +40,17 @@ const shallowBot = async () => {
 
 
         // Investigate crate reactions not working. :/
+        const testMsg = await COOP.MESSAGES.getByLink('https://discord.com/channels/723660447508725802/779341376630292521/907430500698845255');
+
+        const reaction = testMsg.reactions.resolve('👌')
+
+        const reactionUsers = await reaction.users.fetch();
+        const hitters = Array.from(reactionUsers
+            .filter(user => !COOP.USERS.isCooper(user.id))
+        ).map(userSet => userSet[1]);
+        // const hitterNames = hitters.map(user => user.username);
+
+        console.log(hitters);
 
 
         // DEV WORK AND TESTING ON THE LINES ABOVE.
