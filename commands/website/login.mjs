@@ -17,7 +17,7 @@ export const execute = async (interaction) => {
 	// DM the login code to the user
 	USERS._dm(interaction.user.id, 
 		`**Your temporary login code (expiring link) is here, use it within the next 5 minutes:**\n\n` +
-		'https://thecoop.group/auth/authorise?method=cooper_dm&code=' + code
+		'||https://thecoop.group/auth/authorise?method=cooper_dm&code=' + code + '||'
 	);
 
 	// Indicate success.
