@@ -1,4 +1,4 @@
-import { Permissions } from "discord.js";
+import { Permissions, MessageMentions } from "discord.js";
 
 import { CATEGORIES } from "../../../origin/config.mjs";
 import { CHANNELS, MESSAGES, TIME, USERS } from "../../../origin/coop.mjs";
@@ -8,11 +8,13 @@ import DatabaseHelper from "../../databaseHelper.mjs";
 export default class BlogHelper {
 
     static async passed(suggestion) {
-        const owner = suggestion.mentions.users.first() || null;
+        const ownerID = MessageMentions.USERS_PATTERN.exec(suggestion.content)[1] || null;
         const title = MESSAGES.getRegexMatch(/Title: __([^\r\n]*)__/gm, suggestion.content);
         const deadline = MESSAGES.getRegexMatch(/Deadline: ([^\r\n]*)/gm, suggestion.content);
+
+        const member = await USERS._fetch(ownerID);
         
-        const channel = await this.channelDraft(title, owner, deadline);
+        const channel = await this.channelDraft(title, member, deadline);
 
         // Is this necessary??
         const announcementMsg = await CHANNELS._postToChannelCode('FEED', `Blog draft post created! <#${channel.id}>`);

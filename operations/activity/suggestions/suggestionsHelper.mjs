@@ -151,9 +151,6 @@ export default class SuggestionsHelper {
     static async pass(suggestion, votes, index) {
         setTimeout(() => {
             try {
-                // TODO: Reward the person who posted the suggestion for contributing to the community
-                // console.log(suggestion.mentions);
-
                 // Check if the suggestion is a project creation proposal.
                 if (votes.project) 
                     ProjectsHelper.passed(suggestion)

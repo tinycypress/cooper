@@ -1,7 +1,7 @@
 {
   "name": "cooper",
   "version": "1.0.2",
-  "description": "get cooped with cooper",
+  "description": "Single server community bot",
   "type": "module",
   "scripts": {
     "start-bot": "node --experimental-json-modules ./index.mjs",

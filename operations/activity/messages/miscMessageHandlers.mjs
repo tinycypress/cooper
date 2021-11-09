@@ -36,44 +36,6 @@ export default class MiscMessageHandlers {
         }
 
 
-
-
-        const target = msg.mentions.users.first();
-        if (target) {
-
-            // If targetting Cooper.
-            if (COOP.USERS.isCooper(target.id)) {
-                if (msg.content.indexOf(';-;') > -1) msg.channel.send(';-;');
-                if (msg.content.indexOf('._.') > -1) msg.channel.send('._.');
-                if (msg.content.indexOf(':]') > -1) msg.channel.send(':]');
-                if (msg.content.indexOf(':}') > -1) msg.channel.send(':}');
-                if (msg.content.indexOf(':3') >-1) msg.channel.send(':3');
-
-                if (
-                    msg.content.indexOf('hate you') > -1 ||
-                    msg.content.indexOf('fuck you') > -1 ||
-                    msg.content.indexOf('die') > -1 ||
-                    msg.content.indexOf('stupid') > -1 ||
-                    msg.content.indexOf('dumb') > -1 ||
-                    msg.content.indexOf('idiot') > -1 ||
-                    msg.content.indexOf('retard') > -1 ||
-                    msg.content.indexOf('gay') > -1 ||
-                    msg.content.indexOf('ugly') > -1
-                ) {
-                    setTimeout(async () => {
-        
-                        // Implement chance-based to rate limit and make easter egg not every time/ubiquitous.
-                        if (STATE.CHANCE.bool({ likelihood: 22.5 })) {
-                            const endpoint = 'https://api.fungenerators.com/taunt/generate?category=shakespeare&limit=1';
-                            const result = (await Axios.get(endpoint)).data || null;
-                            const insults = (result.contents || null).taunts || null;
-                            if (insults) msg.channel.send(insults[0]);
-                        }
-                    }, 250);
-                }
-            }
-        }
-
         if (STATE.CHANCE.bool({ likelihood: 25 })) {
             if (msg.content.toLowerCase().indexOf('marx') > -1) msg.react('☭');
             if (msg.content.toLowerCase().indexOf('socialism') > -1) msg.react('☭');
