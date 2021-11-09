@@ -67,7 +67,7 @@ export default class ProjectsHelper {
                         channel_id, owner_id,
                         created, deadline
                     )
-                    VALUES($1, $2, $3, $4, $5, $6)`,
+                    VALUES($1, $2, $3, $4, $5, $6, $7)`,
                 values: [
                     name, 'No description yet.', slug,
                     channel.id, owner.id,
