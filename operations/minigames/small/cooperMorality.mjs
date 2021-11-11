@@ -39,6 +39,7 @@ export default class CooperMorality {
         // ...
 
         // Quirky things for neutral, produces rarer items.
+        //that's hot
     }
 
     static async takeaway() {
@@ -74,7 +75,7 @@ export default class CooperMorality {
         ));
         
         // Declare feedback.
-        const giveawayText = `**Cooper's good mood makes him charitable!**\n\n` +
+        const giveawayText = `**Cooper's good mood makes him iconic!**\n\n` +
             dropResults.map(dropSet => 
                 `${dropSet.user.username}: ${dropSet.drops.map(drop => 
                     `${COOP.MESSAGES.emojiCodeText(drop.item)}x${drop.qty}`
